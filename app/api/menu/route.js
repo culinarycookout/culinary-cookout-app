@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // 1. Fetch ALL items from Notion (no sorting in the query)
     const response = await fetch(`https://api.notion.com/v1/databases/${process.env.NOTION_MENU_DATABASE_ID}/query`, {
       method: 'POST',
       headers: {
@@ -10,7 +9,7 @@ export async function GET() {
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({}), // Empty query — fetch everything
+      body: JSON.stringify({}),
     });
 
     if (!response.ok) {
@@ -19,7 +18,6 @@ export async function GET() {
 
     const data = await response.json();
 
-    // 2. Map items to clean objects
     let menuItems = data.results.map((item) => ({
       id: item.id,
       name: item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled',
@@ -33,34 +31,37 @@ export async function GET() {
       quantity: item.properties['QUANTITY']?.number || 0,
     }));
 
-    // 3. Sort in JavaScript: CATEGORY → Item Type → SERVES: → Item Name
+    // Sort: beverages last, everything else alphabetical by category
     menuItems.sort((a, b) => {
-      // Category (primary sort)
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
+
+      // If one is BEVERAGES, push it to the bottom
+      if (catA === 'BEVERAGES' && catB !== 'BEVERAGES') return 1;
+      if (catA !== 'BEVERAGES' && catB === 'BEVERAGES') return -1;
+
+      // Otherwise sort alphabetically by category
       if (catA !== catB) return catA.localeCompare(catB);
 
-      // Item Type (secondary sort)
+      // Then by item type
       const typeA = (a.itemType || '').trim();
       const typeB = (b.itemType || '').trim();
       if (typeA !== typeB) return typeA.localeCompare(typeB);
 
-      // Serves (tertiary sort)
+      // Then by serves
       const servesA = (a.serves || '').trim();
       const servesB = (b.serves || '').trim();
       if (servesA !== servesB) return servesA.localeCompare(servesB);
 
-      // Item Name (final sort)
+      // Finally by item name
       const nameA = (a.name || '').trim();
       const nameB = (b.name || '').trim();
       return nameA.localeCompare(nameB);
     });
 
-    // 4. Return sorted data
     return NextResponse.json(menuItems);
   } catch (error) {
     console.error('Error fetching menu:', error);
     return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });
   }
 }
-// FORCE REDEPLOY - SORTING FIX

@@ -1,7 +1,7 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import QuantityAddToCart from './QuantityAddToCart';
 
 export default function Menu() {
   const [items, setItems] = useState([]);
@@ -36,7 +36,6 @@ export default function Menu() {
   useEffect(() => {
     let result = items;
 
-    // Search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       result = result.filter(
@@ -46,17 +45,14 @@ export default function Menu() {
       );
     }
 
-    // Category filter
     if (filterCategory) {
       result = result.filter((item) => item.category === filterCategory);
     }
 
-    // Serves filter
     if (filterServes) {
       result = result.filter((item) => item.serves === filterServes);
     }
 
-    // Size filter
     if (filterSize) {
       result = result.filter((item) => item.size === filterSize);
     }
@@ -64,7 +60,6 @@ export default function Menu() {
     setFilteredItems(result);
   }, [searchTerm, filterCategory, filterServes, filterSize, items]);
 
-  // Get unique values for filters
   const categories = [...new Set(items.map((item) => item.category).filter(Boolean))].sort();
   const servesOptions = [...new Set(items.map((item) => item.serves).filter(Boolean))].sort();
   const sizeOptions = [...new Set(items.map((item) => item.size).filter(Boolean))].sort();
@@ -76,6 +71,11 @@ export default function Menu() {
     setFilterSize('');
   };
 
+  const handleAddToCart = (item, quantity) => {
+    console.log(`Added ${quantity} of ${item.name} to cart!`);
+    // Add your cart storage/state logic here later
+  };
+
   if (loading) return <div className="text-white p-4">Loading menu...</div>;
   if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
 
@@ -83,7 +83,6 @@ export default function Menu() {
     <div>
       {/* Search and Filter Section */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
-        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search by name or description..."
@@ -92,7 +91,6 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        {/* Filter Row */}
         <div className="grid grid-cols-3 gap-2">
           <select
             value={filterCategory}
@@ -128,7 +126,6 @@ export default function Menu() {
           </select>
         </div>
 
-        {/* Clear Filters */}
         {(searchTerm || filterCategory || filterServes || filterSize) && (
           <button
             onClick={clearFilters}
@@ -138,7 +135,6 @@ export default function Menu() {
           </button>
         )}
 
-        {/* Results Count */}
         <p className="text-xs text-zinc-500 mt-2">
           Showing {filteredItems.length} of {items.length} items
         </p>
@@ -157,29 +153,58 @@ export default function Menu() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredItems.map((item) => (
-            <Link key={item.id} href={`/menu/${item.id}`}>
-              <div className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                {item.imageUrl && (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h3 className="font-bold text-lg">{item.name}</h3>
-                  <p className="text-sm text-gray-600">{item.category}</p>
-                  <p className="text-sm text-gray-600">{item.size}</p>
-                  <p className="text-sm text-gray-600">Serves: {item.serves}</p>
-                  {item.description && (
-                    <p className="text-sm text-gray-700 mt-2">{item.description}</p>
+          {filteredItems.map((item) => {
+            // Check if price is missing, zero, or empty
+            const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
+
+            return (
+              <div 
+                key={item.id} 
+                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col justify-between"
+              >
+                {/* Clickable Card Body linking to detail page */}
+                <Link href={`/menu/${item.id}`} className="cursor-pointer flex-1">
+                  {item.imageUrl && (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="w-full h-48 object-cover"
+                    />
                   )}
-                  <p className="text-xl font-bold mt-2">${(Number(item.price) || 0).toFixed(2)}</p>
+                  <div className="p-4">
+                    <h3 className="font-bold text-lg">{item.name}</h3>
+                    <p className="text-sm text-gray-600">{item.category}</p>
+                    <p className="text-sm text-gray-600">{item.size}</p>
+                    <p className="text-sm text-gray-600">Serves: {item.serves}</p>
+                    {item.description && (
+                      <p className="text-sm text-gray-700 mt-2">{item.description}</p>
+                    )}
+                    
+                    {/* Safe Pricing Display */}
+                    <p className="text-xl font-bold mt-2">
+                      {isUnpriced ? (
+                        <span className="text-orange-600 italic text-base">Price Pending</span>
+                      ) : (
+                        `$${Number(item.price).toFixed(2)}`
+                      )}
+                    </p>
+                  </div>
+                </Link>
+
+                {/* Quantity & Add to Cart Controls (Wrapped with stopPropagation so clicking buttons doesn't trigger the Link) */}
+                <div 
+                  className="p-4 pt-0 bg-white" 
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <QuantityAddToCart 
+                    item={item} 
+                    disabled={isUnpriced}
+                    onAddToCart={handleAddToCart} 
+                  />
                 </div>
               </div>
-            </Link>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
