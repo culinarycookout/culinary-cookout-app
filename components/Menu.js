@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import QuantityAddToCart from './QuantityAddToCart';
 
 export default function Menu() {
   const [items, setItems] = useState([]);
@@ -15,6 +14,9 @@ export default function Menu() {
   const [filterServes, setFilterServes] = useState('');
   const [filterSize, setFilterSize] = useState('');
 
+  // Track quantities for each item locally
+  const [quantities, setQuantities] = useState({});
+
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -23,6 +25,13 @@ export default function Menu() {
         const data = await res.json();
         setItems(data);
         setFilteredItems(data);
+        
+        // Initialize quantities to 1 for all items
+        const initialQtys = {};
+        data.forEach(item => {
+          initialQtys[item.id] = 1;
+        });
+        setQuantities(initialQtys);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -71,9 +80,22 @@ export default function Menu() {
     setFilterSize('');
   };
 
-  const handleAddToCart = (item, quantity) => {
-    console.log(`Added ${quantity} of ${item.name} to cart!`);
-    // Add your cart storage/state logic here later
+  const handleDecrement = (id) => {
+    setQuantities(prev => ({
+      ...prev,
+      [id]: Math.max(1, (prev[id] || 1) - 1)
+    }));
+  };
+
+  const handleIncrement = (id) => {
+    setQuantities(prev => ({
+      ...prev,
+      [id]: (prev[id] || 1) + 1
+    }));
+  };
+
+  const handleAddToCart = (item, qty) => {
+    console.log(`Added ${qty} of ${item.name} to cart!`);
   };
 
   if (loading) return <div className="text-white p-4">Loading menu...</div>;
@@ -163,15 +185,14 @@ export default function Menu() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredItems.map((item) => {
-            // Check if price is missing, zero, or empty
             const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
+            const currentQty = quantities[item.id] || 1;
 
             return (
               <div 
                 key={item.id} 
                 className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col justify-between"
               >
-                {/* Clickable Card Body linking to detail page */}
                 <Link href={`/menu/${item.id}`} className="cursor-pointer flex-1">
                   {item.imageUrl && (
                     <img
@@ -189,7 +210,6 @@ export default function Menu() {
                       <p className="text-sm text-gray-700 mt-2">{item.description}</p>
                     )}
                     
-                    {/* Safe Pricing Display */}
                     <p className="text-xl font-bold mt-2">
                       {isUnpriced ? (
                         <span className="text-orange-600 italic text-base">Price Pending</span>
@@ -200,16 +220,44 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* Quantity & Add to Cart Controls (Wrapped with stopPropagation so clicking buttons doesn't trigger the Link) */}
+                {/* Quantity & Add to Cart Controls */}
                 <div 
                   className="p-4 pt-0 bg-white" 
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <QuantityAddToCart 
-                    item={item} 
-                    disabled={isUnpriced}
-                    onAddToCart={handleAddToCart} 
-                  />
+                  <div className="flex items-center space-x-2 mt-2">
+                    <div className={`flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white ${isUnpriced ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                      <button
+                        onClick={() => handleDecrement(item.id)}
+                        disabled={isUnpriced}
+                        className="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition disabled:cursor-not-allowed text-sm"
+                        type="button"
+                      >
+                        -
+                      </button>
+                      <span className="px-3 py-1 text-gray-900 font-semibold text-sm">{currentQty}</span>
+                      <button
+                        onClick={() => handleIncrement(item.id)}
+                        disabled={isUnpriced}
+                        className="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition disabled:cursor-not-allowed text-sm"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
+                      disabled={isUnpriced}
+                      className={`flex-1 font-medium px-3 py-1.5 rounded-lg transition shadow-sm text-sm ${
+                        isUnpriced 
+                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                          : 'bg-orange-600 hover:bg-orange-700 text-white'
+                      }`}
+                      type="button"
+                    >
+                      {isUnpriced ? 'Coming Soon' : 'Add to Cart'}
+                    </button>
+                  </div>
                 </div>
               </div>
             );
