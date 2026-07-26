@@ -81,6 +81,15 @@ export default function Menu() {
 
   return (
     <div>
+      {/* Logo at the Top */}
+      <div className="flex justify-center mb-6">
+        <img
+          src="/logo.png"
+          alt="Culinary Cookout Logo"
+          className="h-24 md:h-32 w-auto object-contain"
+        />
+      </div>
+
       {/* Search and Filter Section */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
