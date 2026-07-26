@@ -103,12 +103,12 @@ export default function Menu() {
 
   return (
     <div>
-      {/* Logo at the Top */}
-      <div className="flex justify-center mb-6">
+      {/* Logo at the Top - Massively Increased Size */}
+      <div className="flex justify-center mb-8">
         <img
           src="/logo.png"
           alt="Culinary Cookout Logo"
-          className="h-24 md:h-32 w-auto object-contain"
+          className="h-48 md:h-72 w-auto object-contain"
         />
       </div>
 
@@ -225,30 +225,33 @@ export default function Menu() {
                   className="p-4 pt-0 bg-white" 
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center space-x-2 mt-2">
-                    <div className={`flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white ${isUnpriced ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                  <div className="flex items-center justify-between gap-3 mt-4">
+                    {/* Circular Quantity Buttons */}
+                    <div className="flex items-center space-x-3">
                       <button
                         onClick={() => handleDecrement(item.id)}
                         disabled={isUnpriced}
-                        className="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition disabled:cursor-not-allowed text-sm"
+                        className="w-10 h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow"
                         type="button"
                       >
                         -
                       </button>
-                      <span className="px-3 py-1 text-gray-900 font-semibold text-sm">{currentQty}</span>
+                      <span className="text-xl font-bold text-gray-900 w-6 text-center">{currentQty}</span>
                       <button
                         onClick={() => handleIncrement(item.id)}
                         disabled={isUnpriced}
-                        className="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition disabled:cursor-not-allowed text-sm"
+                        className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow"
+                        type="button"
                       >
                         +
                       </button>
                     </div>
 
+                    {/* Add to Cart Button */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced}
-                      className={`flex-1 font-medium px-3 py-1.5 rounded-lg transition shadow-sm text-sm ${
+                      className={`px-4 py-2.5 font-semibold rounded-lg transition shadow-md text-sm md:text-base whitespace-nowrap ${
                         isUnpriced 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                           : 'bg-orange-600 hover:bg-orange-700 text-white'
