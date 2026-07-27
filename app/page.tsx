@@ -1,41 +1,36 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import Menu from '../components/Menu';
 import { useCart } from '../context/CartContext';
 
 export default function Home() {
-  const { cartCount } = useCart();
+  const { totalItems } = useCart();
 
   return (
     <main className="min-h-screen bg-black text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          {/* Logo - Tuned Separately for Mobile, Tablet, & Desktop */}
           <div className="flex-1 flex justify-center">
-            <img
+            <Image
               src="/logo.png"
               alt="Culinary Cookout Logo"
-              style={{
-                height: '140px',
-                width: 'auto',
-                maxWidth: '100%',
-                objectFit: 'contain',
-              }}
-              className="md:h-56 lg:h-80"
+              width={400}
+              height={160}
+              className="h-32 md:h-48 w-auto object-contain"
+              priority
             />
           </div>
-          
-          {/* Cart Icon */}
           <Link
             href="/cart"
-            className="relative bg-zinc-800 hover:bg-zinc-700 p-4 rounded-full transition ml-2 flex-shrink-0"
+            className="relative bg-zinc-800 hover:bg-zinc-700 p-3 rounded-full transition ml-2 flex-shrink-0"
             aria-label="View cart"
           >
-            <span className="text-3xl">🛒</span>
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-sm font-bold w-7 h-7 rounded-full flex items-center justify-center">
-                {cartCount}
+            <span className="text-2xl">🛒</span>
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                {totalItems}
               </span>
             )}
           </Link>

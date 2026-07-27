@@ -1,57 +1,71 @@
 import { NextResponse } from 'next/server';
 
-// ✅ POST: Submit order to Notion
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { 
-      customerName, 
-      whatsappNumber, 
-      instagramHandle, 
-      deliveryLocation, 
-      deliveryLocation2, 
-      specialInstructions, 
-      items, 
-      subtotal 
+    const {
+      customerName,
+      whatsappNumber,
+      instagramHandle,
+      deliveryLocation,
+      deliveryLocation2,
+      specialInstructions,
+      userEmail,
+      items,
+      subtotal,
     } = body;
 
-    // ✅ VALIDATE REQUIRED FIELDS
+    // Validate required fields
     if (!customerName || !whatsappNumber || !deliveryLocation || !items || items.length === 0) {
       return NextResponse.json(
-        { error: 'Missing required order fields' },
+        { error: 'Missing required fields: name, WhatsApp, delivery location, or items' },
         { status: 400 }
       );
     }
 
-    // ✅ FORMAT ITEMS FOR NOTION
-    const itemsSummary = items.map(item => {
-      const addOnsText = item.addOns && item.addOns.length > 0 
-        ? ` (Add-ons: ${item.addOns.map(a => `${a.Name} x${a.Quantity}`).join(', ')})` 
-        : '';
-      const itemTotal = (item.price || 0) * (item.quantity || 1);
-      return `${item.quantity || 1}x ${item.name}${addOnsText} - $${itemTotal.toFixed(2)}`;
-    }).join('\n');
+    // Calculate totals
+    let totalQuantity = 0;
+    let basePrice = 0;
+    let addOnCost = 0;
 
-    // ✅ FORMAT DELIVERY INFO
-    let deliveryInfo = `📍 Primary: ${deliveryLocation}`;
-    if (deliveryLocation2) {
-      deliveryInfo += `\n📍 Secondary: ${deliveryLocation2}`;
-    }
-    if (instagramHandle) {
-      deliveryInfo += `\n📸 Instagram: ${instagramHandle}`;
-    }
-    if (specialInstructions) {
-      deliveryInfo += `\n📝 Notes: ${specialInstructions}`;
-    }
+    items.forEach((item) => {
+      const qty = item.quantity || 1;
+      totalQuantity += qty;
+      const itemBase = (item.price || 0) * qty;
+      basePrice += itemBase;
 
-    // ✅ CREATE ORDER TITLE
-    const orderTitle = `Order: ${customerName} - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      if (item.addOns && item.addOns.length > 0) {
+        item.addOns.forEach((addon) => {
+          addOnCost += (addon.Cost || 0) * (addon.Quantity || 0) * qty;
+        });
+      }
+    });
 
-    // ✅ SEND TO NOTION
+    // Format fields for Notion
+    const itemNames = items.map((item) => `${item.name} x${item.quantity || 1}`).join(', ');
+
+    const allAddOns = [];
+    items.forEach((item) => {
+      if (item.addOns && item.addOns.length > 0) {
+        item.addOns.forEach((addon) => {
+          allAddOns.push(`${addon.Name} x${addon.Quantity}`);
+        });
+      }
+    });
+    const addOnsText = allAddOns.length ? allAddOns.join(', ') : 'None';
+
+    let deliveryDetails = `📍 ${deliveryLocation}`;
+    if (deliveryLocation2) deliveryDetails += `\n📍 Secondary: ${deliveryLocation2}`;
+    if (instagramHandle) deliveryDetails += `\n📸 Instagram: ${instagramHandle}`;
+    if (whatsappNumber) deliveryDetails += `\n📱 WhatsApp: ${whatsappNumber}`;
+
+    const orderDate = new Date().toISOString();
+
+    // Create order in Notion
     const notionResponse = await fetch('https://api.notion.com/v1/pages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json',
       },
@@ -62,58 +76,60 @@ export async function POST(request) {
             title: [
               {
                 text: {
-                  content: orderTitle,
+                  content: `Order: ${customerName} - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
                 },
               },
             ],
           },
           'Client Name': {
-            rich_text: [
-              {
-                text: {
-                  content: customerName,
-                },
-              },
-            ],
+            rich_text: [{ text: { content: customerName } }],
           },
-          'WhatsApp Number': {
-            rich_text: [
-              {
-                text: {
-                  content: whatsappNumber,
-                },
-              },
-            ],
+          'User Email': {
+            rich_text: [{ text: { content: userEmail || '' } }],
           },
-          'Instagram Handle': {
-            rich_text: [
-              {
-                text: {
-                  content: instagramHandle || '',
-                },
-              },
-            ],
+          'Item Name': {
+            rich_text: [{ text: { content: itemNames } }],
           },
-          'Delivery Location': {
-            rich_text: [
-              {
-                text: {
-                  content: deliveryInfo,
-                },
-              },
-            ],
+          'Quantity': {
+            number: totalQuantity,
           },
-          'Total': {
+          'Base Price': {
+            number: basePrice,
+          },
+          'Add-on Cost': {
+            number: addOnCost,
+          },
+          'Grand Total': {
             number: Number(subtotal),
           },
-          'Items': {
+          'Instructions': {
+            rich_text: [{ text: { content: specialInstructions || '' } }],
+          },
+          'Order Notes': {
             rich_text: [
               {
                 text: {
-                  content: itemsSummary,
+                  content: `WhatsApp: ${whatsappNumber}${instagramHandle ? ` | Instagram: ${instagramHandle}` : ''}`,
                 },
               },
             ],
+          },
+          'Condiments & Add-Ons': {
+            rich_text: [{ text: { content: addOnsText } }],
+          },
+          'Delivery Details': {
+            rich_text: [{ text: { content: deliveryDetails } }],
+          },
+          'Order Date': {
+            date: { start: orderDate },
+          },
+          'Cart Status': {
+            select: { name: 'Placed' },
+          },
+          'Order Size': {
+            select: {
+              name: totalQuantity <= 2 ? 'Small' : totalQuantity <= 5 ? 'Medium' : 'Large',
+            },
           },
         },
       }),
@@ -121,22 +137,21 @@ export async function POST(request) {
 
     if (!notionResponse.ok) {
       const errorData = await notionResponse.json();
-      console.error('Notion API Error:', errorData);
-      throw new Error(`Failed to create order in Notion: ${notionResponse.status}`);
+      console.error('Notion API error:', errorData);
+      throw new Error(`Notion returned ${notionResponse.status}`);
     }
 
     const responseData = await notionResponse.json();
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       orderId: responseData.id,
-      message: 'Order submitted successfully!'
+      message: 'Order placed successfully!',
     });
-
   } catch (error) {
-    console.error('Error submitting order:', error);
+    console.error('Order submission error:', error);
     return NextResponse.json(
-      { error: 'Failed to submit order' },
+      { error: 'Failed to submit order. Please try again.' },
       { status: 500 }
     );
   }
