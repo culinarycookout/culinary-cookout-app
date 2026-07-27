@@ -50,22 +50,34 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // 2. Process each menu item
-    let menuItems = allResults.map((item) => ({
-      id: item.id,
-      name: item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled',
-      price: item.properties['Price']?.number || 0,
-      category: item.properties['CATEGORY']?.select?.name || '',
-      size: item.properties['SIZE']?.select?.name || '',
-      serves: item.properties['SERVES:']?.select?.name || '',
-      description: item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
-      imageUrl: item.properties['Image URL']?.url || '',
-      quantity: item.properties['QUANTITY']?.number || 0,
-      itemType: item.properties['Item Type']?.select?.name || '',
-      addOns: [],
-    }));
+    // 2. Process each menu item - ✅ KEEP itemType for sorting
+    let menuItems = allResults.map((item) => {
+      // ✅ FORCE READ: Log what's actually coming from Notion
+      const itemTypeRaw = item.properties['Item Type'];
+      const itemTypeValue = itemTypeRaw?.select?.name || '';
+      
+      // ✅ DEBUG: Log to console so we can see what's being read
+      console.log(`📦 Item: ${item.properties['Item Name']?.title?.[0]?.plain_text}`);
+      console.log(`   → Item Type raw:`, itemTypeRaw);
+      console.log(`   → Item Type value: "${itemTypeValue}"`);
 
-    // 3. Fetch ALL add-ons from the add-ons database
+      return {
+        id: item.id,
+        name: item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled',
+        price: item.properties['Price']?.number || 0,
+        category: item.properties['CATEGORY']?.select?.name || '',
+        size: item.properties['SIZE']?.select?.name || '',
+        serves: item.properties['SERVES:']?.select?.name || '',
+        description: item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
+        imageUrl: item.properties['Image URL']?.url || '',
+        quantity: item.properties['QUANTITY']?.number || 0,
+        // ✅ KEEP THIS - it's used for sorting
+        itemType: itemTypeValue,
+        addOns: [],
+      };
+    });
+
+    // 3. Fetch add-ons (unchanged)
     try {
       let allAddOns = [];
       let addOnsHasMore = true;
@@ -97,7 +109,6 @@ export async function GET() {
         }
       }
 
-      // 4. Map add-ons with their linked dishes
       const parsedAddOns = allAddOns.map((addOn) => {
         const linkedDishes = addOn.properties['Linked Dishes'];
         const linkedDishIds = linkedDishes && linkedDishes.type === 'relation' 
@@ -114,7 +125,6 @@ export async function GET() {
         };
       });
 
-      // 5. Attach add-ons to each menu item based on Linked Dishes
       menuItems = menuItems.map((item) => {
         const itemAddOns = parsedAddOns.filter((addOn) => 
           addOn.linkedDishIds.includes(item.id)
@@ -130,7 +140,7 @@ export async function GET() {
       console.error('Error fetching add-ons:', addOnError);
     }
 
-    // 6. TACO TUESDAY - Automatic 50% off (Tuesday 12:00 AM → Wednesday 1:00 AM)
+    // 4. TACO TUESDAY (unchanged)
     const now = new Date();
     const estOffset = -5 * 60;
     const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
@@ -157,33 +167,39 @@ export async function GET() {
       });
     }
 
-    // 7. SORTING: Use custom category order → Item Type → SERVES → Name
+    // 5. ✅ SORTING: Category → Item Type → SERVES → Name
     responseItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
 
-      // ✅ Use custom category order
+      // Category order
       const orderA = categoryOrder[catA] ?? 999;
       const orderB = categoryOrder[catB] ?? 999;
       if (orderA !== orderB) return orderA - orderB;
 
-      // 2. Sort by ITEM TYPE (groups like items together)
+      // ✅ Item Type - THIS GROUPS FRIED SHRIMP TOGETHER
       const typeA = (a.itemType || '').trim();
       const typeB = (b.itemType || '').trim();
+      
+      // ✅ DEBUG: Log what's being compared
+      if (typeA || typeB) {
+        console.log(`🔍 Sorting: "${typeA}" vs "${typeB}"`);
+      }
+      
       if (typeA !== typeB) return typeA.localeCompare(typeB);
 
-      // 3. Sort by SERVES:
+      // SERVES
       const servesA = (a.serves || '').trim();
       const servesB = (b.serves || '').trim();
       if (servesA !== servesB) return servesA.localeCompare(servesB);
 
-      // 4. Sort by NAME
+      // Name
       const nameA = (a.name || '').trim();
       const nameB = (b.name || '').trim();
       return nameA.localeCompare(nameB);
     });
 
-    // 8. Remove itemType from response (hidden from app)
+    // 6. Remove itemType from response (hidden from app)
     const cleanedMenuItems = responseItems.map(({ itemType, ...rest }) => rest);
 
     return NextResponse.json(cleanedMenuItems);
