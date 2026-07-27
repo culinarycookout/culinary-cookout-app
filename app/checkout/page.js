@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CheckoutPage() {
   const { cart, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -169,9 +170,21 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Client Information Form */}
+            {/* Client Information Form - WITH LOGO IN HEADER */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-              <h2 className="text-xl font-bold mb-4 border-b border-zinc-800 pb-2">Client Details</h2>
+              {/* ✅ Header with Logo */}
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
+                <h2 className="text-xl font-bold">Client Details</h2>
+                <div className="flex-shrink-0">
+                  <Image
+                    src="/logo.png"
+                    alt="Culinary Cookout Logo"
+                    width={50}
+                    height={50}
+                    className="h-10 w-auto object-contain"
+                  />
+                </div>
+              </div>
               
               <form onSubmit={handleSubmitOrder} className="space-y-4">
                 {/* Name - Required */}
