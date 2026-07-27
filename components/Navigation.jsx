@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import Image from 'next/image';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -19,10 +20,10 @@ export default function Navigation() {
 
   return (
     <>
-      {/* ✅ MOBILE – Bottom Navigation Bar (Cart | Menu | Contact) */}
+      {/* ✅ MOBILE – Bottom Navigation Bar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          {/* Cart – Left */}
+          {/* Cart */}
           <Link
             href="/cart"
             className={`flex flex-col items-center space-y-0.5 transition ${
@@ -42,18 +43,24 @@ export default function Navigation() {
             </span>
           </Link>
 
-          {/* Menu – Center */}
+          {/* ✅ Menu – Using your custom image */}
           <Link
             href="/"
             className={`flex flex-col items-center space-y-0.5 transition ${
               isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            <span className="text-3xl">📝</span>
+            <div className="relative">
+              <img
+                src="/menu.png"
+                alt="Menu"
+                className="h-8 w-8 object-contain"
+              />
+            </div>
             <span className="text-xs font-medium">Menu</span>
           </Link>
 
-          {/* Contact – Right */}
+          {/* Contact */}
           <Link
             href="/contact-us"
             className={`flex flex-col items-center space-y-0.5 transition ${
@@ -66,15 +73,20 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* ✅ DESKTOP – Left Sidebar (Menu | Contact | Cart) – 300% BIGGER ICONS */}
+      {/* ✅ DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-6 z-50 shadow-2xl">
+        {/* ✅ Menu – Using your custom image */}
         <Link
           href="/"
           className={`flex flex-col items-center space-y-1 transition ${
             isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
-          <span className="text-5xl">📝</span>
+          <img
+            src="/menu.png"
+            alt="Menu"
+            className="h-10 w-10 object-contain"
+          />
           <span className="text-sm font-medium">Menu</span>
         </Link>
 
