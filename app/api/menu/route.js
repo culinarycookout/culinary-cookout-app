@@ -32,7 +32,7 @@ const getServesRank = (serves) => {
   return 99;
 };
 
-// ✅ ADD-ONS DATA (hardcoded from your add-ons database)
+// ✅ ADD-ONS DATA (hardcoded)
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -112,6 +112,7 @@ export async function GET() {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
 
+      // Clean name: remove size descriptors like (Small), (Medium), etc.
       const cleanName = name
         .replace(/\b(SMALL|MEDIUM|LARGE|GROUP|JR\.?)\b/gi, '')
         .replace(/\s*[\(\[].*?[\)\]]/g, '')
@@ -203,119 +204,6 @@ export async function GET() {
     });
 
     return NextResponse.json(responseItems);
-  } catch (error) {
-    console.error('Error fetching menu:', error);
-    return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });
-  }
-}       .replace(/\s+/g, ' ')
-        .trim();
-
-      return {
-        id: item.id,
-        name: name,
-        price: item.properties['Price']?.number || 0,
-        category: item.properties['CATEGORY']?.select?.name || '',
-        size: item.properties['SIZE']?.select?.name || '',
-        serves: item.properties['SERVES:']?.select?.name || '',
-        description: item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
-        imageUrl: item.properties['Image URL']?.url || '',
-        quantity: item.properties['QUANTITY']?.number || 0,
-        itemType: rawItemType || cleanName,
-        addOns: [],
-      };
-    });
-
-    // 3. ATTACH ADD-ONS FROM HARDCODED DATA
-    menuItems = menuItems.map((item) => {
-      const itemAddOns = [];
-      const category = item.category.toUpperCase().trim();
-      
-      for (const [name, data] of Object.entries(addonsData)) {
-        if (data.categories && data.categories.includes(category)) {
-          itemAddOns.push({
-            id: `addon-${name.replace(/\s/g, '-')}`,
-            name: name,
-            price: data.cost,
-            description: data.description,
-            heatLevel: data.heatLevel,
-            countable: data.countable,
-          });
-        }
-      }
-
-      // If no category match, try matching by item type
-      if (itemAddOns.length === 0) {
-        const itemType = item.itemType.toUpperCase().trim();
-        for (const [name, data] of Object.entries(addonsData)) {
-          if (data.categories && data.categories.some(cat => 
-            itemType.includes(cat) || cat.includes(itemType)
-          )) {
-            itemAddOns.push({
-              id: `addon-${name.replace(/\s/g, '-')}`,
-              name: name,
-              price: data.cost,
-              description: data.description,
-              heatLevel: data.heatLevel,
-              countable: data.countable,
-            });
-          }
-        }
-      }
-
-      return { ...item, addOns: itemAddOns };
-    });
-
-    // 4. TACO TUESDAY - AUTOMATIC 50% OFF
-    const now = new Date();
-    const estOffset = -5 * 60;
-    const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
-    const dayOfWeek = estTime.getDay();
-    const hours = estTime.getHours();
-
-    const isTacoTuesday = (dayOfWeek === 2 && hours >= 0) || (dayOfWeek === 3 && hours < 1);
-
-    let responseItems = menuItems;
-
-    if (isTacoTuesday) {
-      responseItems = menuItems.map(item => {
-        if (item.itemType.toLowerCase().includes('taco') && item.price > 0) {
-          return {
-            ...item,
-            price: Number((item.price * 0.5).toFixed(2)),
-            isDiscounted: true,
-            originalPrice: item.price
-          };
-        }
-        return item;
-      });
-    }
-
-    // 5. SORTING: Category → Item Type → SERVES → Name
-    responseItems.sort((a, b) => {
-      const catA = (a.category || '').trim();
-      const catB = (b.category || '').trim();
-
-      const orderA = categoryOrder[catA] ?? 99;
-      const orderB = categoryOrder[catB] ?? 99;
-      if (orderA !== orderB) return orderA - orderB;
-
-      const typeA = (a.itemType || '').trim();
-      const typeB = (b.itemType || '').trim();
-      if (typeA !== typeB) return typeA.localeCompare(typeB);
-
-      const rankA = getServesRank(a.serves);
-      const rankB = getServesRank(b.serves);
-      if (rankA !== rankB) return rankA - rankB;
-
-      const nameA = (a.name || '').trim();
-      const nameB = (b.name || '').trim();
-      return nameA.localeCompare(nameB);
-    });
-
-    // 6. REMOVE ITEM TYPE FROM RESPONSE (HIDDEN FROM APP)
-    const cleanedMenuItems = responseItems.map(({ itemType, ...rest }) => rest);
-
-    return NextResponse.json(cleanedMenuItems);
   } catch (error) {
     console.error('Error fetching menu:', error);
     return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });

@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useCart } from '../../context/CartContext';
 
-// ✅ ADD-ONS DATA (for customization modal)
+// ✅ ADD-ONS DATA
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -58,7 +57,6 @@ const isTacoTuesday = () => {
   return false;
 };
 
-// ✅ SAFE GETTERS – works with any property naming
 const getItemPrice = (item) => item?.['Price'] ?? item?.price ?? 0;
 const getItemQty = (item) => item?.quantity ?? item?.qty ?? 1;
 
@@ -210,17 +208,39 @@ export default function CartPage() {
     window.location.href = `/delivery-details?items=${encodeURIComponent(JSON.stringify(orderData))}&total=${total.toFixed(2)}`;
   };
 
+  const totalItems = cart.reduce((sum, item) => sum + (item.quantity ?? item.qty ?? 1), 0);
+
   return (
     <div className="w-full min-h-screen bg-black text-white p-4">
       <div className="container max-w-2xl mx-auto">
-        <button
-          onClick={() => window.location.href = "/"}
-          className="text-red-400 hover:text-red-300 mb-2 text-lg"
-        >
-          ← Back to Menu
-        </button>
+        {/* Logo */}
+        <div className="flex justify-center mb-4">
+          <img
+            src="https://iili.io/CeCmPWJ.png"
+            alt="Cook For Hire"
+            className="h-16 md:h-20 w-auto object-contain"
+          />
+        </div>
 
-        <h1 className="text-3xl font-bold text-red-600 text-center mb-4">Your Order</h1>
+        {/* Header: Back to Menu on Left, Pushed Right with "Your Cart" and Item Count Stacked Underneath */}
+        <div className="flex items-start justify-between w-full mb-6 px-2">
+          <button
+            onClick={() => window.location.href = "/"}
+            className="text-red-400 hover:text-red-300 text-sm md:text-base font-medium whitespace-nowrap pt-1"
+          >
+            ← Back to Menu
+          </button>
+
+          <div className="flex flex-col items-end text-right">
+            <div className="flex items-center space-x-2">
+              <span className="text-lg">🛒</span>
+              <h1 className="text-2xl md:text-3xl font-bold text-red-600 leading-tight">Your Cart</h1>
+            </div>
+            <span className="text-xs md:text-sm text-zinc-400 mt-1 block">
+              ({totalItems} {totalItems === 1 ? 'item' : 'items'})
+            </span>
+          </div>
+        </div>
 
         {isTacoActive && (
           <div className="bg-yellow-600 text-black p-3 rounded-xl text-center font-bold mb-4">
@@ -229,7 +249,7 @@ export default function CartPage() {
         )}
 
         {cart.length === 0 ? (
-          <p className="text-center text-zinc-400">Your cart is empty</p>
+          <p className="text-center text-zinc-400 py-8">Your cart is empty</p>
         ) : (
           <>
             <div className="space-y-4 mb-6">
@@ -246,7 +266,6 @@ export default function CartPage() {
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
-                        <p className="text-sm text-zinc-400">Quantity: <span className="text-white font-bold">{qty}</span></p>
                         {addonNames && (
                           <p className="text-sm text-zinc-400">Add-ons: {addonNames}</p>
                         )}
@@ -262,34 +281,10 @@ export default function CartPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-xl font-bold text-red-400">${total.toFixed(2)}</p>
-                        {isTacoActive && isTaco && (
-                          <p className="text-xs text-green-400">🎉 Discounted</p>
-                        )}
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 mt-3">
-                      <button
-                        onClick={() => openCustomize(item.cartInstanceId)}
-                        className="bg-[#0BDA51] hover:bg-[#09C448] text-white font-bold px-4 py-2 rounded-lg text-sm transition flex-1 sm:flex-none"
-                      >
-                        ✏️ Customize
-                      </button>
-                      <button
-                        onClick={() => duplicateItem(item.cartInstanceId)}
-                        className="text-sm text-green-400 hover:text-green-300 px-3 py-2"
-                      >
-                        📋 Duplicate
-                      </button>
-                      <button
-                        onClick={() => removeFromCart(item.cartInstanceId)}
-                        className="text-sm text-red-400 hover:text-red-300 ml-auto"
-                      >
-                        Remove
-                      </button>
-                    </div>
-
-                    <div className="flex items-center space-x-2 mt-2">
+                    <div className="flex items-center gap-2 mt-2">
                       <button
                         onClick={() => updateQuantity(item.cartInstanceId, qty - 1)}
                         className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg"
@@ -303,6 +298,27 @@ export default function CartPage() {
                       >
                         +
                       </button>
+
+                      <button
+                        onClick={() => duplicateItem(item.cartInstanceId)}
+                        className="text-sm text-green-400 hover:text-green-300 ml-2"
+                      >
+                        📋 Duplicate
+                      </button>
+
+                      <button
+                        onClick={() => openCustomize(item.cartInstanceId)}
+                        className="text-sm text-blue-400 hover:text-blue-300 ml-2"
+                      >
+                        ✏️ Customize
+                      </button>
+
+                      <button
+                        onClick={() => removeFromCart(item.cartInstanceId)}
+                        className="text-sm text-red-400 hover:text-red-300 ml-auto"
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 );
@@ -311,32 +327,53 @@ export default function CartPage() {
 
             <div className="bg-zinc-900 p-6 rounded-xl border border-zinc-800">
               <div className="flex justify-between text-xl font-bold mb-4">
-                <span>Total</span>
+                <span>Subtotal</span>
                 <span className="text-red-400">${cart.reduce((sum, item) => sum + calculateItemTotal(item), 0).toFixed(2)}</span>
               </div>
               {isTacoActive && (
                 <p className="text-xs text-green-400 text-center mb-2">🎉 Taco Tuesday discount applied</p>
               )}
-              <button
-                onClick={handleConfirmOrder}
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-lg transition-colors"
-              >
-                Confirm Order
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={clearCart}
+                  className="flex-1 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm font-medium transition"
+                >
+                  Clear Cart
+                </button>
+                <button
+                  onClick={handleConfirmOrder}
+                  className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition"
+                >
+                  Proceed to Checkout →
+                </button>
+              </div>
             </div>
           </>
         )}
       </div>
 
+      {/* ✅ Mobile-First Full Screen Customization Overlay */}
       {showCustomize && selectedItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
-          <div className="bg-zinc-900 rounded-xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto border border-zinc-800">
-            <h2 className="text-2xl font-bold text-white mb-2">{selectedItem['Item Name'] || selectedItem.name}</h2>
-            <p className="text-zinc-400 mb-4">Customize your order</p>
+        <div className="fixed inset-0 bg-black z-50 flex flex-col justify-between p-4 overflow-y-auto">
+          {/* Top Bar with Dedicated Back/Close Action */}
+          <div>
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-800">
+              <button
+                onClick={closeCustomize}
+                className="text-red-400 hover:text-red-300 font-medium text-sm flex items-center space-x-1"
+              >
+                <span>← Back to Cart</span>
+              </button>
+              <span className="text-xs text-zinc-400 font-semibold uppercase tracking-wider">Customization</span>
+            </div>
 
-            <div className="mb-4">
-              <p className="text-sm font-bold text-white mb-2">Add-ons:</p>
-              <div className="flex flex-wrap gap-2">
+            <h2 className="text-2xl font-bold text-white mb-1">{selectedItem['Item Name'] || selectedItem.name}</h2>
+            <p className="text-zinc-400 text-sm mb-6">Tailor your ingredients, add-ons, and instructions.</p>
+
+            {/* Add-ons Grid */}
+            <div className="mb-6">
+              <p className="text-sm font-bold text-white mb-3 tracking-wide">AVAILABLE ADD-ONS:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {getAvailableAddOns(selectedItem['Item Name'] || selectedItem.name).map((name) => {
                   const addon = addonsData[name];
                   const qty = getAddonQuantity(name);
@@ -348,32 +385,32 @@ export default function CartPage() {
 
                   if (countable) {
                     return (
-                      <div key={name} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-2">
-                        <div className="flex justify-between items-start">
+                      <div key={name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 flex flex-col justify-between">
+                        <div className="flex justify-between items-start mb-2">
                           <div>
-                            <span className="text-white font-bold text-sm">{name}</span>
-                            {desc && <p className="text-[10px] text-zinc-400 mt-0.5">{desc}</p>}
-                            {heat && <span className="text-[10px] text-orange-400">🔥 {heat}</span>}
+                            <span className="text-white font-bold text-sm block">{name}</span>
+                            {desc && <p className="text-xs text-zinc-400 mt-0.5">{desc}</p>}
+                            {heat && <span className="text-xs text-orange-400 mt-1 inline-block">🔥 {heat}</span>}
                           </div>
-                          <span className="text-[10px] text-red-400 whitespace-nowrap ml-2">+${cost.toFixed(2)} each</span>
+                          <span className="text-xs text-red-400 font-semibold whitespace-nowrap ml-2">+${cost.toFixed(2)}</span>
                         </div>
-                        <div className="flex items-center gap-1 mt-1">
-                          <button
-                            onClick={() => changeAddOnQty(name, -1)}
-                            className="w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center text-sm font-bold"
-                          >
-                            −
-                          </button>
-                          <span className="w-6 text-center text-white font-bold">{qty}</span>
-                          <button
-                            onClick={() => changeAddOnQty(name, 1)}
-                            className="w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center text-sm font-bold"
-                          >
-                            +
-                          </button>
-                          {qty > 0 && (
-                            <span className="text-[10px] text-green-400 ml-1">(total: ${(cost * qty).toFixed(2)})</span>
-                          )}
+                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-zinc-800/60">
+                          <span className="text-xs text-zinc-400">Quantity</span>
+                          <div className="flex items-center space-x-3">
+                            <button
+                              onClick={() => changeAddOnQty(name, -1)}
+                              className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center font-bold text-base"
+                            >
+                              −
+                            </button>
+                            <span className="w-6 text-center text-white font-bold text-base">{qty}</span>
+                            <button
+                              onClick={() => changeAddOnQty(name, 1)}
+                              className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center font-bold text-base"
+                            >
+                              +
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );
@@ -382,15 +419,18 @@ export default function CartPage() {
                       <button
                         key={name}
                         onClick={() => toggleAddOn(name)}
-                        className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors text-left ${isSelected
-                            ? 'bg-red-600 text-white'
-                            : 'bg-zinc-800 text-white border border-zinc-700 hover:bg-zinc-700'
-                          }`}
+                        className={`p-3 rounded-xl text-left transition-all border ${
+                          isSelected
+                            ? 'bg-red-600/20 border-red-600 text-white'
+                            : 'bg-zinc-900 border-zinc-800 text-white hover:border-zinc-700'
+                        }`}
                       >
-                        <div>{name}</div>
-                        <div className="text-[10px] text-zinc-400">{desc}</div>
-                        {heat && <div className="text-[10px] text-orange-400">🔥 {heat}</div>}
-                        <div className="text-[10px] text-red-400">+${cost.toFixed(2)}</div>
+                        <div className="flex justify-between items-start">
+                          <span className="font-bold text-sm">{name}</span>
+                          <span className="text-xs text-red-400 font-semibold">+${cost.toFixed(2)}</span>
+                        </div>
+                        {desc && <p className="text-xs text-zinc-400 mt-1">{desc}</p>}
+                        {heat && <p className="text-xs text-orange-400 mt-1">🔥 {heat}</p>}
                       </button>
                     );
                   }
@@ -398,18 +438,24 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="mt-4">
-              <input
-                type="text"
+            {/* Special Instructions */}
+            <div className="mb-6">
+              <label className="block text-sm font-bold text-white mb-2">Special Instructions:</label>
+              <textarea
+                rows="3"
                 value={localNotes}
-                placeholder="Special instructions..."
-                className="w-full p-2 text-sm text-white bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:border-red-500"
+                placeholder="Add any special requests or notes here..."
+                className="w-full p-3 text-sm text-white bg-zinc-900 border border-zinc-800 rounded-xl focus:outline-none focus:border-red-500 resize-none"
                 onChange={(e) => setLocalNotes(e.target.value)}
               />
             </div>
+          </div>
 
-            <div className="flex justify-between items-center mt-4 pt-4 border-t border-zinc-800">
-              <p className="text-xl font-bold text-white">
+          {/* Sticky Bottom Action Bar */}
+          <div className="bg-black pt-4 pb-6 border-t border-zinc-800 mt-auto">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm text-zinc-400">Customized Item Total</span>
+              <span className="text-2xl font-bold text-red-400">
                 ${(() => {
                   const price = getItemPrice(selectedItem);
                   const qty = getItemQty(selectedItem);
@@ -425,14 +471,14 @@ export default function CartPage() {
                   }
                   return total.toFixed(2);
                 })()}
-              </p>
-              <button
-                onClick={saveCustomizations}
-                className="bg-[#0BDA51] hover:bg-[#09C448] text-white px-6 py-2 rounded-lg font-medium transition-colors"
-              >
-                Done
-              </button>
+              </span>
             </div>
+            <button
+              onClick={saveCustomizations}
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-base transition-colors shadow-lg"
+            >
+              Save Customizations & Return to Cart
+            </button>
           </div>
         </div>
       )}
