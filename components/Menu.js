@@ -5,19 +5,19 @@ import Link from 'next/link';
 
 // Category color mapping
 const categoryColors = {
-  'ASIAN': 'bg-red-600',
-  'BEEF': 'bg-amber-800',
-  'BIRDS': 'bg-amber-400',
+  'ASIAN': 'bg-red-600 text-white',
+  'BEEF': 'bg-amber-800 text-white',
+  'BIRDS': 'bg-amber-400 text-white',
   'BREAKFAST': 'bg-yellow-500 text-black',
-  'FRIED SIDES': 'bg-orange-600',
+  'FRIED SIDES': 'bg-orange-600 text-white',
   'GRILLED': 'bg-orange-500 text-black',
   'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',
-  'SANDWICHES': 'bg-pink-600',
-  'SEAFOOD': 'bg-cyan-300',
-  'SMOKED': 'bg-gray-600',
-  'SOUPS & STEWS': 'bg-lime-600',
-  'BEVERAGES': 'bg-sky-600',
-  'BURGERS': 'bg-amber-600',
+  'SANDWICHES': 'bg-pink-600 text-white',
+  'SEAFOOD': 'bg-cyan-300 text-black',
+  'SMOKED': 'bg-gray-600 text-white',
+  'SOUPS & STEWS': 'bg-lime-600 text-white',
+  'BEVERAGES': 'bg-sky-600 text-white',
+  'BURGERS': 'bg-amber-600 text-white',
 };
 
 export default function Menu() {
@@ -144,11 +144,12 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        <div className="grid grid-cols-3 gap-2">
+        {/* ✅ FIXED: Category gets more space on mobile - "LATIN AMERICA" now fits */}
+        <div className="grid grid-cols-[1.5fr_1fr_1fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-sm"
+            className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-sm truncate"
           >
             <option value="">Category</option>
             {categories.map((cat) => (
@@ -193,7 +194,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* Menu Grid - Responsive columns */}
+      {/* Menu Grid */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -209,7 +210,7 @@ export default function Menu() {
           {filteredItems.map((item) => {
             const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
             const currentQty = quantities[item.id] || 0;
-            const colorClass = categoryColors[item.category] || 'bg-gray-600';
+            const colorClass = categoryColors[item.category] || 'bg-gray-600 text-white';
 
             return (
               <div 
@@ -225,12 +226,10 @@ export default function Menu() {
                     />
                   )}
                   <div className="p-3 md:p-4">
-                    {/* ✅ FIXED: No truncate - name wraps naturally */}
                     <h3 className="font-bold text-sm md:text-lg leading-tight break-words">{item.name}</h3>
                     
-                    {/* Category Badge with Color */}
                     {item.category && (
-                      <span className={`inline-block ${colorClass} text-white text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
+                      <span className={`inline-block ${colorClass} text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
                         {item.category}
                       </span>
                     )}
@@ -260,7 +259,6 @@ export default function Menu() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 md:mt-4">
-                    {/* Quantity Controls */}
                     <div className="flex items-center space-x-3">
                       <button
                         onClick={() => handleDecrement(item.id)}
@@ -281,7 +279,6 @@ export default function Menu() {
                       </button>
                     </div>
 
-                    {/* Add to Cart Button */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced || currentQty === 0}
