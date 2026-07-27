@@ -7,13 +7,13 @@ import Link from 'next/link';
 const categoryColors = {
   'ASIAN': 'bg-red-600',
   'BEEF': 'bg-amber-800',
-  'BIRDS': 'bg-blue-600',
+  'BIRDS': 'bg-amber-400',
   'BREAKFAST': 'bg-yellow-500 text-black',
   'FRIED SIDES': 'bg-orange-600',
-  'GRILLED': 'bg-green-600',
-  'LATIN AMERICA': 'bg-purple-600',
+  'GRILLED': 'bg-orange-500 text-black',      // ← Fire orange with black text
+  'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',  // ← Mexican flag
   'SANDWICHES': 'bg-pink-600',
-  'SEAFOOD': 'bg-teal-600',
+  'SEAFOOD': 'bg-cyan-300',                  // ← Aquamarine
   'SMOKED': 'bg-gray-600',
   'SOUPS & STEWS': 'bg-lime-600',
   'BEVERAGES': 'bg-sky-600',

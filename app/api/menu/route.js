@@ -43,35 +43,44 @@ export async function GET() {
       serves: item.properties['SERVES:']?.select?.name || '',
       description: item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
       imageUrl: item.properties['Image URL']?.url || '',
-      itemType: item.properties['Item Type']?.select?.name || '',
       quantity: item.properties['QUANTITY']?.number || 0,
+      // ⚠️ itemType is STORED for sorting but NOT returned
+      itemType: item.properties['Item Type']?.select?.name || '',
       addOns: [],
     }));
 
-    // 3. Apply sorting
+    // 3. Apply sorting: category → itemType → serves → name
     menuItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
 
+      // BEVERAGES last
       if (catA === 'BEVERAGES' && catB !== 'BEVERAGES') return 1;
       if (catA !== 'BEVERAGES' && catB === 'BEVERAGES') return -1;
 
+      // 1. Sort by CATEGORY
       if (catA !== catB) return catA.localeCompare(catB);
 
+      // 2. Sort by ITEM TYPE (hidden column)
       const typeA = (a.itemType || '').trim();
       const typeB = (b.itemType || '').trim();
       if (typeA !== typeB) return typeA.localeCompare(typeB);
 
+      // 3. Sort by SERVES
       const servesA = (a.serves || '').trim();
       const servesB = (b.serves || '').trim();
       if (servesA !== servesB) return servesA.localeCompare(servesB);
 
+      // 4. Sort by NAME
       const nameA = (a.name || '').trim();
       const nameB = (b.name || '').trim();
       return nameA.localeCompare(nameB);
     });
 
-    return NextResponse.json(menuItems);
+    // 4. Remove itemType from the response (so it's NOT displayed)
+    const cleanedMenuItems = menuItems.map(({ itemType, ...rest }) => rest);
+
+    return NextResponse.json(cleanedMenuItems);
   } catch (error) {
     console.error('Error fetching menu:', error);
     return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });
