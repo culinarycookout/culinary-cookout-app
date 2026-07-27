@@ -170,18 +170,19 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Client Information Form - WITH LOGO IN HEADER */}
+            {/* Client Information Form - BIG LOGO IN HEADER */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-              {/* ✅ Header with Logo */}
+              {/* ✅ Header with BIG Visible Logo */}
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
                 <h2 className="text-xl font-bold">Client Details</h2>
                 <div className="flex-shrink-0">
                   <Image
                     src="/logo.png"
                     alt="Culinary Cookout Logo"
-                    width={50}
-                    height={50}
-                    className="h-10 w-auto object-contain"
+                    width={200}
+                    height={200}
+                    className="h-24 w-auto object-contain"
+                    priority
                   />
                 </div>
               </div>
