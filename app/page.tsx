@@ -4,19 +4,19 @@ import Menu from '../components/Menu';
 
 export default function Home() {
   return (
-    <div className="w-full min-h-screen bg-black text-white p-4">
+    <div className="w-full min-h-screen bg-black text-white p-4 pt-0">
       <div className="container max-w-2xl mx-auto">
-        {/* ✅ Logo – 100% BIGGER, RAISED UP, MINIMAL PADDING */}
-        <div className="flex flex-col items-center justify-center w-full mb-1 pt-0">
+        {/* ✅ Logo – HUGE (200px on mobile, bigger on desktop) */}
+        <div className="flex flex-col items-center justify-center w-full mb-0 pt-0">
           <img
             src="https://iili.io/CeCmPWJ.png"
             alt="Culinary Cookout"
-            className="h-120 sm:h-48 md:h-56 w-auto object-contain"
+            className="h-[200px] sm:h-[240px] md:h-[280px] w-auto object-contain"
           />
         </div>
 
-        {/* ✅ Menu – Pulled up closer to logo */}
-        <div className="-mt-2">
+        {/* ✅ Menu – pulled all the way up */}
+        <div className="-mt-4">
           <Menu />
         </div>
       </div>
