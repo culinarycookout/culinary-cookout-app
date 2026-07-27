@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 
-// ✅ ADD-ONS DATA
+// ✅ ADD-ONS DATA (same as before – keeping it complete)
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -58,7 +58,7 @@ const isTacoTuesday = () => {
 };
 
 const getItemPrice = (item) => item?.['Price'] ?? item?.price ?? 0;
-const getItemQty = (item) => item?.quantity ?? item?.qty ?? 1;
+const getItemQty = (item) => Number(item?.quantity ?? item?.qty ?? 1); // ✅ force to number
 
 export default function CartPage() {
   const {
@@ -92,7 +92,7 @@ export default function CartPage() {
 
     const addOnTotal = addOnsList.reduce((acc, addon) => {
       const addonPrice = addon?.price ?? addon?.cost ?? 0;
-      const addonQty = addon?.quantity ?? addon?.qty ?? 1;
+      const addonQty = Number(addon?.quantity ?? addon?.qty ?? 1);
       return acc + (addonPrice * addonQty * qty);
     }, 0);
 
@@ -110,7 +110,7 @@ export default function CartPage() {
     const addOns = getSafeAddOns(item);
     const addOnsObj = {};
     addOns.forEach(addon => {
-      addOnsObj[addon.name] = addon?.quantity ?? addon?.qty ?? 1;
+      addOnsObj[addon.name] = Number(addon?.quantity ?? addon?.qty ?? 1);
     });
     setLocalAddOns(addOnsObj);
     setLocalNotes(item?.notes || '');
@@ -134,7 +134,7 @@ export default function CartPage() {
           id: `addon-${name.replace(/\s/g, '-')}`,
           name: name,
           price: data.cost || 0,
-          quantity: quantity,
+          quantity: Number(quantity),
           description: data.description || '',
           heatLevel: data.heatLevel || '',
         };
@@ -190,7 +190,7 @@ export default function CartPage() {
       const addOns = getSafeAddOns(item);
       const formattedAddons = addOns.map(addon => ({
         Name: addon.name,
-        Quantity: addon?.quantity ?? addon?.qty ?? 1,
+        Quantity: Number(addon?.quantity ?? addon?.qty ?? 1),
         Cost: addon?.price ?? addon?.cost ?? 0,
         Description: getAddonData(addon.name).description || "",
         HeatLevel: getAddonData(addon.name).heatLevel || ""
@@ -199,7 +199,7 @@ export default function CartPage() {
         id: item.id,
         name: item['Item Name'] || item.name || 'Item',
         price: getItemPrice(item),
-        quantity: getItemQty(item),
+        quantity: Number(getItemQty(item)),
         addOns: formattedAddons,
         notes: item?.notes || '',
       };
@@ -208,7 +208,7 @@ export default function CartPage() {
     window.location.href = `/delivery-details?items=${encodeURIComponent(JSON.stringify(orderData))}&total=${total.toFixed(2)}`;
   };
 
-  const totalItems = cart.reduce((sum, item) => sum + (item.quantity ?? item.qty ?? 1), 0);
+  const totalItems = cart.reduce((sum, item) => sum + getItemQty(item), 0);
 
   return (
     <div className="w-full min-h-screen bg-black text-white p-4">
@@ -222,7 +222,7 @@ export default function CartPage() {
           />
         </div>
 
-        {/* Header: Back to Menu on Left, Pushed Right with "Your Cart" and Item Count Stacked Underneath */}
+        {/* Header */}
         <div className="flex items-start justify-between w-full mb-6 px-2">
           <button
             onClick={() => window.location.href = "/"}
@@ -259,7 +259,7 @@ export default function CartPage() {
                 const price = getItemPrice(item);
                 const isTaco = item?.name && item.name.toUpperCase().includes("TACO");
                 const addOns = getSafeAddOns(item);
-                const addonNames = addOns.map(a => `${a.name} x${a?.quantity ?? a?.qty ?? 1}`).join(', ');
+                const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
                 return (
                   <div key={item.cartInstanceId} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
@@ -308,7 +308,7 @@ export default function CartPage() {
 
                       <button
                         onClick={() => openCustomize(item.cartInstanceId)}
-                        className="text-sm text-blue-400 hover:text-blue-300 ml-2"
+                        className="text-sm text-blue-400 hover:text-blue-300 ml-2 font-semibold"
                       >
                         ✏️ Customize
                       </button>
@@ -352,17 +352,16 @@ export default function CartPage() {
         )}
       </div>
 
-      {/* ✅ Mobile-First Full Screen Customization Overlay */}
+      {/* Customize Overlay */}
       {showCustomize && selectedItem && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col justify-between p-4 overflow-y-auto">
-          {/* Top Bar with Dedicated Back/Close Action */}
           <div>
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-800">
               <button
                 onClick={closeCustomize}
-                className="text-red-400 hover:text-red-300 font-medium text-sm flex items-center space-x-1"
+                className="text-red-400 hover:text-red-300 font-medium text-sm"
               >
-                <span>← Back to Cart</span>
+                ← Back to Cart
               </button>
               <span className="text-xs text-zinc-400 font-semibold uppercase tracking-wider">Customization</span>
             </div>
@@ -370,7 +369,6 @@ export default function CartPage() {
             <h2 className="text-2xl font-bold text-white mb-1">{selectedItem['Item Name'] || selectedItem.name}</h2>
             <p className="text-zinc-400 text-sm mb-6">Tailor your ingredients, add-ons, and instructions.</p>
 
-            {/* Add-ons Grid */}
             <div className="mb-6">
               <p className="text-sm font-bold text-white mb-3 tracking-wide">AVAILABLE ADD-ONS:</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -385,14 +383,14 @@ export default function CartPage() {
 
                   if (countable) {
                     return (
-                      <div key={name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 flex flex-col justify-between">
+                      <div key={name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-3">
                         <div className="flex justify-between items-start mb-2">
                           <div>
                             <span className="text-white font-bold text-sm block">{name}</span>
                             {desc && <p className="text-xs text-zinc-400 mt-0.5">{desc}</p>}
                             {heat && <span className="text-xs text-orange-400 mt-1 inline-block">🔥 {heat}</span>}
                           </div>
-                          <span className="text-xs text-red-400 font-semibold whitespace-nowrap ml-2">+${cost.toFixed(2)}</span>
+                          <span className="text-xs text-red-400 font-semibold">+${cost.toFixed(2)}</span>
                         </div>
                         <div className="flex items-center justify-between mt-2 pt-2 border-t border-zinc-800/60">
                           <span className="text-xs text-zinc-400">Quantity</span>
@@ -438,7 +436,6 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Special Instructions */}
             <div className="mb-6">
               <label className="block text-sm font-bold text-white mb-2">Special Instructions:</label>
               <textarea
@@ -451,7 +448,6 @@ export default function CartPage() {
             </div>
           </div>
 
-          {/* Sticky Bottom Action Bar */}
           <div className="bg-black pt-4 pb-6 border-t border-zinc-800 mt-auto">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm text-zinc-400">Customized Item Total</span>
@@ -463,7 +459,7 @@ export default function CartPage() {
                   let addOnTotal = 0;
                   Object.entries(localAddOns).forEach(([name, addonQty]) => {
                     const cost = getAddonData(name).cost || 0;
-                    addOnTotal += cost * addonQty * qty;
+                    addOnTotal += cost * Number(addonQty) * qty;
                   });
                   let total = baseTotal + addOnTotal;
                   if (isTacoActive && selectedItem.name && selectedItem.name.toUpperCase().includes("TACO")) {
