@@ -33,7 +33,7 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // 2. Process each menu item
+    // 2. Process each menu item (includes itemType for sorting and discount)
     let menuItems = allResults.map((item) => ({
       id: item.id,
       name: item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled',
@@ -44,12 +44,11 @@ export async function GET() {
       description: item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
       imageUrl: item.properties['Image URL']?.url || '',
       quantity: item.properties['QUANTITY']?.number || 0,
-      // ⚠️ itemType is STORED for sorting but NOT returned
       itemType: item.properties['Item Type']?.select?.name || '',
       addOns: [],
     }));
 
-    // 3. Apply sorting: category → itemType → serves → name
+    // 3. SORTING: Category → Item Type → SERVES → Name
     menuItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
@@ -61,24 +60,56 @@ export async function GET() {
       // 1. Sort by CATEGORY
       if (catA !== catB) return catA.localeCompare(catB);
 
-      // 2. Sort by ITEM TYPE (hidden column)
+      // 2. Sort by ITEM TYPE (groups like items together)
       const typeA = (a.itemType || '').trim();
       const typeB = (b.itemType || '').trim();
       if (typeA !== typeB) return typeA.localeCompare(typeB);
 
-      // 3. Sort by SERVES
+      // 3. Sort by SERVES:
       const servesA = (a.serves || '').trim();
       const servesB = (b.serves || '').trim();
       if (servesA !== servesB) return servesA.localeCompare(servesB);
 
-      // 4. Sort by NAME
+      // 4. Sort by NAME (within same Item Type and SERVES)
       const nameA = (a.name || '').trim();
       const nameB = (b.name || '').trim();
       return nameA.localeCompare(nameB);
     });
 
-    // 4. Remove itemType from the response (so it's NOT displayed)
-    const cleanedMenuItems = menuItems.map(({ itemType, ...rest }) => rest);
+    // 4. TACO TUESDAY - Automatic 50% off (Tuesday 12:00 AM → Wednesday 1:00 AM)
+    const now = new Date();
+    // Convert to EST
+    const estOffset = -5 * 60;
+    const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
+    const dayOfWeek = estTime.getDay(); // 0=Sunday, 1=Monday, 2=Tuesday
+    const hours = estTime.getHours();
+
+    // Tuesday 12:00 AM (hour 0) through Wednesday 1:00 AM (hour 1)
+    // Tuesday: dayOfWeek === 2, hours >= 0
+    // Wednesday: dayOfWeek === 3, hours < 1 (0:00 - 0:59)
+    const isTuesday = dayOfWeek === 2 && hours >= 0;
+    const isWednesdayEarly = dayOfWeek === 3 && hours < 1;
+    const isTacoTuesday = isTuesday || isWednesdayEarly;
+
+    let responseItems = menuItems;
+
+    if (isTacoTuesday) {
+      responseItems = menuItems.map(item => {
+        // Apply 50% off to all items with Item Type "Taco" AND price > 0
+        if (item.itemType === 'Taco' && item.price > 0) {
+          return {
+            ...item,
+            price: Number((item.price * 0.5).toFixed(2)), // 50% off, rounded to 2 decimals
+            isDiscounted: true,
+            originalPrice: item.price
+          };
+        }
+        return item;
+      });
+    }
+
+    // 5. Remove itemType from response (hidden from app)
+    const cleanedMenuItems = responseItems.map(({ itemType, ...rest }) => rest);
 
     return NextResponse.json(cleanedMenuItems);
   } catch (error) {

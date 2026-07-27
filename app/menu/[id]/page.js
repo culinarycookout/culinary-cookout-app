@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, use } from 'react';
+import { useCart } from '../../context/CartContext';
 
 export default function ItemDetailPage({ params }) {
+  const { addToCart } = useCart();
   const resolvedParams = use(params);
   const itemId = resolvedParams.id;
 
@@ -23,7 +25,6 @@ export default function ItemDetailPage({ params }) {
           
           if (foundItem) {
             setItem(foundItem);
-            // Set default quantity from Notion (if available)
             setQuantity(foundItem.quantity || 0);
           } else {
             setError('Item not found');
@@ -56,6 +57,22 @@ export default function ItemDetailPage({ params }) {
     setQuantity(prev => prev + 1);
   };
 
+  const handleAddToCart = () => {
+    if (quantity === 0) {
+      alert('Please select a quantity first');
+      return;
+    }
+
+    const selectedAddOnsList = (item.addOns || []).filter(
+      (addOn) => selectedAddOns[addOn.id]
+    );
+
+    addToCart(item, quantity, selectedAddOnsList);
+    
+    setQuantity(0);
+    setSelectedAddOns({});
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -72,6 +89,7 @@ export default function ItemDetailPage({ params }) {
     );
   }
 
+  const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
   const basePrice = item.price || 0;
   const addOnsTotal = (item.addOns || []).reduce((sum, addOn) => {
     return selectedAddOns[addOn.id] ? sum + (addOn.price || 0) : sum;
@@ -107,12 +125,18 @@ export default function ItemDetailPage({ params }) {
 
           {/* Item Details */}
           <div>
-            <h1 className="text-3xl font-bold text-red-600">{item.name}</h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-3xl font-bold text-red-600">{item.name}</h1>
+              {item.isDiscounted && (
+                <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  🌮🪅50% OFF‼️🎉
+                </span>
+              )}
+            </div>
             <p className="text-zinc-400 mt-1">{item.category}</p>
             {item.size && <p className="text-zinc-400">Size: {item.size}</p>}
             {item.serves && <p className="text-zinc-400">Serves: {item.serves}</p>}
             
-            {/* ✅ DISPLAY QUANTITY FROM NOTION */}
             {item.quantity > 0 && (
               <p className="text-zinc-400">Quantity: {item.quantity}</p>
             )}
@@ -121,11 +145,44 @@ export default function ItemDetailPage({ params }) {
               <p className="text-zinc-300 mt-2">{item.description}</p>
             )}
 
+            {/* Price Display */}
             <div className="mt-4">
-              <p className="text-2xl font-bold text-red-500">
-                {/* ✅ REMOVED "Base:" */}
-                ${basePrice.toFixed(2)}
-              </p>
+              {item.isDiscounted ? (
+                <div className="flex items-center gap-3">
+                  <p className="text-3xl font-bold text-red-500">
+                    ${(Number(item.price) || 0).toFixed(2)}
+                  </p>
+                  <p className="text-lg text-gray-400 line-through">
+                    ${(Number(item.originalPrice) || 0).toFixed(2)}
+                  </p>
+                  <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    50% OFF!
+                  </span>
+                </div>
+              ) : isUnpriced ? (
+                <p className="text-2xl font-bold text-orange-500">Price Pending</p>
+              ) : (
+                <p className="text-2xl font-bold text-red-500">
+                  ${basePrice.toFixed(2)}
+                </p>
+              )}
+            </div>
+
+            {/* Quantity Controls */}
+            <div className="flex items-center space-x-4 mt-4">
+              <button
+                onClick={handleDecrement}
+                className="w-10 h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-xl"
+              >
+                -
+              </button>
+              <span className="text-2xl font-bold w-8 text-center">{quantity}</span>
+              <button
+                onClick={handleIncrement}
+                className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-xl"
+              >
+                +
+              </button>
             </div>
 
             {/* Add-ons Section */}
@@ -180,18 +237,17 @@ export default function ItemDetailPage({ params }) {
                   ${totalPrice.toFixed(2)}
                 </span>
               </div>
+              {/* ✅ GIMME THIS!😋 - MALACHITE GREEN */}
               <button
-                className="mt-3 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold text-lg transition-colors"
-                onClick={() => {
-                  const selectedAddOnNames = (item.addOns || [])
-                    .filter((addOn) => selectedAddOns[addOn.id])
-                    .map((addOn) => addOn.name)
-                    .join(', ');
-                  
-                  alert(`Added ${quantity}x ${item.name}${selectedAddOnNames ? ` with ${selectedAddOnNames}` : ''} to cart!`);
-                }}
+                className={`mt-3 w-full py-3 rounded-lg font-bold text-lg transition-colors ${
+                  isUnpriced || quantity === 0
+                    ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
+                    : 'bg-[#0BDA51] hover:bg-[#09C448] text-white'
+                }`}
+                onClick={handleAddToCart}
+                disabled={isUnpriced || quantity === 0}
               >
-                Add to Cart
+                {isUnpriced ? 'Coming Soon' : 'Gimme This!😋'}
               </button>
             </div>
           </div>

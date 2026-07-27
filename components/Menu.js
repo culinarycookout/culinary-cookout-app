@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useCart } from '../context/CartContext';
 
 // Category color mapping
 const categoryColors = {
@@ -21,10 +22,12 @@ const categoryColors = {
 };
 
 export default function Menu() {
+  const { addToCart } = useCart();
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isTacoTuesday, setIsTacoTuesday] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
@@ -47,6 +50,20 @@ export default function Menu() {
           initialQtys[item.id] = 0;
         });
         setQuantities(initialQtys);
+
+        // Check if it's Taco Tuesday (Tuesday 12:00 AM → Wednesday 1:00 AM)
+        const now = new Date();
+        // Convert to EST
+        const estOffset = -5 * 60;
+        const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
+        const dayOfWeek = estTime.getDay();
+        const hours = estTime.getHours();
+        
+        const isTuesday = dayOfWeek === 2 && hours >= 0;
+        const isWednesdayEarly = dayOfWeek === 3 && hours < 1;
+        const isTacoTue = isTuesday || isWednesdayEarly;
+        setIsTacoTuesday(isTacoTue);
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -113,7 +130,9 @@ export default function Menu() {
       alert('Please select a quantity first');
       return;
     }
-    console.log(`Added ${qty} of ${item.name} to cart!`);
+    
+    addToCart(item, qty, []);
+    
     setQuantities(prev => ({
       ...prev,
       [item.id]: 0
@@ -134,6 +153,19 @@ export default function Menu() {
         />
       </div>
 
+      {/* 🌮🪅 TACO TUESDAY BANNER */}
+      {isTacoTuesday && (
+        <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <span className="text-3xl">🌮🪅</span>
+            <span className="text-2xl md:text-3xl font-black text-red-700">50% OFF‼️</span>
+            <span className="text-2xl md:text-3xl font-black text-black">ALL TACOS!</span>
+            <span className="text-3xl">🎉</span>
+          </div>
+          <p className="text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
+        </div>
+      )}
+
       {/* Search & Filters */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
@@ -144,7 +176,6 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        {/* ✅ FIXED: Category gets more space on mobile - "LATIN AMERICA" now fits */}
         <div className="grid grid-cols-[1.5fr_1fr_1fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
@@ -211,11 +242,13 @@ export default function Menu() {
             const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
             const currentQty = quantities[item.id] || 0;
             const colorClass = categoryColors[item.category] || 'bg-gray-600 text-white';
+            const isTaco = item.category === 'LATIN AMERICA' && item.itemType === 'Taco';
+            const hasDiscount = isTacoTuesday && isTaco && item.isDiscounted;
 
             return (
               <div 
                 key={item.id} 
-                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full"
+                className={`bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full ${hasDiscount ? 'border-2 border-red-500' : ''}`}
               >
                 <Link href={`/menu/${item.id}`} className="cursor-pointer flex-1">
                   {item.imageUrl && (
@@ -226,7 +259,14 @@ export default function Menu() {
                     />
                   )}
                   <div className="p-3 md:p-4">
-                    <h3 className="font-bold text-sm md:text-lg leading-tight break-words">{item.name}</h3>
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-bold text-sm md:text-lg leading-tight break-words flex-1">{item.name}</h3>
+                      {hasDiscount && (
+                        <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap mt-0.5">
+                          🌮🪅50% OFF‼️🎉
+                        </span>
+                      )}
+                    </div>
                     
                     {item.category && (
                       <span className={`inline-block ${colorClass} text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
@@ -243,8 +283,17 @@ export default function Menu() {
                     {item.description && (
                       <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block">{item.description}</p>
                     )}
+                    
+                    {/* Price Display */}
                     <p className="text-base md:text-xl font-bold mt-1 md:mt-2">
-                      {isUnpriced ? (
+                      {hasDiscount ? (
+                        <>
+                          <span className="text-red-600">${(Number(item.price) || 0).toFixed(2)}</span>
+                          <span className="text-gray-400 text-sm line-through ml-2">
+                            ${(Number(item.originalPrice) || 0).toFixed(2)}
+                          </span>
+                        </>
+                      ) : isUnpriced ? (
                         <span className="text-orange-600 italic text-xs md:text-base">Price Pending</span>
                       ) : (
                         `$${Number(item.price).toFixed(2)}`
@@ -279,17 +328,18 @@ export default function Menu() {
                       </button>
                     </div>
 
+                    {/* ✅ GIMME THIS!😋 - MALACHITE GREEN */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced || currentQty === 0}
-                      className={`w-full sm:w-auto px-3 py-2 md:px-4 md:py-2.5 font-semibold rounded-lg transition shadow-md text-xs md:text-sm lg:text-base ${
+                      className={`w-full sm:w-auto px-3 py-2 md:px-4 md:py-2.5 font-semibold rounded-lg transition shadow-md text-xs md:text-sm lg:text-base text-white ${
                         isUnpriced || currentQty === 0
-                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                          : 'bg-orange-600 hover:bg-orange-700 text-white'
+                          ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
+                          : 'bg-[#0BDA51] hover:bg-[#09C448]'
                       }`}
                       type="button"
                     >
-                      {isUnpriced ? 'Coming Soon' : 'Add to Cart'}
+                      {isUnpriced ? 'Coming Soon' : 'Gimme This!😋'}
                     </button>
                   </div>
                 </div>
