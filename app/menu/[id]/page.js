@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, use } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function ItemDetailPage({ params }) {
   // Unwrap params using React.use() for Next.js 15+ compatibility
@@ -16,12 +15,10 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        // Fetch ALL menu items from the existing API
         const res = await fetch(`/api/menu`);
         const data = await res.json();
         
         if (res.ok) {
-          // Find the specific item by ID
           const foundItem = data.find((menuItem) => menuItem.id === itemId);
           
           if (foundItem) {
@@ -66,20 +63,9 @@ export default function ItemDetailPage({ params }) {
     );
   }
 
-  // --- FILTER ADD-ONS BY SIZE ---
-  // Only show add-ons that match the item's size OR have no size specified
-  const availableAddOns = (item.addOns || []).filter((addOn) => {
-    // If the add-on has a size, only show it if it matches the item's size
-    if (addOn.size && addOn.size.trim() !== '') {
-      return addOn.size === item.size;
-    }
-    // If no size specified on the add-on, show it for all sizes
-    return true;
-  });
-
   // Calculate total price including selected add-ons
   const basePrice = item.price || 0;
-  const addOnsTotal = availableAddOns.reduce((sum, addOn) => {
+  const addOnsTotal = (item.addOns || []).reduce((sum, addOn) => {
     return selectedAddOns[addOn.id] ? sum + (addOn.price || 0) : sum;
   }, 0);
   const totalPrice = basePrice + addOnsTotal;
@@ -127,12 +113,12 @@ export default function ItemDetailPage({ params }) {
               </p>
             </div>
 
-            {/* Add-ons Section - Now Filtered by Size */}
-            {availableAddOns.length > 0 && (
+            {/* Add-ons Section - Using Linked Dishes relation */}
+            {item.addOns && item.addOns.length > 0 && (
               <div className="mt-6">
                 <h2 className="text-xl font-bold mb-3">Add-ons</h2>
                 <div className="space-y-2">
-                  {availableAddOns.map((addOn) => (
+                  {item.addOns.map((addOn) => (
                     <div
                       key={addOn.id}
                       className={`flex items-center justify-between p-3 rounded-lg border ${
@@ -145,6 +131,9 @@ export default function ItemDetailPage({ params }) {
                         <span className="font-medium">{addOn.name}</span>
                         {addOn.description && (
                           <p className="text-sm text-zinc-400">{addOn.description}</p>
+                        )}
+                        {addOn.heatLevel && (
+                          <p className="text-xs text-orange-400">Heat: {addOn.heatLevel}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
@@ -179,8 +168,7 @@ export default function ItemDetailPage({ params }) {
               <button
                 className="mt-3 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold text-lg transition-colors"
                 onClick={() => {
-                  // Add to cart logic will go here
-                  const selectedAddOnNames = availableAddOns
+                  const selectedAddOnNames = (item.addOns || [])
                     .filter((addOn) => selectedAddOns[addOn.id])
                     .map((addOn) => addOn.name)
                     .join(', ');

@@ -19,10 +19,10 @@ export async function GET() {
 
     const data = await response.json();
 
-    // 2. Process each menu item and fetch related add-ons
+    // 2. Process each menu item
     let menuItems = await Promise.all(
       data.results.map(async (item) => {
-        // Base properties (these match your existing mapping)
+        // Base properties
         const baseItem = {
           id: item.id,
           name: item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled',
@@ -34,53 +34,51 @@ export async function GET() {
           imageUrl: item.properties['Image URL']?.url || '',
           itemType: item.properties['Item Type']?.select?.name || '',
           quantity: item.properties['QUANTITY']?.number || 0,
-          addOns: [], // will be filled with related add-on objects
+          addOns: [],
         };
 
-        // --- RELATION HANDLING FOR ADD-ONS ---
-        // ⚠️ IMPORTANT: The relation column name in your database is "ADD-ONS"
-        // If your column is named differently, change this line accordingly.
-        const relationProp = item.properties['ADD-ONS'];
-
-        if (relationProp && relationProp.type === 'relation' && relationProp.relation.length > 0) {
-          // Fetch each related add-on page
-          const addOnPromises = relationProp.relation.map(async (rel) => {
-            try {
-              const addOnResponse = await fetch(`https://api.notion.com/v1/pages/${rel.id}`, {
-                headers: {
-                  'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
-                  'Notion-Version': '2022-06-28',
-                },
-              });
-              if (!addOnResponse.ok) return null;
-              const addOnData = await addOnResponse.json();
-
-              // ⚠️ Map properties from your add-on database.
-              // These field names must match your actual add-on database schema.
-              return {
-                id: addOnData.id,
-                name: addOnData.properties['Name']?.title?.[0]?.plain_text || 'Unnamed Add-on',
-                price: addOnData.properties['Price']?.number || 0,
-                // If you have a "Size" select field that indicates which size this add-on belongs to:
-                size: addOnData.properties['Size']?.select?.name || '',
-                // Optional description
-                description: addOnData.properties['Description']?.rich_text?.[0]?.plain_text || '',
-              };
-            } catch (error) {
-              console.error(`Error fetching add-on ${rel.id}:`, error);
-              return null;
-            }
+        // 3. Fetch ALL add-ons from the add-ons database
+        try {
+          const addOnsResponse = await fetch(`https://api.notion.com/v1/databases/${process.env.NOTION_ADDONS_DATABASE_ID}/query`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
+              'Notion-Version': '2022-06-28',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
           });
 
-          const addOns = (await Promise.all(addOnPromises)).filter(Boolean);
-          baseItem.addOns = addOns;
+          if (addOnsResponse.ok) {
+            const addOnsData = await addOnsResponse.json();
+            
+            // Filter add-ons that are linked to this item via "Linked Dishes" relation
+            const linkedAddOns = addOnsData.results.filter((addOn) => {
+              const linkedDishes = addOn.properties['Linked Dishes'];
+              if (linkedDishes && linkedDishes.type === 'relation') {
+                return linkedDishes.relation.some((rel) => rel.id === item.id);
+              }
+              return false;
+            });
+
+            // Map the linked add-ons using EXACT column names from your screenshots
+            baseItem.addOns = linkedAddOns.map((addOn) => ({
+              id: addOn.id,
+              name: addOn.properties['Add-On']?.title?.[0]?.plain_text || 'Unnamed Add-on',
+              price: addOn.properties['Price']?.number || 0,
+              description: addOn.properties['Description']?.rich_text?.[0]?.plain_text || '',
+              heatLevel: addOn.properties['Heat Level']?.select?.name || '',
+            }));
+          }
+        } catch (error) {
+          console.error('Error fetching add-ons:', error);
         }
 
         return baseItem;
       })
     );
 
-    // 3. Apply your original sorting logic (BEVERAGES last, then alphabetical)
+    // 4. Apply sorting
     menuItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
