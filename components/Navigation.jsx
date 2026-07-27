@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
-import Image from 'next/image';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -43,7 +42,7 @@ export default function Navigation() {
             </span>
           </Link>
 
-          {/* ✅ Menu – Using your custom image */}
+          {/* ✅ Menu – Custom image with fallback */}
           <Link
             href="/"
             className={`flex flex-col items-center space-y-0.5 transition ${
@@ -55,6 +54,10 @@ export default function Navigation() {
                 src="/menu.png"
                 alt="Menu"
                 className="h-8 w-8 object-contain"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = '<span class="text-3xl">📝</span>';
+                }}
               />
             </div>
             <span className="text-xs font-medium">Menu</span>
@@ -75,7 +78,7 @@ export default function Navigation() {
 
       {/* ✅ DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-6 z-50 shadow-2xl">
-        {/* ✅ Menu – Using your custom image */}
+        {/* ✅ Menu – Custom image with fallback */}
         <Link
           href="/"
           className={`flex flex-col items-center space-y-1 transition ${
@@ -86,6 +89,10 @@ export default function Navigation() {
             src="/menu.png"
             alt="Menu"
             className="h-10 w-10 object-contain"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.innerHTML = '<span class="text-5xl">📝</span>';
+            }}
           />
           <span className="text-sm font-medium">Menu</span>
         </Link>

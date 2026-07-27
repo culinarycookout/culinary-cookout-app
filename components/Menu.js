@@ -153,7 +153,7 @@ export default function Menu() {
         </div>
       )}
 
-      {/* SEARCH & FILTERS */}
+      {/* ✅ SEARCH & FILTERS – Mobile: Category gets more space, Serves & Sizes 30% smaller */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -163,7 +163,8 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        <div className="grid grid-cols-[1.5fr_1fr_1fr] sm:grid-cols-3 gap-2">
+        {/* ✅ Mobile: Category gets more space, Serves & Sizes narrower */}
+        <div className="grid grid-cols-[2fr_0.7fr_0.7fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -178,7 +179,7 @@ export default function Menu() {
           <select
             value={filterServes}
             onChange={(e) => setFilterServes(e.target.value)}
-            className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-sm"
+            className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-sm truncate"
           >
             <option value="">Serves</option>
             {servesOptions.map((serve) => (
@@ -189,7 +190,7 @@ export default function Menu() {
           <select
             value={filterSize}
             onChange={(e) => setFilterSize(e.target.value)}
-            className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-sm"
+            className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-sm truncate"
           >
             <option value="">Sizes</option>
             {sizeOptions.map((size) => (
