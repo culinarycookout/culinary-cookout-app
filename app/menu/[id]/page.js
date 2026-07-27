@@ -10,18 +10,26 @@ export default function ItemDetailPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedAddOns, setSelectedAddOns] = useState({});
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        // Fetch the specific item from Notion
-        const res = await fetch(`/api/menu/${itemId}`);
+        const res = await fetch(`/api/menu`);
         const data = await res.json();
         
         if (res.ok) {
-          setItem(data);
+          const foundItem = data.find((menuItem) => menuItem.id === itemId);
+          
+          if (foundItem) {
+            setItem(foundItem);
+            // Set default quantity from Notion (if available)
+            setQuantity(foundItem.quantity || 0);
+          } else {
+            setError('Item not found');
+          }
         } else {
-          setError(data.error || 'Failed to load item');
+          setError(data.error || 'Failed to load menu');
         }
       } catch (err) {
         setError('Failed to load item detail');
@@ -38,6 +46,14 @@ export default function ItemDetailPage({ params }) {
       ...prev,
       [addOnId]: !prev[addOnId],
     }));
+  };
+
+  const handleDecrement = () => {
+    setQuantity(prev => Math.max(0, prev - 1));
+  };
+
+  const handleIncrement = () => {
+    setQuantity(prev => prev + 1);
   };
 
   if (loading) {
@@ -65,6 +81,7 @@ export default function ItemDetailPage({ params }) {
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-4xl mx-auto">
+        {/* Back button */}
         <button
           onClick={() => window.history.back()}
           className="text-red-400 hover:text-red-300 mb-4 text-lg"
@@ -73,6 +90,7 @@ export default function ItemDetailPage({ params }) {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Item Image */}
           <div>
             {item.imageUrl ? (
               <img
@@ -87,21 +105,30 @@ export default function ItemDetailPage({ params }) {
             )}
           </div>
 
+          {/* Item Details */}
           <div>
             <h1 className="text-3xl font-bold text-red-600">{item.name}</h1>
             <p className="text-zinc-400 mt-1">{item.category}</p>
-            <p className="text-zinc-400">{item.size}</p>
-            <p className="text-zinc-400">Serves: {item.serves}</p>
+            {item.size && <p className="text-zinc-400">Size: {item.size}</p>}
+            {item.serves && <p className="text-zinc-400">Serves: {item.serves}</p>}
+            
+            {/* ✅ DISPLAY QUANTITY FROM NOTION */}
+            {item.quantity > 0 && (
+              <p className="text-zinc-400">Quantity: {item.quantity}</p>
+            )}
+            
             {item.description && (
               <p className="text-zinc-300 mt-2">{item.description}</p>
             )}
 
             <div className="mt-4">
               <p className="text-2xl font-bold text-red-500">
-                Base: ${basePrice.toFixed(2)}
+                {/* ✅ REMOVED "Base:" */}
+                ${basePrice.toFixed(2)}
               </p>
             </div>
 
+            {/* Add-ons Section */}
             {item.addOns && item.addOns.length > 0 && (
               <div className="mt-6">
                 <h2 className="text-xl font-bold mb-3">Add-ons</h2>
@@ -145,6 +172,7 @@ export default function ItemDetailPage({ params }) {
               </div>
             )}
 
+            {/* Total and Add to Cart */}
             <div className="mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-bold">Total</span>
@@ -160,7 +188,7 @@ export default function ItemDetailPage({ params }) {
                     .map((addOn) => addOn.name)
                     .join(', ');
                   
-                  alert(`Added ${item.name}${selectedAddOnNames ? ` with ${selectedAddOnNames}` : ''} to cart!`);
+                  alert(`Added ${quantity}x ${item.name}${selectedAddOnNames ? ` with ${selectedAddOnNames}` : ''} to cart!`);
                 }}
               >
                 Add to Cart

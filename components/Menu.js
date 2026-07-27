@@ -10,10 +10,10 @@ const categoryColors = {
   'BIRDS': 'bg-amber-400',
   'BREAKFAST': 'bg-yellow-500 text-black',
   'FRIED SIDES': 'bg-orange-600',
-  'GRILLED': 'bg-orange-500 text-black',      // ← Fire orange with black text
-  'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',  // ← Mexican flag
+  'GRILLED': 'bg-orange-500 text-black',
+  'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',
   'SANDWICHES': 'bg-pink-600',
-  'SEAFOOD': 'bg-cyan-300',                  // ← Aquamarine
+  'SEAFOOD': 'bg-cyan-300',
   'SMOKED': 'bg-gray-600',
   'SOUPS & STEWS': 'bg-lime-600',
   'BEVERAGES': 'bg-sky-600',
@@ -193,7 +193,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* Menu Grid - 2 cols on phone, 3 on tablet, 4 on desktop */}
+      {/* Menu Grid - Responsive columns */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -214,7 +214,7 @@ export default function Menu() {
             return (
               <div 
                 key={item.id} 
-                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col"
+                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full"
               >
                 <Link href={`/menu/${item.id}`} className="cursor-pointer flex-1">
                   {item.imageUrl && (
@@ -225,7 +225,8 @@ export default function Menu() {
                     />
                   )}
                   <div className="p-3 md:p-4">
-                    <h3 className="font-bold text-sm md:text-lg truncate">{item.name}</h3>
+                    {/* ✅ FIXED: No truncate - name wraps naturally */}
+                    <h3 className="font-bold text-sm md:text-lg leading-tight break-words">{item.name}</h3>
                     
                     {/* Category Badge with Color */}
                     {item.category && (
@@ -253,9 +254,9 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* Quantity & Add to Cart - Stack on mobile, side by side on desktop */}
+                {/* Quantity & Add to Cart */}
                 <div 
-                  className="p-3 md:p-4 pt-0 bg-white" 
+                  className="p-3 md:p-4 pt-0 bg-white mt-auto" 
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 md:mt-4">
@@ -280,7 +281,7 @@ export default function Menu() {
                       </button>
                     </div>
 
-                    {/* Add to Cart Button - Full width on mobile */}
+                    {/* Add to Cart Button */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced || currentQty === 0}
