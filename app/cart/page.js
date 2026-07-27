@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 
-// ✅ ADD-ONS DATA (complete – include your full list here)
+// ✅ ADD-ONS DATA (complete)
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -303,7 +303,7 @@ function CartContent() {
                         </button>
                       </div>
 
-                      {/* Duplicate Button – "Build Another" with white text and black chef emoji */}
+                      {/* Duplicate Button – "Build Another" */}
                       <button
                         onClick={() => duplicateItem(item.cartInstanceId)}
                         className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium px-2 transition-colors"
@@ -313,12 +313,13 @@ function CartContent() {
                         <span className="text-lg">👨🏾‍🍳</span>
                       </button>
 
-                      {/* Customize – green, moved left */}
+                      {/* ✅ Customize Button – emoji moved under the word */}
                       <button
                         onClick={() => openCustomize(item.cartInstanceId)}
-                        className="text-green-400 hover:text-green-300 text-sm font-medium ml-1"
+                        className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium ml-1 transition-colors"
                       >
-                        ✏️ Customize
+                        <span>Customize</span>
+                        <span className="text-base">📝</span>
                       </button>
 
                       {/* Remove – red */}
