@@ -18,14 +18,14 @@ export default function Home() {
             <Image
               src="/logo.png"
               alt="Culinary Cookout Logo"
-              width={800}
-              height={300}
-              className="h-48 md:h-64 w-auto object-contain"
+              width={1000}
+              height={400}
+              className="w-auto max-w-full h-32 sm:h-48 md:h-56 lg:h-64 object-contain"
               priority
             />
           </div>
           
-          {/* Cart Icon - Bigger */}
+          {/* Cart Icon */}
           <Link
             href="/cart"
             className="relative bg-zinc-800 hover:bg-zinc-700 p-4 rounded-full transition ml-2 flex-shrink-0"
