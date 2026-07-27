@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+// ✅ POST: Submit order to Notion
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -7,30 +8,32 @@ export async function POST(request) {
       customerName, 
       whatsappNumber, 
       instagramHandle, 
-      deliveryLocation1, 
+      deliveryLocation, 
       deliveryLocation2, 
       specialInstructions, 
       items, 
       subtotal 
     } = body;
 
-    if (!customerName || !whatsappNumber || !deliveryLocation1 || !items || items.length === 0) {
-      return NextResponse.json({ error: 'Missing required order fields' }, { status: 400 });
+    // ✅ VALIDATE REQUIRED FIELDS
+    if (!customerName || !whatsappNumber || !deliveryLocation || !items || items.length === 0) {
+      return NextResponse.json(
+        { error: 'Missing required order fields' },
+        { status: 400 }
+      );
     }
 
-    // Format items summary
+    // ✅ FORMAT ITEMS FOR NOTION
     const itemsSummary = items.map(item => {
-      const addOnsText = item.selectedAddOns && item.selectedAddOns.length > 0 
-        ? ` (Add-ons: ${item.selectedAddOns.map(ao => ao.name).join(', ')})` 
+      const addOnsText = item.addOns && item.addOns.length > 0 
+        ? ` (Add-ons: ${item.addOns.map(a => `${a.Name} x${a.Quantity}`).join(', ')})` 
         : '';
-      const itemTotal = (item.price + (item.selectedAddOns || []).reduce((s, ao) => s + ao.price, 0)) * item.quantity;
-      return `${item.quantity}x ${item.name}${addOnsText} - $${itemTotal.toFixed(2)}`;
+      const itemTotal = (item.price || 0) * (item.quantity || 1);
+      return `${item.quantity || 1}x ${item.name}${addOnsText} - $${itemTotal.toFixed(2)}`;
     }).join('\n');
 
-    const orderTitle = `Order: ${customerName} - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-
-    // Build delivery info
-    let deliveryInfo = `📍 Primary: ${deliveryLocation1}`;
+    // ✅ FORMAT DELIVERY INFO
+    let deliveryInfo = `📍 Primary: ${deliveryLocation}`;
     if (deliveryLocation2) {
       deliveryInfo += `\n📍 Secondary: ${deliveryLocation2}`;
     }
@@ -41,7 +44,10 @@ export async function POST(request) {
       deliveryInfo += `\n📝 Notes: ${specialInstructions}`;
     }
 
-    // Create page in Notion Orders Database
+    // ✅ CREATE ORDER TITLE
+    const orderTitle = `Order: ${customerName} - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+    // ✅ SEND TO NOTION
     const notionResponse = await fetch('https://api.notion.com/v1/pages', {
       method: 'POST',
       headers: {
@@ -121,9 +127,17 @@ export async function POST(request) {
 
     const responseData = await notionResponse.json();
 
-    return NextResponse.json({ success: true, orderId: responseData.id });
+    return NextResponse.json({ 
+      success: true, 
+      orderId: responseData.id,
+      message: 'Order submitted successfully!'
+    });
+
   } catch (error) {
     console.error('Error submitting order:', error);
-    return NextResponse.json({ error: 'Failed to submit order' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to submit order' },
+      { status: 500 }
+    );
   }
 }
