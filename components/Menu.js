@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -26,10 +27,10 @@ export default function Menu() {
         setItems(data);
         setFilteredItems(data);
         
-        // Initialize quantities to 1 for all items
+        // ✅ FIX: Initialize quantities to 0 for all items
         const initialQtys = {};
         data.forEach(item => {
-          initialQtys[item.id] = 1;
+          initialQtys[item.id] = 0;
         });
         setQuantities(initialQtys);
       } catch (err) {
@@ -80,22 +81,32 @@ export default function Menu() {
     setFilterSize('');
   };
 
+  // ✅ FIX: Allow decrement to 0
   const handleDecrement = (id) => {
     setQuantities(prev => ({
       ...prev,
-      [id]: Math.max(1, (prev[id] || 1) - 1)
+      [id]: Math.max(0, (prev[id] || 0) - 1)
     }));
   };
 
   const handleIncrement = (id) => {
     setQuantities(prev => ({
       ...prev,
-      [id]: (prev[id] || 1) + 1
+      [id]: (prev[id] || 0) + 1
     }));
   };
 
   const handleAddToCart = (item, qty) => {
+    if (qty === 0) {
+      alert('Please select a quantity first');
+      return;
+    }
     console.log(`Added ${qty} of ${item.name} to cart!`);
+    // Reset quantity to 0 after adding
+    setQuantities(prev => ({
+      ...prev,
+      [item.id]: 0
+    }));
   };
 
   if (loading) return <div className="text-white p-4">Loading menu...</div>;
@@ -103,7 +114,7 @@ export default function Menu() {
 
   return (
     <div>
-      {/* Logo at the Top - Massively Increased Size */}
+      {/* Logo at the Top */}
       <div className="flex justify-center mb-8">
         <img
           src="/logo.png"
@@ -186,7 +197,7 @@ export default function Menu() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredItems.map((item) => {
             const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
-            const currentQty = quantities[item.id] || 1;
+            const currentQty = quantities[item.id] || 0;
 
             return (
               <div 
@@ -250,15 +261,15 @@ export default function Menu() {
                     {/* Add to Cart Button */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
-                      disabled={isUnpriced}
+                      disabled={isUnpriced || currentQty === 0}
                       className={`px-4 py-2.5 font-semibold rounded-lg transition shadow-md text-sm md:text-base whitespace-nowrap ${
-                        isUnpriced 
+                        isUnpriced || currentQty === 0
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                           : 'bg-orange-600 hover:bg-orange-700 text-white'
                       }`}
                       type="button"
                     >
-                      {isUnpriced ? 'Coming Soon' : 'Add to Cart'}
+                      {isUnpriced ? 'Coming Soon' : currentQty === 0 ? 'Add to Cart' : 'Add to Cart'}
                     </button>
                   </div>
                 </div>
