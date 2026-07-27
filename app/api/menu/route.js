@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 // ✅ CORRECT CATEGORY ORDER - Sandwiches BEFORE Burgers
 const categoryOrder = {
   'BREAKFAST': 0,
-  'SANDWICHES': 1,    // <-- First after Breakfast
-  'BURGERS': 2,       // <-- Second
+  'SANDWICHES': 1,
+  'BURGERS': 2,
   'FRIED SIDES': 3,
   'BIRDS': 4,
   'SEAFOOD': 5,
@@ -15,6 +15,25 @@ const categoryOrder = {
   'SOUPS & STEWS': 10,
   'SMOKED (24-Hour Notice)': 11,
   'BEVERAGES': 12,
+};
+
+// ✅ SERVES ORDER - Small to Large
+const servesOrder = {
+  '1 Person': 0,
+  '1-2 People': 1,
+  '2 People': 2,
+  '2-3 People': 3,
+  '3-4 People': 4,
+  '4 People': 5,
+  '4-6 People': 6,
+  '6-8 People': 7,
+  '8-10 People': 8,
+};
+
+// ✅ Helper to get serves rank with fallback
+const getServesRank = (serves) => {
+  const key = (serves || '').trim();
+  return servesOrder[key] ?? 99;
 };
 
 export async function GET() {
@@ -55,8 +74,12 @@ export async function GET() {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
       
-      // SMART FALLBACK: If Notion Item Type is blank, derive from name (strips size)
-      const derivedItemType = rawItemType || name.replace(/\s*[\(\[].*?[\)\]]/g, '').trim();
+      // SMART FALLBACK: If Notion Item Type is blank, derive from name (strips size descriptors)
+      const derivedItemType = rawItemType || name
+        .replace(/\b(SMALL|MEDIUM|LARGE|JR\.?)\b/gi, '')
+        .replace(/\s*[\(\[].*?[\)\]]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
       return {
         id: item.id,
@@ -170,7 +193,7 @@ export async function GET() {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
 
-      // 1. Sort by CATEGORY using your exact custom order
+      // 1. Sort by CATEGORY using custom order
       const orderA = categoryOrder[catA] ?? 99;
       const orderB = categoryOrder[catB] ?? 99;
       if (orderA !== orderB) return orderA - orderB;
@@ -180,12 +203,12 @@ export async function GET() {
       const typeB = (b.itemType || '').trim();
       if (typeA !== typeB) return typeA.localeCompare(typeB);
 
-      // 3. Sort by SERVES:
-      const servesA = (a.serves || '').trim();
-      const servesB = (b.serves || '').trim();
-      if (servesA !== servesB) return servesA.localeCompare(servesB);
+      // 3. Sort by SERVES using custom order (Small → Medium → Large)
+      const serveOrderA = getServesRank(a.serves);
+      const serveOrderB = getServesRank(b.serves);
+      if (serveOrderA !== serveOrderB) return serveOrderA - serveOrderB;
 
-      // 4. Sort by NAME
+      // 4. Sort by NAME (alphabetical within same SERVES)
       const nameA = (a.name || '').trim();
       const nameB = (b.name || '').trim();
       return nameA.localeCompare(nameB);

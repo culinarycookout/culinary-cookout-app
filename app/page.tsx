@@ -11,18 +11,11 @@ export default function Home() {
     <main className="min-h-screen bg-black text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          {/* Logo - FORCED BIG with inline style */}
           <div className="flex-1 flex justify-center">
             <img
               src="/logo.png"
               alt="Culinary Cookout Logo"
-              style={{
-                height: '120px',
-                width: 'auto',
-                maxWidth: '100%',
-                objectFit: 'contain',
-              }}
-              className="sm:h-48 md:h-56 lg:h-64"
+              style={{ height: '150px', width: 'auto', maxWidth: '100%' }}
             />
           </div>
           <Link
