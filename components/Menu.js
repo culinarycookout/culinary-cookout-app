@@ -53,7 +53,6 @@ export default function Menu() {
 
         // Check if it's Taco Tuesday (Tuesday 12:00 AM → Wednesday 1:00 AM)
         const now = new Date();
-        // Convert to EST
         const estOffset = -5 * 60;
         const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
         const dayOfWeek = estTime.getDay();
@@ -144,15 +143,6 @@ export default function Menu() {
 
   return (
     <div>
-      {/* Logo */}
-      <div className="flex justify-center mb-8">
-        <img
-          src="/logo.png"
-          alt="Culinary Cookout Logo"
-          className="h-48 md:h-72 w-auto object-contain"
-        />
-      </div>
-
       {/* 🌮🪅 TACO TUESDAY BANNER */}
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
