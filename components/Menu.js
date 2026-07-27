@@ -51,7 +51,6 @@ export default function Menu() {
         });
         setQuantities(initialQtys);
 
-        // Check Taco Tuesday
         const now = new Date();
         const estOffset = -5 * 60;
         const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);

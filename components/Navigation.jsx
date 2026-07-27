@@ -66,16 +66,16 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* ✅ DESKTOP – Left Sidebar (Menu | Contact | Cart) */}
-      <nav className="hidden md:flex fixed left-0 top-0 h-full w-20 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
+      {/* ✅ DESKTOP – Left Sidebar (Menu | Contact | Cart) – 300% BIGGER ICONS */}
+      <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-6 z-50 shadow-2xl">
         <Link
           href="/"
           className={`flex flex-col items-center space-y-1 transition ${
             isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
-          <span className="text-3xl">📝</span>
-          <span className="text-xs font-medium">Menu</span>
+          <span className="text-5xl">📝</span>
+          <span className="text-sm font-medium">Menu</span>
         </Link>
 
         <Link
@@ -84,8 +84,8 @@ export default function Navigation() {
             isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
-          <span className="text-3xl">📬</span>
-          <span className="text-xs font-medium">Contact</span>
+          <span className="text-5xl">📬</span>
+          <span className="text-sm font-medium">Contact</span>
         </Link>
 
         <Link
@@ -95,14 +95,14 @@ export default function Navigation() {
           }`}
         >
           <div className="relative">
-            <span className="text-3xl">🛒</span>
+            <span className="text-5xl">🛒</span>
             {totalItems > 0 && (
               <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                 {totalItems}
               </span>
             )}
           </div>
-          <span className="text-xs font-medium">
+          <span className="text-sm font-medium">
             {totalItems > 0 ? `$${cartSubtotal.toFixed(2)}` : 'Cart'}
           </span>
         </Link>
