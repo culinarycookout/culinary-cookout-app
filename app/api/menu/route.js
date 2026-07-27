@@ -1,22 +1,5 @@
 import { NextResponse } from 'next/server';
 
-// ✅ CUSTOM CATEGORY ORDER (in this exact order)
-const categoryOrder = {
-  'BREAKFAST': 0,
-  'SANDWICHES': 1,
-  'BURGERS': 2,
-  'FRIED SIDES': 3,
-  'BIRDS': 4,
-  'SEAFOOD': 5,
-  'BEEF': 6,
-  'LATIN AMERICA': 7,
-  'ASIAN': 8,
-  'GRILLED': 9,
-  'SOUPS & STEWS': 10,
-  'SMOKED (24-Hour Notice)': 11,
-  'BEVERAGES': 12,
-};
-
 export async function GET() {
   try {
     let allResults = [];
@@ -50,20 +33,18 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // 2. Process each menu item - ✅ KEEP itemType for sorting
+    // 2. Process each menu item with smart itemType fallback
     let menuItems = allResults.map((item) => {
-      // ✅ FORCE READ: Log what's actually coming from Notion
-      const itemTypeRaw = item.properties['Item Type'];
-      const itemTypeValue = itemTypeRaw?.select?.name || '';
+      const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
+      const rawItemType = item.properties['Item Type']?.select?.name || '';
       
-      // ✅ DEBUG: Log to console so we can see what's being read
-      console.log(`📦 Item: ${item.properties['Item Name']?.title?.[0]?.plain_text}`);
-      console.log(`   → Item Type raw:`, itemTypeRaw);
-      console.log(`   → Item Type value: "${itemTypeValue}"`);
+      // SMART FALLBACK: If Notion Item Type is blank, derive a grouping base from the name 
+      // (e.g., strips out parenthetical sizes like "(Large)" so variations group together)
+      const derivedItemType = rawItemType || name.replace(/\s*[\(\[].*?[\)\]]/g, '').trim();
 
       return {
         id: item.id,
-        name: item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled',
+        name: name,
         price: item.properties['Price']?.number || 0,
         category: item.properties['CATEGORY']?.select?.name || '',
         size: item.properties['SIZE']?.select?.name || '',
@@ -71,13 +52,12 @@ export async function GET() {
         description: item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
         imageUrl: item.properties['Image URL']?.url || '',
         quantity: item.properties['QUANTITY']?.number || 0,
-        // ✅ KEEP THIS - it's used for sorting
-        itemType: itemTypeValue,
+        itemType: derivedItemType,
         addOns: [],
       };
     });
 
-    // 3. Fetch add-ons (unchanged)
+    // 3. Fetch ALL add-ons from the add-ons database
     try {
       let allAddOns = [];
       let addOnsHasMore = true;
@@ -109,6 +89,7 @@ export async function GET() {
         }
       }
 
+      // 4. Map add-ons with their linked dishes
       const parsedAddOns = allAddOns.map((addOn) => {
         const linkedDishes = addOn.properties['Linked Dishes'];
         const linkedDishIds = linkedDishes && linkedDishes.type === 'relation' 
@@ -125,6 +106,7 @@ export async function GET() {
         };
       });
 
+      // 5. Attach add-ons to each menu item based on Linked Dishes
       menuItems = menuItems.map((item) => {
         const itemAddOns = parsedAddOns.filter((addOn) => 
           addOn.linkedDishIds.includes(item.id)
@@ -140,7 +122,7 @@ export async function GET() {
       console.error('Error fetching add-ons:', addOnError);
     }
 
-    // 4. TACO TUESDAY (unchanged)
+    // 6. TACO TUESDAY - Automatic 50% off (Tuesday 12:00 AM → Wednesday 1:00 AM)
     const now = new Date();
     const estOffset = -5 * 60;
     const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
@@ -155,7 +137,7 @@ export async function GET() {
 
     if (isTacoTuesday) {
       responseItems = menuItems.map(item => {
-        if (item.itemType === 'Taco' && item.price > 0) {
+        if (item.itemType.toLowerCase().includes('taco') && item.price > 0) {
           return {
             ...item,
             price: Number((item.price * 0.5).toFixed(2)),
@@ -167,39 +149,49 @@ export async function GET() {
       });
     }
 
-    // 5. ✅ SORTING: Category → Item Type → SERVES → Name
+    // 7. SORTING: Category → Item Type → SERVES → Name (with custom category ordering)
+    const categoryOrder = {
+      'BREAKFAST': 0,
+      'BURGERS': 1,
+      'SANDWICHES': 2,
+      'FRIED SIDES': 3,
+      'BIRDS': 4,
+      'BEEF': 5,
+      'SEAFOOD': 6,
+      'LATIN AMERICA': 7,
+      'ASIAN': 8,
+      'GRILLED': 9,
+      'SOUPS & STEWS': 10,
+      'SMOKED (24-Hour Notice)': 11,
+      'BEVERAGES': 12,
+    };
+
     responseItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
 
-      // Category order
-      const orderA = categoryOrder[catA] ?? 999;
-      const orderB = categoryOrder[catB] ?? 999;
+      // 1. Sort by CATEGORY using your exact custom order
+      const orderA = categoryOrder[catA] ?? 99;
+      const orderB = categoryOrder[catB] ?? 99;
       if (orderA !== orderB) return orderA - orderB;
 
-      // ✅ Item Type - THIS GROUPS FRIED SHRIMP TOGETHER
+      // 2. Sort by ITEM TYPE (groups like items together)
       const typeA = (a.itemType || '').trim();
       const typeB = (b.itemType || '').trim();
-      
-      // ✅ DEBUG: Log what's being compared
-      if (typeA || typeB) {
-        console.log(`🔍 Sorting: "${typeA}" vs "${typeB}"`);
-      }
-      
       if (typeA !== typeB) return typeA.localeCompare(typeB);
 
-      // SERVES
+      // 3. Sort by SERVES:
       const servesA = (a.serves || '').trim();
       const servesB = (b.serves || '').trim();
       if (servesA !== servesB) return servesA.localeCompare(servesB);
 
-      // Name
+      // 4. Sort by NAME
       const nameA = (a.name || '').trim();
       const nameB = (b.name || '').trim();
       return nameA.localeCompare(nameB);
     });
 
-    // 6. Remove itemType from response (hidden from app)
+    // 8. Remove itemType from response (hidden from app)
     const cleanedMenuItems = responseItems.map(({ itemType, ...rest }) => rest);
 
     return NextResponse.json(cleanedMenuItems);
