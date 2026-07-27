@@ -16,12 +16,21 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        const res = await fetch(`/api/menu/${itemId}`);
+        // Fetch ALL menu items from the existing API
+        const res = await fetch(`/api/menu`);
         const data = await res.json();
+        
         if (res.ok) {
-          setItem(data);
+          // Find the specific item by ID
+          const foundItem = data.find((menuItem) => menuItem.id === itemId);
+          
+          if (foundItem) {
+            setItem(foundItem);
+          } else {
+            setError('Item not found');
+          }
         } else {
-          setError(data.error || 'Failed to load item');
+          setError(data.error || 'Failed to load menu');
         }
       } catch (err) {
         setError('Failed to load item detail');
@@ -57,11 +66,22 @@ export default function ItemDetailPage({ params }) {
     );
   }
 
+  // --- FILTER ADD-ONS BY SIZE ---
+  // Only show add-ons that match the item's size OR have no size specified
+  const availableAddOns = (item.addOns || []).filter((addOn) => {
+    // If the add-on has a size, only show it if it matches the item's size
+    if (addOn.size && addOn.size.trim() !== '') {
+      return addOn.size === item.size;
+    }
+    // If no size specified on the add-on, show it for all sizes
+    return true;
+  });
+
   // Calculate total price including selected add-ons
   const basePrice = item.price || 0;
-  const addOnsTotal = item.addOns?.reduce((sum, addOn) => {
+  const addOnsTotal = availableAddOns.reduce((sum, addOn) => {
     return selectedAddOns[addOn.id] ? sum + (addOn.price || 0) : sum;
-  }, 0) || 0;
+  }, 0);
   const totalPrice = basePrice + addOnsTotal;
 
   return (
@@ -107,12 +127,12 @@ export default function ItemDetailPage({ params }) {
               </p>
             </div>
 
-            {/* Add-ons Section */}
-            {item.addOns && item.addOns.length > 0 && (
+            {/* Add-ons Section - Now Filtered by Size */}
+            {availableAddOns.length > 0 && (
               <div className="mt-6">
                 <h2 className="text-xl font-bold mb-3">Add-ons</h2>
                 <div className="space-y-2">
-                  {item.addOns.map((addOn) => (
+                  {availableAddOns.map((addOn) => (
                     <div
                       key={addOn.id}
                       className={`flex items-center justify-between p-3 rounded-lg border ${
@@ -160,7 +180,12 @@ export default function ItemDetailPage({ params }) {
                 className="mt-3 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold text-lg transition-colors"
                 onClick={() => {
                   // Add to cart logic will go here
-                  alert(`Added ${item.name} to cart!`);
+                  const selectedAddOnNames = availableAddOns
+                    .filter((addOn) => selectedAddOns[addOn.id])
+                    .map((addOn) => addOn.name)
+                    .join(', ');
+                  
+                  alert(`Added ${item.name}${selectedAddOnNames ? ` with ${selectedAddOnNames}` : ''} to cart!`);
                 }}
               >
                 Add to Cart
