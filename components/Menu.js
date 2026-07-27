@@ -140,7 +140,7 @@ export default function Menu() {
   if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
 
   return (
-    <div>
+    <div className="w-full">
       {/* TACO TUESDAY BANNER */}
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
@@ -272,7 +272,6 @@ export default function Menu() {
                       <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block">{item['DESCRIPTION']}</p>
                     )}
 
-                    {/* Price Display */}
                     <p className="text-base md:text-xl font-bold mt-1 md:mt-2">
                       {hasDiscount ? (
                         <>
@@ -290,7 +289,6 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* QUANTITY & ADD TO CART */}
                 <div
                   className="p-3 md:p-4 pt-0 bg-white mt-auto"
                   onClick={(e) => e.stopPropagation()}
