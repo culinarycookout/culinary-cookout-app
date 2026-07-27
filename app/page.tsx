@@ -11,7 +11,7 @@ export default function Home() {
           <img
             src="https://iili.io/CeCmPWJ.png"
             alt="Culinary Cookout"
-            className="h-40 sm:h-48 md:h-56 w-auto object-contain"
+            className="h-120 sm:h-48 md:h-56 w-auto object-contain"
           />
         </div>
 
