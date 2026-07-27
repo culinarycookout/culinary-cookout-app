@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import Menu from '../components/Menu';
 import { useCart } from '../context/CartContext';
@@ -13,19 +12,16 @@ export default function Home() {
       <div className="max-w-6xl mx-auto">
         {/* Header with Logo and Cart Icon */}
         <div className="flex justify-between items-center mb-6">
-          {/* Logo - MASSIVE */}
+          {/* Logo - MASSIVE using standard img tag */}
           <div className="flex-1 flex justify-center">
-            <Image
+            <img
               src="/logo.png"
               alt="Culinary Cookout Logo"
-              width={1000}
-              height={400}
-              className="w-auto max-w-full h-32 sm:h-48 md:h-56 lg:h-64 object-contain"
-              priority
+              className="h-32 sm:h-48 md:h-56 lg:h-64 w-auto object-contain"
             />
           </div>
           
-          {/* Cart Icon */}
+          {/* Cart Icon - Bigger */}
           <Link
             href="/cart"
             className="relative bg-zinc-800 hover:bg-zinc-700 p-4 rounded-full transition ml-2 flex-shrink-0"
