@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, use } from 'react';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../../context/CartContext';
 
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();

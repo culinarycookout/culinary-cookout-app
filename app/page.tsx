@@ -1,21 +1,19 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Menu from '../components/Menu';
-import CartDrawer from '../components/CartDrawer';
 import { useCart } from '../context/CartContext';
 
 export default function Home() {
   const { cartCount } = useCart();
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
     <main className="min-h-screen bg-black text-white p-4 md:p-8">
-      {/* Header with Logo and Cart Icon */}
       <div className="max-w-6xl mx-auto">
+        {/* Header with Logo and Cart Icon */}
         <div className="flex justify-between items-center mb-6">
-          {/* Logo (centered) */}
+          {/* Logo */}
           <div className="flex-1 flex justify-center">
             <Image
               src="/logo.png"
@@ -27,11 +25,11 @@ export default function Home() {
             />
           </div>
           
-          {/* Cart Icon (right side) */}
-          <button
-            onClick={() => setIsCartOpen(true)}
+          {/* Cart Icon - Links to /cart */}
+          <Link
+            href="/cart"
             className="relative bg-zinc-800 hover:bg-zinc-700 p-2 rounded-full transition ml-2 flex-shrink-0"
-            aria-label="Open cart"
+            aria-label="View cart"
           >
             <span className="text-xl">🛒</span>
             {cartCount > 0 && (
@@ -39,17 +37,11 @@ export default function Home() {
                 {cartCount}
               </span>
             )}
-          </button>
+          </Link>
         </div>
 
         {/* Menu */}
         <Menu />
-        
-        {/* Cart Drawer */}
-        <CartDrawer 
-          isOpen={isCartOpen} 
-          onClose={() => setIsCartOpen(false)} 
-        />
       </div>
     </main>
   );
