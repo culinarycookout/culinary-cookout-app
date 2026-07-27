@@ -1,5 +1,22 @@
 import { NextResponse } from 'next/server';
 
+// ✅ CORRECT CATEGORY ORDER - Sandwiches BEFORE Burgers
+const categoryOrder = {
+  'BREAKFAST': 0,
+  'SANDWICHES': 1,    // <-- First after Breakfast
+  'BURGERS': 2,       // <-- Second
+  'FRIED SIDES': 3,
+  'BIRDS': 4,
+  'SEAFOOD': 5,
+  'BEEF': 6,
+  'LATIN AMERICA': 7,
+  'ASIAN': 8,
+  'GRILLED': 9,
+  'SOUPS & STEWS': 10,
+  'SMOKED (24-Hour Notice)': 11,
+  'BEVERAGES': 12,
+};
+
 export async function GET() {
   try {
     let allResults = [];
@@ -38,8 +55,7 @@ export async function GET() {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
       
-      // SMART FALLBACK: If Notion Item Type is blank, derive a grouping base from the name 
-      // (e.g., strips out parenthetical sizes like "(Large)" so variations group together)
+      // SMART FALLBACK: If Notion Item Type is blank, derive from name (strips size)
       const derivedItemType = rawItemType || name.replace(/\s*[\(\[].*?[\)\]]/g, '').trim();
 
       return {
@@ -149,23 +165,7 @@ export async function GET() {
       });
     }
 
-    // 7. SORTING: Category → Item Type → SERVES → Name (with custom category ordering)
-    const categoryOrder = {
-      'BREAKFAST': 0,
-      'BURGERS': 1,
-      'SANDWICHES': 2,
-      'FRIED SIDES': 3,
-      'BIRDS': 4,
-      'BEEF': 5,
-      'SEAFOOD': 6,
-      'LATIN AMERICA': 7,
-      'ASIAN': 8,
-      'GRILLED': 9,
-      'SOUPS & STEWS': 10,
-      'SMOKED (24-Hour Notice)': 11,
-      'BEVERAGES': 12,
-    };
-
+    // 7. SORTING: Category → Item Type → SERVES → Name
     responseItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();

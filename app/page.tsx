@@ -10,18 +10,21 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        {/* Header with Logo and Cart Icon */}
         <div className="flex justify-between items-center mb-6">
-          {/* Logo - MASSIVE using standard img tag */}
+          {/* Logo - FORCED BIG with inline style */}
           <div className="flex-1 flex justify-center">
             <img
               src="/logo.png"
               alt="Culinary Cookout Logo"
-              className="h-32 sm:h-48 md:h-56 lg:h-64 w-auto object-contain"
+              style={{
+                height: '120px',
+                width: 'auto',
+                maxWidth: '100%',
+                objectFit: 'contain',
+              }}
+              className="sm:h-48 md:h-56 lg:h-64"
             />
           </div>
-          
-          {/* Cart Icon - Bigger */}
           <Link
             href="/cart"
             className="relative bg-zinc-800 hover:bg-zinc-700 p-4 rounded-full transition ml-2 flex-shrink-0"
@@ -35,8 +38,6 @@ export default function Home() {
             )}
           </Link>
         </div>
-
-        {/* Menu */}
         <Menu />
       </div>
     </main>
