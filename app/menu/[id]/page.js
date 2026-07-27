@@ -57,7 +57,7 @@ export default function ItemDetailPage({ params }) {
     setQuantity(prev => prev + 1);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCartClick = () => {
     if (quantity === 0) {
       alert('Please select a quantity first');
       return;
@@ -237,14 +237,13 @@ export default function ItemDetailPage({ params }) {
                   ${totalPrice.toFixed(2)}
                 </span>
               </div>
-              {/* ✅ GIMME THIS!😋 - MALACHITE GREEN */}
               <button
                 className={`mt-3 w-full py-3 rounded-lg font-bold text-lg transition-colors ${
                   isUnpriced || quantity === 0
                     ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
                     : 'bg-[#0BDA51] hover:bg-[#09C448] text-white'
                 }`}
-                onClick={handleAddToCart}
+                onClick={handleAddToCartClick}
                 disabled={isUnpriced || quantity === 0}
               >
                 {isUnpriced ? 'Coming Soon' : 'Gimme This!😋'}
