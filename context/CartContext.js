@@ -1,120 +1,123 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Load cart from localStorage on mount
+  // Load cart from localStorage
   useEffect(() => {
-    const savedCart = localStorage.getItem('culinary_cookout_cart');
+    const savedCart = localStorage.getItem('culinary_cart');
     if (savedCart) {
       try {
-        setCart(JSON.parse(savedCart));
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) {
+          setCart(parsed);
+        } else {
+          setCart([]);
+        }
       } catch (e) {
-        console.error('Failed to parse saved cart:', e);
+        console.error('Failed to parse cart from localStorage', e);
+        setCart([]);
       }
     }
   }, []);
 
-  // Save cart to localStorage on change
+  // Save cart to localStorage
   useEffect(() => {
-    localStorage.setItem('culinary_cookout_cart', JSON.stringify(cart));
+    localStorage.setItem('culinary_cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Add item to cart
-  const addToCart = (item, quantity = 1, selectedAddOns = []) => {
-    if (quantity <= 0) return;
+  // Add item – now using exact Notion field names
+  const addToCart = (item, selectedAddOns = [], quantity = 1) => {
+    if (!item || !item.id) {
+      console.warn('Invalid item passed to addToCart');
+      return;
+    }
+    const cartInstanceId = `${item.id}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const safeAddOns = Array.isArray(selectedAddOns) ? selectedAddOns : [];
+    // Preserve the exact Notion field names
+    const cartItem = {
+      ...item, // includes 'Item Name', 'Price', 'CATEGORY', 'SIZE', 'SERVES:', etc.
+      quantity: quantity,
+      selectedAddOns: safeAddOns,
+      cartInstanceId: cartInstanceId,
+      notes: '',
+    };
+    setCart(prevCart => [...prevCart, cartItem]);
+  };
 
-    setCart((prevCart) => {
-      // Create a unique key based on item ID and selected add-on IDs
-      const addOnIdsKey = selectedAddOns.map(ao => ao.id).sort().join('-');
-      const cartItemKey = `${item.id}-${addOnIdsKey}`;
-
-      const existingIndex = prevCart.findIndex(
-        (cartItem) => cartItem.cartItemKey === cartItemKey
-      );
-
-      if (existingIndex > -1) {
-        // Update quantity if exact item + add-ons combo exists
-        const updated = [...prevCart];
-        updated[existingIndex].quantity += quantity;
-        return updated;
-      } else {
-        // Add new line item
-        return [
-          ...prevCart,
-          {
-            cartItemKey,
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            originalPrice: item.originalPrice || item.price,
-            isDiscounted: item.isDiscounted || false,
-            size: item.size || '',
-            serves: item.serves || '',
-            imageUrl: item.imageUrl || '',
-            quantity,
-            selectedAddOns: selectedAddOns.map(ao => ({
-              id: ao.id,
-              name: ao.name,
-              price: ao.price || 0,
-            })),
-          },
-        ];
-      }
+  const duplicateItem = (cartInstanceId) => {
+    setCart(prevCart => {
+      const itemToDuplicate = prevCart.find(item => item.cartInstanceId === cartInstanceId);
+      if (!itemToDuplicate) return prevCart;
+      const newInstanceId = `${itemToDuplicate.id}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+      const duplicatedItem = {
+        ...itemToDuplicate,
+        cartInstanceId: newInstanceId,
+      };
+      const index = prevCart.findIndex(item => item.cartInstanceId === cartInstanceId);
+      const updated = [...prevCart];
+      updated.splice(index + 1, 0, duplicatedItem);
+      return updated;
     });
   };
 
-  const updateQuantity = (cartItemKey, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(cartItemKey);
-      return;
-    }
-    setCart((prev) =>
-      prev.map((item) =>
-        item.cartItemKey === cartItemKey ? { ...item, quantity } : item
-      )
-    );
+  const removeFromCart = (cartInstanceId) => {
+    setCart(prev => prev.filter(item => item.cartInstanceId !== cartInstanceId));
   };
 
-  const removeFromCart = (cartItemKey) => {
-    setCart((prev) => prev.filter((item) => item.cartItemKey !== cartItemKey));
+  const updateQuantity = (cartInstanceId, quantity) => {
+    if (quantity <= 0) {
+      removeFromCart(cartInstanceId);
+      return;
+    }
+    setCart(prev => prev.map(item => item.cartInstanceId === cartInstanceId ? { ...item, quantity } : item));
+  };
+
+  const updateItemCustomizations = (cartInstanceId, selectedAddOns, notes) => {
+    setCart(prev => prev.map(item =>
+      item.cartInstanceId === cartInstanceId
+        ? { ...item, selectedAddOns: Array.isArray(selectedAddOns) ? selectedAddOns : [], notes: notes || '' }
+        : item
+    ));
   };
 
   const clearCart = () => {
     setCart([]);
   };
 
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  
+  const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const subtotal = cart.reduce((sum, item) => {
-    const addOnsTotal = (item.selectedAddOns || []).reduce((aoSum, ao) => aoSum + ao.price, 0);
-    return sum + (item.price + addOnsTotal) * item.quantity;
+    const itemPrice = item['Price'] || 0;
+    const addOnsList = Array.isArray(item.selectedAddOns) ? item.selectedAddOns : [];
+    const addOnsPrice = addOnsList.reduce((acc, ao) => acc + (ao.price || 0), 0);
+    return sum + (itemPrice + addOnsPrice) * (item.quantity || 1);
   }, 0);
 
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        isCartOpen,
-        setIsCartOpen,
-        addToCart,
-        updateQuantity,
-        removeFromCart,
-        clearCart,
-        cartCount,
-        subtotal,
-      }}
-    >
+    <CartContext.Provider value={{
+      cart,
+      addToCart,
+      duplicateItem,
+      removeFromCart,
+      updateQuantity,
+      updateItemCustomizations,
+      clearCart,
+      totalItems,
+      subtotal
+    }}>
       {children}
     </CartContext.Provider>
   );
 }
 
 export function useCart() {
-  return useContext(CartContext);
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
 }

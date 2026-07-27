@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 
-// Category color mapping
+// ✅ CATEGORY COLORS
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
@@ -44,20 +44,20 @@ export default function Menu() {
         const data = await res.json();
         setItems(data);
         setFilteredItems(data);
-        
+
         const initialQtys = {};
         data.forEach(item => {
           initialQtys[item.id] = 0;
         });
         setQuantities(initialQtys);
 
-        // Check if it's Taco Tuesday (Tuesday 12:00 AM → Wednesday 1:00 AM)
+        // Check Taco Tuesday
         const now = new Date();
         const estOffset = -5 * 60;
         const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
         const dayOfWeek = estTime.getDay();
         const hours = estTime.getHours();
-        
+
         const isTuesday = dayOfWeek === 2 && hours >= 0;
         const isWednesdayEarly = dayOfWeek === 3 && hours < 1;
         const isTacoTue = isTuesday || isWednesdayEarly;
@@ -79,29 +79,29 @@ export default function Menu() {
       const term = searchTerm.toLowerCase();
       result = result.filter(
         (item) =>
-          item.name.toLowerCase().includes(term) ||
-          (item.description && item.description.toLowerCase().includes(term))
+          (item['Item Name'] || '').toLowerCase().includes(term) ||
+          (item['DESCRIPTION'] || '').toLowerCase().includes(term)
       );
     }
 
     if (filterCategory) {
-      result = result.filter((item) => item.category === filterCategory);
+      result = result.filter((item) => item['CATEGORY'] === filterCategory);
     }
 
     if (filterServes) {
-      result = result.filter((item) => item.serves === filterServes);
+      result = result.filter((item) => item['SERVES:'] === filterServes);
     }
 
     if (filterSize) {
-      result = result.filter((item) => item.size === filterSize);
+      result = result.filter((item) => item['SIZE'] === filterSize);
     }
 
     setFilteredItems(result);
   }, [searchTerm, filterCategory, filterServes, filterSize, items]);
 
-  const categories = [...new Set(items.map((item) => item.category).filter(Boolean))].sort();
-  const servesOptions = [...new Set(items.map((item) => item.serves).filter(Boolean))].sort();
-  const sizeOptions = [...new Set(items.map((item) => item.size).filter(Boolean))].sort();
+  const categories = [...new Set(items.map((item) => item['CATEGORY']).filter(Boolean))].sort();
+  const servesOptions = [...new Set(items.map((item) => item['SERVES:']).filter(Boolean))].sort();
+  const sizeOptions = [...new Set(items.map((item) => item['SIZE']).filter(Boolean))].sort();
 
   const clearFilters = () => {
     setSearchTerm('');
@@ -129,9 +129,7 @@ export default function Menu() {
       alert('Please select a quantity first');
       return;
     }
-    
-    addToCart(item, qty, []);
-    
+    addToCart(item, [], qty);
     setQuantities(prev => ({
       ...prev,
       [item.id]: 0
@@ -143,7 +141,7 @@ export default function Menu() {
 
   return (
     <div>
-      {/* 🌮🪅 TACO TUESDAY BANNER */}
+      {/* TACO TUESDAY BANNER */}
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
           <div className="flex items-center justify-center gap-2 flex-wrap">
@@ -156,7 +154,7 @@ export default function Menu() {
         </div>
       )}
 
-      {/* Search & Filters */}
+      {/* SEARCH & FILTERS */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -215,7 +213,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* Menu Grid */}
+      {/* MENU GRID */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -229,56 +227,56 @@ export default function Menu() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {filteredItems.map((item) => {
-            const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
+            const isUnpriced = !item['Price'] || item['Price'] === 0 || item['Price'] === "0.00";
             const currentQty = quantities[item.id] || 0;
-            const colorClass = categoryColors[item.category] || 'bg-gray-600 text-white';
-            const isTaco = item.category === 'LATIN AMERICA' && item.itemType === 'Taco';
+            const colorClass = categoryColors[item['CATEGORY']] || 'bg-gray-600 text-white';
+            const isTaco = item['CATEGORY'] === 'LATIN AMERICA' && item['Item Type'] === 'Taco';
             const hasDiscount = isTacoTuesday && isTaco && item.isDiscounted;
 
             return (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className={`bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full ${hasDiscount ? 'border-2 border-red-500' : ''}`}
               >
                 <Link href={`/menu/${item.id}`} className="cursor-pointer flex-1">
-                  {item.imageUrl && (
+                  {item['Image URL'] && (
                     <img
-                      src={item.imageUrl}
-                      alt={item.name}
+                      src={item['Image URL']}
+                      alt={item['Item Name']}
                       className="w-full h-36 md:h-48 object-cover"
                     />
                   )}
                   <div className="p-3 md:p-4">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm md:text-lg leading-tight break-words flex-1">{item.name}</h3>
+                      <h3 className="font-bold text-sm md:text-lg leading-tight break-words flex-1">{item['Item Name']}</h3>
                       {hasDiscount && (
                         <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap mt-0.5">
                           🌮🪅50% OFF‼️🎉
                         </span>
                       )}
                     </div>
-                    
-                    {item.category && (
+
+                    {item['CATEGORY'] && (
                       <span className={`inline-block ${colorClass} text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
-                        {item.category}
+                        {item['CATEGORY']}
                       </span>
                     )}
-                    
-                    {item.size && (
-                      <p className="text-xs md:text-sm text-gray-600">Size: {item.size}</p>
+
+                    {item['SIZE'] && (
+                      <p className="text-xs md:text-sm text-gray-600">Size: {item['SIZE']}</p>
                     )}
-                    {item.serves && (
-                      <p className="text-xs md:text-sm text-gray-600">Serves: {item.serves}</p>
+                    {item['SERVES:'] && (
+                      <p className="text-xs md:text-sm text-gray-600">Serves: {item['SERVES:']}</p>
                     )}
-                    {item.description && (
-                      <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block">{item.description}</p>
+                    {item['DESCRIPTION'] && (
+                      <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block">{item['DESCRIPTION']}</p>
                     )}
-                    
+
                     {/* Price Display */}
                     <p className="text-base md:text-xl font-bold mt-1 md:mt-2">
                       {hasDiscount ? (
                         <>
-                          <span className="text-red-600">${(Number(item.price) || 0).toFixed(2)}</span>
+                          <span className="text-red-600">${(Number(item['Price']) || 0).toFixed(2)}</span>
                           <span className="text-gray-400 text-sm line-through ml-2">
                             ${(Number(item.originalPrice) || 0).toFixed(2)}
                           </span>
@@ -286,15 +284,15 @@ export default function Menu() {
                       ) : isUnpriced ? (
                         <span className="text-orange-600 italic text-xs md:text-base">Price Pending</span>
                       ) : (
-                        `$${Number(item.price).toFixed(2)}`
+                        `$${Number(item['Price']).toFixed(2)}`
                       )}
                     </p>
                   </div>
                 </Link>
 
-                {/* Quantity & Add to Cart */}
-                <div 
-                  className="p-3 md:p-4 pt-0 bg-white mt-auto" 
+                {/* QUANTITY & ADD TO CART */}
+                <div
+                  className="p-3 md:p-4 pt-0 bg-white mt-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 md:mt-4">
@@ -318,13 +316,12 @@ export default function Menu() {
                       </button>
                     </div>
 
-                    {/* ✅ GIMME THIS!😋 - MALACHITE GREEN */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced || currentQty === 0}
                       className={`w-full sm:w-auto px-3 py-2 md:px-4 md:py-2.5 font-semibold rounded-lg transition shadow-md text-xs md:text-sm lg:text-base text-white ${
                         isUnpriced || currentQty === 0
-                          ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
+                          ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                           : 'bg-[#0BDA51] hover:bg-[#09C448]'
                       }`}
                       type="button"

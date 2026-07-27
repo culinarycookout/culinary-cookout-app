@@ -1,6 +1,38 @@
 import { NextResponse } from 'next/server';
 
-// ✅ HARDCODED ADD-ONS DATA
+// ✅ CATEGORY ORDER
+const categoryOrder = {
+  'BREAKFAST': 0,
+  'SANDWICHES': 1,
+  'BURGERS': 2,
+  'FRIED SIDES': 3,
+  'BIRDS': 4,
+  'BEEF': 5,
+  'SEAFOOD': 6,
+  'LATIN AMERICA': 7,
+  'ASIAN': 8,
+  'GRILLED': 9,
+  'SOUPS & STEWS': 10,
+  'SMOKED (24-Hour Notice)': 11,
+  'BEVERAGES': 12,
+};
+
+// ✅ SERVES RANK
+const getServesRank = (serves) => {
+  const s = (serves || '').trim();
+  if (s.includes('1 Person')) return 1;
+  if (s.includes('1-2')) return 2;
+  if (s.includes('2 People')) return 3;
+  if (s.includes('2-3')) return 4;
+  if (s.includes('3-4')) return 5;
+  if (s.includes('4 People')) return 6;
+  if (s.includes('4-6')) return 7;
+  if (s.includes('6-8')) return 8;
+  if (s.includes('8-10')) return 9;
+  return 99;
+};
+
+// ✅ ADD-ONS DATA (hardcoded from your add-ons database)
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -44,46 +76,13 @@ const addonsData = {
   "Swiss": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true }
 };
 
-// ✅ CATEGORY ORDER
-const categoryOrder = {
-  'BREAKFAST': 0,
-  'SANDWICHES': 1,
-  'BURGERS': 2,
-  'FRIED SIDES': 3,
-  'BIRDS': 4,
-  'BEEF': 5,
-  'SEAFOOD': 6,
-  'LATIN AMERICA': 7,
-  'ASIAN': 8,
-  'GRILLED': 9,
-  'SOUPS & STEWS': 10,
-  'SMOKED (24-Hour Notice)': 11,
-  'BEVERAGES': 12,
-};
-
-// ✅ HELPER: SERVES RANK (Small → Medium → Large)
-const getServesRank = (serves) => {
-  const s = (serves || '').trim();
-  if (s.includes('1 Person')) return 1;
-  if (s.includes('1-2')) return 2;
-  if (s.includes('2 People')) return 3;
-  if (s.includes('2-3')) return 4;
-  if (s.includes('3-4')) return 5;
-  if (s.includes('4 People')) return 6;
-  if (s.includes('4-6')) return 7;
-  if (s.includes('6-8')) return 8;
-  if (s.includes('8-10')) return 9;
-  return 99;
-};
-
-// ✅ MAIN API HANDLER
 export async function GET() {
   try {
-    // 1. FETCH ALL MENU ITEMS WITH PAGINATION
     let allResults = [];
     let hasMore = true;
     let startCursor = undefined;
 
+    // 1. Fetch ALL menu items with pagination
     while (hasMore) {
       const requestBody = {};
       if (startCursor) requestBody.start_cursor = startCursor;
@@ -108,15 +107,107 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // 2. PROCESS MENU ITEMS
+    // 2. Process menu items with EXACT Notion field names
     let menuItems = allResults.map((item) => {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
-      
+
       const cleanName = name
         .replace(/\b(SMALL|MEDIUM|LARGE|GROUP|JR\.?)\b/gi, '')
         .replace(/\s*[\(\[].*?[\)\]]/g, '')
         .replace(/\s+/g, ' ')
+        .trim();
+
+      return {
+        id: item.id,
+        'Item Name': name,
+        'Price': item.properties['Price']?.number || 0,
+        'CATEGORY': item.properties['CATEGORY']?.select?.name || '',
+        'SIZE': item.properties['SIZE']?.select?.name || '',
+        'SERVES:': item.properties['SERVES:']?.select?.name || '',
+        'DESCRIPTION': item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
+        'Image URL': item.properties['Image URL']?.url || '',
+        'QUANTITY': item.properties['QUANTITY']?.number || 0,
+        'Item Type': rawItemType || cleanName,
+        'ADD-ONS': item.properties['ADD-ONS']?.relation || [],
+      };
+    });
+
+    // 3. Attach add-ons from hardcoded data (based on CATEGORY)
+    menuItems = menuItems.map((item) => {
+      const itemAddOns = [];
+      const category = (item['CATEGORY'] || '').toUpperCase().trim();
+
+      for (const [name, data] of Object.entries(addonsData)) {
+        if (data.categories && data.categories.includes(category)) {
+          itemAddOns.push({
+            id: `addon-${name.replace(/\s/g, '-')}`,
+            name: name,
+            price: data.cost,
+            description: data.description,
+            heatLevel: data.heatLevel,
+            countable: data.countable,
+          });
+        }
+      }
+
+      return { ...item, addOns: itemAddOns };
+    });
+
+    // 4. TACO TUESDAY
+    const now = new Date();
+    const estOffset = -5 * 60;
+    const estTime = new Date(now.getTime() + (estOffset - now.getTimezoneOffset()) * 60000);
+    const dayOfWeek = estTime.getDay();
+    const hours = estTime.getHours();
+
+    const isTacoTuesday = (dayOfWeek === 2 && hours >= 0) || (dayOfWeek === 3 && hours < 1);
+
+    let responseItems = menuItems;
+
+    if (isTacoTuesday) {
+      responseItems = menuItems.map(item => {
+        const itemType = item['Item Type'] || '';
+        if (itemType.toLowerCase().includes('taco') && item['Price'] > 0) {
+          return {
+            ...item,
+            'Price': Number((item['Price'] * 0.5).toFixed(2)),
+            isDiscounted: true,
+            originalPrice: item['Price'],
+          };
+        }
+        return item;
+      });
+    }
+
+    // 5. SORTING: CATEGORY → Item Type → SERVES: → Item Name
+    responseItems.sort((a, b) => {
+      const catA = (a['CATEGORY'] || '').trim();
+      const catB = (b['CATEGORY'] || '').trim();
+
+      const orderA = categoryOrder[catA] ?? 99;
+      const orderB = categoryOrder[catB] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
+
+      const typeA = (a['Item Type'] || '').trim();
+      const typeB = (b['Item Type'] || '').trim();
+      if (typeA !== typeB) return typeA.localeCompare(typeB);
+
+      const rankA = getServesRank(a['SERVES:']);
+      const rankB = getServesRank(b['SERVES:']);
+      if (rankA !== rankB) return rankA - rankB;
+
+      const nameA = (a['Item Name'] || '').trim();
+      const nameB = (b['Item Name'] || '').trim();
+      return nameA.localeCompare(nameB);
+    });
+
+    return NextResponse.json(responseItems);
+  } catch (error) {
+    console.error('Error fetching menu:', error);
+    return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });
+  }
+}       .replace(/\s+/g, ' ')
         .trim();
 
       return {
