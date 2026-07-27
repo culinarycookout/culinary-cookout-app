@@ -19,51 +19,54 @@ export default function Navigation() {
 
   return (
     <>
-      {/* MOBILE – Bottom Navigation Bar */}
+      {/* ✅ MOBILE – Bottom Navigation Bar (Cart | Menu | Contact) */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          <Link
-            href="/"
-            className={`flex flex-col items-center space-y-0.5 transition ${
-              isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <span className="text-2xl">🏠</span>
-            <span className="text-[10px] font-medium">Menu</span>
-          </Link>
-
-          <Link
-            href="/contact-us"
-            className={`flex flex-col items-center space-y-0.5 transition ${
-              isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <span className="text-2xl">📬</span>
-            <span className="text-[10px] font-medium">Contact</span>
-          </Link>
-
+          {/* Cart – Left */}
           <Link
             href="/cart"
-            className={`flex flex-col items-center space-y-0.5 transition relative ${
+            className={`flex flex-col items-center space-y-0.5 transition ${
               isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
           >
             <div className="relative">
-              <span className="text-2xl">🛒</span>
+              <span className="text-3xl">🛒</span>
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                   {totalItems}
                 </span>
               )}
             </div>
-            <span className="text-[10px] font-medium">
+            <span className="text-xs font-medium">
               {totalItems > 0 ? `$${cartSubtotal.toFixed(2)}` : 'Cart'}
             </span>
+          </Link>
+
+          {/* Menu – Center */}
+          <Link
+            href="/"
+            className={`flex flex-col items-center space-y-0.5 transition ${
+              isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            <span className="text-3xl">📝</span>
+            <span className="text-xs font-medium">Menu</span>
+          </Link>
+
+          {/* Contact – Right */}
+          <Link
+            href="/contact-us"
+            className={`flex flex-col items-center space-y-0.5 transition ${
+              isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            <span className="text-3xl">📬</span>
+            <span className="text-xs font-medium">Contact</span>
           </Link>
         </div>
       </nav>
 
-      {/* DESKTOP – Left Sidebar */}
+      {/* ✅ DESKTOP – Left Sidebar (Menu | Contact | Cart) */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-20 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
         <Link
           href="/"
@@ -71,8 +74,8 @@ export default function Navigation() {
             isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
-          <span className="text-2xl">🏠</span>
-          <span className="text-[10px] font-medium">Home</span>
+          <span className="text-3xl">📝</span>
+          <span className="text-xs font-medium">Menu</span>
         </Link>
 
         <Link
@@ -81,8 +84,8 @@ export default function Navigation() {
             isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
-          <span className="text-2xl">📬</span>
-          <span className="text-[10px] font-medium">Contact</span>
+          <span className="text-3xl">📬</span>
+          <span className="text-xs font-medium">Contact</span>
         </Link>
 
         <Link
@@ -92,14 +95,14 @@ export default function Navigation() {
           }`}
         >
           <div className="relative">
-            <span className="text-2xl">🛒</span>
+            <span className="text-3xl">🛒</span>
             {totalItems > 0 && (
               <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                 {totalItems}
               </span>
             )}
           </div>
-          <span className="text-[10px] font-medium">
+          <span className="text-xs font-medium">
             {totalItems > 0 ? `$${cartSubtotal.toFixed(2)}` : 'Cart'}
           </span>
         </Link>
