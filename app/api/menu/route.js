@@ -1,5 +1,22 @@
 import { NextResponse } from 'next/server';
 
+// ✅ CUSTOM CATEGORY ORDER (in this exact order)
+const categoryOrder = {
+  'BREAKFAST': 0,
+  'SANDWICHES': 1,
+  'BURGERS': 2,
+  'FRIED SIDES': 3,
+  'BIRDS': 4,
+  'SEAFOOD': 5,
+  'BEEF': 6,
+  'LATIN AMERICA': 7,
+  'ASIAN': 8,
+  'GRILLED': 9,
+  'SOUPS & STEWS': 10,
+  'SMOKED (24-Hour Notice)': 11,
+  'BEVERAGES': 12,
+};
+
 export async function GET() {
   try {
     let allResults = [];
@@ -140,24 +157,14 @@ export async function GET() {
       });
     }
 
-    // 7. SORTING: Category → Item Type → SERVES → Name (with custom category ordering)
-    const categoryOrder = {
-      'BURGERS': 0,
-      'JR. BURGERS': 1,
-      'SLIDERS': 2,
-    };
-
+    // 7. SORTING: Use custom category order → Item Type → SERVES → Name
     responseItems.sort((a, b) => {
       const catA = (a.category || '').trim();
       const catB = (b.category || '').trim();
 
-      // BEVERAGES last
-      if (catA === 'BEVERAGES' && catB !== 'BEVERAGES') return 1;
-      if (catA !== 'BEVERAGES' && catB === 'BEVERAGES') return -1;
-
-      // 1. Sort by CATEGORY using custom order
-      const orderA = categoryOrder[catA] ?? 99;
-      const orderB = categoryOrder[catB] ?? 99;
+      // ✅ Use custom category order
+      const orderA = categoryOrder[catA] ?? 999;
+      const orderB = categoryOrder[catB] ?? 999;
       if (orderA !== orderB) return orderA - orderB;
 
       // 2. Sort by ITEM TYPE (groups like items together)
