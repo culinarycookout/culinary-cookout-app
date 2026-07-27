@@ -1,9 +1,11 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 
-// ✅ ADD-ONS DATA (same as before – keeping it complete)
+// ✅ ADD-ONS DATA
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -58,7 +60,7 @@ const isTacoTuesday = () => {
 };
 
 const getItemPrice = (item) => item?.['Price'] ?? item?.price ?? 0;
-const getItemQty = (item) => Number(item?.quantity ?? item?.qty ?? 1); // ✅ force to number
+const getItemQty = (item) => Number(item?.quantity ?? item?.qty ?? 1);
 
 export default function CartPage() {
   const {

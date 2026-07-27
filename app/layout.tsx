@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <CartProvider>
-          <Navigation /> {/* ✅ Navigation – bottom on mobile, side on desktop */}
+          <Navigation />
           <main className="flex-1 md:ml-20 pb-20 md:pb-0">
             {children}
           </main>
