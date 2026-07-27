@@ -9,13 +9,11 @@ export default function Menu() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Filter states
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterServes, setFilterServes] = useState('');
   const [filterSize, setFilterSize] = useState('');
 
-  // Track quantities for each item locally
   const [quantities, setQuantities] = useState({});
 
   useEffect(() => {
@@ -27,7 +25,6 @@ export default function Menu() {
         setItems(data);
         setFilteredItems(data);
         
-        // ✅ FIX: Initialize quantities to 0 for all items
         const initialQtys = {};
         data.forEach(item => {
           initialQtys[item.id] = 0;
@@ -42,7 +39,6 @@ export default function Menu() {
     fetchMenu();
   }, []);
 
-  // Filter items whenever search or filters change
   useEffect(() => {
     let result = items;
 
@@ -81,7 +77,6 @@ export default function Menu() {
     setFilterSize('');
   };
 
-  // ✅ FIX: Allow decrement to 0
   const handleDecrement = (id) => {
     setQuantities(prev => ({
       ...prev,
@@ -102,7 +97,6 @@ export default function Menu() {
       return;
     }
     console.log(`Added ${qty} of ${item.name} to cart!`);
-    // Reset quantity to 0 after adding
     setQuantities(prev => ({
       ...prev,
       [item.id]: 0
@@ -114,7 +108,7 @@ export default function Menu() {
 
   return (
     <div>
-      {/* Logo at the Top */}
+      {/* Logo */}
       <div className="flex justify-center mb-8">
         <img
           src="/logo.png"
@@ -123,7 +117,7 @@ export default function Menu() {
         />
       </div>
 
-      {/* Search and Filter Section */}
+      {/* Search & Filters */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -182,7 +176,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* Menu Items Grid */}
+      {/* Menu Grid - 2 cols on phone, 3 on tablet, 4 on desktop */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -194,7 +188,7 @@ export default function Menu() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredItems.map((item) => {
             const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
             const currentQty = quantities[item.id] || 0;
@@ -202,7 +196,7 @@ export default function Menu() {
             return (
               <div 
                 key={item.id} 
-                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col justify-between"
+                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col"
               >
                 <Link href={`/menu/${item.id}`} className="cursor-pointer flex-1">
                   {item.imageUrl && (
@@ -218,9 +212,8 @@ export default function Menu() {
                     <p className="text-sm text-gray-600">{item.size}</p>
                     <p className="text-sm text-gray-600">Serves: {item.serves}</p>
                     {item.description && (
-                      <p className="text-sm text-gray-700 mt-2">{item.description}</p>
+                      <p className="text-sm text-gray-700 mt-2 line-clamp-2">{item.description}</p>
                     )}
-                    
                     <p className="text-xl font-bold mt-2">
                       {isUnpriced ? (
                         <span className="text-orange-600 italic text-base">Price Pending</span>
@@ -231,13 +224,12 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* Quantity & Add to Cart Controls */}
+                {/* Quantity & Add to Cart */}
                 <div 
                   className="p-4 pt-0 bg-white" 
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex items-center justify-between gap-3 mt-4">
-                    {/* Circular Quantity Buttons */}
                     <div className="flex items-center space-x-3">
                       <button
                         onClick={() => handleDecrement(item.id)}
@@ -258,7 +250,6 @@ export default function Menu() {
                       </button>
                     </div>
 
-                    {/* Add to Cart Button */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced || currentQty === 0}
@@ -269,7 +260,7 @@ export default function Menu() {
                       }`}
                       type="button"
                     >
-                      {isUnpriced ? 'Coming Soon' : currentQty === 0 ? 'Add to Cart' : 'Add to Cart'}
+                      {isUnpriced ? 'Coming Soon' : 'Add to Cart'}
                     </button>
                   </div>
                 </div>
