@@ -11,13 +11,22 @@ export default function Home() {
     <main className="min-h-screen bg-black text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
+          {/* Logo - Tuned Separately for Mobile, Tablet, & Desktop */}
           <div className="flex-1 flex justify-center">
             <img
               src="/logo.png"
               alt="Culinary Cookout Logo"
-              style={{ height: '150px', width: 'auto', maxWidth: '100%' }}
+              style={{
+                height: '140px',
+                width: 'auto',
+                maxWidth: '100%',
+                objectFit: 'contain',
+              }}
+              className="md:h-56 lg:h-80"
             />
           </div>
+          
+          {/* Cart Icon */}
           <Link
             href="/cart"
             className="relative bg-zinc-800 hover:bg-zinc-700 p-4 rounded-full transition ml-2 flex-shrink-0"
