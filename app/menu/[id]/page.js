@@ -3,7 +3,6 @@
 import { useState, useEffect, use } from 'react';
 
 export default function ItemDetailPage({ params }) {
-  // Unwrap params using React.use() for Next.js 15+ compatibility
   const resolvedParams = use(params);
   const itemId = resolvedParams.id;
 
@@ -15,19 +14,14 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItemDetails() {
       try {
-        const res = await fetch(`/api/menu`);
+        // Fetch the specific item from Notion
+        const res = await fetch(`/api/menu/${itemId}`);
         const data = await res.json();
         
         if (res.ok) {
-          const foundItem = data.find((menuItem) => menuItem.id === itemId);
-          
-          if (foundItem) {
-            setItem(foundItem);
-          } else {
-            setError('Item not found');
-          }
+          setItem(data);
         } else {
-          setError(data.error || 'Failed to load menu');
+          setError(data.error || 'Failed to load item');
         }
       } catch (err) {
         setError('Failed to load item detail');
@@ -39,7 +33,6 @@ export default function ItemDetailPage({ params }) {
     fetchItemDetails();
   }, [itemId]);
 
-  // Toggle add-on selection state
   const handleAddOnToggle = (addOnId) => {
     setSelectedAddOns((prev) => ({
       ...prev,
@@ -63,7 +56,6 @@ export default function ItemDetailPage({ params }) {
     );
   }
 
-  // Calculate total price including selected add-ons
   const basePrice = item.price || 0;
   const addOnsTotal = (item.addOns || []).reduce((sum, addOn) => {
     return selectedAddOns[addOn.id] ? sum + (addOn.price || 0) : sum;
@@ -73,7 +65,6 @@ export default function ItemDetailPage({ params }) {
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Back button */}
         <button
           onClick={() => window.history.back()}
           className="text-red-400 hover:text-red-300 mb-4 text-lg"
@@ -82,7 +73,6 @@ export default function ItemDetailPage({ params }) {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Item Image */}
           <div>
             {item.imageUrl ? (
               <img
@@ -97,7 +87,6 @@ export default function ItemDetailPage({ params }) {
             )}
           </div>
 
-          {/* Item Details */}
           <div>
             <h1 className="text-3xl font-bold text-red-600">{item.name}</h1>
             <p className="text-zinc-400 mt-1">{item.category}</p>
@@ -113,7 +102,6 @@ export default function ItemDetailPage({ params }) {
               </p>
             </div>
 
-            {/* Add-ons Section - Using Linked Dishes relation */}
             {item.addOns && item.addOns.length > 0 && (
               <div className="mt-6">
                 <h2 className="text-xl font-bold mb-3">Add-ons</h2>
@@ -157,7 +145,6 @@ export default function ItemDetailPage({ params }) {
               </div>
             )}
 
-            {/* Total and Add to Cart */}
             <div className="mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-bold">Total</span>
