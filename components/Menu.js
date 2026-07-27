@@ -3,6 +3,23 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+// Category color mapping
+const categoryColors = {
+  'ASIAN': 'bg-red-600',
+  'BEEF': 'bg-amber-800',
+  'BIRDS': 'bg-blue-600',
+  'BREAKFAST': 'bg-yellow-500 text-black',
+  'FRIED SIDES': 'bg-orange-600',
+  'GRILLED': 'bg-green-600',
+  'LATIN AMERICA': 'bg-purple-600',
+  'SANDWICHES': 'bg-pink-600',
+  'SEAFOOD': 'bg-teal-600',
+  'SMOKED': 'bg-gray-600',
+  'SOUPS & STEWS': 'bg-lime-600',
+  'BEVERAGES': 'bg-sky-600',
+  'BURGERS': 'bg-amber-600',
+};
+
 export default function Menu() {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -188,10 +205,11 @@ export default function Menu() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {filteredItems.map((item) => {
             const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
             const currentQty = quantities[item.id] || 0;
+            const colorClass = categoryColors[item.category] || 'bg-gray-600';
 
             return (
               <div 
@@ -203,20 +221,31 @@ export default function Menu() {
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-36 md:h-48 object-cover"
                     />
                   )}
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg">{item.name}</h3>
-                    <p className="text-sm text-gray-600">{item.category}</p>
-                    <p className="text-sm text-gray-600">{item.size}</p>
-                    <p className="text-sm text-gray-600">Serves: {item.serves}</p>
-                    {item.description && (
-                      <p className="text-sm text-gray-700 mt-2 line-clamp-2">{item.description}</p>
+                  <div className="p-3 md:p-4">
+                    <h3 className="font-bold text-sm md:text-lg truncate">{item.name}</h3>
+                    
+                    {/* Category Badge with Color */}
+                    {item.category && (
+                      <span className={`inline-block ${colorClass} text-white text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
+                        {item.category}
+                      </span>
                     )}
-                    <p className="text-xl font-bold mt-2">
+                    
+                    {item.size && (
+                      <p className="text-xs md:text-sm text-gray-600">Size: {item.size}</p>
+                    )}
+                    {item.serves && (
+                      <p className="text-xs md:text-sm text-gray-600">Serves: {item.serves}</p>
+                    )}
+                    {item.description && (
+                      <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block">{item.description}</p>
+                    )}
+                    <p className="text-base md:text-xl font-bold mt-1 md:mt-2">
                       {isUnpriced ? (
-                        <span className="text-orange-600 italic text-base">Price Pending</span>
+                        <span className="text-orange-600 italic text-xs md:text-base">Price Pending</span>
                       ) : (
                         `$${Number(item.price).toFixed(2)}`
                       )}
@@ -224,36 +253,38 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* Quantity & Add to Cart */}
+                {/* Quantity & Add to Cart - Stack on mobile, side by side on desktop */}
                 <div 
-                  className="p-4 pt-0 bg-white" 
+                  className="p-3 md:p-4 pt-0 bg-white" 
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between gap-3 mt-4">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 md:mt-4">
+                    {/* Quantity Controls */}
                     <div className="flex items-center space-x-3">
                       <button
                         onClick={() => handleDecrement(item.id)}
                         disabled={isUnpriced}
-                        className="w-10 h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow"
+                        className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg shadow"
                         type="button"
                       >
                         -
                       </button>
-                      <span className="text-xl font-bold text-gray-900 w-6 text-center">{currentQty}</span>
+                      <span className="text-lg md:text-xl font-bold text-gray-900 w-5 md:w-6 text-center">{currentQty}</span>
                       <button
                         onClick={() => handleIncrement(item.id)}
                         disabled={isUnpriced}
-                        className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow"
+                        className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg shadow"
                         type="button"
                       >
                         +
                       </button>
                     </div>
 
+                    {/* Add to Cart Button - Full width on mobile */}
                     <button
                       onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
                       disabled={isUnpriced || currentQty === 0}
-                      className={`px-4 py-2.5 font-semibold rounded-lg transition shadow-md text-sm md:text-base whitespace-nowrap ${
+                      className={`w-full sm:w-auto px-3 py-2 md:px-4 md:py-2.5 font-semibold rounded-lg transition shadow-md text-xs md:text-sm lg:text-base ${
                         isUnpriced || currentQty === 0
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                           : 'bg-orange-600 hover:bg-orange-700 text-white'
