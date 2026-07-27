@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function DeliveryDetailsPage() {
+function DeliveryForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -80,7 +80,6 @@ export default function DeliveryDetailsPage() {
         ...item,
         total: (item.price || 0) * (item.quantity || 1),
       }));
-      
       router.push(
         `/thank-you?items=${encodeURIComponent(JSON.stringify(orderSummary))}&total=${total.toFixed(2)}`
       );
@@ -302,5 +301,13 @@ export default function DeliveryDetailsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DeliveryDetailsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading checkout...</div>}>
+      <DeliveryForm />
+    </Suspense>
   );
 }

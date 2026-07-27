@@ -1,8 +1,7 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 
 // ✅ ADD-ONS DATA
@@ -62,7 +61,7 @@ const isTacoTuesday = () => {
 const getItemPrice = (item) => item?.['Price'] ?? item?.price ?? 0;
 const getItemQty = (item) => Number(item?.quantity ?? item?.qty ?? 1);
 
-export default function CartPage() {
+function CartContent() {
   const {
     cart,
     duplicateItem,
@@ -215,7 +214,6 @@ export default function CartPage() {
   return (
     <div className="w-full min-h-screen bg-black text-white p-4">
       <div className="container max-w-2xl mx-auto">
-        {/* Logo */}
         <div className="flex justify-center mb-4">
           <img
             src="https://iili.io/CeCmPWJ.png"
@@ -224,7 +222,6 @@ export default function CartPage() {
           />
         </div>
 
-        {/* Header */}
         <div className="flex items-start justify-between w-full mb-6 px-2">
           <button
             onClick={() => window.location.href = "/"}
@@ -354,7 +351,6 @@ export default function CartPage() {
         )}
       </div>
 
-      {/* Customize Overlay */}
       {showCustomize && selectedItem && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col justify-between p-4 overflow-y-auto">
           <div>
@@ -481,5 +477,13 @@ export default function CartPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading cart...</div>}>
+      <CartContent />
+    </Suspense>
   );
 }

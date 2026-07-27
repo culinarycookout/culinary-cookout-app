@@ -6,7 +6,6 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen bg-black text-white p-4">
       <div className="container max-w-2xl mx-auto">
-        {/* ✅ Logo ONLY – Perfectly Centered, No Cart Button */}
         <div className="flex flex-col items-center justify-center w-full mb-6 pt-2">
           <img
             src="https://iili.io/CeCmPWJ.png"
