@@ -106,7 +106,7 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // Process menu items with EXACT Notion field names
+    // Process menu items with fallback mapping for AMOUNT
     let menuItems = allResults.map((item) => {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
@@ -117,6 +117,13 @@ export async function GET() {
         .replace(/\s+/g, ' ')
         .trim();
 
+      const amountValue = 
+        item.properties['# AMOUNT']?.number ?? 
+        item.properties['AMOUNT']?.number ?? 
+        item.properties['Amount']?.number ?? 
+        item.properties['QUANTITY']?.number ?? 
+        item.properties['Quantity']?.number ?? 0;
+
       return {
         id: item.id,
         'Item Name': name,
@@ -126,8 +133,7 @@ export async function GET() {
         'SERVES:': item.properties['SERVES:']?.select?.name || '',
         'DESCRIPTION': item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
         'Image URL': item.properties['Image URL']?.url || '',
-        // ✅ USING 'AMOUNT' (renamed from QUANTITY)
-        'AMOUNT': item.properties['# AMOUNT']?.number ?? item.properties['AMOUNT']?.number ?? 0,
+        'AMOUNT': amountValue,
         'Item Type': rawItemType || cleanName,
         'ADD-ONS': item.properties['ADD-ONS']?.relation || [],
       };
