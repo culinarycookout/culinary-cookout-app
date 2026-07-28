@@ -211,6 +211,9 @@ function CartContent() {
 
   const totalItems = cart.reduce((sum, item) => sum + getItemQty(item), 0);
 
+  // Generate 12 taco emojis for the banner
+  const tacoEmojis = '🌮'.repeat(12);
+
   return (
     <div className="w-full min-h-screen bg-black text-white p-4 pb-24">
       <div className="container max-w-2xl mx-auto">
@@ -242,11 +245,11 @@ function CartContent() {
           </div>
         </div>
 
-        {/* ✅ TACO TUESDAY DISCOUNT MESSAGE – fixed layout */}
+        {/* ✅ TACO TUESDAY BANNER – no emojis on first line, 12 taco emojis on second */}
         {isTacoActive && (
           <div className="bg-yellow-600 text-black p-3 rounded-xl text-center font-bold mb-4">
             <div className="text-base md:text-lg">TACO TUESDAY – 50% OFF ALL TACOS!</div>
-            <div className="text-sm font-normal text-black/70">12 tacos</div>
+            <div className="text-2xl mt-1 tracking-wide">{tacoEmojis}</div>
           </div>
         )}
 
@@ -265,7 +268,7 @@ function CartContent() {
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
-                // ✅ Get the actual quantity from Notion (item['QUANTITY'] or item.quantity)
+                // ✅ Get the Notion QUANTITY field (e.g., 6 for Taco Pack)
                 const notionQuantity = item['QUANTITY'] ?? item?.quantity ?? 0;
 
                 return (
@@ -273,7 +276,7 @@ function CartContent() {
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
-                        {/* ✅ Display quantity from Notion */}
+                        {/* ✅ Display the Notion quantity if it exists */}
                         {notionQuantity > 0 && (
                           <p className="text-sm text-zinc-400">
                             {notionQuantity} {notionQuantity === 1 ? 'item' : 'items'}
