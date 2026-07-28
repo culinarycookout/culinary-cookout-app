@@ -153,7 +153,7 @@ export default function Menu() {
         </div>
       )}
 
-      {/* ✅ FILTERS – Mobile: Category fills rest, Serves locked 0.8fr, Size 0.7fr */}
+      {/* FILTERS – Mobile: Category fills rest, Serves 0.6fr, Sizes 0.5fr */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -163,7 +163,7 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        <div className="grid grid-cols-[1fr_0.8fr_0.7fr] sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-[1fr_0.6fr_0.5fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -212,7 +212,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* ✅ MENU GRID – "Gimme This!" button now visible on desktop */}
+      {/* MENU GRID */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -288,47 +288,45 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* ✅ Quantity & Add to Cart – Fixed for desktop */}
+                {/* ✅ Quantity & Add to Cart – Button UNDER the arrows */}
                 <div
                   className="p-3 md:p-4 pt-0 bg-white mt-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex flex-row items-center justify-between gap-2 mt-2 md:mt-4">
-                    {/* Quantity controls */}
-                    <div className="flex items-center space-x-2 md:space-x-3 flex-shrink-0">
-                      <button
-                        onClick={() => handleDecrement(item.id)}
-                        disabled={isUnpriced}
-                        className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg shadow"
-                        type="button"
-                      >
-                        −
-                      </button>
-                      <span className="text-lg md:text-xl font-bold text-gray-900 w-5 md:w-6 text-center">{currentQty}</span>
-                      <button
-                        onClick={() => handleIncrement(item.id)}
-                        disabled={isUnpriced}
-                        className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg shadow"
-                        type="button"
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    {/* ✅ "Gimme This!" button – always visible on desktop */}
+                  {/* Quantity controls row */}
+                  <div className="flex items-center justify-center space-x-3 mb-2">
                     <button
-                      onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
-                      disabled={isUnpriced || currentQty === 0}
-                      className={`px-3 py-2 md:px-4 md:py-2.5 font-semibold rounded-lg transition shadow-md text-xs md:text-sm lg:text-base text-white whitespace-nowrap ${
-                        isUnpriced || currentQty === 0
-                          ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                          : 'bg-[#0BDA51] hover:bg-[#09C448]'
-                      }`}
+                      onClick={() => handleDecrement(item.id)}
+                      disabled={isUnpriced}
+                      className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg shadow"
                       type="button"
                     >
-                      {isUnpriced ? 'Coming Soon' : 'Gimme This!😋'}
+                      −
+                    </button>
+                    <span className="text-lg md:text-xl font-bold text-gray-900 w-5 md:w-6 text-center">{currentQty}</span>
+                    <button
+                      onClick={() => handleIncrement(item.id)}
+                      disabled={isUnpriced}
+                      className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg shadow"
+                      type="button"
+                    >
+                      +
                     </button>
                   </div>
+
+                  {/* "Gimme This!" button – full width, below arrows */}
+                  <button
+                    onClick={() => !isUnpriced && handleAddToCart(item, currentQty)}
+                    disabled={isUnpriced || currentQty === 0}
+                    className={`w-full px-4 py-2.5 font-semibold rounded-lg transition shadow-md text-sm md:text-base text-white ${
+                      isUnpriced || currentQty === 0
+                        ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                        : 'bg-[#0BDA51] hover:bg-[#09C448]'
+                    }`}
+                    type="button"
+                  >
+                    {isUnpriced ? 'Coming Soon' : 'Gimme This!😋'}
+                  </button>
                 </div>
               </div>
             );
