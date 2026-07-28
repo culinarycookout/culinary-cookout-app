@@ -51,13 +51,12 @@ export default function Menu() {
         });
         setQuantities(initialQtys);
 
-        // ✅ TACO TUESDAY CHECK – using Pacific Time
+        // ✅ TACO TUESDAY CHECK – Pacific Time
         const now = new Date();
         const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
         const dayOfWeek = pacificTime.getDay();
         const hours = pacificTime.getHours();
 
-        // Tuesday 12:00 AM → Wednesday 1:00 AM Pacific Time
         const isTuesday = dayOfWeek === 2 && hours >= 0;
         const isWednesdayEarly = dayOfWeek === 3 && hours < 1;
         const isTacoTue = isTuesday || isWednesdayEarly;
@@ -141,20 +140,20 @@ export default function Menu() {
 
   return (
     <div className="w-full">
-      {/* ✅ TACO TUESDAY BANNER – Visible on client side when condition is met */}
+      {/* ✅ TACO TUESDAY BANNER – 🌮🌮🪅 50% OFF! ALL TACOS! 🎉🌮🌮 */}
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-3xl">🌮🪅</span>
+            <span className="text-3xl">🌮🌮🪅</span>
             <span className="text-2xl md:text-3xl font-black text-red-700">50% OFF‼️</span>
             <span className="text-2xl md:text-3xl font-black text-black">ALL TACOS!</span>
-            <span className="text-3xl">🎉</span>
+            <span className="text-3xl">🎉🌮🌮</span>
           </div>
           <p className="text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
         </div>
       )}
 
-      {/* FILTERS – Mobile: Category 1fr, Serves 0.6fr, Sizes 0.55fr */}
+      {/* FILTERS – LOCKED: Category 1fr, Serves 0.6fr, Sizes 0.55fr */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -213,7 +212,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* MENU GRID */}
+      {/* MENU GRID – "Gimme This!" under quantity */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -289,7 +288,7 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* ✅ Quantity & Add to Cart – Button UNDER arrows */}
+                {/* Quantity & Add to Cart */}
                 <div
                   className="p-3 md:p-4 pt-0 bg-white mt-auto"
                   onClick={(e) => e.stopPropagation()}
