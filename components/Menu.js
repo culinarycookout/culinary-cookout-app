@@ -140,7 +140,7 @@ export default function Menu() {
 
   return (
     <div className="w-full">
-      {/* ✅ TACO TUESDAY BANNER – 🌮🌮🪅 50% OFF! ALL TACOS! 🎉🌮🌮 */}
+      {/* ✅ TACO TUESDAY BANNER – Visible on all devices, no responsive hiding */}
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
           <div className="flex items-center justify-center gap-2 flex-wrap">
@@ -212,7 +212,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* MENU GRID – "Gimme This!" under quantity */}
+      {/* MENU GRID – unchanged */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>

@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 
-// ✅ ADD-ONS DATA (complete)
+// ✅ ADD-ONS DATA (complete – include your full list here)
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -223,7 +223,7 @@ function CartContent() {
           />
         </div>
 
-        {/* Header */}
+        {/* ✅ HEADER with Taco emoji */}
         <div className="flex items-start justify-between w-full mb-6 px-2">
           <button
             onClick={() => window.location.href = "/"}
@@ -234,8 +234,9 @@ function CartContent() {
 
           <div className="flex flex-col items-end text-right">
             <div className="flex items-center space-x-2">
-              <span className="text-lg">🛒</span>
+              <span className="text-lg">🌮</span>
               <h1 className="text-2xl md:text-3xl font-bold text-red-600 leading-tight">Your Cart</h1>
+              <span className="text-lg">🌮</span>
             </div>
             <span className="text-xs md:text-sm text-zinc-400 mt-1 block">
               ({totalItems} {totalItems === 1 ? 'item' : 'items'})
@@ -243,9 +244,10 @@ function CartContent() {
           </div>
         </div>
 
+        {/* TACO TUESDAY DISCOUNT MESSAGE with taco emojis */}
         {isTacoActive && (
           <div className="bg-yellow-600 text-black p-3 rounded-xl text-center font-bold mb-4">
-            🎉 TACO TUESDAY – 50% OFF ALL TACOS!
+            <span className="text-xl">🌮</span> TACO TUESDAY – 50% OFF ALL TACOS! <span className="text-xl">🌮</span>
           </div>
         )}
 
@@ -258,7 +260,9 @@ function CartContent() {
                 const total = calculateItemTotal(item);
                 const qty = getItemQty(item);
                 const price = getItemPrice(item);
+                const originalPrice = item?.originalPrice ?? price;
                 const isTaco = item?.name && item.name.toUpperCase().includes("TACO");
+                const hasDiscount = isTacoActive && isTaco;
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
@@ -273,11 +277,12 @@ function CartContent() {
                         {item?.notes && (
                           <p className="text-sm text-zinc-400 mt-1">Notes: {item.notes}</p>
                         )}
-                        {isTacoActive && isTaco && (
-                          <p className="text-xs text-zinc-500 mt-1">
-                            <span className="line-through">${(price * qty).toFixed(2)}</span>
-                            {' '}→ 50% OFF!
-                          </p>
+                        {hasDiscount && (
+                          <div className="mt-1">
+                            <span className="text-sm text-zinc-500 line-through">${(originalPrice * qty).toFixed(2)}</span>
+                            <span className="text-sm text-red-400 ml-2 font-bold">${(price * qty).toFixed(2)}</span>
+                            <span className="text-xs text-green-400 ml-2">🎉 Discounted</span>
+                          </div>
                         )}
                       </div>
                       <div className="text-right">
@@ -303,7 +308,6 @@ function CartContent() {
                         </button>
                       </div>
 
-                      {/* Duplicate Button – "Build Another" */}
                       <button
                         onClick={() => duplicateItem(item.cartInstanceId)}
                         className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium px-2 transition-colors"
@@ -313,7 +317,6 @@ function CartContent() {
                         <span className="text-lg">👨🏾‍🍳</span>
                       </button>
 
-                      {/* ✅ Customize Button – emoji moved under the word */}
                       <button
                         onClick={() => openCustomize(item.cartInstanceId)}
                         className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium ml-1 transition-colors"
@@ -322,7 +325,6 @@ function CartContent() {
                         <span className="text-base">📝</span>
                       </button>
 
-                      {/* Remove – red */}
                       <button
                         onClick={() => removeFromCart(item.cartInstanceId)}
                         className="text-red-400 hover:text-red-300 text-sm font-medium ml-auto"
@@ -362,7 +364,7 @@ function CartContent() {
         )}
       </div>
 
-      {/* Customize Overlay */}
+      {/* Customize Overlay (unchanged) */}
       {showCustomize && selectedItem && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col justify-between p-4 overflow-y-auto">
           <div>
