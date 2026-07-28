@@ -262,8 +262,17 @@ function CartContent() {
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
-                // ✅ AMOUNT FROM NOTION (pack size)
-                const itemAmount = Number(item['AMOUNT'] ?? 0);
+                // ✅ AMOUNT FROM NOTION (pack size) — ROBUST FALLBACK
+                const itemAmount = Number(
+                  item['AMOUNT'] ??
+                  item['# AMOUNT'] ??
+                  item.AMOUNT ??
+                  item['QUANTITY'] ??
+                  item.QUANTITY ??
+                  item['Quantity'] ??
+                  item.quantity ??
+                  0
+                );
 
                 const itemSize = item['SIZE'] ?? item.size ?? item['Size'] ?? '';
 
