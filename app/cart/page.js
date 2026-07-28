@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 
-// ✅ ADD-ONS DATA (complete – include your full list here)
+// ✅ ADD-ONS DATA (complete)
 const addonsData = {
   "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
   "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
@@ -223,7 +223,7 @@ function CartContent() {
           />
         </div>
 
-        {/* ✅ HEADER with Taco emoji */}
+        {/* ✅ HEADER */}
         <div className="flex items-start justify-between w-full mb-6 px-2">
           <button
             onClick={() => window.location.href = "/"}
@@ -234,9 +234,7 @@ function CartContent() {
 
           <div className="flex flex-col items-end text-right">
             <div className="flex items-center space-x-2">
-              <span className="text-lg">🌮</span>
               <h1 className="text-2xl md:text-3xl font-bold text-red-600 leading-tight">Your Cart</h1>
-              <span className="text-lg">🌮</span>
             </div>
             <span className="text-xs md:text-sm text-zinc-400 mt-1 block">
               ({totalItems} {totalItems === 1 ? 'item' : 'items'})
@@ -244,10 +242,11 @@ function CartContent() {
           </div>
         </div>
 
-        {/* TACO TUESDAY DISCOUNT MESSAGE with taco emojis */}
+        {/* ✅ TACO TUESDAY DISCOUNT MESSAGE – fixed layout */}
         {isTacoActive && (
           <div className="bg-yellow-600 text-black p-3 rounded-xl text-center font-bold mb-4">
-            <span className="text-xl">🌮</span> TACO TUESDAY – 50% OFF ALL TACOS! <span className="text-xl">🌮</span>
+            <div className="text-base md:text-lg">TACO TUESDAY – 50% OFF ALL TACOS!</div>
+            <div className="text-sm font-normal text-black/70">12 tacos</div>
           </div>
         )}
 
@@ -266,11 +265,20 @@ function CartContent() {
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
+                // ✅ Get the actual quantity from Notion (item['QUANTITY'] or item.quantity)
+                const notionQuantity = item['QUANTITY'] ?? item?.quantity ?? 0;
+
                 return (
                   <div key={item.cartInstanceId} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
+                        {/* ✅ Display quantity from Notion */}
+                        {notionQuantity > 0 && (
+                          <p className="text-sm text-zinc-400">
+                            {notionQuantity} {notionQuantity === 1 ? 'item' : 'items'}
+                          </p>
+                        )}
                         {addonNames && (
                           <p className="text-sm text-zinc-400">Add-ons: {addonNames}</p>
                         )}
@@ -291,7 +299,6 @@ function CartContent() {
                     </div>
 
                     <div className="flex items-center gap-2 mt-2 flex-wrap">
-                      {/* Quantity controls */}
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => updateQuantity(item.cartInstanceId, qty - 1)}
