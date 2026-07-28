@@ -226,7 +226,6 @@ function CartContent() {
           />
         </div>
 
-        {/* HEADER */}
         <div className="flex items-start justify-between w-full mb-6 px-2">
           <button
             onClick={() => window.location.href = "/"}
@@ -245,7 +244,6 @@ function CartContent() {
           </div>
         </div>
 
-        {/* TACO TUESDAY BANNER */}
         {isTacoActive && (
           <div className="bg-yellow-600 text-black p-3 rounded-xl text-center font-bold mb-4">
             <div className="text-base md:text-lg">TACO TUESDAY – 50% OFF ALL TACOS!</div>
@@ -268,18 +266,18 @@ function CartContent() {
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
-                // ✅ Robust detection for Notion QUANTITY and SIZE fields
+                // ✅ ROBUST QUANTITY DETECTION
                 const notionQuantity = Number(
                   item['QUANTITY'] ??
                   item.QUANTITY ??
                   item['Quantity'] ??
                   item.quantity ??
+                  item['Serving Count'] ??
                   item['Pack Size'] ??
-                  item['Serving Size'] ??
                   0
                 );
 
-                const itemSize = item['Size'] ?? item.size ?? item['Serving Size'] ?? '';
+                const itemSize = item['SIZE'] ?? item.size ?? item['Size'] ?? '';
 
                 return (
                   <div key={item.cartInstanceId} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
@@ -287,17 +285,15 @@ function CartContent() {
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
                         
-                        {/* ✅ Display Size if available */}
                         {itemSize && (
                           <p className="text-sm text-red-400 font-medium">
                             Size: {itemSize}
                           </p>
                         )}
 
-                        {/* ✅ Display Notion quantity / pack count */}
                         {notionQuantity > 0 && (
                           <p className="text-sm text-zinc-300">
-                            Serving Count: <span className="font-bold text-white">{notionQuantity}</span> {notionQuantity === 1 ? 'item per order' : 'items per order'}
+                            Serving Count: <span className="font-bold text-white">{notionQuantity}</span> {notionQuantity === 1 ? 'item' : 'items'} per order
                           </p>
                         )}
 
@@ -393,7 +389,6 @@ function CartContent() {
         )}
       </div>
 
-      {/* Customize Overlay */}
       {showCustomize && selectedItem && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col justify-between p-4 overflow-y-auto">
           <div>
