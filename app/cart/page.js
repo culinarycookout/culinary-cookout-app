@@ -98,7 +98,8 @@ function CartContent() {
     }, 0);
 
     let total = baseTotal + addOnTotal;
-    if (isTacoActive && item?.name && item.name.toUpperCase().includes("TACO")) {
+    const itemName = item['Item Name'] || item.name || '';
+    if (isTacoActive && itemName.toUpperCase().includes("TACO")) {
       total = total * 0.5;
     }
     return total;
@@ -261,12 +262,13 @@ function CartContent() {
                 const qty = getItemQty(item);
                 const price = getItemPrice(item);
                 const originalPrice = item?.originalPrice ?? price;
-                const isTaco = item?.name && item.name.toUpperCase().includes("TACO");
+                const itemName = item['Item Name'] || item.name || '';
+                const isTaco = itemName.toUpperCase().includes("TACO");
                 const hasDiscount = isTacoActive && isTaco;
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
-                // ✅ ROBUST QUANTITY DETECTION
+                // ✅ QUANTITY FROM NOTION
                 const notionQuantity = Number(
                   item['QUANTITY'] ??
                   item.QUANTITY ??
@@ -291,9 +293,12 @@ function CartContent() {
                           </p>
                         )}
 
+                        {/* ✅ SERVING COUNT FROM NOTION */}
                         {notionQuantity > 0 && (
                           <p className="text-sm text-zinc-300">
-                            Serving Count: <span className="font-bold text-white">{notionQuantity}</span> {notionQuantity === 1 ? 'item' : 'items'} per order
+                            <span className="text-zinc-400">Serving Count:</span>{' '}
+                            <span className="font-bold text-white">{notionQuantity}</span>
+                            {notionQuantity === 1 ? ' item' : ' items'} per order
                           </p>
                         )}
 
@@ -316,7 +321,8 @@ function CartContent() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    {/* ✅ BUTTONS ROW — SPACED PERFECTLY */}
+                    <div className="flex items-center gap-3 sm:gap-4 mt-3 flex-wrap">
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => updateQuantity(item.cartInstanceId, qty - 1)}
@@ -335,7 +341,7 @@ function CartContent() {
 
                       <button
                         onClick={() => duplicateItem(item.cartInstanceId)}
-                        className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium px-2 transition-colors"
+                        className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium transition-colors"
                       >
                         <span>Build</span>
                         <span>Another</span>
@@ -344,7 +350,7 @@ function CartContent() {
 
                       <button
                         onClick={() => openCustomize(item.cartInstanceId)}
-                        className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium ml-1 transition-colors"
+                        className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium transition-colors"
                       >
                         <span>Customize</span>
                         <span className="text-base">📝</span>
@@ -498,7 +504,8 @@ function CartContent() {
                     addOnTotal += cost * Number(addonQty) * qty;
                   });
                   let total = baseTotal + addOnTotal;
-                  if (isTacoActive && selectedItem.name && selectedItem.name.toUpperCase().includes("TACO")) {
+                  const itemName = selectedItem['Item Name'] || selectedItem.name || '';
+                  if (isTacoActive && itemName.toUpperCase().includes("TACO")) {
                     total = total * 0.5;
                   }
                   return total.toFixed(2);
