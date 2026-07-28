@@ -126,7 +126,8 @@ export async function GET() {
         'SERVES:': item.properties['SERVES:']?.select?.name || '',
         'DESCRIPTION': item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
         'Image URL': item.properties['Image URL']?.url || '',
-        'QUANTITY': item.properties['QUANTITY']?.number || 0,
+        // ✅ FIXED: Using 'AMOUNT' to match renamed Notion column
+        'AMOUNT': item.properties['# AMOUNT']?.number ?? item.properties['AMOUNT']?.number ?? 0,
         'Item Type': rawItemType || cleanName,
         'ADD-ONS': item.properties['ADD-ONS']?.relation || [],
       };

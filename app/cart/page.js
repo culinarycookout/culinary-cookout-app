@@ -212,13 +212,11 @@ function CartContent() {
 
   const totalItems = cart.reduce((sum, item) => sum + getItemQty(item), 0);
 
-  // Generate 12 taco emojis for the banner
   const tacoEmojis = '🌮'.repeat(12);
 
   return (
     <div className="w-full min-h-screen bg-black text-white p-4 pb-24">
       <div className="container max-w-2xl mx-auto">
-        {/* Logo */}
         <div className="flex justify-center mb-4">
           <img
             src="https://iili.io/CeCmPWJ.png"
@@ -268,16 +266,8 @@ function CartContent() {
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
-                // ✅ QUANTITY FROM NOTION
-                const notionQuantity = Number(
-                  item['QUANTITY'] ??
-                  item.QUANTITY ??
-                  item['Quantity'] ??
-                  item.quantity ??
-                  item['Serving Count'] ??
-                  item['Pack Size'] ??
-                  0
-                );
+                // ✅ AMOUNT FROM NOTION (pack size)
+                const itemAmount = Number(item['AMOUNT'] ?? 0);
 
                 const itemSize = item['SIZE'] ?? item.size ?? item['Size'] ?? '';
 
@@ -293,12 +283,12 @@ function CartContent() {
                           </p>
                         )}
 
-                        {/* ✅ SERVING COUNT FROM NOTION */}
-                        {notionQuantity > 0 && (
+                        {/* ✅ INCLUDED: AMOUNT FROM NOTION */}
+                        {itemAmount > 0 && (
                           <p className="text-sm text-zinc-300">
-                            <span className="text-zinc-400">Serving Count:</span>{' '}
-                            <span className="font-bold text-white">{notionQuantity}</span>
-                            {notionQuantity === 1 ? ' item' : ' items'} per order
+                            <span className="text-zinc-400">Included:</span>{' '}
+                            <span className="font-bold text-white">{itemAmount}</span>
+                            {itemAmount === 1 ? ' item' : ' items'} per order
                           </p>
                         )}
 
@@ -321,7 +311,6 @@ function CartContent() {
                       </div>
                     </div>
 
-                    {/* ✅ BUTTONS ROW — SPACED PERFECTLY */}
                     <div className="flex items-center gap-3 sm:gap-4 mt-3 flex-wrap">
                       <div className="flex items-center space-x-2">
                         <button
