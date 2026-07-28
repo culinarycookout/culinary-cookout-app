@@ -106,7 +106,7 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // Process menu items with fallback mapping for AMOUNT
+    // Process menu items with dynamic property scanning for AMOUNT
     let menuItems = allResults.map((item) => {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
@@ -117,12 +117,15 @@ export async function GET() {
         .replace(/\s+/g, ' ')
         .trim();
 
-      const amountValue = 
-        item.properties['# AMOUNT']?.number ?? 
-        item.properties['AMOUNT']?.number ?? 
-        item.properties['Amount']?.number ?? 
-        item.properties['QUANTITY']?.number ?? 
-        item.properties['Quantity']?.number ?? 0;
+      // Dynamic scan: find any property containing AMOUNT or QUANTITY that holds a number
+      let amountValue = 0;
+      for (const [key, prop] of Object.entries(item.properties)) {
+        const upperKey = key.toUpperCase();
+        if ((upperKey.includes('AMOUNT') || upperKey.includes('QUANTITY')) && prop?.type === 'number' && typeof prop.number === 'number') {
+          amountValue = prop.number;
+          break;
+        }
+      }
 
       return {
         id: item.id,
