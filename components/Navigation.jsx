@@ -17,6 +17,9 @@ export default function Navigation() {
 
   const isActive = (path) => pathname === path;
 
+  // Cache-busting: add timestamp to force reload
+  const menuImageSrc = `/menu.png?t=${Date.now()}`;
+
   return (
     <>
       {/* ✅ MOBILE – Bottom Navigation Bar */}
@@ -25,7 +28,7 @@ export default function Navigation() {
           {/* Cart */}
           <Link
             href="/cart"
-            className={`flex flex-col items-center space-y-0.5 transition ${
+            className={`flex flex-col items-center transition ${
               isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -37,79 +40,74 @@ export default function Navigation() {
                 </span>
               )}
             </div>
-            <span className="text-xs font-medium">
-              {totalItems > 0 ? `$${cartSubtotal.toFixed(2)}` : 'Cart'}
-            </span>
           </Link>
 
-          {/* ✅ Menu – Custom image with fallback */}
+          {/* Menu PNG – NO TEXT */}
           <Link
             href="/"
-            className={`flex flex-col items-center space-y-0.5 transition ${
-              isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+            className={`flex items-center justify-center transition ${
+              isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'
             }`}
           >
-            <div className="relative">
-              <img
-                src="/menu.png"
-                alt="Menu"
-                className="h-8 w-8 object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<span class="text-3xl">📝</span>';
-                }}
-              />
-            </div>
-            <span className="text-xs font-medium">Menu</span>
+            <img
+              src={menuImageSrc}
+              alt="Menu"
+              className="h-16 w-16 object-contain"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                const parent = e.target.parentElement;
+                parent.innerHTML = '<span class="text-3xl">📝</span>';
+              }}
+            />
           </Link>
 
           {/* Contact */}
           <Link
             href="/contact-us"
-            className={`flex flex-col items-center space-y-0.5 transition ${
+            className={`flex flex-col items-center transition ${
               isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
           >
             <span className="text-3xl">📬</span>
-            <span className="text-xs font-medium">Contact</span>
           </Link>
         </div>
       </nav>
 
-      {/* ✅ DESKTOP – Left Sidebar */}
-      <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-6 z-50 shadow-2xl">
-        {/* ✅ Menu – Custom image with fallback */}
+      {/* ✅ DESKTOP – Left Sidebar – NO TEXT */}
+      <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
+        {/* Menu PNG – NO TEXT */}
         <Link
           href="/"
-          className={`flex flex-col items-center space-y-1 transition ${
-            isActive('/') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+          className={`flex items-center justify-center transition ${
+            isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'
           }`}
         >
           <img
-            src="/menu.png"
+            src={menuImageSrc}
             alt="Menu"
-            className="h-10 w-10 object-contain"
+            className="h-20 w-20 object-contain"
             onError={(e) => {
               e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = '<span class="text-5xl">📝</span>';
+              const parent = e.target.parentElement;
+              parent.innerHTML = '<span class="text-5xl">📝</span>';
             }}
           />
-          <span className="text-sm font-medium">Menu</span>
         </Link>
 
+        {/* Contact */}
         <Link
           href="/contact-us"
-          className={`flex flex-col items-center space-y-1 transition ${
+          className={`flex flex-col items-center transition ${
             isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
           <span className="text-5xl">📬</span>
-          <span className="text-sm font-medium">Contact</span>
         </Link>
 
+        {/* Cart */}
         <Link
           href="/cart"
-          className={`flex flex-col items-center space-y-1 transition relative ${
+          className={`flex flex-col items-center transition relative ${
             isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
@@ -121,9 +119,6 @@ export default function Navigation() {
               </span>
             )}
           </div>
-          <span className="text-sm font-medium">
-            {totalItems > 0 ? `$${cartSubtotal.toFixed(2)}` : 'Cart'}
-          </span>
         </Link>
       </nav>
     </>

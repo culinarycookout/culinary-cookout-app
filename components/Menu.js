@@ -153,7 +153,7 @@ export default function Menu() {
         </div>
       )}
 
-      {/* ✅ SEARCH & FILTERS – Mobile: Category gets more space, Serves & Sizes 30% smaller */}
+      {/* FILTERS – Mobile: Category slightly wider, Serves & Sizes slightly smaller */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -163,8 +163,7 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        {/* ✅ Mobile: Category gets more space, Serves & Sizes narrower */}
-        <div className="grid grid-cols-[2fr_0.7fr_0.7fr] sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-[1.8fr_0.8fr_0.6fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -213,7 +212,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* MENU GRID */}
+      {/* MENU GRID (unchanged) */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
