@@ -268,27 +268,39 @@ function CartContent() {
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
 
-                // ✅ GG's robust quantity fallback – all variations covered
+                // ✅ Robust detection for Notion QUANTITY and SIZE fields
                 const notionQuantity = Number(
                   item['QUANTITY'] ??
                   item.QUANTITY ??
                   item['Quantity'] ??
                   item.quantity ??
-                  item?.packSize ??
+                  item['Pack Size'] ??
+                  item['Serving Size'] ??
                   0
                 );
+
+                const itemSize = item['Size'] ?? item.size ?? item['Serving Size'] ?? '';
 
                 return (
                   <div key={item.cartInstanceId} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
-                        {/* ✅ Display Notion quantity */}
-                        {notionQuantity > 0 && (
-                          <p className="text-sm text-zinc-400">
-                            Quantity: {notionQuantity} {notionQuantity === 1 ? 'item' : 'items'}
+                        
+                        {/* ✅ Display Size if available */}
+                        {itemSize && (
+                          <p className="text-sm text-red-400 font-medium">
+                            Size: {itemSize}
                           </p>
                         )}
+
+                        {/* ✅ Display Notion quantity / pack count */}
+                        {notionQuantity > 0 && (
+                          <p className="text-sm text-zinc-300">
+                            Serving Count: <span className="font-bold text-white">{notionQuantity}</span> {notionQuantity === 1 ? 'item per order' : 'items per order'}
+                          </p>
+                        )}
+
                         {addonNames && (
                           <p className="text-sm text-zinc-400">Add-ons: {addonNames}</p>
                         )}
