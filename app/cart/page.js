@@ -97,12 +97,8 @@ function CartContent() {
       return acc + (addonPrice * addonQty * qty);
     }, 0);
 
-    let total = baseTotal + addOnTotal;
-    const itemName = item['Item Name'] || item.name || '';
-    if (isTacoActive && itemName.toUpperCase().includes("TACO")) {
-      total = total * 0.5;
-    }
-    return total;
+    // ✅ Discount is already applied in the API — no duplicate discount here
+    return baseTotal + addOnTotal;
   };
 
   const openCustomize = (cartInstanceId) => {
@@ -493,10 +489,7 @@ function CartContent() {
                     addOnTotal += cost * Number(addonQty) * qty;
                   });
                   let total = baseTotal + addOnTotal;
-                  const itemName = selectedItem['Item Name'] || selectedItem.name || '';
-                  if (isTacoActive && itemName.toUpperCase().includes("TACO")) {
-                    total = total * 0.5;
-                  }
+                  // ✅ Discount is already applied in the API — no duplicate discount here
                   return total.toFixed(2);
                 })()}
               </span>
