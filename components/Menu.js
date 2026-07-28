@@ -264,6 +264,11 @@ export default function Menu() {
                     {item['SIZE'] && (
                       <p className="text-xs md:text-sm text-gray-600">Size: {item['SIZE']}</p>
                     )}
+                    {item['AMOUNT'] > 0 && (
+                      <p className="text-xs md:text-sm text-gray-600 font-medium">
+                        Included: {item['AMOUNT']} items per order
+                      </p>
+                    )}
                     {item['SERVES:'] && (
                       <p className="text-xs md:text-sm text-gray-600">Serves: {item['SERVES:']}</p>
                     )}
