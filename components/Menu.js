@@ -153,7 +153,7 @@ export default function Menu() {
         </div>
       )}
 
-      {/* FILTERS – Mobile: Category slightly wider, Serves & Sizes slightly smaller */}
+      {/* ✅ FINAL MOBILE FILTERS – Category fills rest, Serves locked 0.8fr, Size 0.7fr */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -163,7 +163,7 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        <div className="grid grid-cols-[1.8fr_0.8fr_0.6fr] sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-[1fr_0.8fr_0.7fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
