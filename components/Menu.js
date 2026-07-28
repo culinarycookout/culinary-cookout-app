@@ -153,7 +153,7 @@ export default function Menu() {
         </div>
       )}
 
-      {/* FILTERS – Mobile: Category fills rest, Serves 0.6fr, Sizes 0.5fr */}
+      {/* ✅ MOBILE FILTERS: Category 1fr, Serves 0.6fr, Sizes 0.55fr */}
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -163,7 +163,7 @@ export default function Menu() {
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
         />
 
-        <div className="grid grid-cols-[1fr_0.6fr_0.5fr] sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-[1fr_0.6fr_0.55fr] sm:grid-cols-3 gap-2">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -212,7 +212,7 @@ export default function Menu() {
         </p>
       </div>
 
-      {/* MENU GRID */}
+      {/* MENU GRID – "Gimme This!" button under quantity */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-12 bg-zinc-900 rounded-xl border border-zinc-800">
           <p className="text-zinc-400">No items match your filters.</p>
@@ -288,7 +288,7 @@ export default function Menu() {
                   </div>
                 </Link>
 
-                {/* ✅ Quantity & Add to Cart – Button UNDER the arrows */}
+                {/* ✅ Quantity & Add to Cart – Button UNDER arrows */}
                 <div
                   className="p-3 md:p-4 pt-0 bg-white mt-auto"
                   onClick={(e) => e.stopPropagation()}
