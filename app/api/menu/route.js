@@ -1,80 +1,14 @@
 import { NextResponse } from 'next/server';
 
-// ✅ CATEGORY ORDER
-const categoryOrder = {
-  'BREAKFAST': 0,
-  'SANDWICHES': 1,
-  'BURGERS': 2,
-  'FRIED SIDES': 3,
-  'BIRDS': 4,
-  'BEEF': 5,
-  'SEAFOOD': 6,
-  'LATIN AMERICA': 7,
-  'ASIAN': 8,
-  'GRILLED': 9,
-  'SOUPS & STEWS': 10,
-  'SMOKED (24-Hour Notice)': 11,
-  'BEVERAGES': 12,
-};
-
-// ✅ SERVES RANK
-const getServesRank = (serves) => {
-  const s = (serves || '').trim();
-  if (s.includes('1 Person')) return 1;
-  if (s.includes('1-2')) return 2;
-  if (s.includes('2 People')) return 3;
-  if (s.includes('2-3')) return 4;
-  if (s.includes('3-4')) return 5;
-  if (s.includes('4 People')) return 6;
-  if (s.includes('4-6')) return 7;
-  if (s.includes('6-8')) return 8;
-  if (s.includes('8-10')) return 9;
-  return 99;
-};
-
-// ✅ ADD-ONS DATA
-const addonsData = {
-  "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Fried Shrimp": { cost: 7.50, description: "4 colossal deep-fried shrimp slices.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Fried Snapper": { cost: 5.00, description: "A deep-fried fish fillet.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Turkey Patty": { cost: 2.50, description: "A turkey patty.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Jr. Beef Patty": { cost: 2.25, description: "An all-beef patty.", heatLevel: "", categories: ["JR.BURGER"], countable: true },
-  "Jr. Bird Patty": { cost: 1.50, description: "A turkey patty.", heatLevel: "", categories: ["JR.BURGER"], countable: true },
-  "Mushroom Patty": { cost: 3.00, description: "A portabella patty.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Egg Patty": { cost: 1.00, description: "A scrambled egg.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Bacon": { cost: 1.75, description: "2 turkey strips.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "1000 Sauce": { cost: 1.00, description: "A tangy dressing.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "1000 Sauce (Extra)": { cost: 1.50, description: "A creamy flavor burst.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Habanero Mayo": { cost: 1.00, description: "A kick in the buns.", heatLevel: "Hot", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Habanero Mayo (Extra)": { cost: 1.50, description: "A double kick in the buns.", heatLevel: "Hot", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Ketchup": { cost: 0.25, description: "A tomato classic.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Ketchup (Extra)": { cost: 0.50, description: "Twice the fun in a bun.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mayo": { cost: 0.25, description: "Creamy mayonnaise.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mayo (Extra)": { cost: 0.50, description: "Both sides of the bun.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mustard": { cost: 0.25, description: "A tangy condiment compliment.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mustard (Extra)": { cost: 0.50, description: "2-sided tanginess.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Spicy": { cost: 0.25, description: "Hot sauce.", heatLevel: "Medium", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Xtreme Sauce": { cost: 0.25, description: "Xtreme hot sauce - for the brave.", heatLevel: "Xtreme", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Xtreme Sauce (Extra)": { cost: 0.50, description: "Xtreme hot sauce - for the insane.", heatLevel: "Xtreme", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Avocado": { cost: 1.00, description: "4 slices.", heatLevel: "", categories: ["BURGER"], countable: false },
-  "Pickles": { cost: 0.50, description: "4 slices", heatLevel: "", categories: ["BURGER"], countable: false },
-  "Spicy Pickles": { cost: 0.50, description: "4 slices", heatLevel: "Mild", categories: ["BURGER"], countable: false },
-  "Tomato": { cost: 0.75, description: "1 beefsteak slice.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Avocado Jr.": { cost: 1.00, description: "2 slices.", heatLevel: "", categories: ["JR.BURGER"], countable: false },
-  "Bacon Jr.": { cost: 1.00, description: "1 turkey strip.", heatLevel: "", categories: ["JR.BURGER"], countable: true },
-  "Pickles Jr.": { cost: 0.25, description: "2 slices", heatLevel: "", categories: ["JR.BURGER"], countable: false },
-  "Spicy Pickles Jr.": { cost: 0.25, description: "2 slices", heatLevel: "Mild", categories: ["JR.BURGER"], countable: false },
-  "Garlic": { cost: 0.50, description: "Diced & sauteed.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Jalapenos": { cost: 0.50, description: "4 slices", heatLevel: "Mild", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Lettuce": { cost: 0.50, description: "Living/Butter.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Onions": { cost: 0.25, description: "Fresh red rings.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Onions (Sauteed)": { cost: 0.75, description: "Sauteed slices.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Cheddar": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Sharp Cheddar": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Provologne": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Swiss": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true }
-};
+function getSizesRelation(item) {
+  const possibleNames = ['Sizes', 'Size Options', 'Sizes Menu', 'Linked Sizes', 'Size Variants'];
+  for (const name of possibleNames) {
+    if (item.properties[name] && item.properties[name].relation) {
+      return item.properties[name].relation;
+    }
+  }
+  return [];
+}
 
 export async function GET() {
   try {
@@ -83,7 +17,12 @@ export async function GET() {
     let startCursor = undefined;
 
     while (hasMore) {
-      const requestBody = {};
+      const requestBody = {
+        sorts: [
+          { property: "CATEGORY", direction: "ascending" },
+          { property: "Item Name", direction: "ascending" }
+        ]
+      };
       if (startCursor) requestBody.start_cursor = startCursor;
 
       const response = await fetch(`https://api.notion.com/v1/databases/${process.env.NOTION_MENU_DATABASE_ID}/query`, {
@@ -106,8 +45,7 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // Process menu items — AMOUNT is now text
-    let menuItems = allResults.map((item) => {
+    let menuItems = await Promise.all(allResults.map(async (item) => {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
 
@@ -117,51 +55,75 @@ export async function GET() {
         .replace(/\s+/g, ' ')
         .trim();
 
-      // ✅ AMOUNT as TEXT — handles '~10 legs', '6', '1', etc.
-      const amountText =
-        item.properties['# AMOUNT']?.rich_text?.[0]?.plain_text ||
-        item.properties['# AMOUNT']?.title?.[0]?.plain_text ||
-        item.properties['AMOUNT']?.rich_text?.[0]?.plain_text ||
-        item.properties['AMOUNT']?.title?.[0]?.plain_text ||
-        item.properties['# AMOUNT']?.select?.name ||
-        item.properties['AMOUNT']?.select?.name ||
+      // ✅ FIXED: Look for 'Number' first, then 'Price'
+      let basePrice = item.properties['Number']?.number ?? item.properties['Price']?.number ?? 0;
+
+      const sizesRelation = getSizesRelation(item);
+      const sizes = [];
+
+      for (const relation of sizesRelation) {
+        try {
+          const sizeResponse = await fetch(`https://api.notion.com/v1/pages/${relation.id}`, {
+            headers: {
+              'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
+              'Notion-Version': '2022-06-28',
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (sizeResponse.ok) {
+            const sizeData = await sizeResponse.json();
+            
+            const sizeName = 
+              sizeData.properties['Size']?.select?.name ||
+              sizeData.properties['Name']?.select?.name ||
+              'Standard';
+              
+            const price = sizeData.properties['Number']?.number ?? sizeData.properties['Price']?.number ?? 0;
+            const serves = sizeData.properties['Serves']?.select?.name || '';
+            const amount = sizeData.properties['Amount']?.rich_text?.[0]?.plain_text || '';
+            const description = sizeData.properties['Description']?.rich_text?.[0]?.plain_text || '';
+            const category = sizeData.properties['Category']?.select?.name || '';
+
+            sizes.push({
+              id: sizeData.id,
+              size: sizeName,
+              price: price,
+              serves: serves,
+              amount: amount,
+              description: description,
+              category: category,
+            });
+          }
+        } catch (err) {
+          console.error('Error fetching size:', err);
+        }
+      }
+
+      sizes.sort((a, b) => a.price - b.price);
+
+      if ((!basePrice || basePrice === 0) && sizes.length > 0) {
+        basePrice = sizes[0].price;
+      }
+
+      const description = 
+        item.properties['Description']?.rich_text?.[0]?.plain_text ||
+        item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text ||
         '';
 
       return {
         id: item.id,
         'Item Name': name,
-        'Price': item.properties['Price']?.number || 0,
         'CATEGORY': item.properties['CATEGORY']?.select?.name || '',
-        'SIZE': item.properties['SIZE']?.select?.name || '',
-        'SERVES:': item.properties['SERVES:']?.select?.name || '',
-        'DESCRIPTION': item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
+        'DESCRIPTION': description,
         'Image URL': item.properties['Image URL']?.url || '',
-        'AMOUNT': amountText, // ← Now stores text like "6", "~10 legs", "1", etc.
         'Item Type': rawItemType || cleanName,
         'ADD-ONS': item.properties['ADD-ONS']?.relation || [],
+        'Price': basePrice,
+        'Sizes': sizes,
       };
-    });
+    }));
 
-    // Attach add-ons
-    menuItems = menuItems.map((item) => {
-      const itemAddOns = [];
-      const category = (item['CATEGORY'] || '').toUpperCase().trim();
-      for (const [name, data] of Object.entries(addonsData)) {
-        if (data.categories && data.categories.includes(category)) {
-          itemAddOns.push({
-            id: `addon-${name.replace(/\s/g, '-')}`,
-            name: name,
-            price: data.cost,
-            description: data.description,
-            heatLevel: data.heatLevel,
-            countable: data.countable,
-          });
-        }
-      }
-      return { ...item, addOns: itemAddOns };
-    });
-
-    // TACO TUESDAY
     const now = new Date();
     const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
     const dayOfWeek = pacificTime.getDay();
@@ -172,38 +134,24 @@ export async function GET() {
     if (isTacoTuesday) {
       responseItems = menuItems.map(item => {
         const itemType = item['Item Type'] || '';
-        if (itemType.toLowerCase().includes('taco') && item['Price'] > 0) {
+        if (itemType.toLowerCase().includes('taco')) {
+          const discountedSizes = (item.Sizes || []).map(size => ({
+            ...size,
+            price: Number((size.price * 0.5).toFixed(2)),
+            originalPrice: size.price,
+            isDiscounted: true,
+          }));
           return {
             ...item,
-            'Price': Number((item['Price'] * 0.5).toFixed(2)),
+            Sizes: discountedSizes,
+            Price: Number((item.Price * 0.5).toFixed(2)),
             isDiscounted: true,
-            originalPrice: item['Price'],
+            originalPrice: item.Price,
           };
         }
         return item;
       });
     }
-
-    // ✅ SORTING – Category → Item Type → SERVES: → Item Name
-    responseItems.sort((a, b) => {
-      const catA = (a['CATEGORY'] || '').trim();
-      const catB = (b['CATEGORY'] || '').trim();
-      const orderA = categoryOrder[catA] ?? 99;
-      const orderB = categoryOrder[catB] ?? 99;
-      if (orderA !== orderB) return orderA - orderB;
-
-      const typeA = (a['Item Type'] || '').trim();
-      const typeB = (b['Item Type'] || '').trim();
-      if (typeA !== typeB) return typeA.localeCompare(typeB);
-
-      const rankA = getServesRank(a['SERVES:']);
-      const rankB = getServesRank(b['SERVES:']);
-      if (rankA !== rankB) return rankA - rankB;
-
-      const nameA = (a['Item Name'] || '').trim();
-      const nameB = (b['Item Name'] || '').trim();
-      return nameA.localeCompare(nameB);
-    });
 
     return NextResponse.json(responseItems);
   } catch (error) {

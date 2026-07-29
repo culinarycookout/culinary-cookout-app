@@ -3,50 +3,7 @@
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
-
-// ✅ ADD-ONS DATA (complete)
-const addonsData = {
-  "Beef Patty": { cost: 4.00, description: "A juicy all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Flamed Beef Patty": { cost: 6.00, description: "A grilled all-beef patty.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Fried Shrimp": { cost: 7.50, description: "4 colossal deep-fried shrimp slices.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Fried Snapper": { cost: 5.00, description: "A deep-fried fish fillet.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Turkey Patty": { cost: 2.50, description: "A turkey patty.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "Jr. Beef Patty": { cost: 2.25, description: "An all-beef patty.", heatLevel: "", categories: ["JR.BURGER"], countable: true },
-  "Jr. Bird Patty": { cost: 1.50, description: "A turkey patty.", heatLevel: "", categories: ["JR.BURGER"], countable: true },
-  "Mushroom Patty": { cost: 3.00, description: "A portabella patty.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Egg Patty": { cost: 1.00, description: "A scrambled egg.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Bacon": { cost: 1.75, description: "2 turkey strips.", heatLevel: "", categories: ["BURGER"], countable: true },
-  "1000 Sauce": { cost: 1.00, description: "A tangy dressing.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "1000 Sauce (Extra)": { cost: 1.50, description: "A creamy flavor burst.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Habanero Mayo": { cost: 1.00, description: "A kick in the buns.", heatLevel: "Hot", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Habanero Mayo (Extra)": { cost: 1.50, description: "A double kick in the buns.", heatLevel: "Hot", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Ketchup": { cost: 0.25, description: "A tomato classic.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Ketchup (Extra)": { cost: 0.50, description: "Twice the fun in a bun.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mayo": { cost: 0.25, description: "Creamy mayonnaise.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mayo (Extra)": { cost: 0.50, description: "Both sides of the bun.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mustard": { cost: 0.25, description: "A tangy condiment compliment.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Mustard (Extra)": { cost: 0.50, description: "2-sided tanginess.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Spicy": { cost: 0.25, description: "Hot sauce.", heatLevel: "Medium", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Xtreme Sauce": { cost: 0.25, description: "Xtreme hot sauce - for the brave.", heatLevel: "Xtreme", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Xtreme Sauce (Extra)": { cost: 0.50, description: "Xtreme hot sauce - for the insane.", heatLevel: "Xtreme", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Avocado": { cost: 1.00, description: "4 slices.", heatLevel: "", categories: ["BURGER"], countable: false },
-  "Pickles": { cost: 0.50, description: "4 slices", heatLevel: "", categories: ["BURGER"], countable: false },
-  "Spicy Pickles": { cost: 0.50, description: "4 slices", heatLevel: "Mild", categories: ["BURGER"], countable: false },
-  "Tomato": { cost: 0.75, description: "1 beefsteak slice.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Avocado Jr.": { cost: 1.00, description: "2 slices.", heatLevel: "", categories: ["JR.BURGER"], countable: false },
-  "Bacon Jr.": { cost: 1.00, description: "1 turkey strip.", heatLevel: "", categories: ["JR.BURGER"], countable: true },
-  "Pickles Jr.": { cost: 0.25, description: "2 slices", heatLevel: "", categories: ["JR.BURGER"], countable: false },
-  "Spicy Pickles Jr.": { cost: 0.25, description: "2 slices", heatLevel: "Mild", categories: ["JR.BURGER"], countable: false },
-  "Garlic": { cost: 0.50, description: "Diced & sauteed.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Jalapenos": { cost: 0.50, description: "4 slices", heatLevel: "Mild", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Lettuce": { cost: 0.50, description: "Living/Butter.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: false },
-  "Onions": { cost: 0.25, description: "Fresh red rings.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Onions (Sauteed)": { cost: 0.75, description: "Sauteed slices.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Cheddar": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Sharp Cheddar": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Provologne": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true },
-  "Swiss": { cost: 0.50, description: "Melted cheese.", heatLevel: "", categories: ["JR.BURGER", "BURGER"], countable: true }
-};
+import { addonsData } from '../../constants/addons';
 
 const isTacoTuesday = () => {
   const now = new Date();
@@ -58,8 +15,32 @@ const isTacoTuesday = () => {
   return false;
 };
 
-const getItemPrice = (item) => item?.['Price'] ?? item?.price ?? 0;
+const getItemPrice = (item) => {
+  if (item.selectedPrice) return item.selectedPrice;
+  if (item['Price']) return item['Price'];
+  return 0;
+};
+
 const getItemQty = (item) => Number(item?.quantity ?? item?.qty ?? 1);
+
+const getAvailableAddOns = (item) => {
+  const category = (item?.['CATEGORY'] || '').toUpperCase();
+  const itemName = (item?.['Item Name'] || item?.name || '').toUpperCase();
+
+  let targetCategory = '';
+  if (category === 'BURGERS' || itemName.includes('BURGER')) {
+    targetCategory = itemName.includes('JR.') ? 'JR.BURGER' : 'BURGER';
+  } else if (category === 'LATIN AMERICA' || itemName.includes('TACO')) {
+    targetCategory = 'LATIN AMERICA';
+  } else {
+    targetCategory = category;
+  }
+
+  return Object.keys(addonsData).filter(name => {
+    const cats = addonsData[name].categories || [];
+    return cats.includes(targetCategory) || cats.includes(category);
+  });
+};
 
 function CartContent() {
   const {
@@ -168,18 +149,6 @@ function CartContent() {
 
   const getAddonQuantity = (name) => localAddOns[name] || 0;
 
-  const getAvailableAddOns = (itemName) => {
-    const upper = (itemName || '').toUpperCase();
-    let category = '';
-    if (upper.includes("JR.") || upper.includes("JUNIOR")) category = "JR.BURGER";
-    else if (upper.includes("BURGER")) category = "BURGER";
-    if (!category) return [];
-    return Object.keys(addonsData).filter(name => {
-      const cats = addonsData[name].categories || [];
-      return cats.includes(category);
-    });
-  };
-
   const selectedItem = cart.find(i => i.cartInstanceId === selectedItemId);
 
   const handleConfirmOrder = () => {
@@ -206,28 +175,19 @@ function CartContent() {
   };
 
   const totalItems = cart.reduce((sum, item) => sum + getItemQty(item), 0);
-
   const tacoEmojis = '🌮'.repeat(12);
 
   return (
     <div className="w-full min-h-screen bg-black text-white p-4 pb-24">
       <div className="container max-w-2xl mx-auto">
         <div className="flex justify-center mb-4">
-          <img
-            src="https://iili.io/CeCmPWJ.png"
-            alt="Cook For Hire"
-            className="h-16 md:h-20 w-auto object-contain"
-          />
+          <img src="https://iili.io/CeCmPWJ.png" alt="Cook For Hire" className="h-16 md:h-20 w-auto object-contain" />
         </div>
 
         <div className="flex items-start justify-between w-full mb-6 px-2">
-          <button
-            onClick={() => window.location.href = "/"}
-            className="text-red-400 hover:text-red-300 text-sm md:text-base font-medium whitespace-nowrap pt-1"
-          >
+          <button onClick={() => window.location.href = "/"} className="text-red-400 hover:text-red-300 text-sm md:text-base font-medium whitespace-nowrap pt-1">
             ← Back to Menu
           </button>
-
           <div className="flex flex-col items-end text-right">
             <div className="flex items-center space-x-2">
               <h1 className="text-2xl md:text-3xl font-bold text-red-600 leading-tight">Your Cart</h1>
@@ -260,10 +220,7 @@ function CartContent() {
                 const hasDiscount = isTacoActive && isTaco;
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
-
                 const itemSize = item['SIZE'] ?? item.size ?? item['Size'] ?? '';
-
-                // ✅ AMOUNT AS TEXT — directly from Notion
                 const itemAmount = item['AMOUNT'] || '';
 
                 return (
@@ -271,27 +228,15 @@ function CartContent() {
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
-                        
-                        {itemSize && (
-                          <p className="text-sm text-red-400 font-medium">
-                            Size: {itemSize}
-                          </p>
-                        )}
-
-                        {/* ✅ QUANTITY: AMOUNT AS TEXT */}
+                        {itemSize && <p className="text-sm text-red-400 font-medium">Size: {itemSize}</p>}
                         {itemAmount && (
                           <p className="text-sm text-zinc-300">
                             <span className="text-zinc-400">Quantity:</span>{' '}
                             <span className="font-bold text-white">{itemAmount}</span> per order
                           </p>
                         )}
-
-                        {addonNames && (
-                          <p className="text-sm text-zinc-400">Add-ons: {addonNames}</p>
-                        )}
-                        {item?.notes && (
-                          <p className="text-sm text-zinc-400 mt-1">Notes: {item.notes}</p>
-                        )}
+                        {addonNames && <p className="text-sm text-zinc-400">Add-ons: {addonNames}</p>}
+                        {item?.notes && <p className="text-sm text-zinc-400 mt-1">Notes: {item.notes}</p>}
                         {hasDiscount && (
                           <div className="mt-1">
                             <span className="text-sm text-zinc-500 line-through">${(originalPrice * qty).toFixed(2)}</span>
@@ -307,44 +252,17 @@ function CartContent() {
 
                     <div className="flex items-center gap-3 sm:gap-4 mt-3 flex-wrap">
                       <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => updateQuantity(item.cartInstanceId, qty - 1)}
-                          className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg"
-                        >
-                          −
-                        </button>
+                        <button onClick={() => updateQuantity(item.cartInstanceId, qty - 1)} className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg">−</button>
                         <span className="text-lg font-bold text-white w-6 text-center">{qty}</span>
-                        <button
-                          onClick={() => updateQuantity(item.cartInstanceId, qty + 1)}
-                          className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg"
-                        >
-                          +
-                        </button>
+                        <button onClick={() => updateQuantity(item.cartInstanceId, qty + 1)} className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg">+</button>
                       </div>
-
-                      <button
-                        onClick={() => duplicateItem(item.cartInstanceId)}
-                        className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium transition-colors"
-                      >
-                        <span>Build</span>
-                        <span>Another</span>
-                        <span className="text-lg">👨🏾‍🍳</span>
+                      <button onClick={() => duplicateItem(item.cartInstanceId)} className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium transition-colors">
+                        <span>Build</span><span>Another</span><span className="text-lg">👨🏾‍🍳</span>
                       </button>
-
-                      <button
-                        onClick={() => openCustomize(item.cartInstanceId)}
-                        className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium transition-colors"
-                      >
-                        <span>Customize</span>
-                        <span className="text-base">📝</span>
+                      <button onClick={() => openCustomize(item.cartInstanceId)} className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium transition-colors">
+                        <span>Customize</span><span className="text-base">📝</span>
                       </button>
-
-                      <button
-                        onClick={() => removeFromCart(item.cartInstanceId)}
-                        className="text-red-400 hover:text-red-300 text-sm font-medium ml-auto"
-                      >
-                        Remove
-                      </button>
+                      <button onClick={() => removeFromCart(item.cartInstanceId)} className="text-red-400 hover:text-red-300 text-sm font-medium ml-auto">Remove</button>
                     </div>
                   </div>
                 );
@@ -356,22 +274,10 @@ function CartContent() {
                 <span>Subtotal</span>
                 <span className="text-red-400">${cart.reduce((sum, item) => sum + calculateItemTotal(item), 0).toFixed(2)}</span>
               </div>
-              {isTacoActive && (
-                <p className="text-xs text-green-400 text-center mb-2">🎉 Taco Tuesday discount applied</p>
-              )}
+              {isTacoActive && <p className="text-xs text-green-400 text-center mb-2">🎉 Taco Tuesday discount applied</p>}
               <div className="flex gap-2">
-                <button
-                  onClick={clearCart}
-                  className="flex-1 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm font-medium transition"
-                >
-                  Clear Cart
-                </button>
-                <button
-                  onClick={handleConfirmOrder}
-                  className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition"
-                >
-                  Proceed to Checkout →
-                </button>
+                <button onClick={clearCart} className="flex-1 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm font-medium transition">Clear Cart</button>
+                <button onClick={handleConfirmOrder} className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition">Proceed to Checkout →</button>
               </div>
             </div>
           </>
@@ -382,22 +288,16 @@ function CartContent() {
         <div className="fixed inset-0 bg-black z-50 flex flex-col justify-between p-4 overflow-y-auto">
           <div>
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-800">
-              <button
-                onClick={closeCustomize}
-                className="text-red-400 hover:text-red-300 font-medium text-sm"
-              >
-                ← Back to Cart
-              </button>
+              <button onClick={closeCustomize} className="text-red-400 hover:text-red-300 font-medium text-sm">← Back to Cart</button>
               <span className="text-xs text-zinc-400 font-semibold uppercase tracking-wider">Customization</span>
             </div>
-
             <h2 className="text-2xl font-bold text-white mb-1">{selectedItem['Item Name'] || selectedItem.name}</h2>
             <p className="text-zinc-400 text-sm mb-6">Tailor your ingredients, add-ons, and instructions.</p>
 
             <div className="mb-6">
               <p className="text-sm font-bold text-white mb-3 tracking-wide">AVAILABLE ADD-ONS:</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {getAvailableAddOns(selectedItem['Item Name'] || selectedItem.name).map((name) => {
+                {getAvailableAddOns(selectedItem).map((name) => {
                   const addon = addonsData[name];
                   const qty = getAddonQuantity(name);
                   const isSelected = qty > 0;
@@ -420,34 +320,16 @@ function CartContent() {
                         <div className="flex items-center justify-between mt-2 pt-2 border-t border-zinc-800/60">
                           <span className="text-xs text-zinc-400">Quantity</span>
                           <div className="flex items-center space-x-3">
-                            <button
-                              onClick={() => changeAddOnQty(name, -1)}
-                              className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center font-bold text-base"
-                            >
-                              −
-                            </button>
+                            <button onClick={() => changeAddOnQty(name, -1)} className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center font-bold text-base">−</button>
                             <span className="w-6 text-center text-white font-bold text-base">{qty}</span>
-                            <button
-                              onClick={() => changeAddOnQty(name, 1)}
-                              className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center font-bold text-base"
-                            >
-                              +
-                            </button>
+                            <button onClick={() => changeAddOnQty(name, 1)} className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center font-bold text-base">+</button>
                           </div>
                         </div>
                       </div>
                     );
                   } else {
                     return (
-                      <button
-                        key={name}
-                        onClick={() => toggleAddOn(name)}
-                        className={`p-3 rounded-xl text-left transition-all border ${
-                          isSelected
-                            ? 'bg-red-600/20 border-red-600 text-white'
-                            : 'bg-zinc-900 border-zinc-800 text-white hover:border-zinc-700'
-                        }`}
-                      >
+                      <button key={name} onClick={() => toggleAddOn(name)} className={`p-3 rounded-xl text-left transition-all border ${isSelected ? 'bg-red-600/20 border-red-600 text-white' : 'bg-zinc-900 border-zinc-800 text-white hover:border-zinc-700'}`}>
                         <div className="flex justify-between items-start">
                           <span className="font-bold text-sm">{name}</span>
                           <span className="text-xs text-red-400 font-semibold">+${cost.toFixed(2)}</span>
@@ -463,13 +345,7 @@ function CartContent() {
 
             <div className="mb-6">
               <label className="block text-sm font-bold text-white mb-2">Special Instructions:</label>
-              <textarea
-                rows="3"
-                value={localNotes}
-                placeholder="Add any special requests or notes here..."
-                className="w-full p-3 text-sm text-white bg-zinc-900 border border-zinc-800 rounded-xl focus:outline-none focus:border-red-500 resize-none"
-                onChange={(e) => setLocalNotes(e.target.value)}
-              />
+              <textarea rows="3" value={localNotes} placeholder="Add any special requests or notes here..." className="w-full p-3 text-sm text-white bg-zinc-900 border border-zinc-800 rounded-xl focus:outline-none focus:border-red-500 resize-none" onChange={(e) => setLocalNotes(e.target.value)} />
             </div>
           </div>
 
@@ -491,10 +367,7 @@ function CartContent() {
                 })()}
               </span>
             </div>
-            <button
-              onClick={saveCustomizations}
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-base transition-colors shadow-lg"
-            >
+            <button onClick={saveCustomizations} className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-base transition-colors shadow-lg">
               Save Customizations & Return to Cart
             </button>
           </div>

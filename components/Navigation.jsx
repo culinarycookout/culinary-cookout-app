@@ -9,20 +9,15 @@ export default function Navigation() {
   const { cart } = useCart();
 
   const totalItems = cart.reduce((sum, item) => sum + (item.quantity ?? item.qty ?? 1), 0);
-  const cartSubtotal = cart.reduce((sum, item) => {
-    const price = item?.['Price'] ?? item?.price ?? 0;
-    const qty = item?.quantity ?? item?.qty ?? 1;
-    return sum + (price * qty);
-  }, 0);
 
   const isActive = (path) => pathname === path;
 
-  // Cache-busting: add timestamp to force reload
-  const menuImageSrc = `/menu.png?t=${Date.now()}`;
+  // ✅ FIXED: Use a static version number — no hydration mismatch
+  const menuImageSrc = `/menu.png?v=1.0.0`;
 
   return (
     <>
-      {/* ✅ MOBILE – Bottom Navigation Bar */}
+      {/* MOBILE – Bottom Navigation Bar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
           {/* Cart */}
@@ -73,7 +68,7 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* ✅ DESKTOP – Left Sidebar – NO TEXT */}
+      {/* DESKTOP – Left Sidebar – NO TEXT */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
         {/* Menu PNG – NO TEXT */}
         <Link

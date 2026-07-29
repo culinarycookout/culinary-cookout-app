@@ -2,6 +2,8 @@
 
 import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
+import Link from 'next/link';
+import { getAddOnsByCategory } from '../../../constants/addons';
 
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
@@ -11,72 +13,87 @@ export default function ItemDetailPage({ params }) {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedAddOns, setSelectedAddOns] = useState({});
-  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
-    async function fetchItemDetails() {
+    async function fetchItem() {
       try {
-        const res = await fetch(`/api/menu`);
+        const res = await fetch('/api/menu');
         const data = await res.json();
-        
-        if (res.ok) {
-          const foundItem = data.find((menuItem) => menuItem.id === itemId);
-          
-          if (foundItem) {
-            setItem(foundItem);
-            setQuantity(foundItem.quantity || 0);
-          } else {
-            setError('Item not found');
+        const found = data.find(item => item.id === itemId);
+        if (found) {
+          const category = found['CATEGORY'] || '';
+          const availableAddons = getAddOnsByCategory(category);
+
+          found['ADD-ONS'] = availableAddons.map(addon => ({
+            id: addon.id,
+            name: addon.name,
+            price: addon.price,
+            description: addon.description || '',
+            heatLevel: addon.heatLevel || '',
+          }));
+
+          setItem(found);
+          if (found.Sizes && found.Sizes.length > 0) {
+            setSelectedSize(found.Sizes[0]);
           }
         } else {
-          setError(data.error || 'Failed to load menu');
+          setError('Item not found');
         }
       } catch (err) {
-        setError('Failed to load item detail');
+        setError('Failed to load item');
       } finally {
         setLoading(false);
       }
     }
-
-    fetchItemDetails();
+    fetchItem();
   }, [itemId]);
 
   const handleAddOnToggle = (addOnId) => {
-    setSelectedAddOns((prev) => ({
+    setSelectedAddOns(prev => ({
       ...prev,
       [addOnId]: !prev[addOnId],
     }));
   };
 
-  const handleDecrement = () => {
-    setQuantity(prev => Math.max(0, prev - 1));
-  };
+  const handleAddToCart = () => {
+    if (!item) return;
 
-  const handleIncrement = () => {
-    setQuantity(prev => prev + 1);
-  };
+    const price = selectedSize?.price ?? item['Price'] ?? 0;
+    const size = selectedSize?.size || 'Standard';
+    const serves = selectedSize?.serves || '';
+    const amount = selectedSize?.amount || '';
+    const isDiscounted = selectedSize?.isDiscounted || item?.isDiscounted || false;
+    const originalPrice = selectedSize?.originalPrice || item?.originalPrice || price;
 
-  const handleAddToCartClick = () => {
-    if (quantity === 0) {
-      alert('Please select a quantity first');
-      return;
-    }
+    const cartItem = {
+      ...item,
+      'Price': price,
+      'SIZE': size,
+      'SERVES:': serves,
+      'AMOUNT': amount,
+      'selectedSize': size,
+      'selectedPrice': price,
+      'originalPrice': originalPrice,
+      'isDiscounted': isDiscounted,
+    };
 
-    const selectedAddOnsList = (item.addOns || []).filter(
-      (addOn) => selectedAddOns[addOn.id]
+    const selectedAddOnsList = (item['ADD-ONS'] || []).filter(
+      addOn => selectedAddOns[addOn.id]
     );
 
-    addToCart(item, quantity, selectedAddOnsList);
-    
-    setQuantity(0);
+    addToCart(cartItem, quantity, selectedAddOnsList);
+    setQuantity(1);
     setSelectedAddOns({});
+    window.location.href = '/cart';
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+        <p className="text-xl">Loading...</p>
       </div>
     );
   }
@@ -84,36 +101,34 @@ export default function ItemDetailPage({ params }) {
   if (error || !item) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-xl text-red-500">Item not found</div>
+        <p className="text-xl text-red-500">{error || 'Item not found'}</p>
       </div>
     );
   }
 
-  const isUnpriced = !item.price || item.price === 0 || item.price === "0.00" || item.price === "";
-  const basePrice = item.price || 0;
-  const addOnsTotal = (item.addOns || []).reduce((sum, addOn) => {
+  const showSizeSelector = item.Sizes && item.Sizes.length > 1;
+  const basePrice = selectedSize?.price ?? item['Price'] ?? 0;
+  const isDiscounted = selectedSize?.isDiscounted || item?.isDiscounted || false;
+  const originalPrice = selectedSize?.originalPrice || item?.originalPrice || basePrice;
+
+  const addOnsTotal = (item['ADD-ONS'] || []).reduce((sum, addOn) => {
     return selectedAddOns[addOn.id] ? sum + (addOn.price || 0) : sum;
-  }, 0);
-  const totalPrice = basePrice + addOnsTotal;
+  }, 0) * quantity;
+  const finalPrice = (basePrice * quantity) + addOnsTotal;
 
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Back button */}
-        <button
-          onClick={() => window.history.back()}
-          className="text-red-400 hover:text-red-300 mb-4 text-lg"
-        >
+        <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block">
           ← Back to Menu
-        </button>
+        </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Item Image */}
           <div>
-            {item.imageUrl ? (
+            {item['Image URL'] ? (
               <img
-                src={item.imageUrl}
-                alt={item.name}
+                src={item['Image URL']}
+                alt={item['Item Name']}
                 className="w-full rounded-lg object-cover aspect-square"
               />
             ) : (
@@ -123,74 +138,98 @@ export default function ItemDetailPage({ params }) {
             )}
           </div>
 
-          {/* Item Details */}
           <div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-3xl font-bold text-red-600">{item.name}</h1>
-              {item.isDiscounted && (
-                <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                  🌮🪅50% OFF‼️🎉
-                </span>
-              )}
-            </div>
-            <p className="text-zinc-400 mt-1">{item.category}</p>
-            {item.size && <p className="text-zinc-400">Size: {item.size}</p>}
-            {item.serves && <p className="text-zinc-400">Serves: {item.serves}</p>}
-            
-            {item.quantity > 0 && (
-              <p className="text-zinc-400">Quantity: {item.quantity}</p>
-            )}
-            
-            {item.description && (
-              <p className="text-zinc-300 mt-2">{item.description}</p>
+            <h1 className="text-3xl font-bold text-red-600">{item['Item Name']}</h1>
+            <p className="text-zinc-400 mt-1">{item['CATEGORY']}</p>
+
+            {item['DESCRIPTION'] && (
+              <p className="text-zinc-300 mt-2">{item['DESCRIPTION']}</p>
             )}
 
-            {/* Price Display */}
-            <div className="mt-4">
-              {item.isDiscounted ? (
-                <div className="flex items-center gap-3">
-                  <p className="text-3xl font-bold text-red-500">
-                    ${(Number(item.price) || 0).toFixed(2)}
-                  </p>
-                  <p className="text-lg text-gray-400 line-through">
-                    ${(Number(item.originalPrice) || 0).toFixed(2)}
-                  </p>
-                  <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    50% OFF!
-                  </span>
-                </div>
-              ) : isUnpriced ? (
-                <p className="text-2xl font-bold text-orange-500">Price Pending</p>
-              ) : (
-                <p className="text-2xl font-bold text-red-500">
-                  ${basePrice.toFixed(2)}
+            {item.Sizes && item.Sizes.length > 0 && (
+              <div className="mt-4">
+                <p className="text-sm font-bold text-zinc-300 mb-2">
+                  {showSizeSelector ? 'Select Size:' : 'Size:'}
                 </p>
-              )}
-            </div>
+                <div className="flex flex-wrap gap-2">
+                  {item.Sizes.map((size) => (
+                    <button
+                      key={size.id}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${
+                        selectedSize?.id === size.id
+                          ? 'bg-red-600 text-white'
+                          : 'bg-zinc-800 text-white hover:bg-zinc-700'
+                      }`}
+                    >
+                      {size.size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* Quantity Controls */}
+            {basePrice > 0 && (
+              <div className="mt-4">
+                {isDiscounted ? (
+                  <div className="flex items-center gap-3">
+                    <p className="text-2xl font-bold text-red-500">
+                      ${basePrice.toFixed(2)}
+                    </p>
+                    <p className="text-lg text-gray-400 line-through">
+                      ${(originalPrice || 0).toFixed(2)}
+                    </p>
+                    <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                      50% OFF 🎉
+                    </span>
+                  </div>
+                ) : (
+                  <p className="text-2xl font-bold text-red-500">
+                    ${basePrice.toFixed(2)}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {selectedSize && (
+              <div className="mt-2">
+                {selectedSize.serves && (
+                  <p className="text-sm text-zinc-300">
+                    <span className="text-zinc-400">Serves:</span> {selectedSize.serves}
+                  </p>
+                )}
+                {selectedSize.amount && (
+                  <p className="text-sm text-zinc-300">
+                    <span className="text-zinc-400">Included:</span> {selectedSize.amount} per order
+                  </p>
+                )}
+                {selectedSize.description && (
+                  <p className="text-zinc-300 mt-2">{selectedSize.description}</p>
+                )}
+              </div>
+            )}
+
             <div className="flex items-center space-x-4 mt-4">
               <button
-                onClick={handleDecrement}
+                onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                 className="w-10 h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-xl"
               >
                 -
               </button>
               <span className="text-2xl font-bold w-8 text-center">{quantity}</span>
               <button
-                onClick={handleIncrement}
+                onClick={() => setQuantity(prev => prev + 1)}
                 className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-xl"
               >
                 +
               </button>
             </div>
 
-            {/* Add-ons Section */}
-            {item.addOns && item.addOns.length > 0 && (
+            {item['ADD-ONS'] && item['ADD-ONS'].length > 0 && (
               <div className="mt-6">
                 <h2 className="text-xl font-bold mb-3">Add-ons</h2>
                 <div className="space-y-2">
-                  {item.addOns.map((addOn) => (
+                  {item['ADD-ONS'].map((addOn) => (
                     <div
                       key={addOn.id}
                       className={`flex items-center justify-between p-3 rounded-lg border ${
@@ -229,24 +268,18 @@ export default function ItemDetailPage({ params }) {
               </div>
             )}
 
-            {/* Total and Add to Cart */}
             <div className="mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-bold">Total</span>
                 <span className="text-2xl font-bold text-red-500">
-                  ${totalPrice.toFixed(2)}
+                  ${finalPrice.toFixed(2)}
                 </span>
               </div>
               <button
-                className={`mt-3 w-full py-3 rounded-lg font-bold text-lg transition-colors ${
-                  isUnpriced || quantity === 0
-                    ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
-                    : 'bg-[#0BDA51] hover:bg-[#09C448] text-white'
-                }`}
-                onClick={handleAddToCartClick}
-                disabled={isUnpriced || quantity === 0}
+                onClick={handleAddToCart}
+                className="mt-3 w-full py-3 bg-[#0BDA51] hover:bg-[#09C448] text-white rounded-lg font-bold text-lg transition-colors"
               >
-                {isUnpriced ? 'Coming Soon' : 'Gimme This!😋'}
+                Gimme This! 😋
               </button>
             </div>
           </div>
