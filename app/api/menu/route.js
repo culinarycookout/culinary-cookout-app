@@ -106,7 +106,7 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // Process menu items with dynamic property scanning for AMOUNT
+    // Process menu items — AMOUNT is now text
     let menuItems = allResults.map((item) => {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
@@ -117,15 +117,15 @@ export async function GET() {
         .replace(/\s+/g, ' ')
         .trim();
 
-      // Dynamic scan: find any property containing AMOUNT or QUANTITY that holds a number
-      let amountValue = 0;
-      for (const [key, prop] of Object.entries(item.properties)) {
-        const upperKey = key.toUpperCase();
-        if ((upperKey.includes('AMOUNT') || upperKey.includes('QUANTITY')) && prop?.type === 'number' && typeof prop.number === 'number') {
-          amountValue = prop.number;
-          break;
-        }
-      }
+      // ✅ AMOUNT as TEXT — handles '~10 legs', '6', '1', etc.
+      const amountText =
+        item.properties['# AMOUNT']?.rich_text?.[0]?.plain_text ||
+        item.properties['# AMOUNT']?.title?.[0]?.plain_text ||
+        item.properties['AMOUNT']?.rich_text?.[0]?.plain_text ||
+        item.properties['AMOUNT']?.title?.[0]?.plain_text ||
+        item.properties['# AMOUNT']?.select?.name ||
+        item.properties['AMOUNT']?.select?.name ||
+        '';
 
       return {
         id: item.id,
@@ -136,7 +136,7 @@ export async function GET() {
         'SERVES:': item.properties['SERVES:']?.select?.name || '',
         'DESCRIPTION': item.properties['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
         'Image URL': item.properties['Image URL']?.url || '',
-        'AMOUNT': amountValue,
+        'AMOUNT': amountText, // ← Now stores text like "6", "~10 legs", "1", etc.
         'Item Type': rawItemType || cleanName,
         'ADD-ONS': item.properties['ADD-ONS']?.relation || [],
       };
