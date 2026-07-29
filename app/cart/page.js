@@ -16,12 +16,16 @@ const isTacoTuesday = () => {
 };
 
 const getItemPrice = (item) => {
-  if (item.selectedPrice) return item.selectedPrice;
-  if (item['Price']) return item['Price'];
-  return 0;
+  if (!item) return 0;
+  const price = item.selectedPrice ?? item['Price'] ?? item.price ?? 0;
+  return typeof price === 'number' && !isNaN(price) ? price : 0;
 };
 
-const getItemQty = (item) => Number(item?.quantity ?? item?.qty ?? 1);
+const getItemQty = (item) => {
+  if (!item) return 1;
+  const qty = item.quantity ?? item.qty ?? 1;
+  return typeof qty === 'number' && !isNaN(qty) && qty > 0 ? qty : 1;
+};
 
 const getAvailableAddOns = (item) => {
   const category = (item?.['CATEGORY'] || '').toUpperCase();
@@ -50,7 +54,6 @@ function CartContent() {
     updateItemCustomizations,
     removeFromCart,
     clearCart,
-    subtotal,
   } = useCart();
 
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -175,10 +178,11 @@ function CartContent() {
   };
 
   const totalItems = cart.reduce((sum, item) => sum + getItemQty(item), 0);
+  const cartTotal = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
   const tacoEmojis = '🌮'.repeat(12);
 
   return (
-    <div className="w-full min-h-screen bg-black text-white p-4 pb-24">
+    <div className="w-full min-h-screen bg-black text-white p-4 pb-32">
       <div className="container max-w-2xl mx-auto">
         <div className="flex justify-center mb-4">
           <img src="https://iili.io/CeCmPWJ.png" alt="Cook For Hire" className="h-16 md:h-20 w-auto object-contain" />
@@ -193,7 +197,7 @@ function CartContent() {
               <h1 className="text-2xl md:text-3xl font-bold text-red-600 leading-tight">Your Cart</h1>
             </div>
             <span className="text-xs md:text-sm text-zinc-400 mt-1 block">
-              ({totalItems} {totalItems === 1 ? 'item' : 'items'})
+              ({isNaN(totalItems) ? 0 : totalItems} {totalItems === 1 ? 'item' : 'items'})
             </span>
           </div>
         </div>
@@ -211,12 +215,13 @@ function CartContent() {
           <>
             <div className="space-y-4 mb-6">
               {cart.map((item) => {
-                const total = calculateItemTotal(item);
+                // ✅ GG's safe parsing
                 const qty = getItemQty(item);
                 const price = getItemPrice(item);
+                const total = calculateItemTotal(item);
                 const originalPrice = item?.originalPrice ?? price;
                 const itemName = item['Item Name'] || item.name || '';
-                const isTaco = itemName.toUpperCase().includes("TACO");
+                const isTaco = itemName.toUpperCase().includes('TACO');
                 const hasDiscount = isTacoActive && isTaco;
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
@@ -224,7 +229,7 @@ function CartContent() {
                 const itemAmount = item['AMOUNT'] || '';
 
                 return (
-                  <div key={item.cartInstanceId} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
+                  <div key={item.cartInstanceId || item.id} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
@@ -246,14 +251,14 @@ function CartContent() {
                         )}
                       </div>
                       <div className="text-right">
-                        <p className="text-xl font-bold text-red-400">${total.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-red-400">${isNaN(total) ? 0 : total.toFixed(2)}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3 sm:gap-4 mt-3 flex-wrap">
                       <div className="flex items-center space-x-2">
-                        <button onClick={() => updateQuantity(item.cartInstanceId, qty - 1)} className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg">−</button>
-                        <span className="text-lg font-bold text-white w-6 text-center">{qty}</span>
+                        <button onClick={() => updateQuantity(item.cartInstanceId, Math.max(1, qty - 1))} className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg">−</button>
+                        <span className="text-lg font-bold text-white w-6 text-center">{isNaN(qty) ? 1 : qty}</span>
                         <button onClick={() => updateQuantity(item.cartInstanceId, qty + 1)} className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg">+</button>
                       </div>
                       <button onClick={() => duplicateItem(item.cartInstanceId)} className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium transition-colors">
@@ -272,7 +277,7 @@ function CartContent() {
             <div className="bg-zinc-900 p-6 rounded-xl border border-zinc-800">
               <div className="flex justify-between text-xl font-bold mb-4">
                 <span>Subtotal</span>
-                <span className="text-red-400">${cart.reduce((sum, item) => sum + calculateItemTotal(item), 0).toFixed(2)}</span>
+                <span className="text-red-400">${isNaN(cartTotal) ? 0 : cartTotal.toFixed(2)}</span>
               </div>
               {isTacoActive && <p className="text-xs text-green-400 text-center mb-2">🎉 Taco Tuesday discount applied</p>}
               <div className="flex gap-2">
@@ -282,6 +287,23 @@ function CartContent() {
             </div>
           </>
         )}
+      </div>
+
+      {/* STICKY SUBTOTAL BAR */}
+      <div className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 p-4 z-50 shadow-2xl">
+        <div className="max-w-2xl mx-auto flex items-center justify-between">
+          <div>
+            <p className="text-sm text-zinc-400">Subtotal</p>
+            <p className="text-2xl font-bold text-red-500">${isNaN(cartTotal) ? 0 : cartTotal.toFixed(2)}</p>
+            {isTacoActive && <p className="text-xs text-green-400">🎉 Taco Tuesday discount applied</p>}
+          </div>
+          <button
+            onClick={() => window.location.href = '/delivery-details'}
+            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-lg transition-colors shadow-lg"
+          >
+            Proceed to Checkout →
+          </button>
+        </div>
       </div>
 
       {showCustomize && selectedItem && (
@@ -363,7 +385,7 @@ function CartContent() {
                     addOnTotal += cost * Number(addonQty) * qty;
                   });
                   let total = baseTotal + addOnTotal;
-                  return total.toFixed(2);
+                  return isNaN(total) ? '0.00' : total.toFixed(2);
                 })()}
               </span>
             </div>

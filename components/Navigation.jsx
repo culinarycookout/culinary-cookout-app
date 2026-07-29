@@ -8,11 +8,23 @@ export default function Navigation() {
   const pathname = usePathname();
   const { cart } = useCart();
 
-  const totalItems = cart.reduce((sum, item) => sum + (item.quantity ?? item.qty ?? 1), 0);
+  // ✅ SAFE: Calculate total items and subtotal with fallbacks
+  const totalItems = cart.reduce((sum, item) => {
+    const qty = Number(item?.quantity ?? item?.qty ?? 1);
+    return sum + (isNaN(qty) ? 0 : qty);
+  }, 0);
+
+  const cartSubtotal = cart.reduce((sum, item) => {
+    const price = Number(item?.selectedPrice ?? item?.['Price'] ?? item?.price ?? 0);
+    const qty = Number(item?.quantity ?? item?.qty ?? 1);
+    const validPrice = isNaN(price) ? 0 : price;
+    const validQty = isNaN(qty) ? 0 : qty;
+    return sum + (validPrice * validQty);
+  }, 0);
 
   const isActive = (path) => pathname === path;
 
-  // ✅ FIXED: Use a static version number — no hydration mismatch
+  // Cache-busting: use a static version number (no hydration mismatch)
   const menuImageSrc = `/menu.png?v=1.0.0`;
 
   return (
@@ -35,9 +47,13 @@ export default function Navigation() {
                 </span>
               )}
             </div>
+            {/* ✅ PRICE UNDER CART ICON */}
+            <span className="text-xs text-zinc-400 mt-0.5">
+              ${cartSubtotal.toFixed(2)}
+            </span>
           </Link>
 
-          {/* Menu PNG – NO TEXT */}
+          {/* Menu PNG */}
           <Link
             href="/"
             className={`flex items-center justify-center transition ${
@@ -68,9 +84,9 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* DESKTOP – Left Sidebar – NO TEXT */}
+      {/* DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        {/* Menu PNG – NO TEXT */}
+        {/* Menu PNG */}
         <Link
           href="/"
           className={`flex items-center justify-center transition ${
@@ -114,6 +130,10 @@ export default function Navigation() {
               </span>
             )}
           </div>
+          {/* ✅ PRICE UNDER CART ICON */}
+          <span className="text-xs text-zinc-400 mt-0.5">
+            ${cartSubtotal.toFixed(2)}
+          </span>
         </Link>
       </nav>
     </>
