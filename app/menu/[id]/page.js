@@ -1,138 +1,165 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect, use } from 'react';
+import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
-import { useCart } from '../../../context/CartContext'; // Adjust if you have @/ alias
 
-export default function ItemDetailPage() {
-  const params = useParams();
-  const router = useRouter();
+export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
+  const resolvedParams = use(params);
+  const itemId = resolvedParams.id;
 
   const [item, setItem] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   useEffect(() => {
     async function fetchItem() {
       try {
         const res = await fetch('/api/menu');
-        const items = await res.json();
-        const found = items.find((i) => i.id === params.id);
+        const data = await res.json();
+        const found = data.find(item => item.id === itemId);
         if (found) {
           setItem(found);
           if (found.Sizes && found.Sizes.length > 0) {
             setSelectedSize(found.Sizes[0]);
           }
+        } else {
+          setError('Item not found');
         }
       } catch (err) {
-        console.error('Failed to fetch item details:', err);
+        setError('Failed to load item');
       } finally {
         setLoading(false);
       }
     }
     fetchItem();
-  }, [params.id]);
-
-  if (loading) {
-    return <div className="min-h-screen bg-zinc-950 text-white p-8">Loading...</div>;
-  }
-
-  if (!item) {
-    return <div className="min-h-screen bg-zinc-950 text-white p-8">Item not found.</div>;
-  }
-
-  const currentPrice = selectedSize ? selectedSize.price : (item.Price || 0);
+  }, [itemId]);
 
   const handleAddToCart = () => {
-    addToCart({
-      cartInstanceId: `${item.id}-${selectedSize?.id || 'standard'}`,
-      id: item.id,
-      name: item['Item Name'],
-      price: currentPrice,
-      sizeName: selectedSize?.size || 'Standard',
-      quantity: quantity,
-    });
-    router.push('/cart');
+    if (!item || !selectedSize) return;
+
+    const price = selectedSize.price ?? item.Price ?? 0;
+    const size = selectedSize.size || 'Standard';
+    const serves = selectedSize.serves || '';
+    const amount = selectedSize.amount || '';
+    const isDiscounted = selectedSize.isDiscounted || false;
+    const originalPrice = selectedSize.originalPrice || price;
+
+    const cartItem = {
+      ...item,
+      'Price': price,
+      'SIZE': size,
+      'SERVES:': serves,
+      'AMOUNT': amount,
+      'selectedSize': size,
+      'selectedPrice': price,
+      'originalPrice': originalPrice,
+      'isDiscounted': isDiscounted,
+    };
+
+    addToCart(cartItem, quantity, []);
+    setQuantity(1);
+    window.location.href = '/cart';
   };
 
+  if (loading) return <div className="min-h-screen bg-black text-white p-8">Loading...</div>;
+  if (error || !item) return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
+
+  const currentPrice = selectedSize?.price ?? item.Price ?? 0;
+  const isDiscounted = selectedSize?.isDiscounted ?? false;
+  const originalPrice = selectedSize?.originalPrice ?? currentPrice;
+  const finalPrice = currentPrice * quantity;
+
   return (
-    <main className="min-h-screen bg-zinc-950 text-white p-6 md:p-12 max-w-4xl mx-auto">
-      <Link href="/" className="text-red-500 hover:text-red-400 text-sm font-medium mb-6 inline-block">
-        ← Back to Menu
-      </Link>
+    <div className="min-h-screen bg-black text-white p-4">
+      <div className="max-w-4xl mx-auto">
+        <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block">← Back to Menu</Link>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
-        {/* Item Image */}
-        <div>
-          <img
-            src={item['Image URL'] || '/placeholder.png'}
-            alt={item['Item Name']}
-            className="w-full h-80 object-cover rounded-2xl border border-zinc-800"
-            onError={(e) => { e.target.src = '/placeholder.png'; }}
-          />
-        </div>
-
-        {/* Item Details */}
-        <div className="flex flex-col justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h1 className="text-3xl font-extrabold text-red-500 tracking-wide">{item['Item Name']}</h1>
-            <p className="text-xs uppercase tracking-wider text-zinc-400 mt-1">{item['CATEGORY']}</p>
-            <p className="text-zinc-300 text-sm mt-3 leading-relaxed">{item['DESCRIPTION']}</p>
-            <p className="text-2xl font-bold text-red-500 mt-4">${Number(currentPrice).toFixed(2)}</p>
+            {item['Image URL'] ? (
+              <img src={item['Image URL']} alt={item['Item Name']} className="w-full rounded-lg object-cover aspect-square" />
+            ) : (
+              <div className="w-full aspect-square bg-zinc-800 rounded-lg flex items-center justify-center">
+                <span className="text-zinc-500">No image</span>
+              </div>
+            )}
           </div>
 
-          {/* Size Selector */}
-          {item.Sizes && item.Sizes.length > 0 && (
-            <div className="mt-6">
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Size Options</label>
-              <div className="grid grid-cols-2 gap-2">
-                {item.Sizes.map((sizeObj) => (
-                  <button
-                    key={sizeObj.id}
-                    onClick={() => setSelectedSize(sizeObj)}
-                    className={`py-2 px-4 rounded-xl text-sm font-semibold border transition ${
-                      selectedSize?.id === sizeObj.id
-                        ? 'bg-red-600 border-red-500 text-white'
-                        : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:border-zinc-700'
-                    }`}
-                  >
-                    {sizeObj.size} (${Number(sizeObj.price).toFixed(2)})
-                  </button>
-                ))}
+          <div>
+            <h1 className="text-3xl font-bold text-red-600">{item['Item Name']}</h1>
+            <p className="text-zinc-400 mt-1">{item['CATEGORY']}</p>
+            {item['DESCRIPTION'] && <p className="text-zinc-300 mt-2">{item['DESCRIPTION']}</p>}
+
+            <div className="mt-4">
+              {isDiscounted ? (
+                <div className="flex items-center gap-3">
+                  <p className="text-2xl font-bold text-red-500">${currentPrice.toFixed(2)}</p>
+                  <p className="text-lg text-gray-400 line-through">${(originalPrice || 0).toFixed(2)}</p>
+                  <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">50% OFF 🎉</span>
+                </div>
+              ) : (
+                <p className="text-2xl font-bold text-red-500">${currentPrice.toFixed(2)}</p>
+              )}
+            </div>
+
+            {item.Sizes && item.Sizes.length > 0 && (
+              <div className="mt-4">
+                <label className="block text-sm font-bold text-zinc-300 mb-2">Size Options:</label>
+                <div className="flex flex-wrap gap-3">
+                  {item.Sizes.map((size) => {
+                    const isSelected = selectedSize?.id === size.id;
+                    // ✅ Color logic: Half = light red, Whole = deep full red
+                    const isHalf = size.size.toLowerCase().includes('half');
+                    const baseClass = "px-4 py-2 rounded-lg font-bold text-sm transition-colors border";
+                    const selectedClass = isHalf
+                      ? "bg-red-300 text-black border-red-400 hover:bg-red-200"      // Light red for Half
+                      : "bg-red-600 text-white border-red-700 hover:bg-red-500";    // Deep full red for Whole
+                    const unselectedClass = "bg-zinc-800 text-white border-zinc-700 hover:border-zinc-500";
+
+                    return (
+                      <button
+                        key={size.id}
+                        onClick={() => setSelectedSize(size)}
+                        className={`${baseClass} ${isSelected ? selectedClass : unselectedClass}`}
+                      >
+                        {size.size} (${Number(size.price).toFixed(2)})
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Quantity Selector & Add to Cart */}
-          <div className="mt-8 flex items-center space-x-4">
-            <div className="flex items-center bg-zinc-900 border border-zinc-800 rounded-xl p-1">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 rounded-lg bg-zinc-800 text-white flex items-center justify-center hover:bg-zinc-700 font-bold"
-              >
-                -
-              </button>
-              <span className="text-lg font-bold text-white w-10 text-center">{quantity}</span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center hover:bg-red-500 font-bold"
-              >
-                +
-              </button>
+            {selectedSize && (
+              <div className="mt-2">
+                {selectedSize.serves && <p className="text-sm text-zinc-300"><span className="text-zinc-400">Serves:</span> {selectedSize.serves}</p>}
+                {selectedSize.amount && <p className="text-sm text-zinc-300"><span className="text-zinc-400">Included:</span> {selectedSize.amount} per order</p>}
+                {selectedSize.description && <p className="text-zinc-300 mt-2">{selectedSize.description}</p>}
+              </div>
+            )}
+
+            <div className="flex items-center space-x-4 mt-4">
+              <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))} className="w-10 h-10 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-xl">-</button>
+              <span className="text-2xl font-bold w-8 text-center">{quantity}</span>
+              <button onClick={() => setQuantity(prev => prev + 1)} className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-xl">+</button>
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              className="flex-1 bg-[#0BDA51] hover:bg-[#09C448] text-white font-bold py-3 px-6 rounded-xl transition shadow-lg text-lg"
-            >
-              Gimme This! 😋
-            </button>
+            <div className="mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold">Total</span>
+                <span className="text-2xl font-bold text-red-500">${finalPrice.toFixed(2)}</span>
+              </div>
+              <button onClick={handleAddToCart} className="mt-3 w-full py-3 bg-[#0BDA51] hover:bg-[#09C448] text-white rounded-lg font-bold text-lg transition-colors">
+                Gimme This! 😋
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
