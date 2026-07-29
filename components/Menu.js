@@ -89,7 +89,7 @@ export default function Menu() {
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
-          placeholder="Search by name or description..."
+          placeholder="What We Cookin'⁉️"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none mb-3"
