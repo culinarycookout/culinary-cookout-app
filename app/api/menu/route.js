@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 function getSizesRelation(item) {
   const possibleNames = ['Sizes', 'Size Options', 'Sizes Menu', 'Linked Sizes', 'Size Variants'];
   for (const name of possibleNames) {
-    if (item.properties[name] && item.properties[name].relation) {
+    if (item.properties[name]?.relation) {
       return item.properties[name].relation;
     }
   }
@@ -16,6 +16,7 @@ export async function GET() {
     let hasMore = true;
     let startCursor = undefined;
 
+    // 1. Fetch all menu items with pagination
     while (hasMore) {
       const requestBody = {
         sorts: [
@@ -45,7 +46,65 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    let menuItems = await Promise.all(allResults.map(async (item) => {
+    // 2. Gather all unique size relation IDs across all menu items
+    const sizeRelationIdsMap = new Map();
+    allResults.forEach(item => {
+      const relations = getSizesRelation(item);
+      relations.forEach(rel => {
+        if (rel.id) sizeRelationIdsMap.set(rel.id, true);
+      });
+    });
+
+    const uniqueSizeIds = Array.from(sizeRelationIdsMap.keys());
+
+    // 3. Fetch all size pages concurrently in parallel (eliminates N+1 serial blocking)
+    const sizePagesPromises = uniqueSizeIds.map(async (id) => {
+      try {
+        const sizeResponse = await fetch(`https://api.notion.com/v1/pages/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
+            'Notion-Version': '2022-06-28',
+            'Content-Type': 'application/json',
+          },
+        });
+        if (sizeResponse.ok) {
+          return await sizeResponse.json();
+        }
+      } catch (err) {
+        console.error(`Error fetching size page ${id}:`, err);
+      }
+      return null;
+    });
+
+    const sizePagesResults = await Promise.all(sizePagesPromises);
+    const sizesCache = {};
+    
+    sizePagesResults.forEach(sizeData => {
+      if (!sizeData) return;
+      const sizeName = 
+        sizeData.properties['Size']?.select?.name ||
+        sizeData.properties['Name']?.select?.name ||
+        'Standard';
+        
+      const price = sizeData.properties['Number']?.number ?? sizeData.properties['Price']?.number ?? 0;
+      const serves = sizeData.properties['Serves']?.select?.name || '';
+      const amount = sizeData.properties['Amount']?.rich_text?.[0]?.plain_text || '';
+      const description = sizeData.properties['Description']?.rich_text?.[0]?.plain_text || '';
+      const category = sizeData.properties['Category']?.select?.name || '';
+
+      sizesCache[sizeData.id] = {
+        id: sizeData.id,
+        size: sizeName,
+        price,
+        serves,
+        amount,
+        description,
+        category,
+      };
+    });
+
+    // 4. Map menu items and attach cached sizes
+    const menuItems = allResults.map((item) => {
       const name = item.properties['Item Name']?.title?.[0]?.plain_text || 'Untitled';
       const rawItemType = item.properties['Item Type']?.select?.name || '';
 
@@ -55,50 +114,12 @@ export async function GET() {
         .replace(/\s+/g, ' ')
         .trim();
 
-      // ✅ FIXED: Look for 'Number' first, then 'Price'
       let basePrice = item.properties['Number']?.number ?? item.properties['Price']?.number ?? 0;
 
       const sizesRelation = getSizesRelation(item);
-      const sizes = [];
-
-      for (const relation of sizesRelation) {
-        try {
-          const sizeResponse = await fetch(`https://api.notion.com/v1/pages/${relation.id}`, {
-            headers: {
-              'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
-              'Notion-Version': '2022-06-28',
-              'Content-Type': 'application/json',
-            },
-          });
-
-          if (sizeResponse.ok) {
-            const sizeData = await sizeResponse.json();
-            
-            const sizeName = 
-              sizeData.properties['Size']?.select?.name ||
-              sizeData.properties['Name']?.select?.name ||
-              'Standard';
-              
-            const price = sizeData.properties['Number']?.number ?? sizeData.properties['Price']?.number ?? 0;
-            const serves = sizeData.properties['Serves']?.select?.name || '';
-            const amount = sizeData.properties['Amount']?.rich_text?.[0]?.plain_text || '';
-            const description = sizeData.properties['Description']?.rich_text?.[0]?.plain_text || '';
-            const category = sizeData.properties['Category']?.select?.name || '';
-
-            sizes.push({
-              id: sizeData.id,
-              size: sizeName,
-              price: price,
-              serves: serves,
-              amount: amount,
-              description: description,
-              category: category,
-            });
-          }
-        } catch (err) {
-          console.error('Error fetching size:', err);
-        }
-      }
+      const sizes = sizesRelation
+        .map(rel => sizesCache[rel.id])
+        .filter(Boolean);
 
       sizes.sort((a, b) => a.price - b.price);
 
@@ -122,8 +143,9 @@ export async function GET() {
         'Price': basePrice,
         'Sizes': sizes,
       };
-    }));
+    });
 
+    // 5. Taco Tuesday discount check (Pacific Time)
     const now = new Date();
     const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
     const dayOfWeek = pacificTime.getDay();

@@ -8,28 +8,27 @@ export default function Navigation() {
   const pathname = usePathname();
   const { cart } = useCart();
 
-  // ✅ SAFE: Calculate total items and subtotal with fallbacks
+  // ✅ SAFE CALCULATIONS
   const totalItems = cart.reduce((sum, item) => {
     const qty = Number(item?.quantity ?? item?.qty ?? 1);
-    return sum + (isNaN(qty) ? 0 : qty);
+    return sum + (isNaN(qty) || qty < 0 ? 0 : qty);
   }, 0);
 
   const cartSubtotal = cart.reduce((sum, item) => {
     const price = Number(item?.selectedPrice ?? item?.['Price'] ?? item?.price ?? 0);
     const qty = Number(item?.quantity ?? item?.qty ?? 1);
     const validPrice = isNaN(price) ? 0 : price;
-    const validQty = isNaN(qty) ? 0 : qty;
+    const validQty = isNaN(qty) || qty < 0 ? 0 : qty;
     return sum + (validPrice * validQty);
   }, 0);
 
   const isActive = (path) => pathname === path;
 
-  // Cache-busting: use a static version number (no hydration mismatch)
   const menuImageSrc = `/menu.png?v=1.0.0`;
 
   return (
     <>
-      {/* MOBILE – Bottom Navigation Bar */}
+      {/* MOBILE – Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
           {/* Cart */}
@@ -47,13 +46,12 @@ export default function Navigation() {
                 </span>
               )}
             </div>
-            {/* ✅ PRICE UNDER CART ICON */}
             <span className="text-xs text-zinc-400 mt-0.5">
               ${cartSubtotal.toFixed(2)}
             </span>
           </Link>
 
-          {/* Menu PNG */}
+          {/* Menu Logo */}
           <Link
             href="/"
             className={`flex items-center justify-center transition ${
@@ -86,7 +84,7 @@ export default function Navigation() {
 
       {/* DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        {/* Menu PNG */}
+        {/* Menu Logo */}
         <Link
           href="/"
           className={`flex items-center justify-center transition ${
@@ -130,7 +128,6 @@ export default function Navigation() {
               </span>
             )}
           </div>
-          {/* ✅ PRICE UNDER CART ICON */}
           <span className="text-xs text-zinc-400 mt-0.5">
             ${cartSubtotal.toFixed(2)}
           </span>
