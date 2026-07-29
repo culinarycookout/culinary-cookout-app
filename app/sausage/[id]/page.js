@@ -48,12 +48,20 @@ export default function SausageDetailPage({ params }) {
       console.error('No sausage object!');
       return;
     }
+
     const selectedAddOnsList = (sausage.addOns || []).filter(
       addOn => selectedAddOns[addOn.id]
     );
+
+    // 1. Add to cart context
     addToCart(sausage, quantity, selectedAddOnsList);
+
+    // 2. Reset local state
     setQuantity(1);
     setSelectedAddOns({});
+
+    // 3. Immediately send user to the cart to see their item!
+    window.location.href = '/cart';
   };
 
   if (loading) {
