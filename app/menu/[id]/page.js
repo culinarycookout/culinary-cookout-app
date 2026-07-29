@@ -3,7 +3,6 @@
 import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
-import { getAddOnsByCategory } from '../../../constants/addons';
 
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
@@ -24,16 +23,40 @@ export default function ItemDetailPage({ params }) {
         const data = await res.json();
         const found = data.find(item => item.id === itemId);
         if (found) {
-          const category = found['CATEGORY'] || '';
-          const availableAddons = getAddOnsByCategory(category);
+          // ✅ ADD-ONS are already fetched from Notion relation in the API
+          // The API returns them as an array of IDs in found['ADD-ONS']
+          // We need to fetch the actual add-on data from the Add-ons database
 
-          found['ADD-ONS'] = availableAddons.map(addon => ({
-            id: addon.id,
-            name: addon.name,
-            price: addon.price,
-            description: addon.description || '',
-            heatLevel: addon.heatLevel || '',
-          }));
+          const addOnIds = found['ADD-ONS'] || [];
+          const fetchedAddOns = [];
+
+          for (const id of addOnIds) {
+            try {
+              const addOnResponse = await fetch(`https://api.notion.com/v1/pages/${id}`, {
+                headers: {
+                  'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NOTION_TOKEN || ''}`,
+                  'Notion-Version': '2022-06-28',
+                  'Content-Type': 'application/json',
+                },
+              });
+              if (addOnResponse.ok) {
+                const addOnData = await addOnResponse.json();
+                const props = addOnData.properties;
+                fetchedAddOns.push({
+                  id: addOnData.id,
+                  name: props['Add-On']?.title?.[0]?.plain_text || 'Add-on',
+                  price: props['Price']?.number || 0,
+                  description: props['Description']?.rich_text?.[0]?.plain_text || '',
+                  heatLevel: props['Heat Level']?.select?.name || '',
+                  countable: props['Countable']?.checkbox || false,
+                });
+              }
+            } catch (err) {
+              console.error('Error fetching add-on:', err);
+            }
+          }
+
+          found['ADD-ONS'] = fetchedAddOns;
 
           setItem(found);
           if (found.Sizes && found.Sizes.length > 0) {
