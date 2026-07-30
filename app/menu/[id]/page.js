@@ -4,6 +4,8 @@ import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
 
+const CACHE_KEY = 'culinary_menu_cache';
+
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
   const resolvedParams = use(params);
@@ -18,13 +20,33 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItem() {
       try {
-        const res = await fetch('/api/menu');
-        const data = await res.json();
+        let data = null;
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            data = parsed.data;
+          } catch (e) {}
+        }
+        if (!data) {
+          const res = await fetch('/api/menu');
+          data = await res.json();
+        }
         const found = data.find(item => item.id === itemId);
         if (found) {
           setItem(found);
           if (found.Sizes && found.Sizes.length > 0) {
             setSelectedSize(found.Sizes[0]);
+          } else {
+            // ✅ No sizes — create a default "Standard" size from the item's price
+            setSelectedSize({
+              id: 'default',
+              size: 'Standard',
+              price: found.Price || 0,
+              serves: '',
+              amount: '',
+              description: '',
+            });
           }
         } else {
           setError('Item not found');
@@ -39,14 +61,15 @@ export default function ItemDetailPage({ params }) {
   }, [itemId]);
 
   const handleAddToCart = () => {
-    if (!item || !selectedSize) return;
+    if (!item) return;
 
-    const price = selectedSize.price ?? item.Price ?? 0;
-    const size = selectedSize.size || 'Standard';
-    const serves = selectedSize.serves || '';
-    const amount = selectedSize.amount || '';
-    const isDiscounted = selectedSize.isDiscounted || false;
-    const originalPrice = selectedSize.originalPrice || price;
+    // Use selectedSize price, or fallback to item's Price
+    const price = selectedSize?.price ?? item.Price ?? 0;
+    const size = selectedSize?.size || 'Standard';
+    const serves = selectedSize?.serves || '';
+    const amount = selectedSize?.amount || '';
+    const isDiscounted = selectedSize?.isDiscounted || false;
+    const originalPrice = selectedSize?.originalPrice || price;
 
     const cartItem = {
       ...item,
@@ -65,8 +88,17 @@ export default function ItemDetailPage({ params }) {
     window.location.href = '/cart';
   };
 
-  if (loading) return <div className="min-h-screen bg-black text-white p-8">Loading...</div>;
-  if (error || !item) return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-zinc-950 text-white p-8 flex items-center justify-center text-xl font-medium">
+        Thank goodness for goodness... 🤤
+      </div>
+    );
+  }
+
+  if (error || !item) {
+    return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
+  }
 
   const currentPrice = selectedSize?.price ?? item.Price ?? 0;
   const isDiscounted = selectedSize?.isDiscounted ?? false;
@@ -112,12 +144,11 @@ export default function ItemDetailPage({ params }) {
                 <div className="flex flex-wrap gap-3">
                   {item.Sizes.map((size) => {
                     const isSelected = selectedSize?.id === size.id;
-                    // ✅ Color logic: Half = light red, Whole = deep full red
                     const isHalf = size.size.toLowerCase().includes('half');
                     const baseClass = "px-4 py-2 rounded-lg font-bold text-sm transition-colors border";
                     const selectedClass = isHalf
-                      ? "bg-red-300 text-black border-red-400 hover:bg-red-200"      // Light red for Half
-                      : "bg-red-600 text-white border-red-700 hover:bg-red-500";    // Deep full red for Whole
+                      ? "bg-red-300 text-black border-red-400 hover:bg-red-200"
+                      : "bg-red-600 text-white border-red-700 hover:bg-red-500";
                     const unselectedClass = "bg-zinc-800 text-white border-zinc-700 hover:border-zinc-500";
 
                     return (
@@ -135,10 +166,20 @@ export default function ItemDetailPage({ params }) {
             )}
 
             {selectedSize && (
-              <div className="mt-2">
-                {selectedSize.serves && <p className="text-sm text-zinc-300"><span className="text-zinc-400">Serves:</span> {selectedSize.serves}</p>}
-                {selectedSize.amount && <p className="text-sm text-zinc-300"><span className="text-zinc-400">Included:</span> {selectedSize.amount} per order</p>}
-                {selectedSize.description && <p className="text-zinc-300 mt-2">{selectedSize.description}</p>}
+              <div className="mt-3 space-y-1">
+                {selectedSize.description && (
+                  <p className="text-sm text-zinc-300">{selectedSize.description}</p>
+                )}
+                {selectedSize.serves && (
+                  <p className="text-sm text-zinc-300">
+                    <span className="text-zinc-400">Serves:</span> {selectedSize.serves}
+                  </p>
+                )}
+                {selectedSize.amount && (
+                  <p className="text-sm text-zinc-300">
+                    <span className="text-zinc-400">Included:</span> {selectedSize.amount} per order
+                  </p>
+                )}
               </div>
             )}
 
@@ -153,7 +194,7 @@ export default function ItemDetailPage({ params }) {
                 <span className="text-lg font-bold">Total</span>
                 <span className="text-2xl font-bold text-red-500">${finalPrice.toFixed(2)}</span>
               </div>
-              <button onClick={handleAddToCart} className="mt-3 w-full py-3 bg-[#0BDA51] hover:bg-[#09C448] text-white rounded-lg font-bold text-lg transition-colors">
+              <button onClick={handleAddToCart} className="mt-3 w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-lg transition-colors">
                 Gimme This! 😋
               </button>
             </div>

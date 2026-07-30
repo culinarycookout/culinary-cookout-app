@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+const CACHE_KEY = 'culinary_menu_cache';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
@@ -30,12 +33,33 @@ export default function Menu() {
 
   useEffect(() => {
     const fetchMenu = async () => {
+      // Check cache first
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        try {
+          const { data, timestamp } = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_TTL) {
+            setItems(data);
+            setFilteredItems(data);
+            setLoading(false);
+            const now = new Date();
+            const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+            const day = pacificTime.getDay();
+            const hours = pacificTime.getHours();
+            setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
+            return;
+          }
+        } catch (e) {}
+      }
+
+      // No cache or expired — fetch from API
       try {
         const res = await fetch('/api/menu');
         if (!res.ok) throw new Error('Failed to fetch menu');
         const data = await res.json();
         setItems(data);
         setFilteredItems(data);
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
 
         const now = new Date();
         const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
@@ -69,7 +93,14 @@ export default function Menu() {
 
   const categories = [...new Set(items.map((item) => item['CATEGORY']).filter(Boolean))].sort();
 
-  if (loading) return <div className="text-white p-4">Loading menu...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-zinc-950 text-white p-8 flex items-center justify-center text-xl font-medium">
+        Thank goodness for goodness... 🤤
+      </div>
+    );
+  }
+
   if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
 
   return (

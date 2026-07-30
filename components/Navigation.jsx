@@ -6,24 +6,9 @@ import { useCart } from '../context/CartContext';
 
 export default function Navigation() {
   const pathname = usePathname();
-  const { cart } = useCart();
-
-  // ✅ SAFE CALCULATIONS
-  const totalItems = cart.reduce((sum, item) => {
-    const qty = Number(item?.quantity ?? item?.qty ?? 1);
-    return sum + (isNaN(qty) || qty < 0 ? 0 : qty);
-  }, 0);
-
-  const cartSubtotal = cart.reduce((sum, item) => {
-    const price = Number(item?.selectedPrice ?? item?.['Price'] ?? item?.price ?? 0);
-    const qty = Number(item?.quantity ?? item?.qty ?? 1);
-    const validPrice = isNaN(price) ? 0 : price;
-    const validQty = isNaN(qty) || qty < 0 ? 0 : qty;
-    return sum + (validPrice * validQty);
-  }, 0);
+  const { totalItems } = useCart();
 
   const isActive = (path) => pathname === path;
-
   const menuImageSrc = `/menu.png?v=1.0.0`;
 
   return (
@@ -31,7 +16,6 @@ export default function Navigation() {
       {/* MOBILE – Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          {/* Cart */}
           <Link
             href="/cart"
             className={`flex flex-col items-center transition ${
@@ -46,12 +30,9 @@ export default function Navigation() {
                 </span>
               )}
             </div>
-            <span className="text-xs text-zinc-400 mt-0.5">
-              ${cartSubtotal.toFixed(2)}
-            </span>
+            {/* ✅ PRICE REMOVED — nothing below the cart icon */}
           </Link>
 
-          {/* Menu Logo */}
           <Link
             href="/"
             className={`flex items-center justify-center transition ${
@@ -70,7 +51,6 @@ export default function Navigation() {
             />
           </Link>
 
-          {/* Contact */}
           <Link
             href="/contact-us"
             className={`flex flex-col items-center transition ${
@@ -84,7 +64,6 @@ export default function Navigation() {
 
       {/* DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        {/* Menu Logo */}
         <Link
           href="/"
           className={`flex items-center justify-center transition ${
@@ -103,7 +82,6 @@ export default function Navigation() {
           />
         </Link>
 
-        {/* Contact */}
         <Link
           href="/contact-us"
           className={`flex flex-col items-center transition ${
@@ -113,7 +91,6 @@ export default function Navigation() {
           <span className="text-5xl">📬</span>
         </Link>
 
-        {/* Cart */}
         <Link
           href="/cart"
           className={`flex flex-col items-center transition relative ${
@@ -128,9 +105,7 @@ export default function Navigation() {
               </span>
             )}
           </div>
-          <span className="text-xs text-zinc-400 mt-0.5">
-            ${cartSubtotal.toFixed(2)}
-          </span>
+          {/* ✅ PRICE REMOVED — nothing below the cart icon */}
         </Link>
       </nav>
     </>

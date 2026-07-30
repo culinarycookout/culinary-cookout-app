@@ -30,22 +30,25 @@ export function CartProvider({ children }) {
     localStorage.setItem('culinary_cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Add item – now using exact Notion field names
+  // ✅ FIXED: Immutable update — always returns a new array instance
   const addToCart = (item, selectedAddOns = [], quantity = 1) => {
     if (!item || !item.id) {
       console.warn('Invalid item passed to addToCart');
       return;
     }
+
     const cartInstanceId = `${item.id}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const safeAddOns = Array.isArray(selectedAddOns) ? selectedAddOns : [];
-    // Preserve the exact Notion field names
+
     const cartItem = {
-      ...item, // includes 'Item Name', 'Price', 'CATEGORY', 'SIZE', 'SERVES:', etc.
+      ...item,
       quantity: quantity,
       selectedAddOns: safeAddOns,
       cartInstanceId: cartInstanceId,
       notes: '',
     };
+
+    // ✅ NEW ARRAY INSTANCE — forces re‑render
     setCart(prevCart => [...prevCart, cartItem]);
   };
 
@@ -53,20 +56,22 @@ export function CartProvider({ children }) {
     setCart(prevCart => {
       const itemToDuplicate = prevCart.find(item => item.cartInstanceId === cartInstanceId);
       if (!itemToDuplicate) return prevCart;
+
       const newInstanceId = `${itemToDuplicate.id}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
       const duplicatedItem = {
         ...itemToDuplicate,
         cartInstanceId: newInstanceId,
       };
+
       const index = prevCart.findIndex(item => item.cartInstanceId === cartInstanceId);
       const updated = [...prevCart];
       updated.splice(index + 1, 0, duplicatedItem);
-      return updated;
+      return updated; // ✅ New array
     });
   };
 
   const removeFromCart = (cartInstanceId) => {
-    setCart(prev => prev.filter(item => item.cartInstanceId !== cartInstanceId));
+    setCart(prev => prev.filter(item => item.cartInstanceId !== cartInstanceId)); // ✅ New array
   };
 
   const updateQuantity = (cartInstanceId, quantity) => {
@@ -74,21 +79,34 @@ export function CartProvider({ children }) {
       removeFromCart(cartInstanceId);
       return;
     }
-    setCart(prev => prev.map(item => item.cartInstanceId === cartInstanceId ? { ...item, quantity } : item));
+    setCart(prev =>
+      prev.map(item =>
+        item.cartInstanceId === cartInstanceId
+          ? { ...item, quantity } // ✅ New object inside new array
+          : item
+      )
+    );
   };
 
   const updateItemCustomizations = (cartInstanceId, selectedAddOns, notes) => {
-    setCart(prev => prev.map(item =>
-      item.cartInstanceId === cartInstanceId
-        ? { ...item, selectedAddOns: Array.isArray(selectedAddOns) ? selectedAddOns : [], notes: notes || '' }
-        : item
-    ));
+    setCart(prev =>
+      prev.map(item =>
+        item.cartInstanceId === cartInstanceId
+          ? {
+              ...item,
+              selectedAddOns: Array.isArray(selectedAddOns) ? selectedAddOns : [],
+              notes: notes || '',
+            }
+          : item
+      )
+    );
   };
 
   const clearCart = () => {
     setCart([]);
   };
 
+  // ✅ These recalculate on every cart change
   const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const subtotal = cart.reduce((sum, item) => {
     const itemPrice = item['Price'] || 0;
@@ -98,17 +116,19 @@ export function CartProvider({ children }) {
   }, 0);
 
   return (
-    <CartContext.Provider value={{
-      cart,
-      addToCart,
-      duplicateItem,
-      removeFromCart,
-      updateQuantity,
-      updateItemCustomizations,
-      clearCart,
-      totalItems,
-      subtotal
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        duplicateItem,
+        removeFromCart,
+        updateQuantity,
+        updateItemCustomizations,
+        clearCart,
+        totalItems,
+        subtotal,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
