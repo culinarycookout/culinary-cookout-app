@@ -155,12 +155,9 @@ export default function Menu() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {filteredItems.map((item) => {
-            const itemPrice = Number(item['Price']) || (item.Sizes && item.Sizes.length > 0 ? item.Sizes[0].price : 0);
-            const isUnpriced = !itemPrice || itemPrice === 0;
             const colorClass = categoryColors[item['CATEGORY']] || 'bg-gray-600 text-white';
             const isTaco = item['CATEGORY'] === 'LATIN AMERICA' && item['Item Type'] === 'Taco';
             const hasDiscount = isTacoTuesday && isTaco && item.isDiscounted;
-            const hasMultipleSizes = item.Sizes && item.Sizes.length > 1;
 
             return (
               <Link
@@ -186,22 +183,7 @@ export default function Menu() {
                       {item['DESCRIPTION']}
                     </p>
                   )}
-                  <p className="text-base md:text-xl font-bold mt-1 md:mt-2">
-                    {hasDiscount ? (
-                      <>
-                        <span className="text-red-600">${(Number(item['Price']) || 0).toFixed(2)}</span>
-                        <span className="text-gray-400 text-sm line-through ml-2">
-                          ${(Number(item.originalPrice) || 0).toFixed(2)}
-                        </span>
-                      </>
-                    ) : isUnpriced ? (
-                      <span className="text-orange-600 italic text-xs md:text-base">Price Pending</span>
-                    ) : hasMultipleSizes ? (
-                      `$${Number(itemPrice).toFixed(2)} +`
-                    ) : (
-                      `$${Number(itemPrice).toFixed(2)}`
-                    )}
-                  </p>
+                  {/* ✅ PRICE REMOVED — nothing here */}
                 </div>
               </Link>
             );
