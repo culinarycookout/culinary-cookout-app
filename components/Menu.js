@@ -33,7 +33,6 @@ export default function Menu() {
 
   useEffect(() => {
     const fetchMenu = async () => {
-      // Check cache first
       const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
         try {
@@ -52,7 +51,6 @@ export default function Menu() {
         } catch (e) {}
       }
 
-      // No cache or expired — fetch from API
       try {
         const res = await fetch('/api/menu');
         if (!res.ok) throw new Error('Failed to fetch menu');
@@ -95,7 +93,7 @@ export default function Menu() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white p-8 flex items-center justify-center text-xl font-medium">
+      <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">
         Thank goodness for goodness... 🤤
       </div>
     );
@@ -178,6 +176,7 @@ export default function Menu() {
                       {item['CATEGORY']}
                     </span>
                   )}
+                  {/* ✅ DESCRIPTION RESTORED */}
                   {item['DESCRIPTION'] && (
                     <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block flex-1">
                       {item['DESCRIPTION']}

@@ -89,12 +89,12 @@ export default function ItemDetailPage({ params }) {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-zinc-950 text-white p-8 flex items-center justify-center text-xl font-medium">
-        Thank goodness for goodness... 🤤
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">
+      Thank goodness for goodness... 🤤
+    </div>
+  );
+}
 
   if (error || !item) {
     return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
