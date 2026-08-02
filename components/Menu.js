@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const CACHE_KEY = 'culinary_menu_cache';
+const CACHE_VERSION = '9'; // ✅ Increment to force fresh fetch
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 const categoryColors = {
@@ -36,8 +37,8 @@ export default function Menu() {
       const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
         try {
-          const { data, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_TTL) {
+          const { data, timestamp, version } = JSON.parse(cached);
+          if (version === CACHE_VERSION && Date.now() - timestamp < CACHE_TTL) {
             setItems(data);
             setFilteredItems(data);
             setLoading(false);
@@ -57,7 +58,7 @@ export default function Menu() {
         const data = await res.json();
         setItems(data);
         setFilteredItems(data);
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now(), version: CACHE_VERSION }));
 
         const now = new Date();
         const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
@@ -74,7 +75,8 @@ export default function Menu() {
   }, []);
 
   useEffect(() => {
-    let result = items;
+    let result = [...items];
+
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       result = result.filter(
@@ -83,9 +85,13 @@ export default function Menu() {
           (item['DESCRIPTION'] || '').toLowerCase().includes(term)
       );
     }
+
     if (filterCategory) {
       result = result.filter((item) => item['CATEGORY'] === filterCategory);
     }
+
+    // ✅ NO SORTING HERE — API already sorts by CATEGORY NUMBER and SORT
+
     setFilteredItems(result);
   }, [searchTerm, filterCategory, items]);
 
@@ -157,14 +163,25 @@ export default function Menu() {
             const isTaco = item['CATEGORY'] === 'LATIN AMERICA' && item['Item Type'] === 'Taco';
             const hasDiscount = isTacoTuesday && isTaco && item.isDiscounted;
 
+            const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
+
             return (
               <Link
                 key={item.id}
                 href={`/menu/${item.id}`}
                 className={`bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col h-full ${hasDiscount ? 'border-2 border-red-500' : ''}`}
               >
-                {item['Image URL'] && (
-                  <img src={item['Image URL']} alt={item['Item Name']} className="w-full h-36 md:h-48 object-cover" />
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={item['Item Name']}
+                    className="w-full h-36 md:h-48 object-cover"
+                    onError={(e) => { e.target.src = '/placeholder.png'; }}
+                  />
+                ) : (
+                  <div className="w-full h-36 md:h-48 bg-zinc-700 flex items-center justify-center text-zinc-400 text-xs">
+                    No image
+                  </div>
                 )}
                 <div className="p-3 md:p-4 flex flex-col flex-1">
                   <div className="flex items-start justify-between gap-2">
@@ -176,7 +193,6 @@ export default function Menu() {
                       {item['CATEGORY']}
                     </span>
                   )}
-                  {/* ✅ DESCRIPTION — FULL TEXT, NOT TRUNCATED */}
                   {item['DESCRIPTION'] && (
                     <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                       {item['DESCRIPTION']}

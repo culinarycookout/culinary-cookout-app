@@ -1,39 +1,42 @@
 import { NextResponse } from 'next/server';
 
-function getRelationIds(properties, possibleNames) {
-  for (const name of possibleNames) {
-    const rel = properties[name]?.relation;
-    if (rel && Array.isArray(rel)) return rel.map(r => r.id);
-  }
-  return [];
-}
-
 export async function GET() {
+  const databaseId = process.env.NOTION_MENU_DATABASE_ID;
+  const apiKey = process.env.NOTION_ACCESS_TOKEN;
+
+  if (!databaseId || !apiKey) {
+    return NextResponse.json({ error: 'Missing Notion credentials' }, { status: 500 });
+  }
+
   try {
     let allResults = [];
     let hasMore = true;
     let startCursor = undefined;
 
     while (hasMore) {
-      const requestBody = {
-        sorts: [
-          { property: "CATEGORY", direction: "ascending" },
-          { property: "Item Name", direction: "ascending" }
-        ]
-      };
-      if (startCursor) requestBody.start_cursor = startCursor;
+      const bodyPayload = {};
+      if (startCursor) {
+        bodyPayload.start_cursor = startCursor;
+      }
 
-      const response = await fetch(`https://api.notion.com/v1/databases/${process.env.NOTION_MENU_DATABASE_ID}/query`, {
+      const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Notion-Version': '2022-06-28',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(bodyPayload),
       });
 
-      if (!response.ok) throw new Error(`Notion API error: ${response.status}`);
+      if (!response.ok) {
+        const errorBody = await response.text();
+        return NextResponse.json({ 
+          error: 'Notion API error', 
+          status: response.status,
+          details: errorBody 
+        }, { status: response.status });
+      }
 
       const data = await response.json();
       allResults = [...allResults, ...data.results];
@@ -41,120 +44,62 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // 1. Collect all size and add-on relation IDs
-    const sizeIdSet = new Set();
-    const addonIdSet = new Set();
-
-    allResults.forEach(item => {
-      const props = item.properties;
-
-      // Sizes relation – try 'Sizes Menu', 'Sizes', etc.
-      const sizeIds = getRelationIds(props, ['Sizes Menu', 'Sizes', 'Size Options', 'Linked Sizes']);
-      sizeIds.forEach(id => sizeIdSet.add(id));
-
-      // Add-ons relation – try 'ADD-ONS', 'Add-ons', etc.
-      const addonIds = getRelationIds(props, ['ADD-ONS', 'Add-ons', 'Add Ons']);
-      addonIds.forEach(id => addonIdSet.add(id));
-    });
-
-    // 2. Fetch all size pages in parallel
-    const sizePages = await Promise.all(
-      Array.from(sizeIdSet).map(async (id) => {
-        try {
-          const res = await fetch(`https://api.notion.com/v1/pages/${id}`, {
-            headers: {
-              'Authorization': `Bearer ${process.env.NOTION_ACCESS_TOKEN}`,
-              'Notion-Version': '2022-06-28',
-              'Content-Type': 'application/json',
-            },
-          });
-          if (res.ok) return await res.json();
-        } catch (e) { console.error(`Size fetch error for ${id}:`, e); }
-        return null;
-      })
-    );
-
-    const sizesCache = {};
-    sizePages.forEach(page => {
-      if (!page) return;
+    const formattedItems = allResults.map((page) => {
       const props = page.properties;
-      sizesCache[page.id] = {
-        id: page.id,
-        size: props['Size']?.select?.name || props['Name']?.title?.[0]?.plain_text || 'Standard',
-        price: props['Number']?.number ?? props['Price']?.number ?? 0,
-        serves: props['Serves']?.select?.name || '',
-        amount: props['Amount']?.rich_text?.[0]?.plain_text || '',
-        description: props['Description']?.rich_text?.[0]?.plain_text || '',
-        category: props['Category']?.select?.name || '',
+      
+      const getTitle = (p) => p?.title?.[0]?.plain_text || '';
+      const getRichText = (p) => p?.rich_text?.[0]?.plain_text || '';
+      const getSelect = (p) => p?.select?.name || '';
+      const getNumber = (p) => p?.number ?? 0;
+
+      const getImageUrl = (p) => {
+        if (!p) return '';
+        if (p.url) return p.url;
+        if (p.rich_text) return p.rich_text?.[0]?.plain_text || '';
+        if (p.files) return p.files?.[0]?.file?.url || p.files?.[0]?.external?.url || '';
+        return '';
       };
-    });
 
-    // 3. Map menu items, attaching sizes and add-ons correctly
-    const menuItems = allResults.map((item) => {
-      const props = item.properties;
-      const name = props['Item Name']?.title?.[0]?.plain_text || 'Untitled';
-      const rawItemType = props['Item Type']?.select?.name || '';
+      // ✅ CUSTOMER DISPLAY FIELDS — unchanged
+      const category = getSelect(props['CATEGORY']) || getRichText(props['CATEGORY']) || '';
+      const itemName = getTitle(props['ITEM NAME']) || getRichText(props['ITEM NAME']) || '';
+      const description = getRichText(props['DESCRIPTION']) || '';
 
-      // Get size IDs from the relation
-      const sizeIds = getRelationIds(props, ['Sizes Menu', 'Sizes', 'Size Options', 'Linked Sizes']);
-      const sizes = sizeIds.map(id => sizesCache[id]).filter(Boolean);
-      sizes.sort((a, b) => a.price - b.price);
-
-      // Base price
-      let basePrice = props['Number']?.number ?? props['Price']?.number ?? 0;
-      if ((!basePrice || basePrice === 0) && sizes.length > 0) {
-        basePrice = sizes[0].price;
-      }
-
-      // Add‑on IDs (we'll keep them as IDs – the frontend can fetch them if needed)
-      const addonIds = getRelationIds(props, ['ADD-ONS', 'Add-ons', 'Add Ons']);
+      // ✅ SORTING FIELDS — used only for sorting, never displayed
+      const categoryNumber = getNumber(props['CATEGORY NUMBER']) || getRichText(props['CATEGORY NUMBER']) || getSelect(props['CATEGORY NUMBER']) || '';
+      const sortValue = getNumber(props['SORT']) || getRichText(props['SORT']) || getSelect(props['SORT']) || '';
 
       return {
-        id: item.id,
-        'Item Name': name,
-        'CATEGORY': props['CATEGORY']?.select?.name || '',
-        'DESCRIPTION': props['DESCRIPTION']?.rich_text?.[0]?.plain_text || '',
-        'Image URL': props['Image URL']?.url || '',
-        'Item Type': rawItemType || '',
-        'Price': basePrice,
-        'Sizes': sizes,        // ✅ Now correctly populated
-        'ADD-ONS': addonIds,   // Separate field
+        id: page.id,
+        'Item Name': itemName,
+        'DESCRIPTION': description,
+        'CATEGORY': category,              // ✅ Displayed to customer
+        'CATEGORY NUMBER': categoryNumber, // ✅ Sorting only — NOT displayed
+        'SORT': sortValue,                // ✅ Sorting only — NOT displayed
+        'Price': getNumber(props['PRICE']),
+        'Image URL': getImageUrl(props['Image URL']) || getImageUrl(props['IMAGE URL']),
+        'Item Type': getSelect(props['ITEM TYPE']),
+        isDiscounted: props['isDiscounted']?.checkbox || false,
       };
     });
 
-    // Taco Tuesday (unchanged)
-    const now = new Date();
-    const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
-    const dayOfWeek = pacificTime.getDay();
-    const hours = pacificTime.getHours();
-    const isTacoTuesday = (dayOfWeek === 2 && hours >= 0) || (dayOfWeek === 3 && hours < 1);
+    // ✅ SORTING: Primary by CATEGORY NUMBER, Secondary by SORT
+    formattedItems.sort((a, b) => {
+      // 1. Primary: CATEGORY NUMBER (numeric-aware)
+      const numA = (a['CATEGORY NUMBER'] || '').toString();
+      const numB = (b['CATEGORY NUMBER'] || '').toString();
+      const compareNum = numA.localeCompare(numB, undefined, { numeric: true, sensitivity: 'base' });
+      if (compareNum !== 0) return compareNum;
 
-    let responseItems = menuItems;
-    if (isTacoTuesday) {
-      responseItems = menuItems.map(item => {
-        const itemType = item['Item Type'] || '';
-        if (itemType.toLowerCase().includes('taco')) {
-          const discountedSizes = (item.Sizes || []).map(size => ({
-            ...size,
-            price: Number((size.price * 0.5).toFixed(2)),
-            originalPrice: size.price,
-            isDiscounted: true,
-          }));
-          return {
-            ...item,
-            Sizes: discountedSizes,
-            Price: Number((item.Price * 0.5).toFixed(2)),
-            isDiscounted: true,
-            originalPrice: item.Price,
-          };
-        }
-        return item;
-      });
-    }
+      // 2. Secondary: SORT (numeric-aware)
+      const sortA = (a['SORT'] || '').toString();
+      const sortB = (b['SORT'] || '').toString();
+      return sortA.localeCompare(sortB, undefined, { numeric: true, sensitivity: 'base' });
+    });
 
-    return NextResponse.json(responseItems);
+    return NextResponse.json(formattedItems);
   } catch (error) {
     console.error('Error fetching menu:', error);
-    return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
