@@ -3,19 +3,31 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import { useState, useEffect } from 'react';
 
 export default function Navigation() {
   const pathname = usePathname();
-  const { totalItems } = useCart();
+  const { cart } = useCart();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // ✅ Only calculate after mounting (prevents hydration error)
+  const totalItems = mounted
+    ? cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0)
+    : 0;
 
   const isActive = (path) => pathname === path;
   const menuImageSrc = `/menu.png?v=1.0.0`;
 
   return (
     <>
-      {/* MOBILE – Bottom Navigation */}
+      {/* MOBILE – Bottom Navigation (icons only) */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
+          {/* Cart */}
           <Link
             href="/cart"
             className={`flex flex-col items-center transition ${
@@ -24,15 +36,15 @@ export default function Navigation() {
           >
             <div className="relative">
               <span className="text-3xl">🛒</span>
-              {totalItems > 0 && (
+              {mounted && totalItems > 0 && (
                 <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                   {totalItems}
                 </span>
               )}
             </div>
-            {/* ✅ PRICE REMOVED — nothing below the cart icon */}
           </Link>
 
+          {/* Menu Logo */}
           <Link
             href="/"
             className={`flex items-center justify-center transition ${
@@ -51,6 +63,7 @@ export default function Navigation() {
             />
           </Link>
 
+          {/* Contact */}
           <Link
             href="/contact-us"
             className={`flex flex-col items-center transition ${
@@ -64,6 +77,7 @@ export default function Navigation() {
 
       {/* DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
+        {/* Menu Logo */}
         <Link
           href="/"
           className={`flex items-center justify-center transition ${
@@ -82,6 +96,7 @@ export default function Navigation() {
           />
         </Link>
 
+        {/* Contact */}
         <Link
           href="/contact-us"
           className={`flex flex-col items-center transition ${
@@ -91,6 +106,7 @@ export default function Navigation() {
           <span className="text-5xl">📬</span>
         </Link>
 
+        {/* Cart */}
         <Link
           href="/cart"
           className={`flex flex-col items-center transition relative ${
@@ -99,13 +115,12 @@ export default function Navigation() {
         >
           <div className="relative">
             <span className="text-5xl">🛒</span>
-            {totalItems > 0 && (
+            {mounted && totalItems > 0 && (
               <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                 {totalItems}
               </span>
             )}
           </div>
-          {/* ✅ PRICE REMOVED — nothing below the cart icon */}
         </Link>
       </nav>
     </>

@@ -90,6 +90,17 @@ export default function Menu() {
       result = result.filter((item) => item['CATEGORY'] === filterCategory);
     }
 
+    result.sort((a, b) => {
+      const numA = (a['CATEGORY NUMBER'] || '').toString();
+      const numB = (b['CATEGORY NUMBER'] || '').toString();
+      const compareNum = numA.localeCompare(numB, undefined, { numeric: true, sensitivity: 'base' });
+      if (compareNum !== 0) return compareNum;
+
+      const sortA = (a['SORT'] || '').toString();
+      const sortB = (b['SORT'] || '').toString();
+      return sortA.localeCompare(sortB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
     setFilteredItems(result);
   }, [searchTerm, filterCategory, items]);
 
@@ -162,10 +173,8 @@ export default function Menu() {
             const hasDiscount = isTacoTuesday && isTaco && item.isDiscounted;
 
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
-            const itemName = (item['Item Name'] || '').trim().toUpperCase();
-            
-            // ✅ TACO DEALS → CORRECT PATH: /menu/taco-deals
-            const isTacoDealsItem = itemName.includes('TACO DEAL');
+            const itemNameTrimmed = (item['Item Name'] || '').trim().toUpperCase();
+            const isTacoDealsItem = itemNameTrimmed === 'TACO DEALS';
             const destinationHref = isTacoDealsItem ? '/menu/taco-deals' : `/menu/${item.id}`;
 
             return (
