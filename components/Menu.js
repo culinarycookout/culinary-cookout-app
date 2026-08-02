@@ -176,13 +176,12 @@ export default function Menu() {
                       {item['CATEGORY']}
                     </span>
                   )}
-                  {/* ✅ DESCRIPTION RESTORED */}
+                  {/* ✅ DESCRIPTION — FULL TEXT, NOT TRUNCATED */}
                   {item['DESCRIPTION'] && (
-                    <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 line-clamp-2 hidden sm:block flex-1">
+                    <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                       {item['DESCRIPTION']}
                     </p>
                   )}
-                  {/* ✅ PRICE REMOVED — nothing here */}
                 </div>
               </Link>
             );

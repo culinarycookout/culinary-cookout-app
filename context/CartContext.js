@@ -5,51 +5,61 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
-
-  // Load cart from localStorage
-  useEffect(() => {
+  // ✅ Lazy initialization — reads localStorage on first render, no extra write
+  const [cart, setCart] = useState(() => {
+    if (typeof window === 'undefined') return [];
     const savedCart = localStorage.getItem('culinary_cart');
-    if (savedCart) {
-      try {
-        const parsed = JSON.parse(savedCart);
-        if (Array.isArray(parsed)) {
-          setCart(parsed);
-        } else {
-          setCart([]);
-        }
-      } catch (e) {
-        console.error('Failed to parse cart from localStorage', e);
-        setCart([]);
-      }
+    if (!savedCart) return [];
+    try {
+      const parsed = JSON.parse(savedCart);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error('Failed to parse cart from localStorage', e);
+      return [];
     }
-  }, []);
+  });
 
-  // Save cart to localStorage
+  // ✅ Save cart to localStorage whenever it changes (only one useEffect now)
   useEffect(() => {
     localStorage.setItem('culinary_cart', JSON.stringify(cart));
   }, [cart]);
 
-  // ✅ FIXED: Immutable update — always returns a new array instance
+  // Add item – groups identical items
   const addToCart = (item, selectedAddOns = [], quantity = 1) => {
     if (!item || !item.id) {
       console.warn('Invalid item passed to addToCart');
       return;
     }
 
-    const cartInstanceId = `${item.id}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const safeQuantity = Math.max(1, Number(quantity) || 1);
     const safeAddOns = Array.isArray(selectedAddOns) ? selectedAddOns : [];
 
-    const cartItem = {
-      ...item,
-      quantity: quantity,
-      selectedAddOns: safeAddOns,
-      cartInstanceId: cartInstanceId,
-      notes: '',
-    };
+    setCart(prevCart => {
+      const existingIndex = prevCart.findIndex(cartItem =>
+        cartItem.id === item.id &&
+        cartItem['SIZE'] === item['SIZE'] &&
+        JSON.stringify(cartItem.selectedAddOns) === JSON.stringify(safeAddOns)
+      );
 
-    // ✅ NEW ARRAY INSTANCE — forces re‑render
-    setCart(prevCart => [...prevCart, cartItem]);
+      if (existingIndex > -1) {
+        const updated = [...prevCart];
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          quantity: Number(updated[existingIndex].quantity) + safeQuantity,
+        };
+        return updated;
+      } else {
+        const cartInstanceId = `${item.id}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+        const cartItem = {
+          ...item,
+          quantity: safeQuantity,
+          selectedAddOns: safeAddOns,
+          cartInstanceId: cartInstanceId,
+          notes: '',
+        };
+        return [...prevCart, cartItem];
+      }
+    });
   };
 
   const duplicateItem = (cartInstanceId) => {
@@ -61,17 +71,17 @@ export function CartProvider({ children }) {
       const duplicatedItem = {
         ...itemToDuplicate,
         cartInstanceId: newInstanceId,
+        quantity: 1,
       };
-
       const index = prevCart.findIndex(item => item.cartInstanceId === cartInstanceId);
       const updated = [...prevCart];
       updated.splice(index + 1, 0, duplicatedItem);
-      return updated; // ✅ New array
+      return updated;
     });
   };
 
   const removeFromCart = (cartInstanceId) => {
-    setCart(prev => prev.filter(item => item.cartInstanceId !== cartInstanceId)); // ✅ New array
+    setCart(prev => prev.filter(item => item.cartInstanceId !== cartInstanceId));
   };
 
   const updateQuantity = (cartInstanceId, quantity) => {
@@ -82,7 +92,7 @@ export function CartProvider({ children }) {
     setCart(prev =>
       prev.map(item =>
         item.cartInstanceId === cartInstanceId
-          ? { ...item, quantity } // ✅ New object inside new array
+          ? { ...item, quantity: Number(quantity) }
           : item
       )
     );
@@ -106,13 +116,14 @@ export function CartProvider({ children }) {
     setCart([]);
   };
 
-  // ✅ These recalculate on every cart change
-  const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+  // ✅ Force numbers for totalItems and subtotal – fixes the badge issue
+  const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+
   const subtotal = cart.reduce((sum, item) => {
-    const itemPrice = item['Price'] || 0;
+    const itemPrice = Number(item['Price']) || 0;
     const addOnsList = Array.isArray(item.selectedAddOns) ? item.selectedAddOns : [];
-    const addOnsPrice = addOnsList.reduce((acc, ao) => acc + (ao.price || 0), 0);
-    return sum + (itemPrice + addOnsPrice) * (item.quantity || 1);
+    const addOnsPrice = addOnsList.reduce((acc, ao) => acc + (Number(ao.price) || 0), 0);
+    return sum + (itemPrice + addOnsPrice) * (Number(item.quantity) || 1);
   }, 0);
 
   return (

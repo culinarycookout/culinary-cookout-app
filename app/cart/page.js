@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 import { addonsData } from '../../constants/addons';
@@ -60,6 +60,11 @@ function CartContent() {
   const [showCustomize, setShowCustomize] = useState(false);
   const [localAddOns, setLocalAddOns] = useState({});
   const [localNotes, setLocalNotes] = useState('');
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isTacoActive = isTacoTuesday();
 
@@ -177,9 +182,29 @@ function CartContent() {
     window.location.href = `/delivery-details?items=${encodeURIComponent(JSON.stringify(orderData))}&total=${total.toFixed(2)}`;
   };
 
-  const totalItems = cart.reduce((sum, item) => sum + getItemQty(item), 0);
+  const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
   const cartTotal = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
   const tacoEmojis = '🌮'.repeat(12);
+
+  if (!isMounted) {
+    return (
+      <div className="w-full min-h-screen bg-black text-white p-4 pb-32">
+        <div className="container max-w-2xl mx-auto">
+          <div className="flex justify-center mb-4">
+            <img src="https://iili.io/CeCmPWJ.png" alt="Cook For Hire" className="h-16 md:h-20 w-auto object-contain" />
+          </div>
+          <div className="flex items-start justify-between w-full mb-6 px-2">
+            <button className="text-red-400 text-sm md:text-base font-medium whitespace-nowrap pt-1">← Back to Menu</button>
+            <div className="flex flex-col items-end text-right">
+              <h1 className="text-2xl md:text-3xl font-bold text-red-600 leading-tight">Your Cart</h1>
+              <span className="text-xs md:text-sm text-zinc-400 mt-1 block">(0 items)</span>
+            </div>
+          </div>
+          <p className="text-center text-zinc-400 py-8">Loading cart...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen bg-black text-white p-4 pb-32">
@@ -215,13 +240,12 @@ function CartContent() {
           <>
             <div className="space-y-4 mb-6">
               {cart.map((item) => {
-                // ✅ GG's safe parsing
+                const total = calculateItemTotal(item);
                 const qty = getItemQty(item);
                 const price = getItemPrice(item);
-                const total = calculateItemTotal(item);
                 const originalPrice = item?.originalPrice ?? price;
                 const itemName = item['Item Name'] || item.name || '';
-                const isTaco = itemName.toUpperCase().includes('TACO');
+                const isTaco = itemName.toUpperCase().includes("TACO");
                 const hasDiscount = isTacoActive && isTaco;
                 const addOns = getSafeAddOns(item);
                 const addonNames = addOns.map(a => `${a.name} x${Number(a?.quantity ?? a?.qty ?? 1)}`).join(', ');
@@ -229,11 +253,12 @@ function CartContent() {
                 const itemAmount = item['AMOUNT'] || '';
 
                 return (
-                  <div key={item.cartInstanceId || item.id} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
+                  <div key={item.cartInstanceId} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
-                        {itemSize && <p className="text-sm text-red-400 font-medium">Size: {itemSize}</p>}
+                        {/* ✅ CHANGED: "Size" → "Type" */}
+                        {itemSize && <p className="text-sm text-red-400 font-medium">Type: {itemSize}</p>}
                         {itemAmount && (
                           <p className="text-sm text-zinc-300">
                             <span className="text-zinc-400">Quantity:</span>{' '}
@@ -255,19 +280,46 @@ function CartContent() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 sm:gap-4 mt-3 flex-wrap">
+                    <div className="flex items-center gap-4 sm:gap-5 mt-3 flex-wrap">
                       <div className="flex items-center space-x-2">
-                        <button onClick={() => updateQuantity(item.cartInstanceId, Math.max(1, qty - 1))} className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg">−</button>
+                        <button
+                          onClick={() => updateQuantity(item.cartInstanceId, Math.max(1, qty - 1))}
+                          className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg"
+                        >
+                          −
+                        </button>
                         <span className="text-lg font-bold text-white w-6 text-center">{isNaN(qty) ? 1 : qty}</span>
-                        <button onClick={() => updateQuantity(item.cartInstanceId, qty + 1)} className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg">+</button>
+                        <button
+                          onClick={() => updateQuantity(item.cartInstanceId, qty + 1)}
+                          className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg"
+                        >
+                          +
+                        </button>
                       </div>
-                      <button onClick={() => duplicateItem(item.cartInstanceId)} className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium transition-colors">
-                        <span>Build</span><span>Another</span><span className="text-lg">👨🏾‍🍳</span>
+
+                      <button
+                        onClick={() => duplicateItem(item.cartInstanceId)}
+                        className="flex flex-col items-center leading-tight text-white hover:text-zinc-300 text-sm font-medium transition-colors"
+                      >
+                        <span>Build</span>
+                        <span>Another</span>
+                        <span className="text-lg">👨🏾‍🍳</span>
                       </button>
-                      <button onClick={() => openCustomize(item.cartInstanceId)} className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium transition-colors">
-                        <span>Customize</span><span className="text-base">📝</span>
+
+                      <button
+                        onClick={() => openCustomize(item.cartInstanceId)}
+                        className="flex flex-col items-center text-green-400 hover:text-green-300 text-sm font-medium transition-colors"
+                      >
+                        <span>Customize</span>
+                        <span className="text-base">📝</span>
                       </button>
-                      <button onClick={() => removeFromCart(item.cartInstanceId)} className="text-red-400 hover:text-red-300 text-sm font-medium ml-auto">Remove</button>
+
+                      <button
+                        onClick={() => removeFromCart(item.cartInstanceId)}
+                        className="text-red-400 hover:text-red-300 text-sm font-medium ml-auto"
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 );
