@@ -4,8 +4,16 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const CACHE_KEY = 'culinary_menu_cache';
-const CACHE_VERSION = '3';
+const CACHE_VERSION = '4'; // ✅ Increment to force fresh cache
 const CACHE_TTL = 5 * 60 * 1000;
+
+// ✅ Items to hide from the main menu (they have their own page)
+const HIDDEN_ITEMS = [
+  'TACO TRIO',
+  'TACO PACK',
+  'TACO PARTY',
+  'TACO PARTY: FIESTA GRANDE',
+];
 
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
@@ -39,8 +47,10 @@ export default function Menu() {
         try {
           const { data, timestamp, version } = JSON.parse(cached);
           if (version === CACHE_VERSION && Date.now() - timestamp < CACHE_TTL) {
-            setItems(data);
-            setFilteredItems(data);
+            // ✅ Filter out hidden items
+            const filtered = data.filter(item => !HIDDEN_ITEMS.includes(item['Item Name']?.trim()));
+            setItems(filtered);
+            setFilteredItems(filtered);
             setLoading(false);
             const now = new Date();
             const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
@@ -56,9 +66,11 @@ export default function Menu() {
         const res = await fetch('/api/menu');
         if (!res.ok) throw new Error('Failed to fetch menu');
         const data = await res.json();
-        setItems(data);
-        setFilteredItems(data);
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now(), version: CACHE_VERSION }));
+        // ✅ Filter out hidden items
+        const filtered = data.filter(item => !HIDDEN_ITEMS.includes(item['Item Name']?.trim()));
+        setItems(filtered);
+        setFilteredItems(filtered);
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now(), version: CACHE_VERSION }));
 
         const now = new Date();
         const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
@@ -163,10 +175,9 @@ export default function Menu() {
 
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
-            
-            // ✅ TACO DEALS → CORRECT PATH: /menu/taco-deals
+
             const isTacoDealsItem = itemName.includes('TACO DEAL');
-            const destinationHref = isTacoDealsItem ? '/menu/taco-deals' : `/menu/${item.id}`;
+            const destinationHref = isTacoDealsItem ? '/taco-deals' : `/menu/${item.id}`;
 
             return (
               <Link
