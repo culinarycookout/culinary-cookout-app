@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
 
-// ✅ Package configurations with GROUP structure
+// ✅ Package configurations
 const packageConfig = {
   'taco-trio': {
     name: 'TACO TRIO',
@@ -48,13 +48,11 @@ const packageConfig = {
   },
 };
 
-// ✅ Tortilla options
 const TORTILLA_OPTIONS = [
   { value: 'corn', label: 'Corn Tortilla', price: 1.00 },
   { value: 'soft', label: 'Soft Flour Tortilla', price: 1.50 },
 ];
 
-// ✅ Meat options
 const MEAT_OPTIONS = [
   'Beef',
   'Steak',
@@ -67,7 +65,6 @@ const MEAT_OPTIONS = [
   'Veggie Only',
 ];
 
-// ✅ Topping options (up to 5)
 const TOPPING_OPTIONS = [
   'Avocado',
   'Habaneros',
@@ -79,9 +76,8 @@ const TOPPING_OPTIONS = [
   'Tomatoes',
 ];
 
-// ✅ Extras (unlimited)
 const EXTRAS_OPTIONS = [
-  'Cheese',
+  '4 Cheese Blend',
   'Mild Nacho Cheese',
   'Hot Nacho Cheese',
   'Pico de Gallo',
@@ -105,7 +101,6 @@ export default function TacoDealCustomize() {
   const [loading, setLoading] = useState(true);
   const [groupSelections, setGroupSelections] = useState({});
 
-  // Initialize group selections
   useEffect(() => {
     if (!config) return;
     const initial = {};
@@ -122,7 +117,6 @@ export default function TacoDealCustomize() {
     setLoading(false);
   }, [config]);
 
-  // ✅ FIXED: Handlers with proper state updates
   const handleTortillaChange = (groupId, value) => {
     setGroupSelections((prev) => {
       const updated = { ...prev };
@@ -175,13 +169,11 @@ export default function TacoDealCustomize() {
     });
   };
 
-  // ✅ Check if all groups are configured
   const isComplete = config?.groups.every((group) => {
     const sel = groupSelections[group.id];
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
-  // ✅ Calculate total price
   const totalPrice = config?.groups.reduce((sum, group) => {
     const sel = groupSelections[group.id];
     if (!sel || sel.tortilla === '' || sel.meat1 === '') return sum;
@@ -208,22 +200,15 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   }).length || 0;
 
+  // ✅ FIXED: Simplified breakdown
   const handleAddToCart = () => {
     if (!isComplete) return;
 
     const breakdown = config.groups.map((group) => {
       const sel = groupSelections[group.id];
       const tortillaLabel = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.label || 'Corn';
-      return {
-        groupLabel: group.label,
-        count: group.count,
-        tortilla: tortillaLabel,
-        meat1: sel.meat1,
-        meat2: sel.meat2 || 'None',
-        toppings: sel.toppings.length > 0 ? sel.toppings.join(', ') : 'None',
-        extras: sel.extras.length > 0 ? sel.extras.join(', ') : 'None',
-      };
-    });
+      return `${group.label}: ${group.count} x ${sel.meat1}${sel.meat2 && sel.meat2 !== 'None' ? ` + ${sel.meat2}` : ''} (${tortillaLabel})`;
+    }).join(' | ');
 
     const cartItem = {
       id: `${dealId}-${Date.now()}`,
@@ -272,7 +257,6 @@ export default function TacoDealCustomize() {
           </Link>
         </div>
 
-        {/* Progress bar */}
         <div className="mb-6">
           <div className="flex justify-between text-xs text-zinc-400 mb-1">
             <span>
@@ -288,7 +272,6 @@ export default function TacoDealCustomize() {
           </div>
         </div>
 
-        {/* Groups */}
         <div className="space-y-6">
           {config.groups.map((group) => {
             const sel = groupSelections[group.id] || {
@@ -299,6 +282,10 @@ export default function TacoDealCustomize() {
               extras: [],
             };
 
+            // ✅ THE ONLY CHANGE: Check if it's a Trio to display "Taco 1/2/3" instead of "Taco Group 1/2/3"
+            const isTrio = config.name === 'TACO TRIO';
+            const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
+
             return (
               <div
                 key={group.id}
@@ -306,14 +293,13 @@ export default function TacoDealCustomize() {
               >
                 <div className="border-b border-zinc-800 pb-2">
                   <h3 className="font-bold text-lg text-white">
-                    {group.label} ({group.count} taco{group.count > 1 ? 's' : ''})
+                    {displayLabel} ({group.count} taco{group.count > 1 ? 's' : ''})
                   </h3>
                   <p className="text-xs text-zinc-400">
                     Customize once for all {group.count} tacos in this group
                   </p>
                 </div>
 
-                {/* Tortilla Selection */}
                 <div>
                   <label className="block text-xs font-semibold text-zinc-300 mb-1">
                     Tortilla Type *
@@ -332,7 +318,6 @@ export default function TacoDealCustomize() {
                   </select>
                 </div>
 
-                {/* Meat Selection */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-zinc-300 mb-1">
@@ -375,7 +360,6 @@ export default function TacoDealCustomize() {
                   </div>
                 </div>
 
-                {/* Toppings (max 5) */}
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <label className="text-xs font-semibold text-zinc-300">
@@ -405,7 +389,6 @@ export default function TacoDealCustomize() {
                   </div>
                 </div>
 
-                {/* Extras (unlimited) */}
                 <div>
                   <label className="text-xs font-semibold text-zinc-300 mb-2 block">
                     Extras (select any)
@@ -434,7 +417,6 @@ export default function TacoDealCustomize() {
           })}
         </div>
 
-        {/* Fixed bottom bar */}
         <div className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 p-4 z-50 shadow-2xl">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <div>

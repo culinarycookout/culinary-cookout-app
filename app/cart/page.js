@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 
@@ -55,11 +54,56 @@ function CartContent() {
                   <div>
                     <h3 className="font-bold text-lg text-white">{item['Item Name'] || item.name}</h3>
                     {item['SIZE'] && <p className="text-sm text-red-400 font-medium">Size: {item['SIZE']}</p>}
-                    {item.breakdown && (
-                      <div className="mt-2 text-xs text-zinc-400 space-y-0.5">
-                        {Object.entries(item.breakdown).map(([name, qty]) => (
-                          <div key={name}>{name}: x{qty}</div>
-                        ))}
+                    
+                    {item.breakdown && typeof item.breakdown === 'object' && (
+                      <div className="mt-3 text-xs text-zinc-400 space-y-3 bg-black/40 p-3 rounded-lg border border-zinc-800">
+                        
+                        {Array.isArray(item.breakdown) ? (
+                          item.breakdown.map((taco, index) => {
+                            // Logic to handle Taco Trio vs other packs
+                            const isTrio = item['Item Name']?.toUpperCase().includes('TACO TRIO');
+                            const displayName = isTrio 
+                              ? `Taco ${index + 1}` 
+                              : (taco.groupLabel || `Taco ${index + 1}`);
+
+                            return (
+                              <div key={index} className="border-b border-zinc-700/40 last:border-0 pb-2 last:pb-0">
+                                <p className="text-white/90 font-medium text-[13px] mb-1">
+                                  {displayName}
+                                </p>
+                                <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-zinc-400">
+                                  <span>Tortilla: <span className="text-zinc-200">{taco.tortilla}</span></span>
+                                  <span>Meat: <span className="text-zinc-200">{taco.meat1}</span></span>
+                                  {taco.meat2 && taco.meat2 !== 'None' && (
+                                    <span>Add: <span className="text-zinc-200">{taco.meat2}</span></span>
+                                  )}
+                                  {taco.toppings && Array.isArray(taco.toppings) && taco.toppings.length > 0 && (
+                                    <span>Toppings: <span className="text-zinc-200">{taco.toppings.join(', ')}</span></span>
+                                  )}
+                                  {taco.extras && Array.isArray(taco.extras) && taco.extras.length > 0 && (
+                                    <span>Extras: <span className="text-zinc-200">{taco.extras.join(', ')}</span></span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          // Fallback for single object
+                          Object.entries(item.breakdown).map(([key, val]) => {
+                            let displayVal = val;
+                            if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+                              displayVal = Object.entries(val).map(([subKey, subVal]) => 
+                                `${subKey}: ${Array.isArray(subVal) ? subVal.join(', ') : subVal}`
+                              ).join(' | ');
+                            }
+                            return (
+                              <div key={key} className="flex gap-1">
+                                <span className="text-zinc-300 font-medium capitalize">{key}:</span> 
+                                <span>{displayVal}</span>
+                              </div>
+                            );
+                          })
+                        )}
                       </div>
                     )}
                   </div>
@@ -69,14 +113,14 @@ function CartContent() {
                 <div className="flex items-center gap-4 mt-3 flex-wrap">
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => updateQuantity(item.cartInstanceId, Math.max(1, qty - 1))}
+                      onClick={() => updateQuantity(item.cartInstanceId || item.id, Math.max(1, qty - 1))}
                       className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg"
                     >
                       −
                     </button>
                     <span className="text-lg font-bold text-white w-6 text-center">{qty}</span>
                     <button
-                      onClick={() => updateQuantity(item.cartInstanceId, qty + 1)}
+                      onClick={() => updateQuantity(item.cartInstanceId || item.id, qty + 1)}
                       className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg"
                     >
                       +
@@ -84,7 +128,7 @@ function CartContent() {
                   </div>
 
                   <button
-                    onClick={() => removeFromCart(item.cartInstanceId)}
+                    onClick={() => removeFromCart(item.cartInstanceId || item.id)}
                     className="text-red-400 hover:text-red-300 text-sm font-medium ml-auto"
                   >
                     Remove
