@@ -8,7 +8,6 @@ const tacoDealItems = [
     'Item Name': 'TACO TRIO',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Customize these 3 amigos.',
-    'Price': 1.50,
     'Image URL': 'https://iili.io/CSpjz5N.png',
   },
   {
@@ -16,7 +15,6 @@ const tacoDealItems = [
     'Item Name': 'TACO PACK',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Add 3 groups to customize.',
-    'Price': 3.00,
     'Image URL': 'https://www.skinnytaste.com/wp-content/uploads/2023/05/shrimp-tacos-1.jpg',
   },
   {
@@ -24,7 +22,6 @@ const tacoDealItems = [
     'Item Name': 'TACO PARTY',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Add 4 groups to customize.',
-    'Price': 5.50,
     'Image URL': 'https://basilandbubbly.com/wp-content/uploads/2021/09/buffalo-shrimp-tacos-3.jpg',
   },
   {
@@ -32,7 +29,6 @@ const tacoDealItems = [
     'Item Name': 'TACO PARTY: FIESTA GRANDE',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Add 5 groups to customize.',
-    'Price': 10.00,
     'Image URL': 'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_653,q_75,w_850/v1/clients/kansascityks/74667395_2409182199314846_5916633053026844672_o_99fd6cee-584a-47de-bec5-ff74fccf8695.jpg',
   },
 ];
@@ -57,7 +53,6 @@ export default function TacoDealsMenu() {
         {tacoDealItems.map((item) => (
           <Link
             key={item.id}
-            // ✅ CORRECT PATH: /taco-deals/[id]
             href={`/taco-deals/${item.id}`}
             className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col h-full"
           >
@@ -85,8 +80,9 @@ export default function TacoDealsMenu() {
               <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                 {item['DESCRIPTION']}
               </p>
-              <p className="text-base md:text-xl font-bold mt-1 text-red-600">
-                ${(item['Price'] || 0).toFixed(2)}
+              {/* ✅ STARTS AT $0.00 */}
+              <p className="text-base md:text-xl font-bold mt-1 text-zinc-500">
+                $0.00
               </p>
             </div>
           </Link>

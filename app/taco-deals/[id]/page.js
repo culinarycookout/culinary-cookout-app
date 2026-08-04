@@ -5,12 +5,11 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
 
-// ✅ Package configurations - I added "basePrice" to match your grid
+// ✅ Package configurations - basePrice completely removed
 const packageConfig = {
   'taco-trio': {
     name: 'TACO TRIO',
     description: '3 tacos, fully customized.',
-    basePrice: 1.50, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 1 },
       { id: 2, label: 'Taco Group 2', count: 1 },
@@ -20,7 +19,6 @@ const packageConfig = {
   'taco-pack': {
     name: 'TACO PACK',
     description: '3 groups of 4 tacos (12 total)',
-    basePrice: 3.00, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 4 },
       { id: 2, label: 'Taco Group 2', count: 4 },
@@ -30,7 +28,6 @@ const packageConfig = {
   'taco-party': {
     name: 'TACO PARTY',
     description: '4 groups of 6 tacos (24 total)',
-    basePrice: 5.50, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 6 },
       { id: 2, label: 'Taco Group 2', count: 6 },
@@ -41,7 +38,6 @@ const packageConfig = {
   'taco-party-fiesta-grande': {
     name: 'TACO PARTY: FIESTA GRANDE',
     description: '5 groups of 10 tacos (50 total)',
-    basePrice: 10.00, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 10 },
       { id: 2, label: 'Taco Group 2', count: 10 },
@@ -178,8 +174,7 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
-  // ✅ NEW PRICE LOGIC: Start at the basePrice we added to packageConfig
-  // Then add the cost of upgrades only when they are actually chosen.
+  // ✅ Starts at 0. Only calculates price when options are chosen.
   const totalPrice = config?.groups.reduce((sum, group) => {
     const sel = groupSelections[group.id] || { tortilla: '', meat1: '', meat2: '', toppings: [], extras: [] };
     
@@ -198,7 +193,7 @@ export default function TacoDealCustomize() {
       }
     }
     return sum + price;
-  }, config?.basePrice || 0); // ✅ This starts the calculation at the hardcoded base price
+  }, 0); // ✅ Starts exactly at ZERO
 
   const configuredCount = config?.groups.filter((group) => {
     const sel = groupSelections[group.id];
