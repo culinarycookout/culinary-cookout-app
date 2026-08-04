@@ -8,7 +8,7 @@ const tacoDealItems = [
     'Item Name': 'TACO TRIO',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Customize these 3 amigos.',
-    'Price': 1.00,
+    'Price': 1.50,
     'Image URL': 'https://iili.io/CSpjz5N.png',
   },
   {
@@ -16,7 +16,7 @@ const tacoDealItems = [
     'Item Name': 'TACO PACK',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Add 3 groups to customize.',
-    'Price': 3.50,
+    'Price': 3.00,
     'Image URL': 'https://www.skinnytaste.com/wp-content/uploads/2023/05/shrimp-tacos-1.jpg',
   },
   {
@@ -24,7 +24,7 @@ const tacoDealItems = [
     'Item Name': 'TACO PARTY',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Add 4 groups to customize.',
-    'Price': 6.00,
+    'Price': 5.50,
     'Image URL': 'https://basilandbubbly.com/wp-content/uploads/2021/09/buffalo-shrimp-tacos-3.jpg',
   },
   {
@@ -32,7 +32,7 @@ const tacoDealItems = [
     'Item Name': 'TACO PARTY: FIESTA GRANDE',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Add 5 groups to customize.',
-    'Price': 12.00,
+    'Price': 10.00,
     'Image URL': 'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_653,q_75,w_850/v1/clients/kansascityks/74667395_2409182199314846_5916633053026844672_o_99fd6cee-584a-47de-bec5-ff74fccf8695.jpg',
   },
 ];
@@ -43,14 +43,13 @@ export default function TacoDealsMenu() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl md:text-3xl font-black tracking-tight">🌮 Taco Packages</h1>
-          <p className="text-zinc-400 text-sm mt-1">Select a package size to customize your taco breakdown</p>
+          <p className="text-zinc-400 text-sm mt-1">Select a package size to customize.</p>
         </div>
         <Link
           href="/menu"
           className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-semibold px-4 py-2 rounded-lg border border-zinc-700 transition-colors"
         >
-          ← Back 
-          to Menu
+          ← Back To Menu
         </Link>
       </div>
 

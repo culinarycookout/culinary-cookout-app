@@ -227,7 +227,7 @@ export default function TacoDealCustomize() {
       <div className="min-h-screen bg-zinc-950 text-white p-8">
         <h1 className="text-xl font-bold">Package not found</h1>
         <Link href="/taco-deals" className="text-red-400 mt-4 inline-block">
-          ← Back to Taco Deals
+          ← Back To Taco Packages
         </Link>
       </div>
     );

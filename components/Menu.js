@@ -182,8 +182,10 @@ export default function Menu() {
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
 
-            const isTacoDealsItem = itemName.includes('TACO DEAL');
-            const destinationHref = isTacoDealsItem ? '/taco-deals' : `/menu/${item.id}`;
+            // ✅ FIX: Detect the new name and route it to the special packages page with the correct slug
+            const isPackagesCard = itemName === 'TACO PACKAGES';
+            // Route packages to the customizer, standard items to /menu
+            const destinationHref = isPackagesCard ? `/taco-deals/${item.slug || 'taco-pack'}` : `/menu/${item.id}`;
 
             return (
               <Link
