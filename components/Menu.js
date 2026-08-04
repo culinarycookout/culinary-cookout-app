@@ -128,9 +128,9 @@ export default function Menu() {
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-3xl">🌮🌮🪅</span>
-            <span className="text-2xl md:text-3xl font-black text-red-700">TACO TUESDAY‼️🎉🌮🌮</span>
-            <span className="text-2xl md:text-3xl font-black text-black">🌮🌮50% OFF ALL TACOS‼️🌮🌮</span>
+            <span className="text-3xl">🌮🪅</span>
+            <span className="text-2xl md:text-3xl font-black text-red-700">TACO TUESDAY‼️🎉🌮</span>
+            <span className="text-2xl md:text-3xl font-black text-black">🌮50% OFF ALL TACOS‼️🌮</span>
             <span className="text-3xl"></span>
           </div>
           <p className="text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
