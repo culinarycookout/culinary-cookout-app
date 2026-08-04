@@ -5,11 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
 
-// ✅ Package configurations
+// ✅ Package configurations - I added "basePrice" to match your grid
 const packageConfig = {
   'taco-trio': {
     name: 'TACO TRIO',
     description: '3 tacos, fully customized.',
+    basePrice: 1.50, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 1 },
       { id: 2, label: 'Taco Group 2', count: 1 },
@@ -19,6 +20,7 @@ const packageConfig = {
   'taco-pack': {
     name: 'TACO PACK',
     description: '3 groups of 4 tacos (12 total)',
+    basePrice: 3.00, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 4 },
       { id: 2, label: 'Taco Group 2', count: 4 },
@@ -28,6 +30,7 @@ const packageConfig = {
   'taco-party': {
     name: 'TACO PARTY',
     description: '4 groups of 6 tacos (24 total)',
+    basePrice: 5.50, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 6 },
       { id: 2, label: 'Taco Group 2', count: 6 },
@@ -38,6 +41,7 @@ const packageConfig = {
   'taco-party-fiesta-grande': {
     name: 'TACO PARTY: FIESTA GRANDE',
     description: '5 groups of 10 tacos (50 total)',
+    basePrice: 10.00, // ✅ Based on your Price in the grid
     groups: [
       { id: 1, label: 'Taco Group 1', count: 10 },
       { id: 2, label: 'Taco Group 2', count: 10 },
@@ -174,33 +178,33 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
+  // ✅ NEW PRICE LOGIC: Start at the basePrice we added to packageConfig
+  // Then add the cost of upgrades only when they are actually chosen.
   const totalPrice = config?.groups.reduce((sum, group) => {
-    const sel = groupSelections[group.id];
-    if (!sel || sel.tortilla === '' || sel.meat1 === '') return sum;
+    const sel = groupSelections[group.id] || { tortilla: '', meat1: '', meat2: '', toppings: [], extras: [] };
+    
+    let price = 0;
 
-    const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 1.00;
-    let price = tortillaPrice * group.count;
+    // Only calculate additional costs if they've made a tortilla selection
+    if (sel.tortilla) {
+      const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 1.00;
+      price += tortillaPrice * group.count;
 
-    if (sel.meat1 !== 'Veggie Only') {
-      price += 2.00 * group.count;
+      if (sel.meat1 && sel.meat1 !== '') {
+        if (sel.meat1 !== 'Veggie Only') price += 2.00 * group.count;
+        if (['Steak', 'Shrimp', 'Fish'].includes(sel.meat1)) price += 1.00 * group.count;
+        if (sel.meat2 && sel.meat2 !== 'None') price += 1.50 * group.count;
+        price += (sel.extras || []).length * 0.50 * group.count;
+      }
     }
-    if (['Steak', 'Shrimp', 'Fish'].includes(sel.meat1)) {
-      price += 1.00 * group.count;
-    }
-    if (sel.meat2 && sel.meat2 !== 'None') {
-      price += 1.50 * group.count;
-    }
-    const extrasCost = sel.extras.length * 0.50 * group.count;
-
-    return sum + price + extrasCost;
-  }, 0) || 0;
+    return sum + price;
+  }, config?.basePrice || 0); // ✅ This starts the calculation at the hardcoded base price
 
   const configuredCount = config?.groups.filter((group) => {
     const sel = groupSelections[group.id];
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   }).length || 0;
 
-  // ✅ FIXED: Simplified breakdown
   const handleAddToCart = () => {
     if (!isComplete) return;
 
@@ -227,7 +231,7 @@ export default function TacoDealCustomize() {
       <div className="min-h-screen bg-zinc-950 text-white p-8">
         <h1 className="text-xl font-bold">Package not found</h1>
         <Link href="/taco-deals" className="text-red-400 mt-4 inline-block">
-          ← Back To Taco Packages
+          ← Back to Deals
         </Link>
       </div>
     );
@@ -281,8 +285,6 @@ export default function TacoDealCustomize() {
               toppings: [],
               extras: [],
             };
-
-            // ✅ THE ONLY CHANGE: Check if it's a Trio to display "Taco 1/2/3" instead of "Taco Group 1/2/3"
             const isTrio = config.name === 'TACO TRIO';
             const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
 
