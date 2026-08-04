@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const CACHE_KEY = 'culinary_menu_cache';
-const CACHE_VERSION = '4'; // ✅ Increment to force fresh cache
+const CACHE_VERSION = '5'; // ✅ Bumped version to force-clear stale cache
 const CACHE_TTL = 5 * 60 * 1000;
 
-// ✅ Items to hide from the main menu (they have their own page)
+// ✅ Items to hide from the main menu (they have their own dedicated page)
 const HIDDEN_ITEMS = [
   'TACO TRIO',
   'TACO PACK',
@@ -47,8 +47,11 @@ export default function Menu() {
         try {
           const { data, timestamp, version } = JSON.parse(cached);
           if (version === CACHE_VERSION && Date.now() - timestamp < CACHE_TTL) {
-            // ✅ Filter out hidden items
-            const filtered = data.filter(item => !HIDDEN_ITEMS.includes(item['Item Name']?.trim()));
+            // ✅ Robust case-insensitive filtering for hidden items
+            const filtered = data.filter(item => {
+              const name = (item['Item Name'] || '').trim().toUpperCase();
+              return !HIDDEN_ITEMS.includes(name);
+            });
             setItems(filtered);
             setFilteredItems(filtered);
             setLoading(false);
@@ -66,8 +69,11 @@ export default function Menu() {
         const res = await fetch('/api/menu');
         if (!res.ok) throw new Error('Failed to fetch menu');
         const data = await res.json();
-        // ✅ Filter out hidden items
-        const filtered = data.filter(item => !HIDDEN_ITEMS.includes(item['Item Name']?.trim()));
+        // ✅ Robust case-insensitive filtering for hidden items
+        const filtered = data.filter(item => {
+          const name = (item['Item Name'] || '').trim().toUpperCase();
+          return !HIDDEN_ITEMS.includes(name);
+        });
         setItems(filtered);
         setFilteredItems(filtered);
         localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now(), version: CACHE_VERSION }));
@@ -123,9 +129,9 @@ export default function Menu() {
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <span className="text-3xl">🌮🌮🪅</span>
-            <span className="text-2xl md:text-3xl font-black text-red-700">50% OFF‼️</span>
-            <span className="text-2xl md:text-3xl font-black text-black">ALL TACOS!</span>
-            <span className="text-3xl">🎉🌮🌮</span>
+            <span className="text-2xl md:text-3xl font-black text-red-700">TACO TUESDAY‼️🎉🌮🌮</span>
+            <span className="text-2xl md:text-3xl font-black text-black">🌮🌮50% OFF ALL TACOS‼️🌮🌮</span>
+            <span className="text-3xl"></span>
           </div>
           <p className="text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
         </div>
