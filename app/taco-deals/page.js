@@ -80,10 +80,6 @@ export default function TacoDealsMenu() {
               <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                 {item['DESCRIPTION']}
               </p>
-              {/* ✅ STARTS AT $0.00 */}
-              <p className="text-base md:text-xl font-bold mt-1 text-zinc-500">
-                $0.00
-              </p>
             </div>
           </Link>
         ))}
