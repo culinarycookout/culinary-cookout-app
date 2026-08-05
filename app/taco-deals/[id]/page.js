@@ -56,7 +56,7 @@ const packageConfig = {
 
 const TORTILLA_OPTIONS = [
   { value: 'corn', label: 'Corn Tortilla', price: 0.50 },
-  { value: 'soft', label: 'Soft Flour Tortilla', price: 1.00 },
+  { value: 'soft', label: 'Soft Flour Tortilla', price: 0.50 },
 ];
 
 const MEAT_OPTIONS = [
@@ -398,7 +398,10 @@ export default function TacoDealCustomize() {
               toppings: [],
               extras: [],
             };
-            const displayLabel = group.label;
+
+            // ✅ RESTORED LOGIC: Only TACO TRIO shows "Taco 1", "Taco 2", "Taco 3"
+            const isTrio = config.name === 'TACO TRIO';
+            const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
 
             return (
               <div
@@ -447,7 +450,7 @@ export default function TacoDealCustomize() {
                         const price = MEAT_PRICES[meat];
                         const label = meat === 'Veggie Only' 
                           ? `${meat} (1.5x Toppings Formula)` 
-                          : `${meat} (${price.toFixed(2)})`; // ✅ Single $
+                          : `${meat} (${price.toFixed(2)})`;
                         return <option key={meat} value={meat}>{label}</option>
                       })}
                     </select>
@@ -469,7 +472,7 @@ export default function TacoDealCustomize() {
                         (m) => m !== 'Veggie Only' && m !== sel.meat1
                       ).map((meat) => (
                         <option key={meat} value={meat}>
-                          {meat} (${MEAT_PRICES[meat].toFixed(2)}) {/* ✅ Single $ */}
+                          {meat} (${MEAT_PRICES[meat].toFixed(2)})
                         </option>
                       ))}
                     </select>
