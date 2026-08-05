@@ -4,6 +4,13 @@ import Link from 'next/link';
 
 const tacoDealItems = [
   {
+    id: 'taco-single',
+    'Item Name': 'TACO',
+    'CATEGORY': 'LATIN AMERICA',
+    'DESCRIPTION': 'Build your ideal single taco.',
+    'Image URL': 'https://iili.io/CSpjz5N.png', // Replace with a standard taco image
+  },
+  {
     id: 'taco-trio',
     'Item Name': 'TACO TRIO',
     'CATEGORY': 'LATIN AMERICA',
@@ -39,7 +46,7 @@ export default function TacoDealsMenu() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl md:text-3xl font-black tracking-tight">🌮 Taco Packages</h1>
-          <p className="text-zinc-400 text-sm mt-1">Select a package size to customize.</p>
+          <p className="text-zinc-400 text-sm mt-1">Select a size to start customizing.</p>
         </div>
         <Link
           href="/menu"
@@ -79,6 +86,9 @@ export default function TacoDealsMenu() {
               </span>
               <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                 {item['DESCRIPTION']}
+              </p>
+              <p className="text-base md:text-xl font-bold mt-1 text-zinc-500">
+                $0.00
               </p>
             </div>
           </Link>

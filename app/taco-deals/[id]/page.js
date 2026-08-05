@@ -6,6 +6,13 @@ import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
 
 const packageConfig = {
+  'taco-single': {
+    name: 'TACO',
+    description: '1 fully customized taco.',
+    groups: [
+      { id: 1, label: '1 Taco', count: 1 },
+    ],
+  },
   'taco-trio': {
     name: 'TACO TRIO',
     description: '3 tacos, fully customized.',
@@ -47,9 +54,10 @@ const packageConfig = {
   },
 };
 
+// ... the rest of your meat/topping prices constants remain exactly the same ...
 const TORTILLA_OPTIONS = [
-  { value: 'corn', label: 'Corn Tortilla', price: 1.00 },
-  { value: 'soft', label: 'Soft Flour Tortilla', price: 1.50 },
+  { value: 'corn', label: 'Corn Tortilla', price: 0.25 },
+  { value: 'soft', label: 'Soft Flour Tortilla', price: 0.50 },
 ];
 
 const MEAT_OPTIONS = [
@@ -64,7 +72,6 @@ const MEAT_OPTIONS = [
   'Veggie Only',
 ];
 
-// ✅ UPDATED TOPPINGS MENU
 const TOPPING_OPTIONS = [
   'Avocado',
   'Bacon',
@@ -106,7 +113,6 @@ const MEAT_PRICES = {
   'Fried Fish': 3.00,
 };
 
-// ✅ UPDATED TOPPING PRICES
 const TOPPING_PRICES = {
   'Avocado': 1.00,
   'Bacon': 0.75,
@@ -145,7 +151,6 @@ export default function TacoDealCustomize() {
   const dealId = params.id;
   const config = packageConfig[dealId];
 
-  // Check for URL parameters
   const editId = searchParams.get('editId');
   const prefillParam = searchParams.get('prefill');
 
@@ -162,7 +167,6 @@ export default function TacoDealCustomize() {
 
     if (!config) return;
 
-    // 1. Initialize empty selections
     const initial = {};
     config.groups.forEach((group) => {
       initial[group.id] = {
@@ -176,20 +180,17 @@ export default function TacoDealCustomize() {
 
     let loadedSelections = { ...initial };
 
-    // 2. Check for prefill (from "Build Another")
     if (prefillParam) {
       try {
         const decoded = JSON.parse(decodeURIComponent(prefillParam));
-        // Merge safely to ensure the shape is correct
         Object.keys(initial).forEach((key) => {
           if (decoded[key]) {
             loadedSelections[key] = { ...initial[key], ...decoded[key] };
           }
         });
-      } catch (e) { /* ignore parse errors */ }
+      } catch (e) {}
     }
 
-    // 3. Check for edit (from "Customize")
     if (editId) {
       const existingItem = cart.find(item => item.cartInstanceId === editId);
       if (existingItem && existingItem.customizations) {
@@ -269,7 +270,7 @@ export default function TacoDealCustomize() {
     let price = 0;
 
     if (sel.tortilla) {
-      const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 1.00;
+      const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 0.25;
       price += tortillaPrice;
 
       if (sel.meat1 && sel.meat1 !== '') {
@@ -320,17 +321,13 @@ export default function TacoDealCustomize() {
       quantity: 1,
       breakdown: breakdown,
       dealId: dealId,
-      // 🟢 CRITICAL: Save raw customization state for Recaps & "Build Another"
       customizations: JSON.parse(JSON.stringify(groupSelections)), 
     };
 
-    // 🔴 LOGIC FOR "CUSTOMIZE" (EDITING EXISTING ITEM)
     if (editId) {
-      // Remove the old entry first
       removeFromCart(editId);
     }
 
-    // Add the new/updated item to the cart
     addToCart(cartItem);
     router.push('/cart');
   };
@@ -402,8 +399,7 @@ export default function TacoDealCustomize() {
               toppings: [],
               extras: [],
             };
-            const isTrio = config.name === 'TACO TRIO';
-            const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
+            const displayLabel = group.label; // No need for isTrio logic for single Taco
 
             return (
               <div
