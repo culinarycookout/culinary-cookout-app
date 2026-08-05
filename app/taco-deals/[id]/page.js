@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
 
@@ -130,16 +130,20 @@ const EXTRAS_PRICES = {
 export default function TacoDealCustomize() {
   const params = useParams();
   const router = useRouter();
-  const { addToCart } = useCart();
+  const searchParams = useSearchParams();
+  const { cart, addToCart, removeFromCart } = useCart();
   const dealId = params.id;
   const config = packageConfig[dealId];
+
+  // Check for URL parameters
+  const editId = searchParams.get('editId');
+  const prefillParam = searchParams.get('prefill');
 
   const [loading, setLoading] = useState(true);
   const [groupSelections, setGroupSelections] = useState({});
   const [isTacoTuesday, setIsTacoTuesday] = useState(false);
 
   useEffect(() => {
-    // Calculate Taco Tuesday status for the informative banner
     const now = new Date();
     const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
     const day = pacificTime.getDay();
@@ -147,6 +151,8 @@ export default function TacoDealCustomize() {
     setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
 
     if (!config) return;
+
+    // 1. Initialize empty selections
     const initial = {};
     config.groups.forEach((group) => {
       initial[group.id] = {
@@ -157,9 +163,38 @@ export default function TacoDealCustomize() {
         extras: [],
       };
     });
-    setGroupSelections(initial);
+
+    let loadedSelections = { ...initial };
+
+    // 2. Check for prefill (from "Build Another")
+    if (prefillParam) {
+      try {
+        const decoded = JSON.parse(decodeURIComponent(prefillParam));
+        // Merge safely to ensure the shape is correct
+        Object.keys(initial).forEach((key) => {
+          if (decoded[key]) {
+            loadedSelections[key] = { ...initial[key], ...decoded[key] };
+          }
+        });
+      } catch (e) { /* ignore parse errors */ }
+    }
+
+    // 3. Check for edit (from "Customize")
+    if (editId) {
+      const existingItem = cart.find(item => item.cartInstanceId === editId);
+      if (existingItem && existingItem.customizations) {
+        const decoded = existingItem.customizations;
+        Object.keys(initial).forEach((key) => {
+          if (decoded[key]) {
+            loadedSelections[key] = { ...initial[key], ...decoded[key] };
+          }
+        });
+      }
+    }
+
+    setGroupSelections(loadedSelections);
     setLoading(false);
-  }, [config]);
+  }, [config, prefillParam, editId, cart]);
 
   const handleTortillaChange = (groupId, value) => {
     setGroupSelections((prev) => {
@@ -188,7 +223,6 @@ export default function TacoDealCustomize() {
       if (currentToppings.includes(topping)) {
         newToppings = currentToppings.filter((t) => t !== topping);
       } else {
-        // ✅ CHANGE: Increased maximum from 5 to 6
         if (currentToppings.length >= 6) return prev;
         newToppings = [...currentToppings, topping];
       }
@@ -225,7 +259,6 @@ export default function TacoDealCustomize() {
     let price = 0;
 
     if (sel.tortilla) {
-      // 1. Tortilla Cost
       const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 1.00;
       price += tortillaPrice;
 
@@ -276,8 +309,18 @@ export default function TacoDealCustomize() {
       'Price': totalPrice,
       quantity: 1,
       breakdown: breakdown,
+      dealId: dealId,
+      // 🟢 CRITICAL: Save raw customization state for Recaps & "Build Another"
+      customizations: JSON.parse(JSON.stringify(groupSelections)), 
     };
 
+    // 🔴 LOGIC FOR "CUSTOMIZE" (EDITING EXISTING ITEM)
+    if (editId) {
+      // Remove the old entry first
+      removeFromCart(editId);
+    }
+
+    // Add the new/updated item to the cart
     addToCart(cartItem);
     router.push('/cart');
   };
@@ -317,7 +360,6 @@ export default function TacoDealCustomize() {
           </Link>
         </div>
 
-        {/* ✅ TACO TUESDAY NOTE - Applied at checkout */}
         {isTacoTuesday && (
           <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-3 mb-4 text-center border-2 border-red-500 shadow-md">
             <p className="text-xs md:text-sm font-bold text-black">
@@ -396,11 +438,13 @@ export default function TacoDealCustomize() {
                       className="w-full p-2.5 rounded-lg bg-zinc-800 text-white border border-zinc-700 text-sm focus:border-red-500 focus:outline-none"
                     >
                       <option value="">Select Meat...</option>
-                      {MEAT_OPTIONS.map((meat) => (
-                        <option key={meat} value={meat}>
-                          {meat}
-                        </option>
-                      ))}
+                      {MEAT_OPTIONS.map((meat) => {
+                        const price = MEAT_PRICES[meat];
+                        const label = meat === 'Veggie Only' 
+                          ? `${meat} (1.5x Toppings Formula)` 
+                          : `${meat} ($${price.toFixed(2)})`;
+                        return <option key={meat} value={meat}>{label}</option>
+                      })}
                     </select>
                   </div>
                   <div>
@@ -420,7 +464,7 @@ export default function TacoDealCustomize() {
                         (m) => m !== 'Veggie Only' && m !== sel.meat1
                       ).map((meat) => (
                         <option key={meat} value={meat}>
-                          {meat}
+                          {meat} ($${MEAT_PRICES[meat].toFixed(2)})
                         </option>
                       ))}
                     </select>
@@ -429,7 +473,6 @@ export default function TacoDealCustomize() {
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    {/* ✅ CHANGE: Updated UI to show up to 6 toppings */}
                     <label className="text-xs font-semibold text-zinc-300">
                       Toppings (select up to 6)
                     </label>
@@ -451,7 +494,7 @@ export default function TacoDealCustomize() {
                             : 'bg-zinc-800 border-zinc-700 text-white hover:border-zinc-500'
                         }`}
                       >
-                        {topping}
+                        {topping} (${TOPPING_PRICES[topping].toFixed(2)})
                       </button>
                     ))}
                   </div>
@@ -475,7 +518,7 @@ export default function TacoDealCustomize() {
                             : 'bg-zinc-800 border-zinc-700 text-white hover:border-zinc-500'
                         }`}
                       >
-                        {extra}
+                        {extra} (${EXTRAS_PRICES[extra].toFixed(2)})
                       </button>
                     ))}
                   </div>
@@ -504,7 +547,7 @@ export default function TacoDealCustomize() {
                   : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
               }`}
             >
-              Add to Cart 🛒
+              {editId ? 'Update Cart 🔄' : 'Add to Cart 🛒'}
             </button>
           </div>
         </div>
