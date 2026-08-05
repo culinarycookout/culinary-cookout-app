@@ -130,7 +130,7 @@ export default function Menu() {
           
           {/* ✅ MOBILE ONLY VERSION (Your requested single red line) */}
           <div className="block md:hidden flex flex-col items-center justify-center w-full">
-            <span className="text-2xl font-black text-red-600 block whitespace-nowrap">
+            <span className="text-2xl font-black text-black block whitespace-nowrap">
               🌮🪅50% OFF ALL TACOS‼️🎉🌮
             </span>
             <p className="text-xs text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
