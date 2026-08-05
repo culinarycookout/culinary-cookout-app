@@ -7,7 +7,6 @@ const CACHE_KEY = 'culinary_menu_cache';
 const CACHE_VERSION = '5';
 const CACHE_TTL = 5 * 60 * 1000;
 
-// ✅ ADDED 'TACO' TO HIDE IT FROM THE MAIN MENU
 const HIDDEN_ITEMS = [
   'TACO',
   'TACO TRIO',
@@ -41,6 +40,21 @@ export default function Menu() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
 
+  // ✅ EXACT NOTION SORTING RULE
+  const applyNotionSort = (array) => {
+    return array.sort((a, b) => {
+      // First sort: CATEGORY NUMBER
+      const catNumA = a['CATEGORY NUMBER'] || '';
+      const catNumB = b['CATEGORY NUMBER'] || '';
+      if (catNumA !== catNumB) return catNumA.localeCompare(catNumB);
+
+      // Second sort: SORT
+      const sortA = a['SORT'] || '';
+      const sortB = b['SORT'] || '';
+      return sortA.localeCompare(sortB);
+    });
+  };
+
   useEffect(() => {
     const fetchMenu = async () => {
       const cached = localStorage.getItem(CACHE_KEY);
@@ -52,6 +66,9 @@ export default function Menu() {
               const name = (item['Item Name'] || '').trim().toUpperCase();
               return !HIDDEN_ITEMS.includes(name);
             });
+            // ✅ Apply Notion's exact sort
+            applyNotionSort(filtered);
+            
             setItems(filtered);
             setFilteredItems(filtered);
             setLoading(false);
@@ -73,6 +90,9 @@ export default function Menu() {
           const name = (item['Item Name'] || '').trim().toUpperCase();
           return !HIDDEN_ITEMS.includes(name);
         });
+        // ✅ Apply Notion's exact sort
+        applyNotionSort(filtered);
+        
         setItems(filtered);
         setFilteredItems(filtered);
         localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now(), version: CACHE_VERSION }));
@@ -106,6 +126,9 @@ export default function Menu() {
     if (filterCategory) {
       result = result.filter((item) => item['CATEGORY'] === filterCategory);
     }
+
+    // ✅ Reapply sort after filters/search
+    applyNotionSort(result);
 
     setFilteredItems(result);
   }, [searchTerm, filterCategory, items]);
@@ -187,7 +210,6 @@ export default function Menu() {
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
 
-            // ✅ FIXED: TACO PACKAGES routes to the GRID (/taco-deals), not a specific pack
             let destinationHref;
             if (itemName === 'TACO PACKAGES') {
               destinationHref = '/taco-deals';
