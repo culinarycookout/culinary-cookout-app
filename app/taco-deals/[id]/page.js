@@ -55,7 +55,7 @@ const packageConfig = {
 };
 
 const TORTILLA_OPTIONS = [
-  { value: 'corn', label: 'Corn Tortilla', price: 0.25 },
+  { value: 'corn', label: 'Corn Tortilla', price: 0.50 },
   { value: 'soft', label: 'Soft Flour Tortilla', price: 0.50 },
 ];
 
