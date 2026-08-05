@@ -127,13 +127,24 @@ export default function Menu() {
     <div className="w-full">
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
+          
+          {/* ✅ MOBILE ONLY VERSION (Your requested single red line) */}
+          <div className="block md:hidden flex flex-col items-center justify-center w-full">
+            <span className="text-2xl font-black text-red-600 block whitespace-nowrap">
+              🌮🪅50% OFF ALL TACOS‼️🎉🌮
+            </span>
+            <p className="text-xs text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
+          </div>
+
+          {/* ✅ DESKTOP ONLY VERSION (Fully reverted to your original design) */}
+          <div className="hidden md:flex items-center justify-center gap-2 flex-wrap">
             <span className="text-3xl">🌮🪅</span>
             <span className="text-2xl md:text-3xl font-black text-red-700">TACO TUESDAY‼️🎉🌮</span>
             <span className="text-2xl md:text-3xl font-black text-black">🌮50% OFF ALL TACOS‼️🌮</span>
             <span className="text-3xl"></span>
           </div>
-          <p className="text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
+          <p className="hidden md:block text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
+
         </div>
       )}
 
@@ -182,9 +193,7 @@ export default function Menu() {
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
 
-            // ✅ FIX: Detect the new name and route it to the special packages page with the correct slug
             const isPackagesCard = itemName === 'TACO PACKAGES';
-            // Route packages to the customizer, standard items to /menu
             const destinationHref = isPackagesCard ? `/taco-deals/${item.slug || 'taco-pack'}` : `/menu/${item.id}`;
 
             return (
