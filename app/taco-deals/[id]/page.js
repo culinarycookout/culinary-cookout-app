@@ -64,11 +64,16 @@ const MEAT_OPTIONS = [
   'Veggie Only',
 ];
 
+// ✅ UPDATED TOPPINGS MENU
 const TOPPING_OPTIONS = [
   'Avocado',
+  'Bacon',
+  'Grilled Bell Peppers',
+  'Grilled Red Cabbage',
   'Jalapeños',
   'Lettuce',
-  'Onions',
+  'Fresh Red Onions',
+  'Grilled Yellow Onions',
   'Pico De Gallo',
   'Radishes',
   'Scallions',
@@ -101,11 +106,16 @@ const MEAT_PRICES = {
   'Fried Fish': 3.00,
 };
 
+// ✅ UPDATED TOPPING PRICES
 const TOPPING_PRICES = {
   'Avocado': 1.00,
+  'Bacon': 0.75,
+  'Grilled Bell Peppers': 0.50,
+  'Grilled Red Cabbage': 0.50,
   'Jalapeños': 0.25,
   'Lettuce': 0.25,
-  'Onions': 0.25,
+  'Fresh Red Onions': 0.25,
+  'Grilled Yellow Onions': 0.50,
   'Pico De Gallo': 2.00,
   'Radishes': 0.50,
   'Scallions': 0.25,
