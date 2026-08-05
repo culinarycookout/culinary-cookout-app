@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const CACHE_KEY = 'culinary_menu_cache';
-const CACHE_VERSION = '5'; // ✅ Bumped version to force-clear stale cache
+const CACHE_VERSION = '5';
 const CACHE_TTL = 5 * 60 * 1000;
 
-// ✅ Items to hide from the main menu (they have their own dedicated page)
+// ✅ ADDED 'TACO' TO HIDE IT FROM THE MAIN MENU
 const HIDDEN_ITEMS = [
+  'TACO',
   'TACO TRIO',
   'TACO PACK',
   'TACO PARTY',
@@ -47,7 +48,6 @@ export default function Menu() {
         try {
           const { data, timestamp, version } = JSON.parse(cached);
           if (version === CACHE_VERSION && Date.now() - timestamp < CACHE_TTL) {
-            // ✅ Robust case-insensitive filtering for hidden items
             const filtered = data.filter(item => {
               const name = (item['Item Name'] || '').trim().toUpperCase();
               return !HIDDEN_ITEMS.includes(name);
@@ -69,7 +69,6 @@ export default function Menu() {
         const res = await fetch('/api/menu');
         if (!res.ok) throw new Error('Failed to fetch menu');
         const data = await res.json();
-        // ✅ Robust case-insensitive filtering for hidden items
         const filtered = data.filter(item => {
           const name = (item['Item Name'] || '').trim().toUpperCase();
           return !HIDDEN_ITEMS.includes(name);
@@ -127,16 +126,12 @@ export default function Menu() {
     <div className="w-full">
       {isTacoTuesday && (
         <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
-          
-          {/* ✅ MOBILE ONLY VERSION (Your requested single red line) */}
           <div className="block md:hidden flex flex-col items-center justify-center w-full">
-            <span className="text-2xl font-black text-black block whitespace-nowrap">
+            <span className="text-2xl font-black text-red-600 block whitespace-nowrap">
               🌮🪅50% OFF ALL TACOS‼️🎉🌮
             </span>
             <p className="text-xs text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
           </div>
-
-          {/* ✅ DESKTOP ONLY VERSION (Fully reverted to your original design) */}
           <div className="hidden md:flex items-center justify-center gap-2 flex-wrap">
             <span className="text-3xl">🌮🪅</span>
             <span className="text-2xl md:text-3xl font-black text-red-700">TACO TUESDAY‼️🎉🌮</span>
@@ -144,7 +139,6 @@ export default function Menu() {
             <span className="text-3xl"></span>
           </div>
           <p className="hidden md:block text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
-
         </div>
       )}
 
@@ -193,8 +187,13 @@ export default function Menu() {
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
 
-            const isPackagesCard = itemName === 'TACO PACKAGES';
-            const destinationHref = isPackagesCard ? `/taco-deals/${item.slug || 'taco-pack'}` : `/menu/${item.id}`;
+            // ✅ FIXED: TACO PACKAGES routes to the GRID (/taco-deals), not a specific pack
+            let destinationHref;
+            if (itemName === 'TACO PACKAGES') {
+              destinationHref = '/taco-deals';
+            } else {
+              destinationHref = `/menu/${item.id}`;
+            }
 
             return (
               <Link

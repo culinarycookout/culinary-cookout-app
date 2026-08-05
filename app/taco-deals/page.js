@@ -7,35 +7,35 @@ const tacoDealItems = [
     id: 'taco-single',
     'Item Name': 'TACO',
     'CATEGORY': 'LATIN AMERICA',
-    'DESCRIPTION': 'Build your ideal single taco.',
-    'Image URL': 'https://iili.io/CSpjz5N.png', // Replace with a standard taco image
+    'DESCRIPTION': 'Build your ideal taco.',
+    'Image URL': 'https://iili.io/CSpjz5N.png',
   },
   {
     id: 'taco-trio',
     'Item Name': 'TACO TRIO',
     'CATEGORY': 'LATIN AMERICA',
-    'DESCRIPTION': 'Customize these 3 amigos.',
+    'DESCRIPTION': 'Greet the 3 amigos.',
     'Image URL': 'https://iili.io/CSpjz5N.png',
   },
   {
     id: 'taco-pack',
     'Item Name': 'TACO PACK',
     'CATEGORY': 'LATIN AMERICA',
-    'DESCRIPTION': 'Add 3 groups to customize.',
+    'DESCRIPTION': 'A dozen tacos, done your way.',
     'Image URL': 'https://www.skinnytaste.com/wp-content/uploads/2023/05/shrimp-tacos-1.jpg',
   },
   {
     id: 'taco-party',
     'Item Name': 'TACO PARTY',
     'CATEGORY': 'LATIN AMERICA',
-    'DESCRIPTION': 'Add 4 groups to customize.',
+    'DESCRIPTION': '24 tacos, 24 hours.',
     'Image URL': 'https://basilandbubbly.com/wp-content/uploads/2021/09/buffalo-shrimp-tacos-3.jpg',
   },
   {
     id: 'taco-party-fiesta-grande',
     'Item Name': 'TACO PARTY: FIESTA GRANDE',
     'CATEGORY': 'LATIN AMERICA',
-    'DESCRIPTION': 'Add 5 groups to customize.',
+    'DESCRIPTION': '50 tacos... What a party!',
     'Image URL': 'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_653,q_75,w_850/v1/clients/kansascityks/74667395_2409182199314846_5916633053026844672_o_99fd6cee-584a-47de-bec5-ff74fccf8695.jpg',
   },
 ];
@@ -87,9 +87,7 @@ export default function TacoDealsMenu() {
               <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                 {item['DESCRIPTION']}
               </p>
-              <p className="text-base md:text-xl font-bold mt-1 text-zinc-500">
-                $0.00
-              </p>
+              {/* ✅ REMOVED THE $0.00 PRICE ENTIRELY */}
             </div>
           </Link>
         ))}
