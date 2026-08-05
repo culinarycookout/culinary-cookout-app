@@ -263,36 +263,43 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
+  // ✅ FIXED MATH: Removed the double-adding bug for Veggie Only
   const totalPrice = config?.groups.reduce((sum, group) => {
     const sel = groupSelections[group.id] || { tortilla: '', meat1: '', meat2: '', toppings: [], extras: [] };
     
     let price = 0;
 
     if (sel.tortilla) {
-      const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 0.25;
-      price += tortillaPrice;
+      // 1. Tortilla Cost
+      const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 0.50;
+      price += tortillaPrice * group.count;
 
+      // 2. Meat & Toppings (Restructured to prevent double counting)
       if (sel.meat1 && sel.meat1 !== '') {
-        if (sel.meat1 === 'Veggie Only') {
-          let toppingsSum = 0;
-          (sel.toppings || []).forEach(t => {
-            toppingsSum += (TOPPING_PRICES[t] || 0);
-          });
-          price += toppingsSum * 1.5;
-        } else {
-          price += (MEAT_PRICES[sel.meat1] || 0);
-        }
-
-        if (sel.meat2 && sel.meat2 !== 'None') {
-          price += (MEAT_PRICES[sel.meat2] || 0);
-        }
-
+        // Calculate the total cost of toppings for this group
+        let toppingsSum = 0;
         (sel.toppings || []).forEach(t => {
-          price += (TOPPING_PRICES[t] || 0);
+          toppingsSum += (TOPPING_PRICES[t] || 0);
         });
 
+        if (sel.meat1 === 'Veggie Only') {
+          // Veggie Only replaces the meat cost with 1.5x the sum of the toppings
+          price += (toppingsSum * 1.5) * group.count;
+        } else {
+          // Standard Meat Cost
+          price += (MEAT_PRICES[sel.meat1] || 0) * group.count;
+          // Standard Topping Cost
+          price += toppingsSum * group.count;
+        }
+
+        // 3. Meat 2
+        if (sel.meat2 && sel.meat2 !== 'None') {
+          price += (MEAT_PRICES[sel.meat2] || 0) * group.count;
+        }
+
+        // 4. Extras
         (sel.extras || []).forEach(e => {
-          price += (EXTRAS_PRICES[e] || 0);
+          price += (EXTRAS_PRICES[e] || 0) * group.count;
         });
       }
     }
@@ -409,7 +416,6 @@ export default function TacoDealCustomize() {
                 className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4"
               >
                 <div className="border-b border-zinc-800 pb-2">
-                  {/* ✅ REMOVED "(1 taco)" from TACO TRIO and TACO */}
                   <h3 className="font-bold text-lg text-white">
                     {displayLabel}
                     {!isTrio && !isSingle && ` (${group.count} taco${group.count > 1 ? 's' : ''})`}
@@ -451,7 +457,7 @@ export default function TacoDealCustomize() {
                       {MEAT_OPTIONS.map((meat) => {
                         const price = MEAT_PRICES[meat];
                         const label = meat === 'Veggie Only' 
-                          ? `${meat} (1.5x Toppings Formula)` 
+                          ? 'Veggie Only' // ✅ REMOVED THE 1.5x FORMULA TEXT
                           : `${meat} (${price.toFixed(2)})`;
                         return <option key={meat} value={meat}>{label}</option>
                       })}

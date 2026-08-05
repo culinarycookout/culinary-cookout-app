@@ -8,7 +8,7 @@ const tacoDealItems = [
     'Item Name': 'TACO',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': 'Build your ideal taco.',
-    'Image URL': 'https://iili.io/CSpjz5N.png',
+    'Image URL': 'https://basilandbubbly.com/wp-content/uploads/2021/09/buffalo-shrimp-tacos-3.jpg',
   },
   {
     id: 'taco-trio',
@@ -29,7 +29,7 @@ const tacoDealItems = [
     'Item Name': 'TACO PARTY',
     'CATEGORY': 'LATIN AMERICA',
     'DESCRIPTION': '24 tacos, 24 hours.',
-    'Image URL': 'https://basilandbubbly.com/wp-content/uploads/2021/09/buffalo-shrimp-tacos-3.jpg',
+    'Image URL': 'https://iili.io/Cg5XlXS.jpg',
   },
   {
     id: 'taco-party-fiesta-grande',
