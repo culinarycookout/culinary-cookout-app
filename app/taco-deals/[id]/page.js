@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
 
-// ✅ Package configurations - basePrice completely removed
 const packageConfig = {
   'taco-trio': {
     name: 'TACO TRIO',
@@ -53,6 +52,7 @@ const TORTILLA_OPTIONS = [
   { value: 'soft', label: 'Soft Flour Tortilla', price: 1.50 },
 ];
 
+// ✅ Updated Meat Options
 const MEAT_OPTIONS = [
   'Beef',
   'Steak',
@@ -65,31 +65,73 @@ const MEAT_OPTIONS = [
   'Veggie Only',
 ];
 
+// ✅ Updated Toppings
 const TOPPING_OPTIONS = [
   'Avocado',
-  'Habaneros',
   'Jalapeños',
   'Lettuce',
   'Onions',
+  'Pico De Gallo',
   'Radishes',
   'Scallions',
   'Tomatoes',
 ];
 
+// ✅ Updated Extras (keeps your exact emojis)
 const EXTRAS_OPTIONS = [
   '4 Cheese Blend',
   'Mild Nacho Cheese',
-  'Hot Nacho Cheese',
-  'Pico de Gallo',
-  'Guacamole',
+  '🌿 Shredded Cheese',
+  '🌿 Queso Sauce',
+  'Guac',
   'Sour Cream',
-  'Lemon',
-  'Lime',
-  'Creamy Taco Sauce',
+  '🚫Lactose Sour Cream',
+  '🌿 Sour Cream',
+  'Hot Sauce',
   'Xtreme Sauce',
-  'Non-Dairy Cheese',
-  'Non-Dairy Sour Cream',
+  'Creamy Chipotle',
+  'Cut Lemon / Lime',
 ];
+
+// ✅ Exact Meat Price Mapping
+const MEAT_PRICES = {
+  'Beef': 2.25,
+  'Steak': 3.50,
+  'Chicken': 1.50,
+  'Fried Chicken': 2.25,
+  'Shrimp': 5.25,
+  'Fried Shrimp': 6.00,
+  'Fish': 2.00,
+  'Fried Fish': 3.00,
+};
+
+// ✅ Exact Topping Price Mapping
+const TOPPING_PRICES = {
+  'Avocado': 1.00,
+  'Jalapeños': 0.25,
+  'Lettuce': 0.25,
+  'Onions': 0.25,
+  'Pico De Gallo': 2.00,
+  'Radishes': 0.50,
+  'Scallions': 0.25,
+  'Tomatoes': 0.75,
+};
+
+// ✅ Exact Extras Price Mapping
+const EXTRAS_PRICES = {
+  '4 Cheese Blend': 0.25,
+  'Mild Nacho Cheese': 0.50,
+  '🌿 Shredded Cheese': 1.75,
+  '🌿 Queso Sauce': 1.50,
+  'Guac': 1.25,
+  'Sour Cream': 0.50,
+  '🚫Lactose Sour Cream': 1.25,
+  '🌿 Sour Cream': 1.00,
+  'Hot Sauce': 0.25,
+  'Xtreme Sauce': 1.00,
+  'Creamy Chipotle': 2.00,
+  'Cut Lemon / Lime': 0.75,
+};
 
 export default function TacoDealCustomize() {
   const params = useParams();
@@ -174,26 +216,49 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
-  // ✅ Starts at 0. Only calculates price when options are chosen.
+  // ✅ UPDATED PRICE LOGIC with your exact mappings and "Veggie Only" formula
   const totalPrice = config?.groups.reduce((sum, group) => {
     const sel = groupSelections[group.id] || { tortilla: '', meat1: '', meat2: '', toppings: [], extras: [] };
     
     let price = 0;
 
-    // Only calculate additional costs if they've made a tortilla selection
     if (sel.tortilla) {
+      // 1. Tortilla Cost
       const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 1.00;
-      price += tortillaPrice * group.count;
+      price += tortillaPrice; // Charged per group
 
+      // 2. Meats & Veggie Logic
       if (sel.meat1 && sel.meat1 !== '') {
-        if (sel.meat1 !== 'Veggie Only') price += 2.00 * group.count;
-        if (['Steak', 'Shrimp', 'Fish'].includes(sel.meat1)) price += 1.00 * group.count;
-        if (sel.meat2 && sel.meat2 !== 'None') price += 1.50 * group.count;
-        price += (sel.extras || []).length * 0.50 * group.count;
+        if (sel.meat1 === 'Veggie Only') {
+          // Veggie Only Formula: 1.5x the sum of all added toppings
+          let toppingsSum = 0;
+          (sel.toppings || []).forEach(t => {
+            toppingsSum += (TOPPING_PRICES[t] || 0);
+          });
+          price += toppingsSum * 1.5;
+        } else {
+          // Standard Meat Price
+          price += (MEAT_PRICES[sel.meat1] || 0);
+        }
+
+        // 3. Meat 2 (Second Meat)
+        if (sel.meat2 && sel.meat2 !== 'None') {
+          price += (MEAT_PRICES[sel.meat2] || 0);
+        }
+
+        // 4. Toppings (Only applied if meat is selected)
+        (sel.toppings || []).forEach(t => {
+          price += (TOPPING_PRICES[t] || 0);
+        });
+
+        // 5. Extras
+        (sel.extras || []).forEach(e => {
+          price += (EXTRAS_PRICES[e] || 0);
+        });
       }
     }
     return sum + price;
-  }, 0); // ✅ Starts exactly at ZERO
+  }, 0);
 
   const configuredCount = config?.groups.filter((group) => {
     const sel = groupSelections[group.id];
@@ -226,7 +291,7 @@ export default function TacoDealCustomize() {
       <div className="min-h-screen bg-zinc-950 text-white p-8">
         <h1 className="text-xl font-bold">Package not found</h1>
         <Link href="/taco-deals" className="text-red-400 mt-4 inline-block">
-          ← Back To Packages
+          ← Back to Deals
         </Link>
       </div>
     );
@@ -252,7 +317,7 @@ export default function TacoDealCustomize() {
             href="/taco-deals"
             className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-semibold px-4 py-2 rounded-lg border border-zinc-700 transition-colors"
           >
-            ← Back To Packages
+            ← Back to Deals
           </Link>
         </div>
 
@@ -261,7 +326,7 @@ export default function TacoDealCustomize() {
             <span>
               Progress: {configuredCount} / {config.groups.length} groups configured
             </span>
-            <span>Total: ${totalPrice.toFixed(2)}</span>
+            {/* Price is hidden from UI per your request, so we leave it out of the span */}
           </div>
           <div className="w-full bg-zinc-800 rounded-full h-2">
             <div
@@ -422,7 +487,7 @@ export default function TacoDealCustomize() {
                   ? '✨ All groups configured!'
                   : `⚠️ Configure ${config.groups.length - configuredCount} more group(s)`}
               </p>
-              <p className="text-xs text-zinc-400">Total: ${totalPrice.toFixed(2)}</p>
+              {/* The price display is completely removed from the footer as requested */}
             </div>
             <button
               disabled={!isComplete}
