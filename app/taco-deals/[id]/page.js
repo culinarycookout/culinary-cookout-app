@@ -52,7 +52,6 @@ const TORTILLA_OPTIONS = [
   { value: 'soft', label: 'Soft Flour Tortilla', price: 1.50 },
 ];
 
-// ✅ Updated Meat Options
 const MEAT_OPTIONS = [
   'Beef',
   'Steak',
@@ -65,7 +64,6 @@ const MEAT_OPTIONS = [
   'Veggie Only',
 ];
 
-// ✅ Updated Toppings
 const TOPPING_OPTIONS = [
   'Avocado',
   'Jalapeños',
@@ -77,7 +75,6 @@ const TOPPING_OPTIONS = [
   'Tomatoes',
 ];
 
-// ✅ Updated Extras (keeps your exact emojis)
 const EXTRAS_OPTIONS = [
   '4 Cheese Blend',
   'Mild Nacho Cheese',
@@ -93,7 +90,6 @@ const EXTRAS_OPTIONS = [
   'Cut Lemon / Lime',
 ];
 
-// ✅ Exact Meat Price Mapping
 const MEAT_PRICES = {
   'Beef': 2.25,
   'Steak': 3.50,
@@ -105,7 +101,6 @@ const MEAT_PRICES = {
   'Fried Fish': 3.00,
 };
 
-// ✅ Exact Topping Price Mapping
 const TOPPING_PRICES = {
   'Avocado': 1.00,
   'Jalapeños': 0.25,
@@ -117,7 +112,6 @@ const TOPPING_PRICES = {
   'Tomatoes': 0.75,
 };
 
-// ✅ Exact Extras Price Mapping
 const EXTRAS_PRICES = {
   '4 Cheese Blend': 0.25,
   'Mild Nacho Cheese': 0.50,
@@ -142,8 +136,16 @@ export default function TacoDealCustomize() {
 
   const [loading, setLoading] = useState(true);
   const [groupSelections, setGroupSelections] = useState({});
+  const [isTacoTuesday, setIsTacoTuesday] = useState(false);
 
   useEffect(() => {
+    // Calculate Taco Tuesday status for the informative banner
+    const now = new Date();
+    const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+    const day = pacificTime.getDay();
+    const hours = pacificTime.getHours();
+    setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
+
     if (!config) return;
     const initial = {};
     config.groups.forEach((group) => {
@@ -186,7 +188,8 @@ export default function TacoDealCustomize() {
       if (currentToppings.includes(topping)) {
         newToppings = currentToppings.filter((t) => t !== topping);
       } else {
-        if (currentToppings.length >= 5) return prev;
+        // ✅ CHANGE: Increased maximum from 5 to 6
+        if (currentToppings.length >= 6) return prev;
         newToppings = [...currentToppings, topping];
       }
       const updated = { ...prev };
@@ -216,7 +219,6 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
-  // ✅ UPDATED PRICE LOGIC with your exact mappings and "Veggie Only" formula
   const totalPrice = config?.groups.reduce((sum, group) => {
     const sel = groupSelections[group.id] || { tortilla: '', meat1: '', meat2: '', toppings: [], extras: [] };
     
@@ -225,33 +227,27 @@ export default function TacoDealCustomize() {
     if (sel.tortilla) {
       // 1. Tortilla Cost
       const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 1.00;
-      price += tortillaPrice; // Charged per group
+      price += tortillaPrice;
 
-      // 2. Meats & Veggie Logic
       if (sel.meat1 && sel.meat1 !== '') {
         if (sel.meat1 === 'Veggie Only') {
-          // Veggie Only Formula: 1.5x the sum of all added toppings
           let toppingsSum = 0;
           (sel.toppings || []).forEach(t => {
             toppingsSum += (TOPPING_PRICES[t] || 0);
           });
           price += toppingsSum * 1.5;
         } else {
-          // Standard Meat Price
           price += (MEAT_PRICES[sel.meat1] || 0);
         }
 
-        // 3. Meat 2 (Second Meat)
         if (sel.meat2 && sel.meat2 !== 'None') {
           price += (MEAT_PRICES[sel.meat2] || 0);
         }
 
-        // 4. Toppings (Only applied if meat is selected)
         (sel.toppings || []).forEach(t => {
           price += (TOPPING_PRICES[t] || 0);
         });
 
-        // 5. Extras
         (sel.extras || []).forEach(e => {
           price += (EXTRAS_PRICES[e] || 0);
         });
@@ -321,12 +317,21 @@ export default function TacoDealCustomize() {
           </Link>
         </div>
 
+        {/* ✅ TACO TUESDAY NOTE - Applied at checkout */}
+        {isTacoTuesday && (
+          <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-3 mb-4 text-center border-2 border-red-500 shadow-md">
+            <p className="text-xs md:text-sm font-bold text-black">
+              🌮🪅 Taco Tuesday discount (50% off) will be applied at checkout! 🎉🌮
+            </p>
+          </div>
+        )}
+
         <div className="mb-6">
           <div className="flex justify-between text-xs text-zinc-400 mb-1">
             <span>
               Progress: {configuredCount} / {config.groups.length} groups configured
             </span>
-            {/* Price is hidden from UI per your request, so we leave it out of the span */}
+            <span className="text-white font-bold">Total: ${totalPrice.toFixed(2)}</span>
           </div>
           <div className="w-full bg-zinc-800 rounded-full h-2">
             <div
@@ -424,11 +429,12 @@ export default function TacoDealCustomize() {
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
+                    {/* ✅ CHANGE: Updated UI to show up to 6 toppings */}
                     <label className="text-xs font-semibold text-zinc-300">
-                      Toppings (select up to 5)
+                      Toppings (select up to 6)
                     </label>
                     <span className="text-xs text-zinc-500">
-                      {sel.toppings.length} / 5 selected
+                      {sel.toppings.length} / 6 selected
                     </span>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -487,7 +493,7 @@ export default function TacoDealCustomize() {
                   ? '✨ All groups configured!'
                   : `⚠️ Configure ${config.groups.length - configuredCount} more group(s)`}
               </p>
-              {/* The price display is completely removed from the footer as requested */}
+              <p className="text-xs text-zinc-400">Total: ${totalPrice.toFixed(2)}</p>
             </div>
             <button
               disabled={!isComplete}
