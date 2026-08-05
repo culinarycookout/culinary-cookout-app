@@ -4,8 +4,6 @@ import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
 
-const CACHE_KEY = 'culinary_menu_cache';
-
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
   const resolvedParams = use(params);
@@ -20,31 +18,22 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItem() {
       try {
-        let data = null;
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-          try {
-            const parsed = JSON.parse(cached);
-            data = parsed.data;
-          } catch (e) {}
-        }
-        if (!data) {
-          const res = await fetch('/api/menu');
-          data = await res.json();
-        }
+        const res = await fetch('/api/menu');
+        if (!res.ok) throw new Error('Failed to fetch menu');
+        const data = await res.json();
+
         const found = data.find(item => item.id === itemId);
         if (found) {
           setItem(found);
           if (found.Sizes && found.Sizes.length > 0) {
             setSelectedSize(found.Sizes[0]);
           } else {
-            // ✅ No sizes — create a default "Standard" size from the item's price
             setSelectedSize({
               id: 'default',
               size: 'Standard',
               price: found.Price || 0,
-              serves: '',
               amount: '',
+              serves: '',
               description: '',
             });
           }
@@ -61,48 +50,28 @@ export default function ItemDetailPage({ params }) {
   }, [itemId]);
 
   const handleAddToCart = () => {
-    if (!item) return;
-
-    // Use selectedSize price, or fallback to item's Price
-    const price = selectedSize?.price ?? item.Price ?? 0;
-    const size = selectedSize?.size || 'Standard';
-    const serves = selectedSize?.serves || '';
-    const amount = selectedSize?.amount || '';
-    const isDiscounted = selectedSize?.isDiscounted || false;
-    const originalPrice = selectedSize?.originalPrice || price;
+    if (!item || !selectedSize) return;
 
     const cartItem = {
       ...item,
-      'Price': price,
-      'SIZE': size,
-      'SERVES:': serves,
-      'AMOUNT': amount,
-      'selectedSize': size,
-      'selectedPrice': price,
-      'originalPrice': originalPrice,
-      'isDiscounted': isDiscounted,
+      'Price': selectedSize.price,
+      'SIZE': selectedSize.size,
+      'SERVES:': selectedSize.serves, // Pass to cart recap
+      'AMOUNT': selectedSize.amount,
+      'selectedSize': selectedSize.size,
+      'selectedPrice': selectedSize.price,
+      quantity: quantity
     };
 
-    addToCart(cartItem, quantity, []);
+    addToCart(cartItem);
     setQuantity(1);
     window.location.href = '/cart';
   };
 
-  if (loading) {
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">
-      Thank goodness for goodness... 🤤
-    </div>
-  );
-}
+  if (loading) return <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">Loading...</div>;
+  if (error || !item) return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
 
-  if (error || !item) {
-    return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
-  }
-
-  const currentPrice = selectedSize?.price ?? item.Price ?? 0;
-  const isDiscounted = selectedSize?.isDiscounted ?? false;
-  const originalPrice = selectedSize?.originalPrice ?? currentPrice;
+  const currentPrice = selectedSize?.price || 0;
   const finalPrice = currentPrice * quantity;
 
   return (
@@ -111,7 +80,9 @@ export default function ItemDetailPage({ params }) {
         <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block">← Back to Menu</Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
+          
+          {/* ✅ LEFT COLUMN: IMAGE + SIZE-SPECIFIC DETAILS */}
+          <div className="flex flex-col gap-3">
             {item['Image URL'] ? (
               <img src={item['Image URL']} alt={item['Item Name']} className="w-full rounded-lg object-cover aspect-square" />
             ) : (
@@ -119,23 +90,35 @@ export default function ItemDetailPage({ params }) {
                 <span className="text-zinc-500">No image</span>
               </div>
             )}
+            
+            {/* LEFT COLUMN: Size details appear right under the picture */}
+            {selectedSize && (
+              <div className="bg-zinc-900 p-3 rounded-lg border border-zinc-800 text-sm space-y-1">
+                {selectedSize.description && (
+                  <p className="text-zinc-300">{selectedSize.description}</p>
+                )}
+                {selectedSize.serves && (
+                  <p className="text-zinc-300 mt-1">
+                    <span className="text-zinc-400">Serves:</span> {selectedSize.serves}
+                  </p>
+                )}
+                {selectedSize.amount && (
+                  <p className="text-zinc-300 mt-1">
+                    <span className="text-zinc-400">Included:</span> {selectedSize.amount}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
+          {/* ✅ RIGHT COLUMN: NAME, PRICE, SIZES, CONTROLS */}
           <div>
             <h1 className="text-3xl font-bold text-red-600">{item['Item Name']}</h1>
             <p className="text-zinc-400 mt-1">{item['CATEGORY']}</p>
             {item['DESCRIPTION'] && <p className="text-zinc-300 mt-2">{item['DESCRIPTION']}</p>}
 
             <div className="mt-4">
-              {isDiscounted ? (
-                <div className="flex items-center gap-3">
-                  <p className="text-2xl font-bold text-red-500">${currentPrice.toFixed(2)}</p>
-                  <p className="text-lg text-gray-400 line-through">${(originalPrice || 0).toFixed(2)}</p>
-                  <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">50% OFF 🎉</span>
-                </div>
-              ) : (
-                <p className="text-2xl font-bold text-red-500">${currentPrice.toFixed(2)}</p>
-              )}
+              <p className="text-2xl font-bold text-red-500">${currentPrice.toFixed(2)}</p>
             </div>
 
             {item.Sizes && item.Sizes.length > 0 && (
@@ -144,11 +127,8 @@ export default function ItemDetailPage({ params }) {
                 <div className="flex flex-wrap gap-3">
                   {item.Sizes.map((size) => {
                     const isSelected = selectedSize?.id === size.id;
-                    const isHalf = size.size.toLowerCase().includes('half');
                     const baseClass = "px-4 py-2 rounded-lg font-bold text-sm transition-colors border";
-                    const selectedClass = isHalf
-                      ? "bg-red-300 text-black border-red-400 hover:bg-red-200"
-                      : "bg-red-600 text-white border-red-700 hover:bg-red-500";
+                    const selectedClass = "bg-red-600 text-white border-red-700 hover:bg-red-500";
                     const unselectedClass = "bg-zinc-800 text-white border-zinc-700 hover:border-zinc-500";
 
                     return (
@@ -157,29 +137,11 @@ export default function ItemDetailPage({ params }) {
                         onClick={() => setSelectedSize(size)}
                         className={`${baseClass} ${isSelected ? selectedClass : unselectedClass}`}
                       >
-                        {size.size} (${Number(size.price).toFixed(2)})
+                        {size.size} (${Number(size.price || 0).toFixed(2)})
                       </button>
                     );
                   })}
                 </div>
-              </div>
-            )}
-
-            {selectedSize && (
-              <div className="mt-3 space-y-1">
-                {selectedSize.description && (
-                  <p className="text-sm text-zinc-300">{selectedSize.description}</p>
-                )}
-                {selectedSize.serves && (
-                  <p className="text-sm text-zinc-300">
-                    <span className="text-zinc-400">Serves:</span> {selectedSize.serves}
-                  </p>
-                )}
-                {selectedSize.amount && (
-                  <p className="text-sm text-zinc-300">
-                    <span className="text-zinc-400">Included:</span> {selectedSize.amount} per order
-                  </p>
-                )}
               </div>
             )}
 

@@ -44,6 +44,62 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
+    // ✅ CHANGE 1: Look for 'LINKED TYPES' (matches your exact Main Menu column)
+    const allSizeIds = new Set();
+    allResults.forEach(item => {
+      const relation = item.properties['LINKED TYPES']?.relation || [];
+      relation.forEach(rel => {
+        if (rel?.id) allSizeIds.add(rel.id);
+      });
+    });
+
+    // 2. Fetch the actual details for every single related size ID in parallel
+    const sizeMap = {};
+    if (allSizeIds.size > 0) {
+      const sizePromises = Array.from(allSizeIds).map(async (id) => {
+        try {
+          const res = await fetch(`https://api.notion.com/v1/pages/${id}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Notion-Version': '2022-06-28',
+            },
+          });
+          if (!res.ok) return null;
+          return await res.json();
+        } catch {
+          return null;
+        }
+      });
+
+      const sizePages = await Promise.all(sizePromises);
+      sizePages.forEach(page => {
+        if (!page || !page.properties) return;
+        const p = page.properties;
+
+        const getTitle = (prop) => prop?.title?.[0]?.plain_text || '';
+        const getRichText = (prop) => prop?.rich_text?.[0]?.plain_text || '';
+        const getSelect = (prop) => prop?.select?.name || '';
+        const getNumber = (prop) => prop?.number ?? 0;
+
+        const sizeName = getSelect(p['Size']) || getTitle(p['Size']) || getRichText(p['Size']) || getTitle(p['Name']) || getRichText(p['Name']) || 'Standard';
+        const priceVal = getNumber(p['PRICE']) || getNumber(p['Price']) || 0;
+        const amountVal = getNumber(p['Amount']) || getRichText(p['Amount']) || getSelect(p['Amount']) || '';
+        const servesVal = getRichText(p['Serves']) || getSelect(p['Serves']) || '';
+        const descVal = getRichText(p['Description']) || '';
+
+        sizeMap[page.id] = {
+          id: page.id,
+          size: sizeName,
+          price: priceVal,
+          Price: priceVal,
+          amount: amountVal,
+          serves: servesVal,
+          description: descVal,
+        };
+      });
+    }
+
     const formattedItems = allResults.map((page) => {
       const props = page.properties;
       
@@ -60,38 +116,38 @@ export async function GET() {
         return '';
       };
 
-      // ✅ CUSTOMER DISPLAY FIELDS — unchanged
       const category = getSelect(props['CATEGORY']) || getRichText(props['CATEGORY']) || '';
       const itemName = getTitle(props['ITEM NAME']) || getRichText(props['ITEM NAME']) || '';
       const description = getRichText(props['DESCRIPTION']) || '';
 
-      // ✅ SORTING FIELDS — used only for sorting, never displayed
       const categoryNumber = getNumber(props['CATEGORY NUMBER']) || getRichText(props['CATEGORY NUMBER']) || getSelect(props['CATEGORY NUMBER']) || '';
       const sortValue = getNumber(props['SORT']) || getRichText(props['SORT']) || getSelect(props['SORT']) || '';
+
+      // ✅ CHANGE 2: Look for 'LINKED TYPES' (matches your exact Main Menu column)
+      const relation = props['LINKED TYPES']?.relation || [];
+      const sizes = relation.map(rel => sizeMap[rel.id]).filter(Boolean);
 
       return {
         id: page.id,
         'Item Name': itemName,
         'DESCRIPTION': description,
-        'CATEGORY': category,              // ✅ Displayed to customer
-        'CATEGORY NUMBER': categoryNumber, // ✅ Sorting only — NOT displayed
-        'SORT': sortValue,                // ✅ Sorting only — NOT displayed
+        'CATEGORY': category,
+        'CATEGORY NUMBER': categoryNumber,
+        'SORT': sortValue,
         'Price': getNumber(props['PRICE']),
         'Image URL': getImageUrl(props['Image URL']) || getImageUrl(props['IMAGE URL']),
         'Item Type': getSelect(props['ITEM TYPE']),
         isDiscounted: props['isDiscounted']?.checkbox || false,
+        Sizes: sizes,
       };
     });
 
-    // ✅ SORTING: Primary by CATEGORY NUMBER, Secondary by SORT
     formattedItems.sort((a, b) => {
-      // 1. Primary: CATEGORY NUMBER (numeric-aware)
       const numA = (a['CATEGORY NUMBER'] || '').toString();
       const numB = (b['CATEGORY NUMBER'] || '').toString();
       const compareNum = numA.localeCompare(numB, undefined, { numeric: true, sensitivity: 'base' });
       if (compareNum !== 0) return compareNum;
 
-      // 2. Secondary: SORT (numeric-aware)
       const sortA = (a['SORT'] || '').toString();
       const sortB = (b['SORT'] || '').toString();
       return sortA.localeCompare(sortB, undefined, { numeric: true, sensitivity: 'base' });

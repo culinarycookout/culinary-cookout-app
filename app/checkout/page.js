@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const { cart, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
 
   const [customerName, setCustomerName] = useState('');
@@ -86,13 +88,14 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <Link href="/" className="text-red-400 hover:text-red-300 mb-6 inline-block text-lg">
-          ← Back to Menu
-        </Link>
-
-        <h1 className="text-3xl font-bold mb-6 text-red-600">Checkout</h1>
+    <div className="min-h-screen bg-black text-white p-4 md:p-8 pb-24">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-6 flex items-center justify-between">
+          <Link href="/cart" className="text-red-400 hover:text-red-300 text-sm font-medium">
+            ← Back to Cart
+          </Link>
+          <h1 className="text-2xl font-bold text-red-600">Checkout</h1>
+        </div>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-lg mb-6">
@@ -111,68 +114,9 @@ export default function CheckoutPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Cart Summary */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-              <h2 className="text-xl font-bold mb-4 border-b border-zinc-800 pb-2">Order Summary</h2>
-              
-              <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
-                {cart.map((item) => {
-                  const addOnsTotal = (item.selectedAddOns || []).reduce((sum, ao) => sum + ao.price, 0);
-                  const itemTotalPrice = (item.price + addOnsTotal) * item.quantity;
-
-                  return (
-                    <div key={item.cartItemKey} className="flex justify-between items-start border-b border-zinc-800 pb-4">
-                      <div>
-                        <h3 className="font-bold text-white">{item.name}</h3>
-                        {item.size && <p className="text-xs text-zinc-400">Size: {item.size}</p>}
-                        {item.selectedAddOns && item.selectedAddOns.length > 0 && (
-                          <p className="text-xs text-orange-400 mt-1">
-                            Add-ons: {item.selectedAddOns.map(ao => ao.name).join(', ')}
-                          </p>
-                        )}
-                        <div className="flex items-center gap-3 mt-2">
-                          <div className="flex items-center space-x-2">
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(item.cartItemKey, item.quantity - 1)}
-                              className="w-6 h-6 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-xs"
-                            >
-                              -
-                            </button>
-                            <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(item.cartItemKey, item.quantity + 1)}
-                              className="w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-xs"
-                            >
-                              +
-                            </button>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFromCart(item.cartItemKey)}
-                            className="text-xs text-red-400 hover:text-red-300 ml-2"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </div>
-                      <span className="font-bold text-red-500">${itemTotalPrice.toFixed(2)}</span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-zinc-800 flex justify-between items-center text-xl font-bold">
-                <span>Total Subtotal</span>
-                <span className="text-red-500">${subtotal.toFixed(2)}</span>
-              </div>
-            </div>
-
-            {/* Client Information Form - BIG LOGO IN HEADER */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-              {/* ✅ Header with BIG Visible Logo */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* LEFT: Client Information Form */}
+            <div className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
                 <h2 className="text-xl font-bold">Client Details</h2>
                 <div className="flex-shrink-0">
@@ -186,9 +130,8 @@ export default function CheckoutPage() {
                   />
                 </div>
               </div>
-              
+
               <form onSubmit={handleSubmitOrder} className="space-y-4">
-                {/* Name - Required */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
                     Name <span className="text-red-500">*</span>
@@ -203,7 +146,6 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* WhatsApp Number - Required */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
                     WhatsApp Number <span className="text-red-500">*</span>
@@ -218,7 +160,6 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* Instagram Handle - Optional */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
                     Instagram Handle <span className="text-zinc-500 text-xs">(optional)</span>
@@ -232,7 +173,6 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* Delivery Location 1 - Required */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
                     Delivery Location <span className="text-red-500">*</span>
@@ -247,7 +187,6 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* Delivery Location 2 - Optional */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
                     Second Delivery Location <span className="text-zinc-500 text-xs">(optional)</span>
@@ -261,7 +200,6 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* Special Instructions - Optional */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
                     Special Notes & Instructions <span className="text-zinc-500 text-xs">(optional)</span>
@@ -275,20 +213,78 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* Asterisk Note */}
                 <p className="text-xs italic text-white/60">
                   *No pending delivery is required to wait longer than five minutes.
                 </p>
 
-                {/* ✅ PLACE ORDER - MALACHITE GREEN */}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-[#0BDA51] hover:bg-[#09C448] disabled:bg-zinc-700 text-white font-bold py-3.5 px-6 rounded-lg transition-colors mt-4 shadow-lg text-lg"
+                  className="w-full bg-[#0BDA51] hover:bg-[#09C448] disabled:bg-zinc-700 text-white font-bold py-3.5 px-6 rounded-lg transition-colors mt-2 shadow-lg text-lg"
                 >
                   {submitting ? 'Submitting Order...' : 'Place Order'}
                 </button>
               </form>
+            </div>
+
+            {/* RIGHT: Order Summary */}
+            <div className="lg:w-[400px]">
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 sticky top-4">
+                <h2 className="text-xl font-bold mb-4 border-b border-zinc-800 pb-2">Order Summary</h2>
+                
+                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                  {cart.map((item) => {
+                    const addOnsTotal = (item.selectedAddOns || []).reduce((sum, ao) => sum + ao.price, 0);
+                    const itemTotalPrice = (item.price + addOnsTotal) * item.quantity;
+
+                    return (
+                      <div key={item.cartItemKey} className="flex justify-between items-start border-b border-zinc-800 pb-4">
+                        <div>
+                          <h3 className="font-bold text-white">{item.name}</h3>
+                          {item.size && <p className="text-xs text-zinc-400">Size: {item.size}</p>}
+                          {item.selectedAddOns && item.selectedAddOns.length > 0 && (
+                            <p className="text-xs text-orange-400 mt-1">
+                              Add-ons: {item.selectedAddOns.map(ao => ao.name).join(', ')}
+                            </p>
+                          )}
+                          <div className="flex items-center gap-3 mt-2">
+                            <div className="flex items-center space-x-2">
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(item.cartItemKey, item.quantity - 1)}
+                                className="w-6 h-6 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-xs"
+                              >
+                                -
+                              </button>
+                              <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(item.cartItemKey, item.quantity + 1)}
+                                className="w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-xs"
+                              >
+                                +
+                              </button>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeFromCart(item.cartItemKey)}
+                              className="text-xs text-red-400 hover:text-red-300 ml-2"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                        <span className="font-bold text-red-500">${itemTotalPrice.toFixed(2)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-zinc-800 flex justify-between items-center text-xl font-bold">
+                  <span>Total</span>
+                  <span className="text-red-500">${subtotal.toFixed(2)}</span>
+                </div>
+              </div>
             </div>
           </div>
         )}

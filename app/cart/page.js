@@ -113,7 +113,7 @@ function CartContent() {
                         href={`/taco-deals/${item.dealId}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}`}
                         className="flex-1 sm:flex-none text-center text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                       >
-                        Build Another 📋
+                        Build Another 👨🏾‍🍳
                       </Link>
                     </div>
                   )}
