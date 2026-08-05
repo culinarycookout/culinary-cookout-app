@@ -399,8 +399,8 @@ export default function TacoDealCustomize() {
               extras: [],
             };
 
-            // ✅ Logic for Trio labeling
             const isTrio = config.name === 'TACO TRIO';
+            const isSingle = config.name === 'TACO';
             const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
 
             return (
@@ -409,12 +409,10 @@ export default function TacoDealCustomize() {
                 className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4"
               >
                 <div className="border-b border-zinc-800 pb-2">
+                  {/* ✅ REMOVED "(1 taco)" from TACO TRIO and TACO */}
                   <h3 className="font-bold text-lg text-white">
                     {displayLabel}
-                    {/* ✅ REMOVED the "(1 taco)" from Taco Trio ONLY */}
-                    {!isTrio && (
-                      <> ({group.count} taco{group.count > 1 ? 's' : ''})</>
-                    )}
+                    {!isTrio && !isSingle && ` (${group.count} taco${group.count > 1 ? 's' : ''})`}
                   </h3>
                   <p className="text-xs text-zinc-400">
                     Customize once for all {group.count} tacos in this group
