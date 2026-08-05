@@ -55,7 +55,7 @@ const packageConfig = {
 };
 
 const TORTILLA_OPTIONS = [
-  { value: 'corn', label: 'Corn Tortilla', price: 0.50 },
+  { value: 'corn', label: 'Corn Tortilla', price: 0.25 },
   { value: 'soft', label: 'Soft Flour Tortilla', price: 0.50 },
 ];
 
@@ -399,7 +399,7 @@ export default function TacoDealCustomize() {
               extras: [],
             };
 
-            // ✅ RESTORED LOGIC: Only TACO TRIO shows "Taco 1", "Taco 2", "Taco 3"
+            // ✅ Logic for Trio labeling
             const isTrio = config.name === 'TACO TRIO';
             const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
 
@@ -410,7 +410,11 @@ export default function TacoDealCustomize() {
               >
                 <div className="border-b border-zinc-800 pb-2">
                   <h3 className="font-bold text-lg text-white">
-                    {displayLabel} ({group.count} taco{group.count > 1 ? 's' : ''})
+                    {displayLabel}
+                    {/* ✅ REMOVED the "(1 taco)" from Taco Trio ONLY */}
+                    {!isTrio && (
+                      <> ({group.count} taco{group.count > 1 ? 's' : ''})</>
+                    )}
                   </h3>
                   <p className="text-xs text-zinc-400">
                     Customize once for all {group.count} tacos in this group
