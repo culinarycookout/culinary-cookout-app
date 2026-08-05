@@ -54,7 +54,6 @@ const packageConfig = {
   },
 };
 
-// ... the rest of your meat/topping prices constants remain exactly the same ...
 const TORTILLA_OPTIONS = [
   { value: 'corn', label: 'Corn Tortilla', price: 0.25 },
   { value: 'soft', label: 'Soft Flour Tortilla', price: 0.50 },
@@ -399,7 +398,7 @@ export default function TacoDealCustomize() {
               toppings: [],
               extras: [],
             };
-            const displayLabel = group.label; // No need for isTrio logic for single Taco
+            const displayLabel = group.label;
 
             return (
               <div
@@ -448,7 +447,7 @@ export default function TacoDealCustomize() {
                         const price = MEAT_PRICES[meat];
                         const label = meat === 'Veggie Only' 
                           ? `${meat} (1.5x Toppings Formula)` 
-                          : `${meat} ($${price.toFixed(2)})`;
+                          : `${meat} (${price.toFixed(2)})`; // ✅ Single $
                         return <option key={meat} value={meat}>{label}</option>
                       })}
                     </select>
@@ -470,7 +469,7 @@ export default function TacoDealCustomize() {
                         (m) => m !== 'Veggie Only' && m !== sel.meat1
                       ).map((meat) => (
                         <option key={meat} value={meat}>
-                          {meat} ($${MEAT_PRICES[meat].toFixed(2)})
+                          {meat} (${MEAT_PRICES[meat].toFixed(2)}) {/* ✅ Single $ */}
                         </option>
                       ))}
                     </select>
