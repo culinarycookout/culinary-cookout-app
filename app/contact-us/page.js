@@ -30,7 +30,6 @@ export default function ContactUsPage() {
             </a>
           </div>
 
-          {/* ✅ UPDATED: matches your exact filename 'IG QR.png' */}
           <div className="relative w-full max-w-sm mx-auto aspect-square bg-zinc-800 rounded-lg overflow-hidden flex items-center justify-center">
             <img
               src="/IG QR.png"
@@ -48,8 +47,9 @@ export default function ContactUsPage() {
         <div className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="text-xl">💬</span>
+            {/* ✅ UPDATED WHATSAPP LINK */}
             <a 
-              href="https://wa.me/YOUR_WHATSAPP_NUMBER" 
+              href="https://api.whatsapp.com/message/KADGXTZ4RZS4J1?autoload=1&app_absent=0" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-emerald-400 hover:text-emerald-300 font-medium underline transition-colors"
@@ -58,7 +58,6 @@ export default function ContactUsPage() {
             </a>
           </div>
 
-          {/* ✅ UPDATED: matches your exact filename 'WhatsApp QR.png' */}
           <div className="relative w-full max-w-sm mx-auto aspect-square bg-zinc-800 rounded-lg overflow-hidden flex items-center justify-center">
             <img
               src="/WhatsApp QR.png"
@@ -74,7 +73,7 @@ export default function ContactUsPage() {
 
         {/* Back Link */}
         <Link href="/" className="mt-6 text-zinc-500 hover:text-zinc-300 text-sm transition-colors">
-          ↩️ Back To Log In
+          ← Back to Menu
         </Link>
       </div>
     </div>
