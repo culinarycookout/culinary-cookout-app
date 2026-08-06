@@ -3,8 +3,10 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // ✅ Added import
 
 function CartContent() {
+  const router = useRouter(); // ✅ Added router
   const { cart, addToCart, updateQuantity, removeFromCart, clearCart } = useCart();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -101,14 +103,14 @@ function CartContent() {
                   {/* ✅ CUSTOMIZE & BUILD ANOTHER BUTTONS FOR TACO PACKAGES ONLY */}
                   {isTacoPackage && (
                     <div className="w-full flex gap-2 mt-2 sm:mt-0 sm:w-auto">
-                      {/* Customize Button - Edits existing item */}
+                      {/* Customize Button */}
                       <Link
                         href={`/taco-deals/${item.dealId}?editId=${item.cartInstanceId}`}
                         className="flex-1 sm:flex-none text-center text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                       >
                         Customize ✏️
                       </Link>
-                      {/* Build Another Button - Duplicates and starts fresh */}
+                      {/* Build Another Button */}
                       <Link
                         href={`/taco-deals/${item.dealId}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}`}
                         className="flex-1 sm:flex-none text-center text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
@@ -135,8 +137,9 @@ function CartContent() {
             >
               Clear Cart
             </button>
+            {/* ✅ FIXED: Replaces alert with proper router navigation */}
             <button
-              onClick={() => alert('Checkout coming soon!')}
+              onClick={() => router.push('/checkout')}
               className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition"
             >
               Proceed to Checkout →

@@ -3,11 +3,13 @@
 import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // ✅ Added import
 
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
   const resolvedParams = use(params);
   const itemId = resolvedParams.id;
+  const router = useRouter(); // ✅ Initialize router
 
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,20 +54,23 @@ export default function ItemDetailPage({ params }) {
   const handleAddToCart = () => {
     if (!item || !selectedSize) return;
 
+    // ✅ Safe price fallback: checks for selectedSize.Price or selectedSize.price
+    const price = selectedSize.Price ?? selectedSize.price ?? 0;
+
     const cartItem = {
       ...item,
-      'Price': selectedSize.price,
+      'Price': price,
       'SIZE': selectedSize.size,
-      'SERVES:': selectedSize.serves, // Pass to cart recap
+      'SERVES:': selectedSize.serves,
       'AMOUNT': selectedSize.amount,
       'selectedSize': selectedSize.size,
-      'selectedPrice': selectedSize.price,
+      'selectedPrice': price,
       quantity: quantity
     };
 
     addToCart(cartItem);
     setQuantity(1);
-    window.location.href = '/cart';
+    router.push('/cart'); // ✅ Replaced window.location.href
   };
 
   if (loading) return <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">Loading...</div>;
@@ -81,7 +86,7 @@ export default function ItemDetailPage({ params }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          {/* ✅ LEFT COLUMN: IMAGE + SIZE-SPECIFIC DETAILS */}
+          {/* LEFT COLUMN: IMAGE + SIZE-SPECIFIC DETAILS */}
           <div className="flex flex-col gap-3">
             {item['Image URL'] ? (
               <img src={item['Image URL']} alt={item['Item Name']} className="w-full rounded-lg object-cover aspect-square" />
@@ -91,27 +96,16 @@ export default function ItemDetailPage({ params }) {
               </div>
             )}
             
-            {/* LEFT COLUMN: Size details appear right under the picture */}
             {selectedSize && (
               <div className="bg-zinc-900 p-3 rounded-lg border border-zinc-800 text-sm space-y-1">
-                {selectedSize.description && (
-                  <p className="text-zinc-300">{selectedSize.description}</p>
-                )}
-                {selectedSize.serves && (
-                  <p className="text-zinc-300 mt-1">
-                    <span className="text-zinc-400">Serves:</span> {selectedSize.serves}
-                  </p>
-                )}
-                {selectedSize.amount && (
-                  <p className="text-zinc-300 mt-1">
-                    <span className="text-zinc-400">Included:</span> {selectedSize.amount}
-                  </p>
-                )}
+                {selectedSize.description && <p className="text-zinc-300">{selectedSize.description}</p>}
+                {selectedSize.serves && <p className="text-zinc-300 mt-1"><span className="text-zinc-400">Serves:</span> {selectedSize.serves}</p>}
+                {selectedSize.amount && <p className="text-zinc-300 mt-1"><span className="text-zinc-400">Included:</span> {selectedSize.amount}</p>}
               </div>
             )}
           </div>
 
-          {/* ✅ RIGHT COLUMN: NAME, PRICE, SIZES, CONTROLS */}
+          {/* RIGHT COLUMN: NAME, PRICE, SIZES, CONTROLS */}
           <div>
             <h1 className="text-3xl font-bold text-red-600">{item['Item Name']}</h1>
             <p className="text-zinc-400 mt-1">{item['CATEGORY']}</p>

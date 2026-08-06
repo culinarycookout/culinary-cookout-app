@@ -10,16 +10,16 @@ const packageConfig = {
     name: 'TACO',
     description: '1 fully customized taco.',
     groups: [
-      { id: 1, label: '1 Taco', count: 1 },
+      { id: 1, label: 'Taco 1', count: 1 },
     ],
   },
   'taco-trio': {
     name: 'TACO TRIO',
     description: '3 tacos, fully customized.',
     groups: [
-      { id: 1, label: 'Taco Group 1', count: 1 },
-      { id: 2, label: 'Taco Group 2', count: 1 },
-      { id: 3, label: 'Taco Group 3', count: 1 },
+      { id: 1, label: 'Taco 1', count: 1 },
+      { id: 2, label: 'Taco 2', count: 1 },
+      { id: 3, label: 'Taco 3', count: 1 },
     ],
   },
   'taco-pack': {
@@ -263,43 +263,36 @@ export default function TacoDealCustomize() {
     return sel && sel.tortilla !== '' && sel.meat1 !== '';
   });
 
-  // ✅ FIXED MATH: Removed the double-adding bug for Veggie Only
   const totalPrice = config?.groups.reduce((sum, group) => {
     const sel = groupSelections[group.id] || { tortilla: '', meat1: '', meat2: '', toppings: [], extras: [] };
     
     let price = 0;
 
     if (sel.tortilla) {
-      // 1. Tortilla Cost
       const tortillaPrice = TORTILLA_OPTIONS.find((t) => t.value === sel.tortilla)?.price || 0.50;
-      price += tortillaPrice * group.count;
+      price += tortillaPrice;
 
-      // 2. Meat & Toppings (Restructured to prevent double counting)
       if (sel.meat1 && sel.meat1 !== '') {
-        // Calculate the total cost of toppings for this group
-        let toppingsSum = 0;
+        if (sel.meat1 === 'Veggie Only') {
+          let toppingsSum = 0;
+          (sel.toppings || []).forEach(t => {
+            toppingsSum += (TOPPING_PRICES[t] || 0);
+          });
+          price += toppingsSum * 1.5;
+        } else {
+          price += (MEAT_PRICES[sel.meat1] || 0);
+        }
+
+        if (sel.meat2 && sel.meat2 !== 'None') {
+          price += (MEAT_PRICES[sel.meat2] || 0);
+        }
+
         (sel.toppings || []).forEach(t => {
-          toppingsSum += (TOPPING_PRICES[t] || 0);
+          price += (TOPPING_PRICES[t] || 0);
         });
 
-        if (sel.meat1 === 'Veggie Only') {
-          // Veggie Only replaces the meat cost with 1.5x the sum of the toppings
-          price += (toppingsSum * 1.5) * group.count;
-        } else {
-          // Standard Meat Cost
-          price += (MEAT_PRICES[sel.meat1] || 0) * group.count;
-          // Standard Topping Cost
-          price += toppingsSum * group.count;
-        }
-
-        // 3. Meat 2
-        if (sel.meat2 && sel.meat2 !== 'None') {
-          price += (MEAT_PRICES[sel.meat2] || 0) * group.count;
-        }
-
-        // 4. Extras
         (sel.extras || []).forEach(e => {
-          price += (EXTRAS_PRICES[e] || 0) * group.count;
+          price += (EXTRAS_PRICES[e] || 0);
         });
       }
     }
@@ -343,7 +336,7 @@ export default function TacoDealCustomize() {
       <div className="min-h-screen bg-zinc-950 text-white p-8">
         <h1 className="text-xl font-bold">Package not found</h1>
         <Link href="/taco-deals" className="text-red-400 mt-4 inline-block">
-          ← Back To Packages
+          ← Back to Deals
         </Link>
       </div>
     );
@@ -369,14 +362,14 @@ export default function TacoDealCustomize() {
             href="/taco-deals"
             className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-semibold px-4 py-2 rounded-lg border border-zinc-700 transition-colors"
           >
-            ← Back To Packages
+            ↩️ Back To Packages
           </Link>
         </div>
 
         {isTacoTuesday && (
           <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-3 mb-4 text-center border-2 border-red-500 shadow-md">
             <p className="text-xs md:text-sm font-bold text-black">
-              🌮🪅 Taco Tuesday discount (50% off) will be applied at checkout! 🎉🌮
+              🌮🪅 Taco Tuesday discount will be applied at checkout! 🎉🌮
             </p>
           </div>
         )}
@@ -405,9 +398,7 @@ export default function TacoDealCustomize() {
               toppings: [],
               extras: [],
             };
-
             const isTrio = config.name === 'TACO TRIO';
-            const isSingle = config.name === 'TACO';
             const displayLabel = isTrio ? `Taco ${group.id}` : group.label;
 
             return (
@@ -417,11 +408,10 @@ export default function TacoDealCustomize() {
               >
                 <div className="border-b border-zinc-800 pb-2">
                   <h3 className="font-bold text-lg text-white">
-                    {displayLabel}
-                    {!isTrio && !isSingle && ` (${group.count} taco${group.count > 1 ? 's' : ''})`}
+                    {displayLabel} ({group.count} taco{group.count > 1 ? 's' : ''})
                   </h3>
                   <p className="text-xs text-zinc-400">
-                    Customize by starting w/ tortilla type. 🌿 = Plant-Based
+                    Build perfection! 🌿 = Plant-Based
                   </p>
                 </div>
 
@@ -457,7 +447,7 @@ export default function TacoDealCustomize() {
                       {MEAT_OPTIONS.map((meat) => {
                         const price = MEAT_PRICES[meat];
                         const label = meat === 'Veggie Only' 
-                          ? 'Veggie Only' // ✅ REMOVED THE 1.5x FORMULA TEXT
+                          ? 'Veggie Only' 
                           : `${meat} (${price.toFixed(2)})`;
                         return <option key={meat} value={meat}>{label}</option>
                       })}
@@ -501,11 +491,12 @@ export default function TacoDealCustomize() {
                       <button
                         key={topping}
                         onClick={() => handleToppingToggle(group.id, topping)}
-                        disabled={!sel.meat1}
+                        // ✅ FIXED: Disable Bacon specifically when Veggie Only is selected
+                        disabled={!sel.meat1 || (sel.meat1 === 'Veggie Only' && topping === 'Bacon')}
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${
                           sel.toppings.includes(topping)
                             ? 'bg-red-600 border-red-500 text-white'
-                            : !sel.meat1
+                            : !sel.meat1 || (sel.meat1 === 'Veggie Only' && topping === 'Bacon')
                             ? 'bg-zinc-800 border-zinc-700 text-zinc-500 cursor-not-allowed'
                             : 'bg-zinc-800 border-zinc-700 text-white hover:border-zinc-500'
                         }`}
@@ -563,7 +554,7 @@ export default function TacoDealCustomize() {
                   : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
               }`}
             >
-              {editId ? 'Update Cart 🔄' : 'Add to Cart 🛒'}
+              Add to Cart 🛒
             </button>
           </div>
         </div>
