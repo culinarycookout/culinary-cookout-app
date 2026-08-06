@@ -1,4 +1,3 @@
-// app/signup/page.jsx
 'use client';
 
 import { useState } from 'react';
@@ -13,12 +12,11 @@ export default function SignupPage() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [confirmPhone, setConfirmPhone] = useState('');
   
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleContinue = (e) => {
+  const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       setError('Please enter your email');
@@ -28,19 +26,13 @@ export default function SignupPage() {
     setStep(2);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    if (phone.length !== 10 || confirmPhone.length !== 10) {
-      setError('Please enter a valid 10-digit phone number');
-      setLoading(false);
-      return;
-    }
-
-    if (phone !== confirmPhone) {
-      setError('Phone numbers do not match');
+    if (phone.length !== 10) {
+      setError('Please enter exactly 10 digits');
       setLoading(false);
       return;
     }
@@ -48,7 +40,7 @@ export default function SignupPage() {
     try {
       await signup(email, phone);
       router.push('/login');
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
@@ -59,12 +51,11 @@ export default function SignupPage() {
     setStep(1);
     setError('');
     setPhone('');
-    setConfirmPhone('');
   };
 
-  const handlePhoneChange = (value, setter) => {
+  const handlePhoneChange = (value: string) => {
     const cleaned = value.replace(/[^0-9]/g, '').slice(0, 10);
-    setter(cleaned);
+    setPhone(cleaned);
   };
 
   return (
@@ -78,10 +69,10 @@ export default function SignupPage() {
             className="h-60 w-auto object-contain md:h-80"
           />
           <h1 className="text-2xl font-bold text-red-600 mt-1 md:mt-2">
-            {step === 1 ? 'WE OUTSIDE COOKIN\'' : 'ENTER PHONE NUMBER'}
+            {step === 1 ? 'WE OUTSIDE COOKIN\'' : 'CREATE ACCOUNT'}
           </h1>
           <p className="text-zinc-400 text-sm mt-1">
-            {step === 1 ? `You're invited to the cookout...` : 'Enter your phone number'}
+            {step === 1 ? `You're invited to the cookout...` : 'Set your 10-digit phone code'}
           </p>
         </div>
 
@@ -94,17 +85,16 @@ export default function SignupPage() {
         {step === 1 ? (
           <form onSubmit={handleContinue} className="space-y-4 mt-4 md:mt-6">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Email Address *</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Email *</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder="Enter your email"
                 className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
               />
             </div>
-
             <button
               type="submit"
               className="w-full py-3 rounded-xl font-bold text-lg bg-red-600 hover:bg-red-500 text-white shadow-lg transition-all"
@@ -115,7 +105,7 @@ export default function SignupPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4 md:mt-6">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Enter Phone Number</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Enter 10-Digit Phone Code</label>
               <input
                 type="text"
                 inputMode="numeric"
@@ -123,27 +113,11 @@ export default function SignupPage() {
                 required
                 maxLength={10}
                 value={phone}
-                onChange={(e) => handlePhoneChange(e.target.value, setPhone)}
+                onChange={(e) => handlePhoneChange(e.target.value)}
                 placeholder="0000000000"
                 className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
               />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Confirm Phone Number</label>
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                required
-                maxLength={10}
-                value={confirmPhone}
-                onChange={(e) => handlePhoneChange(e.target.value, setConfirmPhone)}
-                placeholder="0000000000"
-                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
-              />
-            </div>
-
             <div className="flex gap-3">
               <button
                 type="button"

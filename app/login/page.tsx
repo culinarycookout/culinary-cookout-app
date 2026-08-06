@@ -1,4 +1,3 @@
-// app/login/page.jsx
 'use client';
 
 import { useState } from 'react';
@@ -10,13 +9,13 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
   
-  const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1);
 
-  const handleContinue = (e) => {
+  const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       setError('Please enter your email');
@@ -26,13 +25,13 @@ export default function LoginPage() {
     setStep(2);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     if (phone.length !== 10) {
-      setError('Please enter your 10-digit phone number');
+      setError('Please enter exactly 10 digits');
       setLoading(false);
       return;
     }
@@ -40,16 +39,11 @@ export default function LoginPage() {
     try {
       await login(email, phone);
       router.push('/');
-    } catch (err) {
-      setError(err.message);
+    } catch (err: any) {
+      setError(err.message || 'Invalid login credentials');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handlePhoneChange = (value) => {
-    const cleaned = value.replace(/[^0-9]/g, '').slice(0, 10);
-    setPhone(cleaned);
   };
 
   const handleBack = () => {
@@ -58,10 +52,16 @@ export default function LoginPage() {
     setPhone('');
   };
 
+  const handlePhoneChange = (value: string) => {
+    const cleaned = value.replace(/[^0-9]/g, '').slice(0, 10);
+    setPhone(cleaned);
+  };
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32 md:justify-center md:pt-0">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl px-4 pt-4 pb-8 shadow-2xl md:p-8">
         
+        {/* Logo & Header */}
         <div className="flex flex-col items-center pt-0 md:pt-0">
           <img
             src="/logo.png"
@@ -72,7 +72,7 @@ export default function LoginPage() {
             {step === 1 ? 'WE OUTSIDE COOKIN\'' : 'ENTER PHONE NUMBER'}
           </h1>
           <p className="text-zinc-400 text-sm mt-1">
-            {step === 1 ? 'Enter your email to log in...' : 'Enter your phone number'}
+            {step === 1 ? 'Enter the kitchen...' : 'Enter your phone number'}
           </p>
         </div>
 
@@ -95,7 +95,6 @@ export default function LoginPage() {
                 className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
               />
             </div>
-
             <button
               type="submit"
               className="w-full py-3 rounded-xl font-bold text-lg bg-red-600 hover:bg-red-500 text-white shadow-lg transition-all"
@@ -144,7 +143,7 @@ export default function LoginPage() {
         )}
 
         <div className="mt-6 text-center text-xs text-zinc-500">
-          <p>Don't have an account?</p>
+          <p>Don&apos;t have an account?</p>
           <p className="mt-1">
             <Link href="/signup" className="text-red-400 hover:text-red-300 font-bold">
               Sign Up
