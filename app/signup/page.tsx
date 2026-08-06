@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react'; // ✅ Import Suspense
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 
-export default function SignupPage() {
+// We separate the main logic into a component so we can wrap it in Suspense
+function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signup } = useAuth();
@@ -113,5 +114,14 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ✅ Final export: Wrap the entire form in Suspense to satisfy Next.js
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading sign up...</div>}>
+      <SignupForm />
+    </Suspense>
   );
 }
