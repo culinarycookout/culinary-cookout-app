@@ -3,21 +3,21 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
+import { useFunAuth } from '../FunAuthContext'; // ✅ Swapped to the isolated auth
 
 export default function FunMenuPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { funUser } = useFunAuth(); // ✅ Corrected to funUser
   const { addToCart } = useCart();
   
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  if (!funUser) {
-    router.push('/fun/login');
-    return;
-  }
+    if (!funUser) {
+      router.push('/fun/login');
+      return;
+    }
 
     async function fetchFunMenu() {
       try {
@@ -31,7 +31,7 @@ export default function FunMenuPage() {
       }
     }
     fetchFunMenu();
-  }, [user, router]);
+  }, [funUser, router]);
 
   const handleAddToCart = (item: any) => {
     const cartItem = {
@@ -42,13 +42,13 @@ export default function FunMenuPage() {
     addToCart(cartItem);
   };
 
-  if (!user) return null;
+  if (!funUser) return null;
 
   return (
     <div className="w-full min-h-screen bg-black text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-red-500">🍸 Fun Menu</h1>
+          <h1 className="text-2xl font-bold text-red-500">🍸 Fun Menu</h1>
         </div>
 
         {loading ? (

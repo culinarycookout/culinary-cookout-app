@@ -2,13 +2,24 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCart } from '../../context/CartContext';
+import { useFunCart } from './FunCartContext';
 import { useFunAuth } from './FunAuthContext';
 import { useState, useEffect } from 'react';
 
+// ✅ Added interface so TypeScript knows what "item" is
+interface CartItem {
+  id: string;
+  cartInstanceId?: string;
+  quantity: number;
+  'Price'?: number;
+  price?: number;
+  'Item Name'?: string;
+  name?: string;
+}
+
 export default function FunNavigation() {
   const pathname = usePathname();
-  const { cart } = useCart();
+  const { cart } = useFunCart();
   const { funLogout } = useFunAuth();
   const [mounted, setMounted] = useState(false);
 
@@ -16,27 +27,25 @@ export default function FunNavigation() {
     setMounted(true);
   }, []);
 
+  // ✅ Typed item as CartItem to clear the red line
   const totalItems = mounted
-    ? cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0)
+    ? cart.reduce((sum: number, item: CartItem) => sum + (Number(item.quantity) || 1), 0)
     : 0;
 
   const isActive = (path: string) => pathname === path;
 
   const handleExit = async () => {
-    await funLogout(); // ✅ This should already redirect to Canva
+    await funLogout();
   };
 
   return (
     <>
-      {/* MOBILE - Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          
-          {/* Cart */}
           <Link
-            href="/cart"
+            href="/fun/cart"
             className={`flex flex-col items-center transition ${
-              isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+              isActive('/fun/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
           >
             <div className="relative flex items-center justify-center w-10 h-10">
@@ -49,7 +58,6 @@ export default function FunNavigation() {
             </div>
           </Link>
 
-          {/* ✅ Hidden Menu Logo (Takes you to the hidden menu, NOT the main menu) */}
           <Link
             href="/fun/menu"
             className={`flex items-center justify-center transition ${
@@ -59,37 +67,18 @@ export default function FunNavigation() {
             <div className="text-3xl">🍸</div>
           </Link>
 
-          {/* ✅ Exit Button (Severs all ties and sends them to Canva) */}
-          <button
-            onClick={handleExit}
-            className="flex flex-col items-center transition text-zinc-400 hover:text-white"
-          >
+          <button onClick={handleExit} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
             <img src="/Logout.png" alt="Exit" className="w-8 h-8 object-contain" />
           </button>
-
         </div>
       </nav>
 
-      {/* DESKTOP - Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        
-        {/* Hidden Menu Logo */}
-        <Link
-          href="/fun/menu"
-          className={`flex items-center justify-center transition ${
-            isActive('/fun/menu') ? 'opacity-100' : 'opacity-60 hover:opacity-100'
-          }`}
-        >
+        <Link href="/fun/menu" className={`flex items-center justify-center transition ${isActive('/fun/menu') ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}>
           <div className="text-5xl">🍸</div>
         </Link>
 
-        {/* Cart */}
-        <Link
-          href="/cart"
-          className={`flex flex-col items-center transition relative ${
-            isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
-          }`}
-        >
+        <Link href="/fun/cart" className={`flex flex-col items-center transition relative ${isActive('/fun/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'}`}>
           <div className="relative flex items-center justify-center w-12 h-12">
             <span className="text-5xl">🛒</span>
             {mounted && totalItems > 0 && (
@@ -100,14 +89,9 @@ export default function FunNavigation() {
           </div>
         </Link>
 
-        {/* ✅ Exit Button */}
-        <button
-          onClick={handleExit}
-          className="flex flex-col items-center transition text-zinc-400 hover:text-white"
-        >
+        <button onClick={handleExit} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
           <img src="/Logout.png" alt="Exit" className="w-10 h-10 object-contain" />
         </button>
-
       </nav>
     </>
   );

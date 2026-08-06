@@ -6,6 +6,17 @@ import Link from 'next/link';
 import { useCart } from '../../context/CartContext';
 import { useFunAuth } from '../FunAuthContext';
 
+// ✅ Added interface to tell TypeScript what "item" looks like
+interface CartItem {
+  id: string;
+  cartInstanceId?: string;
+  quantity: number;
+  'Price'?: number;
+  price?: number;
+  'Item Name'?: string;
+  name?: string;
+}
+
 export default function FunCartPage() {
   const router = useRouter();
   const { funUser } = useFunAuth();
@@ -14,7 +25,6 @@ export default function FunCartPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    // If somehow they aren't logged in, bounce them to the hidden login
     if (!funUser) {
       router.push('/fun/login');
     }
@@ -43,7 +53,8 @@ export default function FunCartPage() {
         </div>
 
         <div className="space-y-4 mb-6">
-          {cart.map((item) => {
+          {/* ✅ Added : CartItem right here to clear the red line */}
+          {cart.map((item: CartItem) => {
             const qty = Number(item.quantity) || 1;
             const price = Number(item['Price'] || item.price || 0);
             const total = price * qty;
