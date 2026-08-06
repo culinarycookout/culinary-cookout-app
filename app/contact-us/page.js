@@ -74,7 +74,7 @@ export default function ContactUsPage() {
 
         {/* Back Link */}
         <Link href="/" className="mt-6 text-zinc-500 hover:text-zinc-300 text-sm transition-colors">
-          ← Back to Menu
+          ↩️ Back To Log In
         </Link>
       </div>
     </div>
