@@ -14,7 +14,6 @@ export default function Navigation() {
     setMounted(true);
   }, []);
 
-  // ✅ Only calculate after mounting (prevents hydration error)
   const totalItems = mounted
     ? cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0)
     : 0;
@@ -24,8 +23,7 @@ export default function Navigation() {
 
   return (
     <>
-      {/* MOBILE – Bottom Navigation (icons only) */}
-      {/* ✅ FIXED: Added more padding (py-4), increased icon container size, and centered icons to prevent clipping. */}
+      {/* MOBILE – Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
           {/* Cart */}
@@ -73,10 +71,24 @@ export default function Navigation() {
           >
             <span className="text-3xl">📬</span>
           </Link>
+
+          {/* ✅ Logout Button (Mobile) */}
+          <a
+            href="https://canva.link/1azr5e5l59nktpk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center transition text-zinc-400 hover:text-white"
+          >
+            <img
+              src="/Logout.png"
+              alt="Logout"
+              className="w-8 h-8 object-contain"
+            />
+          </a>
         </div>
       </nav>
 
-      {/* DESKTOP – Left Sidebar (UNTOUCHED) */}
+      {/* DESKTOP – Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
         {/* Menu Logo */}
         <Link
@@ -123,6 +135,20 @@ export default function Navigation() {
             )}
           </div>
         </Link>
+
+        {/* ✅ Logout Button (Desktop) */}
+        <a
+          href="https://canva.link/1azr5e5l59nktpk"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center transition text-zinc-400 hover:text-white"
+        >
+          <img
+            src="/Logout.png"
+            alt="Logout"
+            className="w-10 h-10 object-contain"
+          />
+        </a>
       </nav>
     </>
   );
