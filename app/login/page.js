@@ -30,23 +30,22 @@ export default function LoginPage() {
   };
 
   return (
-    // ✅ FINAL FIX: pt-0 completely removes top padding and raises everything to the very top.
-    // pb-32 stays to keep it above your bottom navigation bar.
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32">
+    // ✅ FINAL, EXTREME FIX: Negative margin (-mt-16) forces the WHOLE card up.
+    // pb-32 protects the CONTACT US link from being hidden behind the bottom nav bar.
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start -mt-16 px-4 pb-32">
       
-      {/* ✅ Reduced internal padding from p-6 to p-4 to pull the border tight around the content */}
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-2xl">
         
         {/* Logo or Brand Header */}
-        {/* ✅ Removed mb-4 on the container to pull the logo up to the absolute top of the gray box */}
         <div className="flex flex-col items-center">
+          {/* ✅ Increased to h-80 to make it even bigger and higher */}
           <img
             src="/logo.png"
             alt="Culinary Cookout"
-            className="h-72 w-auto object-contain"
+            className="h-80 w-auto object-contain"
           />
-          {/* ✅ Tightened spacing between logo and title */}
-          <h1 className="text-2xl font-bold text-red-600 mt-2">WE OUTSIDE COOKIN'</h1>
+          {/* ✅ Tightened margin to mt-1 to pull title closer to logo */}
+          <h1 className="text-2xl font-bold text-red-600 mt-1">WE OUTSIDE COOKIN'</h1>
           <p className="text-zinc-400 text-sm mt-1">Enter the kitchen...</p>
         </div>
 
@@ -94,8 +93,8 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* ✅ Removed mt-4 here, so the CONTACT US‼️ link sits immediately below the button */}
-        <div className="text-center text-xs text-zinc-500 mt-4">
+        {/* ✅ Removed the outer mt-4, tightened the gap to mt-3 */}
+        <div className="text-center text-xs text-zinc-500 mt-3">
           <p>Protected by Culinary Cookout™️</p>
           <p className="mt-1">
             <Link href="/contact-us" className="text-red-400 hover:text-red-300">
