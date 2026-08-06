@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 
-// ✅ Added '/contact-us' so people can contact you without logging in
-const PUBLIC_ROUTES = ['/login', '/contact-us', '/signup'];
+// ✅ Added '/fun/login' and '/fun/signup' so the hidden menu is accessible
+const PUBLIC_ROUTES = ['/login', '/signup', '/contact-us', '/fun/login', '/fun/signup'];
 
 export default function RouteGuard({ children }) {
   const pathname = usePathname();
