@@ -30,17 +30,17 @@ export default function LoginPage() {
   };
 
   return (
-    /* ✅ MOBILE: Pure justify-center, but logo is pulled up via pt-4 inside the container. */
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4 pb-32 md:justify-center md:pt-0">
+    /* ✅ MOBILE: justify-start pt-16 reduces the top gap by ~50%. DESKTOP: md:justify-center md:pt-0 keeps it perfectly centered. */
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-16 px-4 pb-32 md:justify-center md:pt-0">
       
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-2xl md:p-8">
         
         <div className="flex flex-col items-center pt-4 md:pt-0">
-          {/* ✅ MOBILE: h-48 (exactly 15% smaller than h-60). DESKTOP: md:h-80 (big). */}
+          {/* ✅ MOBILE: h-60 makes logo larger. DESKTOP: md:h-80 keeps it the large size. */}
           <img
             src="/logo.png"
             alt="Culinary Cookout"
-            className="h-48 w-auto object-contain md:h-80"
+            className="h-60 w-auto object-contain md:h-80"
           />
           <h1 className="text-2xl font-bold text-red-600 mt-1 md:mt-2">WE OUTSIDE COOKIN'</h1>
           <p className="text-zinc-400 text-sm mt-1">Enter the kitchen...</p>
