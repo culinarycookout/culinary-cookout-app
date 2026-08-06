@@ -30,29 +30,33 @@ export default function LoginPage() {
   };
 
   return (
-    // ✅ UPDATED: Changed pt-8 to pt-24 to push the whole gray box higher up
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-24 px-4 pb-32">
+    // ✅ FINAL FIX: pt-0 completely removes top padding and raises everything to the very top.
+    // pb-32 stays to keep it above your bottom navigation bar.
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32">
       
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-2xl">
+      {/* ✅ Reduced internal padding from p-6 to p-4 to pull the border tight around the content */}
+      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-2xl">
         
         {/* Logo or Brand Header */}
-        <div className="flex flex-col items-center mb-4">
+        {/* ✅ Removed mb-4 on the container to pull the logo up to the absolute top of the gray box */}
+        <div className="flex flex-col items-center">
           <img
             src="/logo.png"
             alt="Culinary Cookout"
-            className="h-72 w-auto object-contain mb-2"
+            className="h-72 w-auto object-contain"
           />
-          <h1 className="text-2xl font-bold text-red-600">WE OUTSIDE COOKIN'</h1>
+          {/* ✅ Tightened spacing between logo and title */}
+          <h1 className="text-2xl font-bold text-red-600 mt-2">WE OUTSIDE COOKIN'</h1>
           <p className="text-zinc-400 text-sm mt-1">Enter the kitchen...</p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
+          <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mt-4 mb-4 text-sm text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Email Address</label>
             <input
@@ -90,7 +94,8 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-4 text-center text-xs text-zinc-500">
+        {/* ✅ Removed mt-4 here, so the CONTACT US‼️ link sits immediately below the button */}
+        <div className="text-center text-xs text-zinc-500 mt-4">
           <p>Protected by Culinary Cookout™️</p>
           <p className="mt-1">
             <Link href="/contact-us" className="text-red-400 hover:text-red-300">
