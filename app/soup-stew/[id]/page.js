@@ -178,8 +178,8 @@ export default function SoupStewCustomize() {
   const [loading, setLoading] = useState(true);
   const [selections, setSelections] = useState({
     broth: '', 
-    brothAmount: 'standard', // ✅ Defaulted to standard
-    brothHeat: 'none',       // ✅ Defaulted to none
+    brothAmount: 'standard',
+    brothHeat: 'none',
     noodle: '', 
     rice: '', 
     glutenFree: false,
@@ -187,22 +187,21 @@ export default function SoupStewCustomize() {
     meats: [],
     veggies: [],
   });
+  
+  const [onlyMode, setOnlyMode] = useState(null);
 
   useEffect(() => {
     if (config) setLoading(false);
   }, [config]);
 
-  // Handle Dropdown Selections
   const handleSelection = (key, value) => {
     setSelections((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Handle Checkbox
   const handleCheckbox = (key) => {
     setSelections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // Handle Toggle Buttons (Multi-select)
   const handleToggle = (key, value) => {
     setSelections((prev) => {
       const current = prev[key] || [];
@@ -216,11 +215,54 @@ export default function SoupStewCustomize() {
     });
   };
 
+  const handleOnlyModeToggle = (type) => {
+    if (onlyMode === type) {
+      // Unchecking the active mode
+      setOnlyMode(null);
+      if (type === 'broth') {
+        setSelections((prev) => ({ ...prev, brothAmount: 'standard' }));
+      }
+    } else {
+      // Checking a new mode
+      const newSelections = {
+        ...selections,
+        noodle: '',
+        rice: '',
+        legumes: [],
+        meats: [],
+        veggies: [],
+      };
+      
+      if (type === 'broth') {
+        newSelections.brothAmount = 'high';
+      } else {
+        newSelections.brothAmount = 'standard';
+      }
+      
+      setSelections(newSelections);
+      setOnlyMode(type);
+    }
+  };
+
+  // ✅ Returns the valid Broth Amount options based on the current mode
+  const getBrothAmountOptions = () => {
+    if (onlyMode === 'broth') {
+      // If Broth Only, only show High (select is disabled)
+      return BROTH_AMOUNT_OPTIONS.filter(o => o.value === 'high');
+    } else if (onlyMode !== null) {
+      // If any solid Only (Noodle, Rice, etc.), hide High completely
+      return BROTH_AMOUNT_OPTIONS.filter(o => o.value !== 'high');
+    }
+    // Default: show all three options
+    return BROTH_AMOUNT_OPTIONS;
+  };
+
   // Calculate Total Price
   const totalPrice = config?.groups.reduce((sum, group) => {
     const brothPrice = BROTH_OPTIONS.find((b) => b.value === selections.broth)?.price || 0;
     const brothAmountPrice = BROTH_AMOUNT_OPTIONS.find((a) => a.value === selections.brothAmount)?.price || 0;
     const brothHeatPrice = BROTH_HEAT_OPTIONS.find((h) => h.value === selections.brothHeat)?.price || 0;
+    
     const noodlePrice = NOODLE_OPTIONS.find((n) => n.value === selections.noodle)?.price || 0;
     const ricePrice = RICE_OPTIONS.find((r) => r.value === selections.rice)?.price || 0;
     
@@ -239,16 +281,51 @@ export default function SoupStewCustomize() {
       veggieSum += VEGGIE_OPTIONS.find((opt) => opt.value === v)?.price || 0;
     });
 
-    return sum + brothPrice + brothAmountPrice + brothHeatPrice + noodlePrice + ricePrice + legumeSum + meatSum + veggieSum;
+    let activeTotal = 0;
+    if (onlyMode === 'broth') {
+      activeTotal = 0; // Broth Only does NOT double.
+    } else if (onlyMode === 'noodle') {
+      activeTotal = noodlePrice * 2;
+    } else if (onlyMode === 'rice') {
+      activeTotal = ricePrice * 2;
+    } else if (onlyMode === 'legume') {
+      activeTotal = legumeSum * 2;
+    } else if (onlyMode === 'meat') {
+      activeTotal = meatSum * 2;
+    } else if (onlyMode === 'veggie') {
+      activeTotal = veggieSum * 2;
+    } else {
+      activeTotal = noodlePrice + ricePrice + legumeSum + meatSum + veggieSum;
+    }
+
+    return sum + brothPrice + brothAmountPrice + brothHeatPrice + activeTotal;
   }, 0) || 0;
 
-  // ✅ Broth must be selected to be complete
   const isComplete = selections.broth !== ''; 
 
   const handleAddToCart = () => {
     if (!isComplete) return;
 
-    const breakdown = `Broth: ${BROTH_OPTIONS.find(b => b.value === selections.broth)?.label}`;
+    const brothLabel = BROTH_OPTIONS.find(b => b.value === selections.broth)?.label || '';
+    const noodleLabel = NOODLE_OPTIONS.find(n => n.value === selections.noodle)?.label || '';
+    const glutenFreeText = selections.glutenFree ? ' (Gluten-Free)' : '';
+    
+    const selectedMeats = (selections.meats || [])
+      .map(id => MEAT_OPTIONS.find(m => m.value === id)?.label)
+      .filter(Boolean)
+      .join(', ');
+
+    let breakdown = `Broth: ${brothLabel} | Noodles: ${noodleLabel}${glutenFreeText}`;
+    if (selectedMeats.length > 0) {
+      breakdown += ` | Meats: ${selectedMeats}`;
+    }
+
+    if (onlyMode === 'broth') breakdown += ` [BROTH ONLY]`;
+    else if (onlyMode === 'meat') breakdown += ` [DOUBLE MEAT]`;
+    else if (onlyMode === 'noodle') breakdown += ` [DOUBLE NOODLES]`;
+    else if (onlyMode === 'rice') breakdown += ` [DOUBLE RICE]`;
+    else if (onlyMode === 'legume') breakdown += ` [DOUBLE LEGUMES]`;
+    else if (onlyMode === 'veggie') breakdown += ` [DOUBLE VEGETABLES]`;
 
     const cartItem = {
       id: `${dealId}-${Date.now()}`,
@@ -279,6 +356,10 @@ export default function SoupStewCustomize() {
     return <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">Loading your soup options... 🍲</div>;
   }
 
+  const isSectionDisabled = (type) => {
+    return onlyMode !== null && onlyMode !== type;
+  };
+
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white p-4 md:p-8 pb-32">
       <div className="max-w-4xl mx-auto">
@@ -301,14 +382,26 @@ export default function SoupStewCustomize() {
           </div>
         </div>
 
-        {/* Customizer Groups */}
         <div className="space-y-6">
           
-          {/* 1. Broth Base, Amount & Heat (Responsive Grid) */}
+          {/* ✅ 1. Broth Options - ALWAYS ENABLED */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4">
-            <h3 className="font-bold text-lg text-white mb-4">Broth Options *</h3>
-            
-            {/* ✅ Grid layout: 1 col on mobile, 3 cols on desktop */}
+            <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+              <div className="flex items-center gap-3">
+                <h3 className="font-bold text-lg text-white">Broth Options *</h3>
+                {/* ✅ Broth Only Checkbox - Disabled when a solid Only mode is active */}
+                <label className={`flex items-center space-x-1 cursor-pointer text-sm text-zinc-400 ${onlyMode !== null && onlyMode !== 'broth' ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={onlyMode === 'broth'}
+                    onChange={() => handleOnlyModeToggle('broth')}
+                    disabled={onlyMode !== null && onlyMode !== 'broth'}
+                    className="accent-red-600 w-4 h-4 cursor-pointer"
+                  />
+                  <span>Broth Only</span>
+                </label>
+              </div>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-bold text-zinc-300 mb-1">Base</label>
@@ -328,12 +421,15 @@ export default function SoupStewCustomize() {
 
               <div>
                 <label className="block text-xs font-bold text-zinc-300 mb-1">Amount</label>
+                {/* ✅ Amount Dropdown - Options change based on the active mode */}
                 <select
                   value={selections.brothAmount}
                   onChange={(e) => handleSelection('brothAmount', e.target.value)}
-                  className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 text-sm focus:border-red-500 focus:outline-none"
+                  // If Broth Only, disable the select. Otherwise keep it enabled.
+                  disabled={onlyMode === 'broth'}
+                  className={`w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 text-sm focus:border-red-500 focus:outline-none ${onlyMode === 'broth' ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  {BROTH_AMOUNT_OPTIONS.map((opt) => (
+                  {getBrothAmountOptions().map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
                     </option>
@@ -358,10 +454,21 @@ export default function SoupStewCustomize() {
             </div>
           </div>
 
-          {/* 2. Noodle Type & Gluten-Free Checkbox */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4">
+          {/* 2. Noodle Type & Noodle Only */}
+          <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4 ${isSectionDisabled('noodle') ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
             <div className="flex justify-between items-center mb-2 flex-wrap gap-2">
-              <h3 className="font-bold text-lg text-white">Noodle Type</h3>
+              <div className="flex items-center gap-3">
+                <h3 className="font-bold text-lg text-white">Noodle Type</h3>
+                <label className="flex items-center space-x-1 cursor-pointer text-sm text-zinc-400">
+                  <input
+                    type="checkbox"
+                    checked={onlyMode === 'noodle'}
+                    onChange={() => handleOnlyModeToggle('noodle')}
+                    className="accent-red-600 w-4 h-4 cursor-pointer"
+                  />
+                  <span>Noodle Only (Double)</span>
+                </label>
+              </div>
               <label className="flex items-center space-x-2 cursor-pointer text-sm text-zinc-400">
                 <input
                   type="checkbox"
@@ -386,9 +493,20 @@ export default function SoupStewCustomize() {
             </select>
           </div>
 
-          {/* 3. Rice Type */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4">
-            <h3 className="font-bold text-lg text-white">Rice Type</h3>
+          {/* 3. Rice Type & Rice Only */}
+          <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4 ${isSectionDisabled('rice') ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="font-bold text-lg text-white">Rice Type</h3>
+              <label className="flex items-center space-x-1 cursor-pointer text-sm text-zinc-400">
+                <input
+                  type="checkbox"
+                  checked={onlyMode === 'rice'}
+                  onChange={() => handleOnlyModeToggle('rice')}
+                  className="accent-red-600 w-4 h-4 cursor-pointer"
+                />
+                <span>Rice Only (Double)</span>
+              </label>
+            </div>
             <select
               value={selections.rice}
               onChange={(e) => handleSelection('rice', e.target.value)}
@@ -403,9 +521,20 @@ export default function SoupStewCustomize() {
             </select>
           </div>
 
-          {/* 4. Hard Legume Type */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4">
-            <h3 className="font-bold text-lg text-white">Hard Legume Type</h3>
+          {/* 4. Hard Legume Type & Legume Only */}
+          <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4 ${isSectionDisabled('legume') ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="font-bold text-lg text-white">Hard Legume Type</h3>
+              <label className="flex items-center space-x-1 cursor-pointer text-sm text-zinc-400">
+                <input
+                  type="checkbox"
+                  checked={onlyMode === 'legume'}
+                  onChange={() => handleOnlyModeToggle('legume')}
+                  className="accent-red-600 w-4 h-4 cursor-pointer"
+                />
+                <span>Legume Only (Double)</span>
+              </label>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {LEGUME_OPTIONS.map((opt) => (
                 <button
@@ -423,9 +552,20 @@ export default function SoupStewCustomize() {
             </div>
           </div>
 
-          {/* 5. Meat Types */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4">
-            <h3 className="font-bold text-lg text-white">Meat Types</h3>
+          {/* 5. Meat Types & Meat Only */}
+          <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4 ${isSectionDisabled('meat') ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="font-bold text-lg text-white">Meat Types</h3>
+              <label className="flex items-center space-x-1 cursor-pointer text-sm text-zinc-400">
+                <input
+                  type="checkbox"
+                  checked={onlyMode === 'meat'}
+                  onChange={() => handleOnlyModeToggle('meat')}
+                  className="accent-red-600 w-4 h-4 cursor-pointer"
+                />
+                <span>Meat Only (Double)</span>
+              </label>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {MEAT_OPTIONS.map((opt) => (
                 <button
@@ -443,9 +583,20 @@ export default function SoupStewCustomize() {
             </div>
           </div>
 
-          {/* 6. Vegetation Types */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4">
-            <h3 className="font-bold text-lg text-white">Vegetation Types</h3>
+          {/* 6. Vegetation Types & Vegetation Only */}
+          <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 space-y-4 ${isSectionDisabled('veggie') ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="font-bold text-lg text-white">Vegetation Types</h3>
+              <label className="flex items-center space-x-1 cursor-pointer text-sm text-zinc-400">
+                <input
+                  type="checkbox"
+                  checked={onlyMode === 'veggie'}
+                  onChange={() => handleOnlyModeToggle('veggie')}
+                  className="accent-red-600 w-4 h-4 cursor-pointer"
+                />
+                <span>Vegetation Only (Double)</span>
+              </label>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {VEGGIE_OPTIONS.map((opt) => (
                 <button
