@@ -25,10 +25,17 @@ export default function Navigation() {
 
   return (
     <>
-      {/* MOBILE */}
+      {/* MOBILE - Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          <Link href="/cart" className={`flex flex-col items-center transition ${isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'}`}>
+          
+          {/* Cart */}
+          <Link
+            href="/cart"
+            className={`flex flex-col items-center transition ${
+              isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
             <div className="relative flex items-center justify-center w-10 h-10">
               <span className="text-3xl">🛒</span>
               {mounted && totalItems > 0 && (
@@ -39,40 +46,85 @@ export default function Navigation() {
             </div>
           </Link>
 
-          <Link href="/" className={`flex items-center justify-center transition ${isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}>
-            <img src={menuImageSrc} alt="Menu" className="h-16 w-16 object-contain" />
+          {/* Menu Logo */}
+          <Link
+            href="/"
+            className={`flex items-center justify-center transition ${
+              isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+            }`}
+          >
+            <img
+              src={menuImageSrc}
+              alt="Menu"
+              className="h-16 w-16 object-contain"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                const parent = e.target.parentElement;
+                parent.innerHTML = '<span class="text-3xl">📝</span>';
+              }}
+            />
           </Link>
 
-          <div className="flex flex-row gap-2 items-center">
-             {/* ✅ Hidden Button now takes them to login with redirect flag */}
-             <Link
-               href="/login?redirect=fun"
-               className={`text-xs font-bold tracking-widest uppercase transition ${isActive('/fun') ? 'text-red-500' : 'text-zinc-500 hover:text-white'}`}
-             >
-                🍸 Fun
-             </Link>
-             <Link href="/contact-us" className={`flex flex-col items-center transition ${isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'}`}>
-                <span className="text-3xl">📬</span>
-             </Link>
-          </div>
+          {/* Contact Us */}
+          <Link
+            href="/contact-us"
+            className={`flex flex-col items-center transition ${
+              isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            <span className="text-3xl">📬</span>
+          </Link>
 
-          <button onClick={() => logout()} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+          {/* ✅ Logout Button (Mobile) */}
+          <button
+            onClick={() => logout()}
+            className="flex flex-col items-center transition text-zinc-400 hover:text-white"
+          >
             <img src="/Logout.png" alt="Logout" className="w-8 h-8 object-contain" />
           </button>
+
         </div>
       </nav>
 
-      {/* DESKTOP */}
+      {/* DESKTOP - Left Sidebar */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        <Link href="/" className={`flex items-center justify-center transition ${isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}>
-          <img src={menuImageSrc} alt="Menu" className="h-20 w-20 object-contain" />
+        
+        {/* Menu Logo */}
+        <Link
+          href="/"
+          className={`flex items-center justify-center transition ${
+            isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+          }`}
+        >
+          <img
+            src={menuImageSrc}
+            alt="Menu"
+            className="h-20 w-20 object-contain"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              const parent = e.target.parentElement;
+              parent.innerHTML = '<span class="text-5xl">📝</span>';
+            }}
+          />
         </Link>
         
-        <Link href="/contact-us" className={`flex flex-col items-center transition ${isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'}`}>
+        {/* Contact Us */}
+        <Link
+          href="/contact-us"
+          className={`flex flex-col items-center transition ${
+            isActive('/contact-us') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+          }`}
+        >
           <span className="text-5xl">📬</span>
         </Link>
 
-        <Link href="/cart" className={`flex flex-col items-center transition relative ${isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'}`}>
+        {/* Cart */}
+        <Link
+          href="/cart"
+          className={`flex flex-col items-center transition relative ${
+            isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+          }`}
+        >
           <div className="relative flex items-center justify-center w-12 h-12">
             <span className="text-5xl">🛒</span>
             {mounted && totalItems > 0 && (
@@ -83,18 +135,14 @@ export default function Navigation() {
           </div>
         </Link>
 
-        {/* ✅ Desktop Hidden Link to Login with redirect */}
-        <Link
-          href="/login?redirect=fun"
-          className={`flex flex-col items-center transition ${isActive('/fun') ? 'text-red-500' : 'text-zinc-500 hover:text-white'}`}
+        {/* ✅ Logout Button (Desktop) */}
+        <button
+          onClick={() => logout()}
+          className="flex flex-col items-center transition text-zinc-400 hover:text-white"
         >
-          <span className="text-3xl">🍸</span>
-          <span className="text-[8px] uppercase tracking-widest mt-1">Fun</span>
-        </Link>
-
-        <button onClick={() => logout()} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
           <img src="/Logout.png" alt="Logout" className="w-10 h-10 object-contain" />
         </button>
+
       </nav>
     </>
   );
