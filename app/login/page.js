@@ -30,14 +30,12 @@ export default function LoginPage() {
   };
 
   return (
-    // ✅ UPDATED: justify-start pushes it up, pb-32 keeps it above the nav bar
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-8 px-4 pb-32">
+    // ✅ UPDATED: Changed pt-8 to pt-24 to push the whole gray box higher up
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-24 px-4 pb-32">
       
-      {/* ✅ UPDATED: Reduced padding to p-6 to pull elements closer */}
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-2xl">
         
         {/* Logo or Brand Header */}
-        {/* ✅ UPDATED: Reduced margins to pull logo + title closer */}
         <div className="flex flex-col items-center mb-4">
           <img
             src="/logo.png"
@@ -92,7 +90,6 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* ✅ UPDATED: Reduced top margin here to pull contact link closer */}
         <div className="mt-4 text-center text-xs text-zinc-500">
           <p>Protected by Culinary Cookout™️</p>
           <p className="mt-1">
