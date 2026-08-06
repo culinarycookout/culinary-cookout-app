@@ -5,8 +5,25 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { useRouter } from 'next/navigation';
 import { createClient, User } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Read environment variables
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+// Helpful debugging (shows in Vercel build logs)
+console.log('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl);
+console.log(
+  'NEXT_PUBLIC_SUPABASE_ANON_KEY exists:',
+  !!supabaseKey
+);
+
+// Stop immediately if they're missing
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error(
+    'Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Check your Vercel Environment Variables.'
+  );
+}
+
+// Create Supabase client
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface AuthContextType {
@@ -22,22 +39,30 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setUser(session?.user ?? null);
       setLoading(false);
     };
+
     checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signup = async (email: string, phone: string) => {
@@ -45,7 +70,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password: phone,
     });
-    if (error) throw new Error(error.message);
+
+    if (error) throw error;
+
     return data;
   };
 
@@ -54,7 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password: phone,
     });
-    if (error) throw new Error(error.message);
+
+    if (error) throw error;
+
     return data;
   };
 
@@ -63,17 +92,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/login');
   };
 
-  const value = {
-    user,
-    signup,
-    login,
-    logout,
-    isAuthenticated: !!user,
-    loading,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user,
+        signup,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -81,8 +110,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
+
   return context;
 }
