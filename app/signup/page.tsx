@@ -1,3 +1,4 @@
+// app/signup/page.jsx
 'use client';
 
 import { useState } from 'react';
@@ -9,42 +10,45 @@ export default function SignupPage() {
   const router = useRouter();
   const { signup } = useAuth();
   
-  // Step 1 State
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
-  
-  // Step 2 State
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [confirmPhone, setConfirmPhone] = useState('');
   
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handleContinue = (e) => {
     e.preventDefault();
     if (!email) {
       setError('Please enter your email');
       return;
     }
     setError('');
-    setStep(2); // Move to password screen
+    setStep(2);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    if (phone.length !== 10 || confirmPhone.length !== 10) {
+      setError('Please enter a valid 10-digit phone number');
+      setLoading(false);
+      return;
+    }
+
+    if (phone !== confirmPhone) {
+      setError('Phone numbers do not match');
       setLoading(false);
       return;
     }
 
     try {
-      await signup(email, password);
-      router.push('/login'); // Send them to login after signup
-    } catch (err: any) {
+      await signup(email, phone);
+      router.push('/login');
+    } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
@@ -54,15 +58,19 @@ export default function SignupPage() {
   const handleBack = () => {
     setStep(1);
     setError('');
-    setPassword('');
-    setConfirmPassword('');
+    setPhone('');
+    setConfirmPhone('');
+  };
+
+  const handlePhoneChange = (value, setter) => {
+    const cleaned = value.replace(/[^0-9]/g, '').slice(0, 10);
+    setter(cleaned);
   };
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32 md:justify-center md:pt-0">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl px-4 pt-4 pb-8 shadow-2xl md:p-8">
         
-        {/* Logo & Header */}
         <div className="flex flex-col items-center pt-0 md:pt-0">
           <img
             src="/logo.png"
@@ -70,10 +78,10 @@ export default function SignupPage() {
             className="h-60 w-auto object-contain md:h-80"
           />
           <h1 className="text-2xl font-bold text-red-600 mt-1 md:mt-2">
-            {step === 1 ? 'WE OUTSIDE COOKIN\'' : 'CREATE ACCOUNT'}
+            {step === 1 ? 'WE OUTSIDE COOKIN\'' : 'ENTER PHONE NUMBER'}
           </h1>
           <p className="text-zinc-400 text-sm mt-1">
-            {step === 1 ? 'Join the cookout...' : 'Set your password'}
+            {step === 1 ? `You're invited to the cookout...` : 'Enter your phone number'}
           </p>
         </div>
 
@@ -84,16 +92,15 @@ export default function SignupPage() {
         )}
 
         {step === 1 ? (
-          /* Step 1: Email Only */
           <form onSubmit={handleContinue} className="space-y-4 mt-4 md:mt-6">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Email *</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Email Address *</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder="you@example.com"
                 className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
               />
             </div>
@@ -104,35 +111,36 @@ export default function SignupPage() {
             >
               Continue
             </button>
-
-            <div className="mt-4 text-center text-xs text-zinc-400">
-              <p>By signing up, you agree to all Terms & Conditions & our Privacy Policy</p>
-            </div>
           </form>
         ) : (
-          /* Step 2: Password Setup */
           <form onSubmit={handleSubmit} className="space-y-4 mt-4 md:mt-6">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Password</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Enter Phone Number</label>
               <input
-                type="password"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a password"
-                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
+                maxLength={10}
+                value={phone}
+                onChange={(e) => handlePhoneChange(e.target.value, setPhone)}
+                placeholder="0000000000"
+                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Confirm Phone Number</label>
               <input
-                type="password"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter your password"
-                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
+                maxLength={10}
+                value={confirmPhone}
+                onChange={(e) => handlePhoneChange(e.target.value, setConfirmPhone)}
+                placeholder="0000000000"
+                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
               />
             </div>
 
@@ -159,7 +167,6 @@ export default function SignupPage() {
           </form>
         )}
 
-        {/* Footer (Same for both steps) */}
         <div className="mt-6 text-center text-xs text-zinc-500">
           <p>Been here before?</p>
           <p className="mt-1">

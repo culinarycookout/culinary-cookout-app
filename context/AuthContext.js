@@ -1,55 +1,62 @@
+// context/AuthContext.js
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
 
-const AuthContext = createContext();
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Check for saved user on page load (persist login)
   useEffect(() => {
-    const savedUser = localStorage.getItem('culinary_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch {
-        setUser(null);
-      }
-    }
-    setLoading(false);
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setLoading(false);
+    };
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = async (email, password) => {
-    // TODO: Replace this with your real backend API fetch call
-    // e.g., const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
-    
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // MOCK SUCCESS: Accept any non-empty password for now
-        if (email && password) {
-          const userData = { id: '1', email, name: email.split('@')[0] || 'User' };
-          localStorage.setItem('culinary_user', JSON.stringify(userData));
-          setUser(userData);
-          resolve(userData);
-        } else {
-          reject(new Error('Invalid email or password'));
-        }
-      }, 500); // Simulate network delay
+  const signup = async (email, phone) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: phone,
     });
+    if (error) throw new Error(error.message);
+    return data;
   };
 
-  const logout = () => {
-    localStorage.removeItem('culinary_user');
-    setUser(null);
+  const login = async (email, phone) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: phone,
+    });
+    if (error) throw new Error(error.message);
+    return data;
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
     router.push('/login');
   };
 
   const value = {
     user,
+    signup,
     login,
     logout,
     isAuthenticated: !!user,

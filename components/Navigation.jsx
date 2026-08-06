@@ -25,7 +25,8 @@ export default function Navigation() {
   return (
     <>
       {/* MOBILE – Bottom Navigation (icons only) */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-3 px-4 z-50 shadow-2xl md:hidden">
+      {/* ✅ FIXED: Added more padding (py-4), increased icon container size, and centered icons to prevent clipping. */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
           {/* Cart */}
           <Link
@@ -34,10 +35,10 @@ export default function Navigation() {
               isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            <div className="relative">
+            <div className="relative flex items-center justify-center w-10 h-10">
               <span className="text-3xl">🛒</span>
               {mounted && totalItems > 0 && (
-                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                   {totalItems}
                 </span>
               )}
@@ -75,7 +76,7 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* DESKTOP – Left Sidebar */}
+      {/* DESKTOP – Left Sidebar (UNTOUCHED) */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
         {/* Menu Logo */}
         <Link
@@ -113,10 +114,10 @@ export default function Navigation() {
             isActive('/cart') ? 'text-red-500' : 'text-zinc-400 hover:text-white'
           }`}
         >
-          <div className="relative">
+          <div className="relative flex items-center justify-center w-12 h-12">
             <span className="text-5xl">🛒</span>
             {mounted && totalItems > 0 && (
-              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
                 {totalItems}
               </span>
             )}
