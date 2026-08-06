@@ -21,7 +21,6 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      // Redirect to the main menu on successful login
       router.push('/');
     } catch (err) {
       setError(err.message);
@@ -31,15 +30,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black text-white flex justify-center pt-16 p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
         
         {/* Logo or Brand Header */}
         <div className="flex flex-col items-center mb-6">
+          {/* ✅ Increased height to h-72 for 300% bigger logo */}
           <img
             src="/logo.png"
             alt="Culinary Cookout"
-            className="h-24 w-auto object-contain mb-2"
+            className="h-72 w-auto object-contain mb-2"
           />
           <h1 className="text-2xl font-bold text-red-600">WE OUTSIDE COOKIN'</h1>
           <p className="text-zinc-400 text-sm mt-1">Enter the kitchen...</p>
@@ -93,8 +93,8 @@ export default function LoginPage() {
           <p>Protected by Culinary Cookout™️</p>
           <p className="mt-1">
             <Link href="/contact-us" className="text-red-400 hover:text-red-300">
-  CONTACT US‼️
-</Link>
+              CONTACT US‼️
+            </Link>
           </p>
         </div>
       </div>
