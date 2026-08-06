@@ -57,9 +57,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return data;
   };
 
-  // ✅ LOGOUT: Redirects to your exact Canva splash screen
+  // ✅ UPDATED: Hard redirects to your Canva splash screen
   const logout = async () => {
     await supabase.auth.signOut();
+    // Forces a full browser redirect to the external Canva link
     window.location.href = 'https://www.canva.com/design/DAHMa6CWluc/K6y1Hzp4I7Pckgkj7J1Fxw/view?utm_content=DAHMa6CWluc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0935d25285';
   };
 

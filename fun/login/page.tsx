@@ -16,8 +16,16 @@ export default function FunLoginPage() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
 
-  // If they came from Canva's hidden button, keep them on the fun path
-  const redirectTo = searchParams.get('from') === 'canva' ? '/fun/menu' : '/fun/menu';
+  // ✅ HARD LOCK: Forces the redirect exclusively to the hidden menu.
+  const redirectTo = '/fun/menu';
+
+  // ✅ LOGOUT: Destroys the session and sends them straight to Canva
+  const handleLogout = async () => {
+    const { funLogout } = useFunAuth();
+    await funLogout();
+    // Hard redirect to your Canva splash screen
+    window.location.href = 'https://www.canva.com/design/DAHMa6CWluc/K6y1Hzp4I7Pckgkj7J1Fxw/view?utm_content=DAHMa6CWluc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0935d25285';
+  };
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +50,8 @@ export default function FunLoginPage() {
 
     try {
       await funLogin(email, phone);
-      router.push(redirectTo);
+      // ✅ Forces an absolute, hard redirect to the hidden menu only
+      window.location.href = redirectTo;
     } catch (err: any) {
       setError(err.message || 'Invalid login credentials');
     } finally {
@@ -64,6 +73,17 @@ export default function FunLoginPage() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32 md:justify-center md:pt-0">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl px-4 pt-4 pb-8 shadow-2xl md:p-8">
+        
+        {/* ✅ Added Logout Button at the top right */}
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={handleLogout}
+            className="text-xs text-red-400 hover:text-red-300 underline transition-colors"
+          >
+            Exit
+          </button>
+        </div>
+
         <div className="flex flex-col items-center pt-0 md:pt-0">
           <div className="text-6xl mb-4">🍸</div>
           <h1 className="text-2xl font-bold text-red-600 mt-1 md:mt-2">

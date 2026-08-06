@@ -46,9 +46,11 @@ export function FunAuthProvider({ children }: { children: React.ReactNode }) {
     return data;
   };
 
+  // ✅ UPDATED: Hard redirects to your Canva splash screen
   const funLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/fun/login');
+    // Forces a full browser redirect to the external Canva link
+    window.location.href = 'https://www.canva.com/design/DAHMa6CWluc/K6y1Hzp4I7Pckgkj7J1Fxw/view?utm_content=DAHMa6CWluc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0935d25285';
   };
 
   return (
