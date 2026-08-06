@@ -18,17 +18,21 @@ const HIDDEN_ITEMS = [
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
-  'BIRDS': 'bg-amber-400 text-white',
+  'BIRDS': 'bg-yellow-600 text-white',                   // Darker mustard
   'BREAKFAST': 'bg-yellow-500 text-black',
-  'FRIED SIDES': 'bg-orange-600 text-white',
-  'GRILLED': 'bg-orange-500 text-black',
+  'BUNS': 'bg-[#A67C52] text-white',                 // Brioche brown
+  'FRIED SIDE': 'bg-[#C04C00] text-white',             // Onion ring golden brown
+  'FLAMED': 'bg-[#FF4500] text-black',                 // Fire orange
+  'JR. DISHES': 'bg-gradient-to-r from-blue-500 to-pink-500 text-white', 
   'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',
+  'ROTISSERIE': 'bg-black text-white',                  // Black
   'SANDWICHES': 'bg-pink-600 text-white',
   'SEAFOOD': 'bg-cyan-300 text-black',
-  'SMOKED': 'bg-gray-600 text-white',
-  'SOUPS & STEWS': 'bg-lime-600 text-white',
+  'SIDES': 'bg-[#0047AB] text-white',                   // Cobalt blue
+  'SMOKED (24-Hour Notice)': 'bg-[#D1D5DB] text-black',                  // Lighter gray
+  'SOUPS & STEWS': 'bg-[#5E1A18] text-white',           // Mahogany
   'BEVERAGES': 'bg-sky-600 text-white',
-  'BURGERS': 'bg-amber-600 text-white',
+  'VEGGIES': 'bg-[#2D6A4F] text-white',                 // Arugula/Broccoli green
 };
 
 export default function Menu() {
@@ -40,15 +44,12 @@ export default function Menu() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
 
-  // ✅ EXACT NOTION SORTING RULE
   const applyNotionSort = (array) => {
     return array.sort((a, b) => {
-      // First sort: CATEGORY NUMBER
       const catNumA = a['CATEGORY NUMBER'] || '';
       const catNumB = b['CATEGORY NUMBER'] || '';
       if (catNumA !== catNumB) return catNumA.localeCompare(catNumB);
 
-      // Second sort: SORT
       const sortA = a['SORT'] || '';
       const sortB = b['SORT'] || '';
       return sortA.localeCompare(sortB);
@@ -66,7 +67,6 @@ export default function Menu() {
               const name = (item['Item Name'] || '').trim().toUpperCase();
               return !HIDDEN_ITEMS.includes(name);
             });
-            // ✅ Apply Notion's exact sort
             applyNotionSort(filtered);
             
             setItems(filtered);
@@ -90,7 +90,6 @@ export default function Menu() {
           const name = (item['Item Name'] || '').trim().toUpperCase();
           return !HIDDEN_ITEMS.includes(name);
         });
-        // ✅ Apply Notion's exact sort
         applyNotionSort(filtered);
         
         setItems(filtered);
@@ -127,9 +126,7 @@ export default function Menu() {
       result = result.filter((item) => item['CATEGORY'] === filterCategory);
     }
 
-    // ✅ Reapply sort after filters/search
     applyNotionSort(result);
-
     setFilteredItems(result);
   }, [searchTerm, filterCategory, items]);
 
@@ -210,9 +207,12 @@ export default function Menu() {
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
 
+            // ✅ ROUTING LOGIC: Point TACO PACKAGES and SOUP & STEW to their customizers
             let destinationHref;
             if (itemName === 'TACO PACKAGES') {
               destinationHref = '/taco-deals';
+            } else if (itemName === 'SOUP & STEW') {
+              destinationHref = '/soup-stew';
             } else {
               destinationHref = `/menu/${item.id}`;
             }
