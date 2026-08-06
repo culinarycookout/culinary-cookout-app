@@ -30,13 +30,19 @@ export default function LoginPage() {
   };
 
   return (
-    /* ✅ MOBILE: justify-start pt-16 reduces the top gap by ~50%. DESKTOP: md:justify-center md:pt-0 keeps it perfectly centered. */
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-16 px-4 pb-32 md:justify-center md:pt-0">
+    /* 
+      MOBILE:
+      - pt-0 removes the outer gap (card touches the top)
+      - justify-start keeps it anchored to the top
       
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-2xl md:p-8">
+      DESKTOP:
+      - md:justify-center md:pt-0 keeps it perfect
+    */
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32 md:justify-center md:pt-0">
+      
+      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl px-4 pt-4 pb-8 shadow-2xl md:p-8">
         
-        <div className="flex flex-col items-center pt-4 md:pt-0">
-          {/* ✅ MOBILE: h-60 makes logo larger. DESKTOP: md:h-80 keeps it the large size. */}
+        <div className="flex flex-col items-center pt-0 md:pt-0">
           <img
             src="/logo.png"
             alt="Culinary Cookout"
