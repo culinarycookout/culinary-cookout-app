@@ -10,7 +10,7 @@ export default function FunPage() {
   useEffect(() => {
     async function fetchFun() {
       try {
-        const res = await fetch('/api/fun');
+        const res = await fetch('/api/fun-api');
         const data = await res.json();
         setItems(data);
       } catch (err) {
