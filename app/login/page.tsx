@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react'; // ✅ Import Suspense
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 
-export default function LoginPage() {
+// We separate the main logic into a component so we can wrap it in Suspense
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
@@ -42,7 +43,7 @@ export default function LoginPage() {
 
     try {
       await login(email, phone);
-      router.push(redirectTo); // ✅ Pushes to /fun if flag exists
+      router.push(redirectTo); 
     } catch (err: any) {
       setError(err.message || 'Invalid login credentials');
     } finally {
@@ -113,5 +114,14 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ✅ Final export: Wrap the entire form in Suspense to satisfy Next.js
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading login...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
