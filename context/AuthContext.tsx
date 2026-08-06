@@ -1,19 +1,28 @@
-// context/AuthContext.js
+// context/AuthContext.tsx
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, User } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const AuthContext = createContext({});
+interface AuthContextType {
+  user: User | null;
+  signup: (email: string, phone: string) => Promise<any>;
+  login: (email: string, phone: string) => Promise<any>;
+  logout: () => Promise<void>;
+  isAuthenticated: boolean;
+  loading: boolean;
+}
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +40,7 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signup = async (email, phone) => {
+  const signup = async (email: string, phone: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password: phone,
@@ -40,7 +49,7 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const login = async (email, phone) => {
+  const login = async (email: string, phone: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password: phone,
