@@ -14,11 +14,10 @@ export default function FunMenuPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Bounce them out to the fun login if they aren't logged in
-    if (!user) {
-      router.push('/fun/login');
-      return;
-    }
+  if (!funUser) {
+    router.push('/fun/login');
+    return;
+  }
 
     async function fetchFunMenu() {
       try {

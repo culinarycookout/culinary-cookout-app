@@ -1,6 +1,7 @@
 import '../app/globals.css';
 import { CartProvider } from '../context/CartContext';
-import { AuthProvider } from '../context/AuthContext';
+import { FunAuthProvider } from './FunAuthContext';
+import FunNavigation from './FunNavigation'; // ✅ Import the isolated navbar
 
 export default function FunLayout({
   children,
@@ -10,11 +11,15 @@ export default function FunLayout({
   return (
     <html lang="en">
       <body className="bg-black text-white">
-        <AuthProvider>
+        <FunAuthProvider>
           <CartProvider>
-            {children}
+            {/* ✅ Only the FunNavigation lives here, not the main nav */}
+            <FunNavigation />
+            <main className="md:ml-24">
+              {children}
+            </main>
           </CartProvider>
-        </AuthProvider>
+        </FunAuthProvider>
       </body>
     </html>
   );
