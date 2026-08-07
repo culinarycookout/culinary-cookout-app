@@ -18,7 +18,7 @@ const HIDDEN_ITEMS = [
 // ✅ EXACT SEARCH BAR ORDER (List them in the exact order you want the dropdown to appear)
 const CATEGORY_ORDER = [
   'BREAKFAST',
-  'SANDWICHES',
+  'SANDWICH',
   'BUNS',
   'BIRDS',
   'SEAFOOD',
@@ -27,9 +27,9 @@ const CATEGORY_ORDER = [
   'LATIN AMERICA',
   'ASIAN',
   'BEEF',
-  'SIDES',
+  'SIDE',
   'VEGGIES',
-  'BEVERAGES',
+  'BEVERAGE',
   'SOUPS & STEWS',
   'FLAMED',
   'ROTISSERIE',
