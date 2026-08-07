@@ -102,7 +102,7 @@ function CartContent() {
             const price = Number(item['Price'] || item.price || 0);
             const total = price * qty;
 
-            // ✅ TACO TUESDAY LOGIC RESTORED
+            // ✅ TACO TUESDAY LOGIC
             let displayPrice = total;
             let originalPrice = null;
             let isDiscounted = false;
@@ -185,11 +185,11 @@ function CartContent() {
                       </button>
                     </div>
 
-                    {/* ✅ Customize (Only on standard items) - Big, Bold, Right after Quantity */}
+                    {/* ✅ Customize - WHITE BACKGROUND, RED TEXT */}
                     {!isHardcoded && (
                       <Link
                         href={`/menu/${item.id}?editId=${item.cartInstanceId}`}
-                        className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg text-red-400 font-bold text-base md:text-lg transition-colors shadow-sm"
+                        className="px-4 py-2 bg-white hover:bg-zinc-200 border border-zinc-700 rounded-lg text-red-600 font-bold text-base md:text-lg transition-colors shadow-sm"
                       >
                         Customize 📝
                       </Link>
