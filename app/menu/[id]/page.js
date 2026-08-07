@@ -98,7 +98,7 @@ export default function ItemDetailPage({ params }) {
   return (
     <div className="min-h-screen bg-black text-white pb-32 md:pb-4">
       <div className="max-w-4xl mx-auto md:p-4">
-        <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block p-4 md:p-0">← Back to Menu</Link>
+        <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block p-4 md:p-0">↩️ Back To Menu</Link>
 
         {/* ✅ Desktop stays side-by-side, mobile stacks cleanly */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 md:p-0">
