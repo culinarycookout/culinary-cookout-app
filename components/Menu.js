@@ -16,8 +16,8 @@ const HIDDEN_ITEMS = [
 ];
 
 const categoryColors = {
-  'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
+  'ASIAN': 'bg-red-600 text-white',
   'BIRDS': 'bg-yellow-600 text-white',
   'BREAKFAST': 'bg-yellow-500 text-black',
   'BUNS': 'bg-[#A67C52] text-white',
