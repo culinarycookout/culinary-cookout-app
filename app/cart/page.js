@@ -28,7 +28,7 @@ function CartContent() {
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-black text-white p-8 flex flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold mb-4">Your Cart is Empty 🛒</h1>
+        <h1 className="text-2xl font-bold mb-4">🛒Empty Cart🛒</h1>
         <Link href="/menu" className="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-bold transition-colors">
           Browse Menu 🍽️
         </Link>
@@ -37,11 +37,11 @@ function CartContent() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 pb-40">
+    <div className="min-h-screen bg-black text-white p-4 pb-32">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <Link href="/menu" className="text-red-400 hover:text-red-300 text-sm">← Back to Menu</Link>
-          <h1 className="text-xl font-bold text-red-600">Your Cart</h1>
+          <h1 className="text-xl font-bold text-red-600">🛒Your Cart🛒</h1>
           <span className="text-xs text-zinc-400">({totalItems} {totalItems === 1 ? 'item' : 'items'})</span>
         </div>
 
@@ -95,20 +95,20 @@ function CartContent() {
                     Remove
                   </button>
                   
-                  {/* ✅ RESTORED: Buttons inside the card */}
+                  {/* ✅ CUSTOMIZE & ADD ANOTHER BUTTONS */}
                   {isTacoPackage && (
                     <div className="w-full flex gap-2 mt-2 sm:mt-0 sm:w-auto">
                       <Link
                         href={`/taco-deals/${item.dealId}?editId=${item.cartInstanceId}`}
                         className="flex-1 sm:flex-none text-center text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                       >
-                        Customize ✏️
+                        Customize 📝
                       </Link>
                       <Link
                         href={`/taco-deals/${item.dealId}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}`}
                         className="flex-1 sm:flex-none text-center text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                       >
-                        Add Another 👨🏾‍🍳
+                        +Add Another 👨🏾‍🍳
                       </Link>
                     </div>
                   )}
@@ -134,7 +134,7 @@ function CartContent() {
               onClick={() => alert('Checkout coming soon!')}
               className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition"
             >
-              Proceed to Checkout →
+              Confirm & Checkout →
             </button>
           </div>
         </div>
