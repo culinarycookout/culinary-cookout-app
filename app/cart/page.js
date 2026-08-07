@@ -240,7 +240,10 @@ function CartContent() {
                   <div className="w-full">
                     <div className="flex justify-between items-start">
                       <div className="flex flex-col gap-1">
-                        <h3 className="font-bold text-lg text-white">{item['Item Name']}</h3>
+                        {/* ✅ ITEM NAME IS NOW CLICKABLE AND HAS THE ↩️ ARROW */}
+                        <Link href={`/menu/${item.id}`} className="font-bold text-lg text-white hover:text-red-400 transition-colors flex items-center gap-2">
+                          ↩️ {item['Item Name']}
+                        </Link>
                         
                         {isTacoTuesday && isTaco && (
                           <div className="inline-flex items-center gap-1.5 bg-red-600/20 border border-red-500/30 rounded-full px-2.5 py-0.5 w-fit mb-0.5">
@@ -277,7 +280,7 @@ function CartContent() {
                         </div>
                       )}
 
-                      {/* 2. Tortilla & Meat Logic (If applicable) */}
+                      {/* 2. Tortilla & Meat Logic */}
                       {item.tortilla && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
                           <span className="text-zinc-300 font-medium">Tortilla:</span> {item.tortilla}
@@ -289,10 +292,10 @@ function CartContent() {
                         </div>
                       )}
 
-                      {/* 3. Size (Plain text) */}
+                      {/* ✅ FIXED: Now says "Type:" instead of "Size:" */}
                       {item.SIZE && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
-                          <span className="text-zinc-300 font-medium">Size:</span> {item.SIZE}
+                          <span className="text-zinc-300 font-medium">Type:</span> {item.SIZE}
                         </div>
                       )}
 
@@ -310,7 +313,7 @@ function CartContent() {
                         </div>
                       )}
 
-                      {/* 5. Toppings & Extras (Hardcoded customizers) */}
+                      {/* 5. Toppings & Extras */}
                       {item.toppings && item.toppings.length > 0 && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
                           <span className="text-zinc-300 font-medium">Toppings:</span>
