@@ -15,9 +15,7 @@ export async function GET() {
 
     while (hasMore) {
       const bodyPayload = {};
-      if (startCursor) {
-        bodyPayload.start_cursor = startCursor;
-      }
+      if (startCursor) bodyPayload.start_cursor = startCursor;
 
       const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
         method: 'POST',
@@ -30,12 +28,7 @@ export async function GET() {
       });
 
       if (!response.ok) {
-        const errorBody = await response.text();
-        return NextResponse.json({ 
-          error: 'Notion API error', 
-          status: response.status,
-          details: errorBody 
-        }, { status: response.status });
+        return NextResponse.json({ error: 'Notion API error' }, { status: response.status });
       }
 
       const data = await response.json();
@@ -44,16 +37,16 @@ export async function GET() {
       startCursor = data.next_cursor;
     }
 
-    // ✅ CHANGE 1: Look for 'LINKED TYPES' (matches your exact Main Menu column)
+    // 1. Gather all Size IDs from the relation
     const allSizeIds = new Set();
     allResults.forEach(item => {
-      const relation = item.properties['LINKED TYPES']?.relation || [];
+      const relation = item.properties['Sizes']?.relation || [];
       relation.forEach(rel => {
         if (rel?.id) allSizeIds.add(rel.id);
       });
     });
 
-    // 2. Fetch the actual details for every single related size ID in parallel
+    // 2. Fetch the exact data for those sizes
     const sizeMap = {};
     if (allSizeIds.size > 0) {
       const sizePromises = Array.from(allSizeIds).map(async (id) => {
@@ -90,8 +83,7 @@ export async function GET() {
 
         sizeMap[page.id] = {
           id: page.id,
-          size: sizeName,
-          price: priceVal,
+          size: sizeName, // ✅ Grabbing the 'Size' column
           Price: priceVal,
           amount: amountVal,
           serves: servesVal,
@@ -100,6 +92,7 @@ export async function GET() {
       });
     }
 
+    // 3. Build the final payload
     const formattedItems = allResults.map((page) => {
       const props = page.properties;
       
@@ -116,41 +109,18 @@ export async function GET() {
         return '';
       };
 
-      const category = getSelect(props['CATEGORY']) || getRichText(props['CATEGORY']) || '';
-      const itemName = getTitle(props['ITEM NAME']) || getRichText(props['ITEM NAME']) || '';
-      const description = getRichText(props['DESCRIPTION']) || '';
-
-      const categoryNumber = getNumber(props['CATEGORY NUMBER']) || getRichText(props['CATEGORY NUMBER']) || getSelect(props['CATEGORY NUMBER']) || '';
-      const sortValue = getNumber(props['SORT']) || getRichText(props['SORT']) || getSelect(props['SORT']) || '';
-
-      // ✅ CHANGE 2: Look for 'LINKED TYPES' (matches your exact Main Menu column)
-      const relation = props['LINKED TYPES']?.relation || [];
+      const relation = props['Sizes']?.relation || [];
       const sizes = relation.map(rel => sizeMap[rel.id]).filter(Boolean);
 
       return {
         id: page.id,
-        'Item Name': itemName,
-        'DESCRIPTION': description,
-        'CATEGORY': category,
-        'CATEGORY NUMBER': categoryNumber,
-        'SORT': sortValue,
-        'Price': getNumber(props['PRICE']),
+        'Item Name': getTitle(props['ITEM NAME']) || getRichText(props['ITEM NAME']) || '',
+        'DESCRIPTION': getRichText(props['DESCRIPTION']) || '',
+        'CATEGORY': getSelect(props['CATEGORY']) || getRichText(props['CATEGORY']) || '',
         'Image URL': getImageUrl(props['Image URL']) || getImageUrl(props['IMAGE URL']),
-        'Item Type': getSelect(props['ITEM TYPE']),
-        isDiscounted: props['isDiscounted']?.checkbox || false,
         Sizes: sizes,
+        Price: getNumber(props['PRICE']) // Safety fallback
       };
-    });
-
-    formattedItems.sort((a, b) => {
-      const numA = (a['CATEGORY NUMBER'] || '').toString();
-      const numB = (b['CATEGORY NUMBER'] || '').toString();
-      const compareNum = numA.localeCompare(numB, undefined, { numeric: true, sensitivity: 'base' });
-      if (compareNum !== 0) return compareNum;
-
-      const sortA = (a['SORT'] || '').toString();
-      const sortB = (b['SORT'] || '').toString();
-      return sortA.localeCompare(sortB, undefined, { numeric: true, sensitivity: 'base' });
     });
 
     return NextResponse.json(formattedItems);
