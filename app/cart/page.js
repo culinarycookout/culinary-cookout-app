@@ -5,14 +5,111 @@ import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+// ✅ Customize Modal Component
+function CustomizeModal({ item, onClose, onConfirm }) {
+  const [addons, setAddons] = useState([]);
+  const [selectedAddons, setSelectedAddons] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAddons() {
+      try {
+        const res = await fetch('/api/addons');
+        const data = await res.json();
+        setAddons(data);
+      } catch (err) {
+        console.error('Failed to load add-ons');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchAddons();
+  }, []);
+
+  const toggleAddon = (addon) => {
+    if (selectedAddons.find(a => a.id === addon.id)) {
+      setSelectedAddons(selectedAddons.filter(a => a.id !== addon.id));
+    } else {
+      setSelectedAddons([...selectedAddons, addon]);
+    }
+  };
+
+  const addonTotal = selectedAddons.reduce((sum, a) => sum + (a.Price || 0), 0);
+  const finalPrice = (item.Price || 0) + addonTotal;
+
+  return (
+    <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
+      <div className="w-full max-w-4xl bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        
+        <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-900 flex-shrink-0">
+          <div>
+            <h2 className="text-xl font-bold text-white">Customize {item['Item Name']}</h2>
+            <p className="text-sm text-zinc-400">Select add-ons to enhance your dish.</p>
+          </div>
+          <button onClick={onClose} className="text-zinc-400 hover:text-white text-2xl">&times;</button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4">
+          {loading ? (
+            <div className="text-center py-12 text-zinc-400">Loading add-ons...</div>
+          ) : addons.length === 0 ? (
+            <div className="text-center py-12 text-zinc-400">Add-ons coming soon for this item!</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {addons.map((addon) => {
+                const isSelected = selectedAddons.find(a => a.id === addon.id);
+                return (
+                  <button
+                    key={addon.id}
+                    onClick={() => toggleAddon(addon)}
+                    className={`bg-zinc-800 border-2 rounded-xl overflow-hidden transition-all duration-200 text-left hover:shadow-lg ${
+                      isSelected ? 'border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.3)]' : 'border-zinc-700 hover:border-zinc-500'
+                    }`}
+                  >
+                    {addon['Image URL'] ? (
+                      <img src={addon['Image URL']} alt={addon['Item Name']} className="w-full h-32 object-cover" />
+                    ) : (
+                      <div className="w-full h-32 bg-zinc-700 flex items-center justify-center text-4xl">🧂</div>
+                    )}
+                    <div className="p-3">
+                      <h4 className="font-bold text-white text-sm">{addon['Item Name']}</h4>
+                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2">{addon['DESCRIPTION']}</p>
+                      <p className="text-red-400 font-bold mt-2 text-sm">+${(addon.Price || 0).toFixed(2)}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className="flex-shrink-0 p-4 border-t border-zinc-800 bg-zinc-900 flex justify-between items-center">
+          <div>
+            <p className="text-xs text-zinc-400">New Item Total</p>
+            <p className="text-2xl font-bold text-red-500">${finalPrice.toFixed(2)}</p>
+          </div>
+          <button
+            onClick={() => onConfirm(selectedAddons, finalPrice)}
+            className="px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold text-lg transition-colors shadow-lg"
+          >
+            Confirm Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CartContent() {
   const router = useRouter();
-  const { cart, addToCart, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { cart, addToCart, updateQuantity, removeFromCart, clearCart, updateCartItem } = useCart();
   const [isMounted, setIsMounted] = useState(false);
   const [isTacoTuesday, setIsTacoTuesday] = useState(false);
   
   const [itemToRemove, setItemToRemove] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const [customizingItem, setCustomizingItem] = useState(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -44,6 +141,20 @@ function CartContent() {
     }
   };
 
+  const handleCustomizeClick = (item) => {
+    setCustomizingItem(item);
+  };
+
+  const handleConfirmCustomization = (selectedAddons, newPrice) => {
+    if (customizingItem) {
+      updateCartItem(customizingItem.cartInstanceId, {
+        Price: newPrice,
+        selectedAddons: selectedAddons,
+      });
+      setCustomizingItem(null);
+    }
+  };
+
   if (!isMounted) {
     return <div className="min-h-screen bg-black text-white p-8 flex items-center justify-center">Loading cart...</div>;
   }
@@ -61,6 +172,7 @@ function CartContent() {
 
   return (
     <div className="min-h-screen bg-black text-white p-4 pb-32 relative">
+      
       {showModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
           <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
@@ -82,6 +194,14 @@ function CartContent() {
             </div>
           </div>
         </div>
+      )}
+
+      {customizingItem && (
+        <CustomizeModal
+          item={customizingItem}
+          onClose={() => setCustomizingItem(null)}
+          onConfirm={handleConfirmCustomization}
+        />
       )}
 
       <div className="max-w-2xl mx-auto">
@@ -143,7 +263,10 @@ function CartContent() {
                       </div>
                     </div>
                     
+                    {/* ✅ FULLY EXPANDED, BULLETED, AIRTIGHT DETAILED BREAKDOWN */}
                     <div className="mt-3 text-xs text-zinc-400 space-y-1.5 bg-black/40 p-3 rounded-lg border border-zinc-800">
+                      
+                      {/* 1. Hardcoded Customizations Breakdown (Tacos, Soups, etc.) */}
                       {item.breakdown && (
                         <div className="space-y-1">
                           {item.breakdown.split(' | ').map((groupString, idx) => (
@@ -153,11 +276,58 @@ function CartContent() {
                           ))}
                         </div>
                       )}
-                      {item.SIZE && (
+
+                      {/* 2. Tortilla & Meat Logic (If applicable) */}
+                      {item.tortilla && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
-                          <span className="text-zinc-300 font-medium">Type:</span> {item.SIZE}
+                          <span className="text-zinc-300 font-medium">Tortilla:</span> {item.tortilla}
                         </div>
                       )}
+                      {item.meat && (
+                        <div className="pt-1.5">
+                          <span className="text-zinc-300 font-medium">Meat:</span> {item.meat}
+                        </div>
+                      )}
+
+                      {/* 3. Size (Plain text) */}
+                      {item.SIZE && (
+                        <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
+                          <span className="text-zinc-300 font-medium">Size:</span> {item.SIZE}
+                        </div>
+                      )}
+
+                      {/* 4. Detailed, Bulleted Add-Ons List */}
+                      {item.selectedAddons && item.selectedAddons.length > 0 && (
+                        <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
+                          <span className="text-zinc-300 font-medium">Add-ons:</span>
+                          <ul className="list-disc list-inside text-zinc-400 mt-0.5 space-y-0.5 pl-1">
+                            {item.selectedAddons.map((addon, idx) => (
+                              <li key={idx}>
+                                {addon['Item Name'] || addon.name || 'Unnamed Add-on'}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* 5. Toppings & Extras (Hardcoded customizers) */}
+                      {item.toppings && item.toppings.length > 0 && (
+                        <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
+                          <span className="text-zinc-300 font-medium">Toppings:</span>
+                          <ul className="list-disc list-inside text-zinc-400 mt-0.5 space-y-0.5 pl-1">
+                            {item.toppings.map((t, idx) => <li key={idx}>{t}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {item.extras && item.extras.length > 0 && (
+                        <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
+                          <span className="text-zinc-300 font-medium">Extras:</span>
+                          <ul className="list-disc list-inside text-zinc-400 mt-0.5 space-y-0.5 pl-1">
+                            {item.extras.map((e, idx) => <li key={idx}>{e}</li>)}
+                          </ul>
+                        </div>
+                      )}
+
                     </div>
 
                   </div>
@@ -183,15 +353,14 @@ function CartContent() {
                     </div>
 
                     {!isHardcoded && (
-                      <Link
-                        href={`/menu/${item.id}?editId=${item.cartInstanceId}`}
+                      <button
+                        onClick={() => handleCustomizeClick(item)}
                         className="px-4 py-2 bg-white hover:bg-zinc-200 border border-zinc-700 rounded-lg text-red-600 font-bold text-base md:text-lg transition-colors shadow-sm"
                       >
                         Customize 📝
-                      </Link>
+                      </button>
                     )}
 
-                    {/* ✅ RESTORED TRUE DUPLICATION LOGIC: No navigation, instantly adds a copy */}
                     <button
                       onClick={() => {
                         const duplicate = {

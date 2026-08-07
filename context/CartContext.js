@@ -64,8 +64,19 @@ export function CartProvider({ children }) {
     setCart([]);
   };
 
+  // ✅ NEW: Safely merges add-ons into an existing item without altering other properties
+  const updateCartItem = (cartInstanceId, updates) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.cartInstanceId === cartInstanceId
+          ? { ...item, ...updates }
+          : item
+      )
+    );
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, updateCartItem }}>
       {children}
     </CartContext.Provider>
   );
