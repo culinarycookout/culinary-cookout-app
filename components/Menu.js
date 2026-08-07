@@ -15,9 +15,30 @@ const HIDDEN_ITEMS = [
   'TACO PARTY: FIESTA GRANDE',
 ];
 
+// ✅ EXACT SEARCH BAR ORDER (List them in the exact order you want the dropdown to appear)
+const CATEGORY_ORDER = [
+  'BREAKFAST',
+  'SANDWICHES',
+  'BUNS',
+  'BIRDS',
+  'SEAFOOD',
+  'FRIED SIDE',
+  'JR. DISHES',
+  'LATIN AMERICA',
+  'ASIAN',
+  'BEEF',
+  'SIDES',
+  'VEGGIES',
+  'BEVERAGES',
+  'SOUPS & STEWS',
+  'FLAMED',
+  'ROTISSERIE',
+  'SMOKED',
+];
+
 const categoryColors = {
-  'BEEF': 'bg-amber-800 text-white',
   'ASIAN': 'bg-red-600 text-white',
+  'BEEF': 'bg-amber-800 text-white',
   'BIRDS': 'bg-yellow-600 text-white',
   'BREAKFAST': 'bg-yellow-500 text-black',
   'BUNS': 'bg-[#A67C52] text-white',
@@ -127,7 +148,16 @@ export default function Menu() {
     setFilteredItems(result);
   }, [searchTerm, filterCategory, items]);
 
-  const categories = [...new Set(items.map((item) => item['CATEGORY']).filter(Boolean))].sort();
+  const categories = [...new Set(items.map((item) => item['CATEGORY']).filter(Boolean))].sort((a, b) => {
+  const indexA = CATEGORY_ORDER.indexOf(a);
+  const indexB = CATEGORY_ORDER.indexOf(b);
+  
+  // If a category is not in CATEGORY_ORDER, push it to the bottom (give it the highest index)
+  const safeIndexA = indexA === -1 ? CATEGORY_ORDER.length : indexA;
+  const safeIndexB = indexB === -1 ? CATEGORY_ORDER.length : indexB;
+  
+  return safeIndexA - safeIndexB;
+});
 
   if (loading) {
     return (
