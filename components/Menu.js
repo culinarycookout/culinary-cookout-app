@@ -18,21 +18,21 @@ const HIDDEN_ITEMS = [
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
-  'BIRDS': 'bg-yellow-600 text-white',                   // Darker mustard
+  'BIRDS': 'bg-yellow-600 text-white',
   'BREAKFAST': 'bg-yellow-500 text-black',
-  'BUNS': 'bg-[#A67C52] text-white',                 // Brioche brown
-  'FRIED SIDE': 'bg-[#C04C00] text-white',             // Onion ring golden brown
-  'FLAMED': 'bg-[#FF4500] text-black',                 // Fire orange
+  'BUNS': 'bg-[#A67C52] text-white',
+  'FRIED SIDE': 'bg-[#C04C00] text-white',
+  'FLAMED': 'bg-[#FF4500] text-black',
   'JR. DISHES': 'bg-gradient-to-r from-blue-500 to-pink-500 text-white', 
   'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',
-  'ROTISSERIE': 'bg-black text-white',                  // Black
+  'ROTISSERIE': 'bg-black text-white',
   'SANDWICHES': 'bg-pink-600 text-white',
   'SEAFOOD': 'bg-cyan-300 text-black',
-  'SIDES': 'bg-[#0047AB] text-white',                   // Cobalt blue
-  'SMOKED (24-Hour Notice)': 'bg-[#D1D5DB] text-black',                  // Lighter gray
-  'SOUPS & STEWS': 'bg-[#5E1A18] text-white',           // Mahogany
+  'SIDES': 'bg-[#0047AB] text-white',
+  'SMOKED (24-Hour Notice)': 'bg-[#D1D5DB] text-black',
+  'SOUPS & STEWS': 'bg-[#5E1A18] text-white',
   'BEVERAGES': 'bg-sky-600 text-white',
-  'VEGGIES': 'bg-[#2D6A4F] text-white',                 // Arugula/Broccoli green
+  'VEGGIES': 'bg-[#2D6A4F] text-white',
 };
 
 export default function Menu() {
@@ -49,7 +49,6 @@ export default function Menu() {
       const catNumA = a['CATEGORY NUMBER'] || '';
       const catNumB = b['CATEGORY NUMBER'] || '';
       if (catNumA !== catNumB) return catNumA.localeCompare(catNumB);
-
       const sortA = a['SORT'] || '';
       const sortB = b['SORT'] || '';
       return sortA.localeCompare(sortB);
@@ -68,7 +67,6 @@ export default function Menu() {
               return !HIDDEN_ITEMS.includes(name);
             });
             applyNotionSort(filtered);
-            
             setItems(filtered);
             setFilteredItems(filtered);
             setLoading(false);
@@ -91,7 +89,6 @@ export default function Menu() {
           return !HIDDEN_ITEMS.includes(name);
         });
         applyNotionSort(filtered);
-        
         setItems(filtered);
         setFilteredItems(filtered);
         localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now(), version: CACHE_VERSION }));
@@ -198,7 +195,7 @@ export default function Menu() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 pb-40 md:pb-0">
           {filteredItems.map((item) => {
             const colorClass = categoryColors[item['CATEGORY']] || 'bg-gray-600 text-white';
             const isTaco = item['CATEGORY'] === 'LATIN AMERICA' && item['Item Type'] === 'Taco';
@@ -207,7 +204,6 @@ export default function Menu() {
             const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
             const itemName = (item['Item Name'] || '').trim().toUpperCase();
 
-            // ✅ ROUTING LOGIC: Point TACO PACKAGES and SOUP & STEW to their customizers
             let destinationHref;
             if (itemName === 'TACO PACKAGES') {
               destinationHref = '/taco-deals';
