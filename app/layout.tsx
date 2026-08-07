@@ -2,7 +2,7 @@ import './globals.css';
 import { CartProvider } from '../context/CartContext';
 import { AuthProvider } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
-import RouteGuard from '../components/RouteGuard'; // ✅ Import the guard
+import RouteGuard from '../components/RouteGuard';
 
 export default function RootLayout({
   children,
@@ -16,7 +16,6 @@ export default function RootLayout({
           <CartProvider>
             <Navigation />
             <main className="md:ml-24">
-              {/* ✅ Wrap the app in the RouteGuard here */}
               <RouteGuard>
                 {children}
               </RouteGuard>
