@@ -7,12 +7,20 @@ import { useRouter } from 'next/navigation';
 
 function CartContent() {
   const router = useRouter();
-  const { cart, updateQuantity, removeFromCart, clearCart, subtotal } = useCart();
+  const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+  
+  // Recalculate subtotal locally to prevent provider mismatch crashes
+  const subtotal = cart.reduce((sum, item) => {
+    const price = Number(item['Price'] || item.price || 0);
+    return sum + (price * (Number(item.quantity) || 0));
+  }, 0);
 
   if (!isMounted) {
     return <div className="min-h-screen bg-black text-white p-8 flex items-center justify-center">Loading cart...</div>;
@@ -36,7 +44,7 @@ function CartContent() {
       <div className="flex-shrink-0 px-4 py-4 border-b border-zinc-800 flex items-center justify-between bg-black z-10">
         <Link href="/menu" className="text-red-400 hover:text-red-300 text-sm">← Back to Menu</Link>
         <h1 className="text-xl font-bold text-red-600">Your Cart</h1>
-        <span className="text-xs text-zinc-400">({cart.length} {cart.length === 1 ? 'item' : 'items'})</span>
+        <span className="text-xs text-zinc-400">({totalItems} {totalItems === 1 ? 'item' : 'items'})</span>
       </div>
 
       {/* Cart Items (Scrollable) */}
