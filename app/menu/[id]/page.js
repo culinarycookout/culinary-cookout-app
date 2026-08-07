@@ -3,13 +3,15 @@
 import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // ✅ Added import
+import { useRouter } from 'next/navigation';
+
+const CACHE_KEY = 'culinary_menu_cache';
 
 export default function ItemDetailPage({ params }) {
   const { addToCart } = useCart();
   const resolvedParams = use(params);
   const itemId = resolvedParams.id;
-  const router = useRouter(); // ✅ Initialize router
+  const router = useRouter();
 
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,10 +22,18 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItem() {
       try {
-        const res = await fetch('/api/menu');
-        if (!res.ok) throw new Error('Failed to fetch menu');
-        const data = await res.json();
-
+        let data = null;
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            data = parsed.data;
+          } catch (e) {}
+        }
+        if (!data) {
+          const res = await fetch('/api/menu');
+          data = await res.json();
+        }
         const found = data.find(item => item.id === itemId);
         if (found) {
           setItem(found);
@@ -54,37 +64,44 @@ export default function ItemDetailPage({ params }) {
   const handleAddToCart = () => {
     if (!item || !selectedSize) return;
 
-    // ✅ Safe price fallback: checks for selectedSize.Price or selectedSize.price
     const price = selectedSize.Price ?? selectedSize.price ?? 0;
+    const size = selectedSize.size || 'Standard';
+    const serves = selectedSize.serves || '';
+    const amount = selectedSize.amount || '';
+    const isDiscounted = selectedSize.isDiscounted || false;
+    const originalPrice = selectedSize.originalPrice || price;
 
     const cartItem = {
       ...item,
       'Price': price,
-      'SIZE': selectedSize.size,
-      'SERVES:': selectedSize.serves,
-      'AMOUNT': selectedSize.amount,
-      'selectedSize': selectedSize.size,
+      'SIZE': size,
+      'SERVES:': serves,
+      'AMOUNT': amount,
+      'selectedSize': size,
       'selectedPrice': price,
+      'originalPrice': originalPrice,
+      'isDiscounted': isDiscounted,
       quantity: quantity
     };
 
     addToCart(cartItem);
     setQuantity(1);
-    router.push('/cart'); // ✅ Replaced window.location.href
+    router.push('/cart');
   };
 
-  if (loading) return <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">Loading...</div>;
+  if (loading) return <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">Thank goodness for goodness... 🤤</div>;
   if (error || !item) return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
 
   const currentPrice = selectedSize?.price || 0;
   const finalPrice = currentPrice * quantity;
 
   return (
-    <div className="min-h-screen bg-black text-white p-4">
-      <div className="max-w-4xl mx-auto">
-        <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block">← Back to Menu</Link>
+    <div className="min-h-screen bg-black text-white pb-32 md:pb-4">
+      <div className="max-w-4xl mx-auto md:p-4">
+        <Link href="/" className="text-red-400 hover:text-red-300 mb-4 inline-block p-4 md:p-0">← Back to Menu</Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* ✅ Desktop stays side-by-side, mobile stacks cleanly */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 md:p-0">
           
           {/* LEFT COLUMN: IMAGE + SIZE-SPECIFIC DETAILS */}
           <div className="flex flex-col gap-3">
@@ -144,17 +161,31 @@ export default function ItemDetailPage({ params }) {
               <span className="text-2xl font-bold w-8 text-center">{quantity}</span>
               <button onClick={() => setQuantity(prev => prev + 1)} className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-xl">+</button>
             </div>
-
-            <div className="mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold">Total</span>
-                <span className="text-2xl font-bold text-red-500">${finalPrice.toFixed(2)}</span>
-              </div>
-              <button onClick={handleAddToCart} className="mt-3 w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-lg transition-colors">
-                Gimme This! 😋
-              </button>
-            </div>
           </div>
+        </div>
+
+        {/* ✅ MOBILE STICKY BOTTOM BAR (With extra iOS safe-area padding) */}
+        <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-zinc-800 p-4 pb-safe z-50 shadow-2xl md:hidden">
+          <div className="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+              <p className="text-sm text-zinc-400">Total</p>
+              <p className="text-2xl font-bold text-red-500">${finalPrice.toFixed(2)}</p>
+            </div>
+            <button onClick={handleAddToCart} className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-lg transition-colors">
+              Gimme This! 😋
+            </button>
+          </div>
+        </div>
+
+        {/* ✅ DESKTOP TOTAL BOX (Unchanged) */}
+        <div className="hidden md:block mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800 md:w-1/2 ml-auto">
+          <div className="flex justify-between items-center">
+            <span className="text-lg font-bold">Total</span>
+            <span className="text-2xl font-bold text-red-500">${finalPrice.toFixed(2)}</span>
+          </div>
+          <button onClick={handleAddToCart} className="mt-3 w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-lg transition-colors">
+            Gimme This! 😋
+          </button>
         </div>
       </div>
     </div>
