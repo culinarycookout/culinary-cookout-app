@@ -15,22 +15,23 @@ const HIDDEN_ITEMS = [
   'TACO PARTY: FIESTA GRANDE',
 ];
 
-// ✅ EXACT SEARCH BAR ORDER (List them in the exact order you want the dropdown to appear)
+// ✅ LOCKED TO YOUR EXACT NOTION DRAG-AND-DROP ORDER
 const CATEGORY_ORDER = [
   'BREAKFAST',
   'SANDWICH',
   'BUNS',
   'BIRDS',
-  'SEAFOOD',
   'FRIED SIDE',
-  'JR. DISHES',
+  'SEAFOOD',
+  'BEEF',
   'LATIN AMERICA',
   'ASIAN',
-  'BEEF',
-  'SIDE',
-  'VEGGIES',
   'BEVERAGE',
+  'SIDE',
+  'STEAMED',
   'SOUPS & STEWS',
+  'VEGGIES',
+  'JR. DISHES',
   'FLAMED',
   'ROTISSERIE',
   'SMOKED',
@@ -47,13 +48,14 @@ const categoryColors = {
   'JR. DISHES': 'bg-gradient-to-r from-blue-500 to-pink-500 text-white', 
   'LATIN AMERICA': 'bg-gradient-to-r from-[#CE1126] via-white to-[#006847] text-black',
   'ROTISSERIE': 'bg-black text-white',
-  'SANDWICHES': 'bg-pink-600 text-white',
+  'SANDWICH': 'bg-pink-600 text-white',
   'SEAFOOD': 'bg-cyan-300 text-black',
-  'SIDES': 'bg-[#0047AB] text-white',
+  'SIDE': 'bg-[#0047AB] text-white',
   'SMOKED (24-Hour Notice)': 'bg-[#D1D5DB] text-black',
   'SOUPS & STEWS': 'bg-[#5E1A18] text-white',
-  'BEVERAGES': 'bg-sky-600 text-white',
+  'BEVERAGE': 'bg-sky-600 text-white',
   'VEGGIES': 'bg-[#2D6A4F] text-white',
+  'STEAMED': 'bg-gray-500 text-white',
 };
 
 export default function Menu() {
@@ -149,15 +151,14 @@ export default function Menu() {
   }, [searchTerm, filterCategory, items]);
 
   const categories = [...new Set(items.map((item) => item['CATEGORY']).filter(Boolean))].sort((a, b) => {
-  const indexA = CATEGORY_ORDER.indexOf(a);
-  const indexB = CATEGORY_ORDER.indexOf(b);
-  
-  // If a category is not in CATEGORY_ORDER, push it to the bottom (give it the highest index)
-  const safeIndexA = indexA === -1 ? CATEGORY_ORDER.length : indexA;
-  const safeIndexB = indexB === -1 ? CATEGORY_ORDER.length : indexB;
-  
-  return safeIndexA - safeIndexB;
-});
+    const indexA = CATEGORY_ORDER.indexOf(a);
+    const indexB = CATEGORY_ORDER.indexOf(b);
+    
+    const safeIndexA = indexA === -1 ? CATEGORY_ORDER.length : indexA;
+    const safeIndexB = indexB === -1 ? CATEGORY_ORDER.length : indexB;
+    
+    return safeIndexA - safeIndexB;
+  });
 
   if (loading) {
     return (
