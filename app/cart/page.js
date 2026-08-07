@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 function CartContent() {
   const router = useRouter();
-  const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { cart, addToCart, updateQuantity, removeFromCart, clearCart } = useCart();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,6 @@ function CartContent() {
 
   const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
   
-  // Recalculate subtotal locally to prevent provider mismatch crashes
   const subtotal = cart.reduce((sum, item) => {
     const price = Number(item['Price'] || item.price || 0);
     return sum + (price * (Number(item.quantity) || 0));
@@ -54,6 +53,8 @@ function CartContent() {
           const price = Number(item['Price'] || item.price || 0);
           const total = price * qty;
 
+          const isTacoPackage = !!item.customizations && !!item.dealId;
+
           return (
             <div key={item.cartInstanceId || item.id} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
               <div className="flex justify-between items-start">
@@ -62,6 +63,15 @@ function CartContent() {
                     <h3 className="font-bold text-lg text-white">{item['Item Name']}</h3>
                     <p className="text-xl font-bold text-red-400">${total.toFixed(2)}</p>
                   </div>
+                  {item.breakdown && (
+                    <div className="mt-3 text-xs text-zinc-400 space-y-1.5 bg-black/40 p-3 rounded-lg border border-zinc-800">
+                      {item.breakdown.split(' | ').map((groupString, idx) => (
+                        <div key={idx} className="border-b border-zinc-700/50 last:border-0 pb-1.5 last:pb-0">
+                          {groupString}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center gap-4 mt-3 flex-wrap">
@@ -86,6 +96,24 @@ function CartContent() {
                 >
                   Remove
                 </button>
+                
+                {isTacoPackage && (
+                  <div className="w-full flex gap-2 mt-2 sm:mt-0 sm:w-auto">
+                    <Link
+                      href={`/taco-deals/${item.dealId}?editId=${item.cartInstanceId}`}
+                      className="flex-1 sm:flex-none text-center text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                    >
+                      Customize ✏️
+                    </Link>
+                    {/* ✅ Changed "Build" to "Add" */}
+                    <Link
+                      href={`/taco-deals/${item.dealId}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}`}
+                      className="flex-1 sm:flex-none text-center text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                    >
+                      Add Another 👨🏾‍🍳
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -111,6 +139,16 @@ function CartContent() {
           >
             Proceed to Checkout →
           </button>
+        </div>
+
+        {/* ✅ Changed "Build" to "Add" */}
+        <div className="flex justify-center pt-4 w-full">
+          <Link
+            href="/taco-deals"
+            className="inline-block w-full text-center text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/50 px-4 py-3 rounded-lg text-sm font-medium transition-colors bg-transparent"
+          >
+            + Add Another Taco Package
+          </Link>
         </div>
       </div>
     </div>
