@@ -51,7 +51,8 @@ function CartContent() {
             const price = Number(item['Price'] || item.price || 0);
             const total = price * qty;
 
-            const isTacoPackage = !!item.customizations && !!item.dealId;
+            // ✅ Logic: Only show Customize if the item doesn't have hardcoded customizations
+            const isHardcoded = !!item.customizations && !!item.dealId;
 
             return (
               <div key={item.cartInstanceId || item.id} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
@@ -95,23 +96,25 @@ function CartContent() {
                     Remove
                   </button>
                   
-                  {/* ✅ CUSTOMIZE & ADD ANOTHER BUTTONS */}
-                  {isTacoPackage && (
-                    <div className="w-full flex gap-2 mt-2 sm:mt-0 sm:w-auto">
+                  <div className="w-full flex gap-2 mt-2 sm:mt-0 sm:w-auto">
+                    {/* ✅ Customize: Only appears on standard, uncustomized items */}
+                    {!isHardcoded && (
                       <Link
-                        href={`/taco-deals/${item.dealId}?editId=${item.cartInstanceId}`}
+                        href={`/menu/${item.id}?editId=${item.cartInstanceId}`}
                         className="flex-1 sm:flex-none text-center text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                       >
                         Customize 📝
                       </Link>
-                      <Link
-                        href={`/taco-deals/${item.dealId}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}`}
-                        className="flex-1 sm:flex-none text-center text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                      >
-                        +Add Another 👨🏾‍🍳
-                      </Link>
-                    </div>
-                  )}
+                    )}
+                    
+                    {/* ✅ +Add Another: Appears on EVERY item without exception */}
+                    <Link
+                      href={isHardcoded ? `/taco-deals/${item.dealId}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}` : `/menu/${item.id}?prefill=${encodeURIComponent(JSON.stringify(item.customizations))}`}
+                      className="flex-1 sm:flex-none text-center text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                    >
+                      +Add Another 👨🏾‍🍳
+                    </Link>
+                  </div>
                 </div>
               </div>
             );
