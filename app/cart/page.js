@@ -191,7 +191,7 @@ function CartContent() {
                         href={`/menu/${item.id}?editId=${item.cartInstanceId}`}
                         className="px-4 py-2 bg-white hover:bg-zinc-200 border border-zinc-700 rounded-lg text-red-600 font-bold text-base md:text-lg transition-colors shadow-sm"
                       >
-                        Customize 📝
+                        Customize ✏️
                       </Link>
                     )}
 
