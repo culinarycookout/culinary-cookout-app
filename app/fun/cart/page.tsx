@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useCart } from '../../../context/CartContext'; // ✅ FIXED: 3 levels up
+import { useCart } from '../../../context/CartContext'; // ✅ 3 levels up
 import { useFunAuth } from '../FunAuthContext';
 
 interface CartItem {
@@ -52,7 +52,8 @@ export default function FunCartPage() {
         </div>
 
         <div className="space-y-4 mb-6">
-          {cart.map((item) => {
+          {/* ✅ FIXED: Typed item as CartItem to satisfy TypeScript */}
+          {cart.map((item: CartItem) => {
             const qty = Number(item.quantity) || 1;
             const price = Number(item['Price'] || item.price || 0);
             const total = price * qty;
