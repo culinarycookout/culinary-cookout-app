@@ -4,8 +4,7 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 
-// ✅ Added '/fun/login' and '/fun/signup' so the hidden menu is accessible
-const PUBLIC_ROUTES = ['/login', '/signup', '/contact-us', '/fun/login', '/fun/signup'];
+const PUBLIC_ROUTES = ['/login', '/signup', '/contact-us'];
 
 export default function RouteGuard({ children }) {
   const pathname = usePathname();
