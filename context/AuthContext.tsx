@@ -11,6 +11,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<any>;
+  signup: (email: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
   loading: boolean;
 }
@@ -47,13 +48,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return data;
   };
 
+  const signup = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    if (error) throw new Error(error.message);
+    return data;
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
     router.push('/');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

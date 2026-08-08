@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCart } from '../context/CartContext';
-import { useFunAuth } from './FunAuthContext';
+import { useTrubbleCart } from './TrubbleCartContext';
+import { useTrubbleAuth } from './context/TrubbleAuthContext';
 import { useState, useEffect } from 'react';
 
 interface CartItem {
@@ -16,24 +16,24 @@ interface CartItem {
   name?: string;
 }
 
-export default function FunNavigation() {
+export default function TrubbleNavigation() {
   const pathname = usePathname();
-  const { cart } = useCart();
-  const { funLogout } = useFunAuth();
+  const { trubbleCartItems } = useTrubbleCart();
+  const { trubbleLogout } = useTrubbleAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   // ✅ Fixed: Typed sum and item to clear the red lines
   const totalItems = mounted 
-    ? cart.reduce((sum: number, item: CartItem) => sum + (Number(item.quantity) || 1), 0) 
+    ? trubbleCartItems.reduce((sum: number, item: CartItem) => sum + (Number(item.quantity) || 1), 0) 
     : 0;
 
   return (
     <>
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          <Link href="/fun/cart" className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+          <Link href="/trubble/cart" className="flex flex-col items-center transition text-zinc-400 hover:text-white">
             <span className="text-3xl">🛒</span>
             {mounted && totalItems > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-zinc-950">
@@ -41,23 +41,23 @@ export default function FunNavigation() {
               </span>
             )}
           </Link>
-          <Link href="/fun/menu" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
+          <Link href="/trubble/menu" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
             <span className="text-3xl">🍸</span>
           </Link>
-          <button onClick={funLogout} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+          <button onClick={trubbleLogout} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
             <img src="/Logout.png" alt="Exit" className="w-8 h-8 object-contain" />
           </button>
         </div>
       </nav>
 
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        <Link href="/fun/menu" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
+        <Link href="/trubble/menu" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
           <span className="text-5xl">🍸</span>
         </Link>
-        <Link href="/fun/cart" className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+        <Link href="/trubble/cart" className="flex flex-col items-center transition text-zinc-400 hover:text-white">
           <span className="text-5xl">🛒</span>
         </Link>
-        <button onClick={funLogout} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+        <button onClick={trubbleLogout} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
           <img src="/Logout.png" alt="Exit" className="w-10 h-10 object-contain" />
         </button>
       </nav>
