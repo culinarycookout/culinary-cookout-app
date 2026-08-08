@@ -15,6 +15,8 @@ interface FunAuthContextType {
   funLogin: (email: string, phone: string) => Promise<any>;
   funLogout: () => Promise<void>;
   funLoading: boolean;
+  // 👇 NEW LINE ADDED HERE: We tell the app this feature exists
+  isLockedOut: boolean; 
 }
 
 const FunAuthContext = createContext<FunAuthContextType | undefined>(undefined);
@@ -22,6 +24,8 @@ const FunAuthContext = createContext<FunAuthContextType | undefined>(undefined);
 export function FunAuthProvider({ children }: { children: ReactNode }) {
   const [funUser, setFunUser] = useState<User | null>(null);
   const [funLoading, setFunLoading] = useState(true);
+  // 👇 NEW LINE ADDED HERE: We create a placeholder state for it
+  const [isLockedOut, setIsLockedOut] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
@@ -55,7 +59,14 @@ export function FunAuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <FunAuthContext.Provider value={{ funUser, funLogin, funLogout, funLoading }}>
+    <FunAuthContext.Provider value={{ 
+      funUser, 
+      funLogin, 
+      funLogout, 
+      funLoading,
+      // 👇 NEW LINE ADDED HERE: We pass it to the rest of the app
+      isLockedOut 
+    }}>
       {children}
     </FunAuthContext.Provider>
   );
