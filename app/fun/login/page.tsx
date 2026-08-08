@@ -5,18 +5,27 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useFunAuth } from '../FunAuthContext';
 
-export default function FunSignupPage() {
+export default function FunLoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { funLogin } = useFunAuth();
   
-  const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1);
 
-  const redirectTo = searchParams.get('from') === 'canva' ? '/fun/menu' : '/fun/menu';
+  // ✅ HARD LOCK: Forces the redirect exclusively to the hidden menu.
+  const redirectTo = '/fun/menu';
+
+  // ✅ LOGOUT: Destroys the session and sends them straight to Canva
+  const handleLogout = async () => {
+    const { funLogout } = useFunAuth();
+    await funLogout();
+    // Hard redirect to your Canva splash screen
+    window.location.href = 'https://www.canva.com/design/DAHMa6CWluc/K6y1Hzp4I7Pckgkj7J1Fxw/view?utm_content=DAHMa6CWluc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0935d25285';
+  };
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,18 +49,11 @@ export default function FunSignupPage() {
     }
 
     try {
-      // Using signUp from the same auth client
-      const { data, error } = await (await import('@supabase/supabase-js')).createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-      ).auth.signUp({
-        email,
-        password: phone,
-      });
-      if (error) throw error;
-      router.push(redirectTo);
+      await funLogin(email, phone);
+      // ✅ Forces an absolute, hard redirect to the hidden menu only
+      window.location.href = redirectTo;
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Invalid login credentials');
     } finally {
       setLoading(false);
     }
@@ -71,13 +73,24 @@ export default function FunSignupPage() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-start pt-0 px-4 pb-32 md:justify-center md:pt-0">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl px-4 pt-4 pb-8 shadow-2xl md:p-8">
+        
+        {/* ✅ Added Logout Button at the top right */}
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={handleLogout}
+            className="text-xs text-red-400 hover:text-red-300 underline transition-colors"
+          >
+            
+          </button>
+        </div>
+
         <div className="flex flex-col items-center pt-0 md:pt-0">
-          <div className="text-6xl mb-4">🍸</div>
+          <div className="text-6xl mb-4"></div>
           <h1 className="text-2xl font-bold text-red-600 mt-1 md:mt-2">
-            {step === 1 ? 'FUN' : 'CREATE ACCOUNT'}
+            {step === 1 ? '⚠️ POISON IF NOT 21‼️ ⚠️' : 'ENTER PHONE NUMBER'}
           </h1>
           <p className="text-zinc-400 text-sm mt-1">
-            {step === 1 ? 'You found the back door...' : 'Set your phone code'}
+            {step === 1 ? '' : 'Enter your phone number'}
           </p>
         </div>
 
@@ -98,23 +111,23 @@ export default function FunSignupPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4 md:mt-6">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit Phone Code</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit Phone PIN</label>
               <input type="text" inputMode="numeric" pattern="[0-9]*" required maxLength={10} value={phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="0000000000" className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest" />
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={handleBack} className="flex-1 py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all">Back</button>
               <button type="submit" disabled={loading} className={`flex-1 py-3 rounded-xl font-bold text-lg transition-all ${loading ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500 text-white shadow-lg'}`}>
-                {loading ? 'Creating...' : 'Create Account'}
+                {loading ? 'Logging in...' : 'Log In'}
               </button>
             </div>
           </form>
         )}
 
         <div className="mt-6 text-center text-xs text-zinc-500">
-          <p>Already have an account?</p>
+          <p>Don&apos;t have an account?</p>
           <p className="mt-1">
-            <Link href="/fun/login" className="text-red-400 hover:text-red-300 font-bold">
-              Log In
+            <Link href="/fun/signup" className="text-red-400 hover:text-red-300 font-bold">
+              Sign Up
             </Link>
           </p>
         </div>

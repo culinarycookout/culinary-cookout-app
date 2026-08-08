@@ -1,15 +1,20 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, User } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    storageKey: 'fun-auth-token',
+  },
+});
 
 interface FunAuthContextType {
-  funUser: any | null;
+  funUser: User | null;
   funLogin: (email: string, phone: string) => Promise<any>;
   funLogout: () => Promise<void>;
   funLoading: boolean;
@@ -17,8 +22,8 @@ interface FunAuthContextType {
 
 const FunAuthContext = createContext<FunAuthContextType | undefined>(undefined);
 
-export function FunAuthProvider({ children }: { children: React.ReactNode }) {
-  const [funUser, setFunUser] = useState<any | null>(null);
+export function FunAuthProvider({ children }: { children: ReactNode }) {
+  const [funUser, setFunUser] = useState<User | null>(null);
   const [funLoading, setFunLoading] = useState(true);
   const router = useRouter();
 
@@ -32,10 +37,11 @@ export function FunAuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setFunUser(session?.user || null);
+      router.refresh();
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [router]);
 
   const funLogin = async (email: string, phone: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -46,11 +52,10 @@ export function FunAuthProvider({ children }: { children: React.ReactNode }) {
     return data;
   };
 
-  // ✅ UPDATED: Hard redirects to your Canva splash screen
+  // ✅ UPDATED: One-click replace to the new Canva link
   const funLogout = async () => {
     await supabase.auth.signOut();
-    // Forces a full browser redirect to the external Canva link
-    window.location.href = 'https://www.canva.com/design/DAHMa6CWluc/K6y1Hzp4I7Pckgkj7J1Fxw/view?utm_content=DAHMa6CWluc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0935d25285';
+    window.location.replace('https://canva.link/0yirht7zq90xjdi');
   };
 
   return (
