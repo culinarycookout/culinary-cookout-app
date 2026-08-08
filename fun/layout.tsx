@@ -1,21 +1,17 @@
-import '../app/globals.css';
-import { FunCartProvider } from './FunCartContext';
-import { FunAuthProvider } from './FunAuthContext';
-import FunNavigation from './FunNavigation';
+import { FunAuthProvider } from './context/FunAuthContext';
 
-export default function FunLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <FunAuthProvider>
-      <FunCartProvider>
-        <FunNavigation />
-        <main className="md:ml-24">
+    <html lang="en">
+      <body>
+        <FunAuthProvider>
           {children}
-        </main>
-      </FunCartProvider>
-    </FunAuthProvider>
+        </FunAuthProvider>
+      </body>
+    </html>
   );
 }
