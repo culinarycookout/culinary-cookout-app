@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../../context/CartContext'; // ✅ FIXED: 3 levels up
 import { useFunAuth } from '../FunAuthContext';
 
-// ✅ Added interface to tell TypeScript what "item" looks like
 interface CartItem {
   id: string;
   cartInstanceId?: string;
@@ -48,13 +47,12 @@ export default function FunCartPage() {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <Link href="/fun/menu" className="text-red-400 hover:text-red-300">← Back to Fun Menu</Link>
-          <h1 className="text-2xl font-bold text-red-600">Your Cart</h1>
-          <span className="text-sm text-zinc-400">({cart.length} {cart.length === 1 ? 'item' : 'items'})</span>
+          <h1 className="text-xl font-bold text-red-600">Your Cart</h1>
+          <span className="text-xs text-zinc-400">({cart.length} {cart.length === 1 ? 'item' : 'items'})</span>
         </div>
 
         <div className="space-y-4 mb-6">
-          {/* ✅ Added : CartItem right here to clear the red line */}
-          {cart.map((item: CartItem) => {
+          {cart.map((item) => {
             const qty = Number(item.quantity) || 1;
             const price = Number(item['Price'] || item.price || 0);
             const total = price * qty;
@@ -97,7 +95,7 @@ export default function FunCartPage() {
           })}
         </div>
 
-        <div className="bg-zinc-900 p-6 rounded-xl border border-zinc-800 mb-4">
+        <div className="bg-zinc-900 p-6 rounded-xl border border-zinc-800">
           <div className="flex justify-between text-xl font-bold mb-4">
             <span>Subtotal</span>
             <span className="text-red-400">${subtotal.toFixed(2)}</span>
