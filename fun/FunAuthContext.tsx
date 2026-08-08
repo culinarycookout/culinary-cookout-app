@@ -6,11 +6,8 @@ import { createClient, User } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
 const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    storageKey: 'fun-auth-token',
-  },
+  auth: { storageKey: 'fun-auth-token' },
 });
 
 interface FunAuthContextType {
@@ -52,7 +49,6 @@ export function FunAuthProvider({ children }: { children: ReactNode }) {
     return data;
   };
 
-  // ✅ UPDATED: One-click replace to the new Canva link
   const funLogout = async () => {
     await supabase.auth.signOut();
     window.location.replace('https://canva.link/0yirht7zq90xjdi');
@@ -67,8 +63,6 @@ export function FunAuthProvider({ children }: { children: ReactNode }) {
 
 export function useFunAuth() {
   const context = useContext(FunAuthContext);
-  if (!context) {
-    throw new Error('useFunAuth must be used within a FunAuthProvider');
-  }
+  if (!context) throw new Error('useFunAuth must be used within a FunAuthProvider');
   return context;
 }
