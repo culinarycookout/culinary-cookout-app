@@ -1,8 +1,8 @@
 'use client';
 
-import { TrubbleAuthProvider } from './context/TrubbleAuthContext';
-import { TrubbleCartProvider } from './TrubbleCartContext';
-import TrubbleNavigation from './TrubbleNavigation';
+import { TrubbleAuthProvider } from '../context/TrubbleAuthContext';
+import { TrubbleCartProvider } from '../TrubbleCartContext';
+import TrubbleNavigation from '../TrubbleNavigation';
 import React from 'react';
 
 export default function TrubbleLayout({
