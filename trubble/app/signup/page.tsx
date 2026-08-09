@@ -3,12 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@supabase/supabase-js';
 import { useTrubbleAuth } from '../../context/TrubbleAuthContext';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TrubbleSignupPage() {
   const router = useRouter();
@@ -66,32 +61,10 @@ export default function TrubbleSignupPage() {
     }
 
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (signUpError) throw new Error(signUpError.message);
-
-      if (data.user) {
-        // ✅ NOW SAVING TO THE PROFILES TABLE (because we confirmed it uses UUID!)
-        const { error: dbError } = await supabase
-          .from('profiles')
-          .upsert(
-            { 
-              id: data.user.id,     // UUID string
-              birth_date: birthDate // your text column
-            },
-            { onConflict: 'id' }
-          );
-
-        if (dbError) throw new Error('Failed to save profile data');
-
-        await trubbleLogin(email, password);
-        router.push('/menu');
-      } else {
-        setError('Signup successful, but please check your email to verify.');
-      }
+      // 1. Create the account and log in immediately
+      await trubbleLogin(email, password);
+      router.push('/menu');
+      
     } catch (err: any) {
       setError(err.message || 'Failed to create account');
     } finally {
