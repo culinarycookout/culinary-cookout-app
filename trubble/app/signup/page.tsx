@@ -37,13 +37,19 @@ export default function TrubbleSignupPage() {
     setStep(2);
   };
 
-  const handleBirthDateSubmit = (e: React.FormEvent) => {
+    const handleBirthDateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (birthDate.length !== 8 || !birthDate.includes('/')) {
-      setError('Please enter a valid birth date (MM/DD/YY)');
+
+    // Remove slashes to check exactly 6 raw digits
+    const rawDigits = birthDate.replace(/\//g, '');
+
+    // Strictly require exactly 6 numbers (MMDDYY)
+    if (rawDigits.length !== 6) {
+      setError('Please enter exactly 6 digits (MMDDYY)');
       return;
     }
+
     setStep(3);
   };
 
