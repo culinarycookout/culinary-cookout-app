@@ -98,7 +98,11 @@ export default function TrubbleLoginPage() {
           </form>
         )}
 
+
+
         <Link href="/reset-password" className="text-zinc-400 hover:text-white text-xs mt-2 block">Forgot Password?</Link>
+
+
 
         <div className="mt-6 text-center text-xs text-zinc-500">
           <p>Don&apos;t have access?</p>
