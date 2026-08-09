@@ -12,14 +12,15 @@ export default function TrubbleLoginPage() {
   
   const [email, setEmail] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const [confirmBirthDate, setConfirmBirthDate] = useState('');
   const [error, setError] = useState('');
 
   // Auto-format: 6 digits -> MM/DD/YY
-  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>, setter: (val: string) => void) => {
     let value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
     if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
     if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
-    setBirthDate(value);
+    setter(value);
   };
 
   // Calculate exact age based on MMDDYY
@@ -37,7 +38,7 @@ export default function TrubbleLoginPage() {
     return age;
   };
 
-  // Step 1: Continue to Birthdate
+  // Step 1: Email
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -48,14 +49,25 @@ export default function TrubbleLoginPage() {
     setStep(2);
   };
 
-  // Step 2: Final Submit
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Step 2: Enter Birth Date
+  const handleBirthDateSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (birthDate.length !== 8 || !birthDate.includes('/')) {
+      setError('Please enter a valid birth date (MM/DD/YY)');
+      return;
+    }
+    setStep(3);
+  };
+
+  // Step 3: Confirm and Final Submit
+  const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // 1. Validate Format: Must be MM/DD/YY
-    if (birthDate.length !== 8 || !birthDate.includes('/')) {
-      setError('Please enter a valid birth date (MM/DD/YY)');
+    // 1. Check if they match
+    if (birthDate !== confirmBirthDate) {
+      setError('Birth dates do not match. Please try again.');
       return;
     }
 
@@ -87,6 +99,8 @@ export default function TrubbleLoginPage() {
       setError(err.message || 'Invalid credentials');
     }
   };
+
+  // VIEWS
 
   // Step 1 View (Email)
   if (step === 1) {
@@ -135,12 +149,62 @@ export default function TrubbleLoginPage() {
     );
   }
 
-  // Step 2 View (Birthdate)
+  // Step 2 View (Enter Birth Date)
+  if (step === 2) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
+          <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">⚠️ POISON‼️ ⚠️</h1>
+          <p className="text-zinc-400 text-center mb-6 text-sm">Enter your Birth Date</p>
+
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleBirthDateSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Birth Date (MM/DD/YY)</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                required
+                maxLength={8}
+                value={birthDate}
+                onChange={(e) => handleBirthDateChange(e, setBirthDate)}
+                placeholder="MM/DD/YY"
+                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
+              />
+            </div>
+            
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => { setStep(1); setError(''); setBirthDate(''); }}
+                className="flex-1 py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className="flex-1 py-3 rounded-xl font-bold text-lg bg-red-600 hover:bg-red-500 text-white shadow-lg transition-all"
+              >
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 3 View (Confirm Birth Date)
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
         <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">⚠️ POISON‼️ ⚠️</h1>
-        <p className="text-zinc-400 text-center mb-6 text-sm">Verify your age</p>
+        <p className="text-zinc-400 text-center mb-6 text-sm">Confirm your Birth Date</p>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
@@ -148,16 +212,16 @@ export default function TrubbleLoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleFinalSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Birth Date (MM/DD/YY)</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Re-enter Birth Date (MM/DD/YY)</label>
             <input
               type="text"
               inputMode="numeric"
               required
               maxLength={8}
-              value={birthDate}
-              onChange={handleBirthDateChange}
+              value={confirmBirthDate}
+              onChange={(e) => handleBirthDateChange(e, setConfirmBirthDate)}
               placeholder="MM/DD/YY"
               className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
             />
@@ -166,7 +230,7 @@ export default function TrubbleLoginPage() {
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={() => { setStep(1); setError(''); setBirthDate(''); }}
+              onClick={() => { setStep(2); setError(''); setConfirmBirthDate(''); }}
               className="flex-1 py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all"
             >
               Back
@@ -184,15 +248,6 @@ export default function TrubbleLoginPage() {
             </button>
           </div>
         </form>
-
-        <div className="mt-6 text-center text-xs text-zinc-500">
-          <p>Don&apos;t have access?</p>
-          <p className="mt-1">
-            <Link href="/signup" className="text-red-400 hover:text-red-300 font-bold">
-              Sign Up
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   );
