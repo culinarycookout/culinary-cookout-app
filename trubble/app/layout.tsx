@@ -1,5 +1,6 @@
 'use client';
 
+import './globals.css'; // <--- THIS WAS MISSING. FIXES THE WHITE SCREEN.
 import { TrubbleAuthProvider } from '../context/TrubbleAuthContext';
 import { TrubbleCartProvider } from '../TrubbleCartContext';
 import TrubbleNavigation from '../TrubbleNavigation';

@@ -26,7 +26,7 @@ export default function TrubbleLoginPage() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">TROUBLE</h1>
+        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">TRUBBLE</h1>
         <p className="text-zinc-400 text-center mb-6 text-sm">Enter the hidden menu</p>
 
         {error && (
