@@ -1,6 +1,6 @@
 'use client';
 
-import './globals.css'; // <--- THIS WAS MISSING. FIXES THE WHITE SCREEN.
+import './globals.css';
 import { TrubbleAuthProvider } from '../context/TrubbleAuthContext';
 import { TrubbleCartProvider } from '../TrubbleCartContext';
 import TrubbleNavigation from '../TrubbleNavigation';
@@ -17,7 +17,7 @@ export default function TrubbleLayout({
         <TrubbleAuthProvider>
           <TrubbleCartProvider>
             <TrubbleNavigation />
-            <main className="p-4 pb-24">
+            <main className="p-4 pb-32 md:ml-24">
               {children}
             </main>
           </TrubbleCartProvider>
