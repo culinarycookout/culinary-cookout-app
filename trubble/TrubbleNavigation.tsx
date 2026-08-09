@@ -28,12 +28,17 @@ export default function TrubbleNavigation() {
     ? trubbleCartItems.reduce((sum: number, item: CartItem) => sum + (Number(item.quantity) || 1), 0) 
     : 0;
 
+  // ✅ EXACT FUNCTION YOU ASKED FOR: Log out, then go to Canva
+  const handleExit = async () => {
+    await trubbleLogout();       // 1. Clear the session
+    window.location.href = 'https://canva.link/0yirht7zq90xjdi'; // 2. Go to Canva
+  };
+
   return (
     <>
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
-          {/* Cart Link */}
           <Link href="/cart" className="relative flex flex-col items-center transition text-zinc-400 hover:text-white">
             <span className="text-3xl">🛒</span>
             {mounted && totalItems > 0 && (
@@ -43,13 +48,15 @@ export default function TrubbleNavigation() {
             )}
           </Link>
 
-          {/* Menu Link - Replaced with 🥃 */}
           <Link href="/menu" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
             <span className="text-3xl">🥃</span>
           </Link>
 
-          {/* Logout Button */}
-          <button onClick={trubbleLogout} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+          {/* ✅ EXIT BUTTON NOW LOGS OUT AND SENDS TO CANVA */}
+          <button 
+            onClick={handleExit}
+            className="flex flex-col items-center transition text-zinc-400 hover:text-white"
+          >
             <img src="/Logout.png" alt="Exit" className="w-8 h-8 object-contain" />
           </button>
         </div>
@@ -57,18 +64,19 @@ export default function TrubbleNavigation() {
 
       {/* Desktop Left Side Navigation */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
-        {/* Menu Link - Replaced with 🥃 */}
         <Link href="/menu" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
           <span className="text-5xl">🥃</span>
         </Link>
 
-        {/* Cart Link */}
         <Link href="/cart" className="flex flex-col items-center transition text-zinc-400 hover:text-white">
           <span className="text-5xl">🛒</span>
         </Link>
 
-        {/* Logout Button */}
-        <button onClick={trubbleLogout} className="flex flex-col items-center transition text-zinc-400 hover:text-white">
+        {/* ✅ EXIT BUTTON NOW LOGS OUT AND SENDS TO CANVA */}
+        <button 
+          onClick={handleExit}
+          className="flex flex-col items-center transition text-zinc-400 hover:text-white"
+        >
           <img src="/Logout.png" alt="Exit" className="w-10 h-10 object-contain" />
         </button>
       </nav>
