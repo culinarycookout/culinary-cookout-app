@@ -17,7 +17,7 @@ export default function TrubbleLoginPage() {
     setError('');
     try {
       await trubbleLogin(email, password);
-      router.push('/trubble/menu');
+      router.push('/menu'); // Fixed: Removed /trubble
     } catch (err: any) {
       setError(err.message || 'Invalid credentials');
     }
@@ -74,7 +74,7 @@ export default function TrubbleLoginPage() {
         <div className="mt-6 text-center text-xs text-zinc-500">
           <p>Don&apos;t have access?</p>
           <p className="mt-1">
-            <Link href="/trubble/signup" className="text-red-400 hover:text-red-300 font-bold">
+            <Link href="/signup" className="text-red-400 hover:text-red-300 font-bold">
               Sign Up
             </Link>
           </p>

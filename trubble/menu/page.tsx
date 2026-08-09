@@ -6,8 +6,7 @@ import Link from 'next/link';
 import { useTrubbleAuth } from '../context/TrubbleAuthContext';
 import { useTrubbleCart } from '../TrubbleCartContext';
 
-// Your exact hardcoded data, embedded directly in this file.
-// No external data files, no database, no Notion.
+// Your exact hardcoded data
 const getCurrentPrice = (single: number, double: number) => {
   return { single, double };
 };
@@ -57,10 +56,10 @@ export default function TrubbleMenuPage() {
   const { trubbleUser, trubbleLoading } = useTrubbleAuth();
   const { trubbleAddToCart } = useTrubbleCart();
 
-  // Client-side security guard: If they aren't logged in, bounce them to /trubble/login
+  // Client-side security guard
   useEffect(() => {
     if (!trubbleLoading && !trubbleUser) {
-      router.push('/trubble/login');
+      router.push('/login'); // Fixed: Removed /trubble
     }
   }, [trubbleUser, trubbleLoading, router]);
 
@@ -72,7 +71,7 @@ export default function TrubbleMenuPage() {
     );
   }
 
-  if (!trubbleUser) return null; // Prevents a flash of content before the redirect kicks in
+  if (!trubbleUser) return null;
 
   return (
     <div className="max-w-4xl mx-auto p-6 pb-32">
@@ -107,7 +106,7 @@ export default function TrubbleMenuPage() {
       </div>
 
       <div className="mt-10 flex justify-center">
-        <Link href="/trubble/cart">
+        <Link href="/cart"> {/* Fixed: Removed /trubble */}
           <button className="w-full max-w-xs bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-bold border border-zinc-700 shadow-lg transition-all">
             View Secret Cart
           </button>
