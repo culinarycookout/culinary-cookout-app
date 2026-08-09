@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useTrubbleAuth } from '../context/TrubbleAuthContext';
-import { useTrubbleCart } from '../TrubbleCartContext';
+import { useTrubbleAuth } from '../../context/TrubbleAuthContext';
+import { useTrubbleCart } from '../../TrubbleCartContext';
 
 export default function TrubbleCartPage() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function TrubbleCartPage() {
 
   useEffect(() => {
     if (!trubbleLoading && !trubbleUser) {
-      router.push('/login'); // Fixed: Removed /trubble
+      router.push('/login');
     }
   }, [trubbleUser, trubbleLoading, router]);
 
@@ -26,7 +26,7 @@ export default function TrubbleCartPage() {
       {trubbleCartItems.length === 0 ? (
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 text-center shadow-lg">
           <p className="text-zinc-400 text-lg">Your cart is empty.</p>
-          <Link href="/menu"> {/* Fixed: Removed /trubble */}
+          <Link href="/menu">
             <button className="mt-4 bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-6 rounded-lg transition-all">
               Browse the Menu
             </button>
@@ -58,7 +58,7 @@ export default function TrubbleCartPage() {
             </button>
           </div>
           <div className="mt-4 text-center">
-            <Link href="/menu" className="text-zinc-500 hover:text-zinc-300 text-sm underline"> {/* Fixed: Removed /trubble */}
+            <Link href="/menu" className="text-zinc-500 hover:text-zinc-300 text-sm underline">
               Continue Shopping
             </Link>
           </div>

@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useTrubbleAuth } from '../context/TrubbleAuthContext';
-import { useTrubbleCart } from '../TrubbleCartContext';
+import { useTrubbleAuth } from '../../context/TrubbleAuthContext';
+import { useTrubbleCart } from '../../TrubbleCartContext';
 
 // Your exact hardcoded data
 const getCurrentPrice = (single: number, double: number) => {
@@ -56,10 +56,9 @@ export default function TrubbleMenuPage() {
   const { trubbleUser, trubbleLoading } = useTrubbleAuth();
   const { trubbleAddToCart } = useTrubbleCart();
 
-  // Client-side security guard
   useEffect(() => {
     if (!trubbleLoading && !trubbleUser) {
-      router.push('/login'); // Fixed: Removed /trubble
+      router.push('/login');
     }
   }, [trubbleUser, trubbleLoading, router]);
 
@@ -106,7 +105,7 @@ export default function TrubbleMenuPage() {
       </div>
 
       <div className="mt-10 flex justify-center">
-        <Link href="/cart"> {/* Fixed: Removed /trubble */}
+        <Link href="/cart">
           <button className="w-full max-w-xs bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-bold border border-zinc-700 shadow-lg transition-all">
             View Secret Cart
           </button>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
-import { useTrubbleAuth } from '../context/TrubbleAuthContext';
+import { useTrubbleAuth } from '../../context/TrubbleAuthContext';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -24,7 +24,6 @@ export default function TrubbleSignupPage() {
     setLoading(true);
 
     try {
-      // Call Supabase directly to create the account. We leave the existing TrubbleAuthContext green-check untouched.
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -32,10 +31,9 @@ export default function TrubbleSignupPage() {
 
       if (signUpError) throw new Error(signUpError.message);
 
-      // If signup successful, immediately log them in using the context's trubbleLogin
       if (data.user) {
         await trubbleLogin(email, password);
-        router.push('/trubble/menu');
+        router.push('/menu');
       } else {
         setError('Signup successful, but please check your email to verify.');
       }
@@ -97,7 +95,7 @@ export default function TrubbleSignupPage() {
         <div className="mt-6 text-center text-xs text-zinc-500">
           <p>Already have access?</p>
           <p className="mt-1">
-            <Link href="/trubble/login" className="text-red-400 hover:text-red-300 font-bold">
+            <Link href="/login" className="text-red-400 hover:text-red-300 font-bold">
               Log In
             </Link>
           </p>

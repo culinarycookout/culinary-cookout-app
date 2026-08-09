@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useTrubbleAuth } from '../context/TrubbleAuthContext';
+import { useTrubbleAuth } from '../../context/TrubbleAuthContext';
 
 export default function TrubbleLoginPage() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function TrubbleLoginPage() {
     setError('');
     try {
       await trubbleLogin(email, password);
-      router.push('/menu'); // Fixed: Removed /trubble
+      router.push('/menu');
     } catch (err: any) {
       setError(err.message || 'Invalid credentials');
     }
