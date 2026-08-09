@@ -41,15 +41,11 @@ export default function TrubbleSignupPage() {
     e.preventDefault();
     setError('');
     
-    // Remove slashes to check exactly 6 raw digits
     const rawDigits = birthDate.replace(/\//g, '');
-    
-    // Strictly require exactly 6 numbers (MMDDYY)
     if (rawDigits.length !== 6) {
       setError('Please enter exactly 6 digits (MMDDYY)');
       return;
     }
-
     setStep(3);
   };
 
@@ -64,7 +60,6 @@ export default function TrubbleSignupPage() {
       return;
     }
 
-    // Convert 6-digit MMDDYY to a 10-character password that Supabase accepts
     let password = birthDate.replace(/\//g, '');
     while (password.length < 10) {
       password = '0' + password;
@@ -79,19 +74,15 @@ export default function TrubbleSignupPage() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // Save birthday to the database. 
-        // Using ignoreDuplicates: true ensures it doesn't crash if the user already exists
+        // ✅ NOW SAVING TO THE PROFILES TABLE (because we confirmed it uses UUID!)
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
             { 
-              id: data.user.id, 
-              birth_date: birthDate 
+              id: data.user.id,     // UUID string
+              birth_date: birthDate // your text column
             },
-            { 
-              onConflict: 'id',
-              ignoreDuplicates: false // This ensures it attempts to update/write the birthdate
-            }
+            { onConflict: 'id' }
           );
 
         if (dbError) throw new Error('Failed to save profile data');
