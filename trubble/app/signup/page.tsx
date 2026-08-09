@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { createClient } from '@supabase/supabase-js';
 import { useTrubbleAuth } from '../../context/TrubbleAuthContext';
+
+// We need direct access to Supabase here to set the redirect URL
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TrubbleSignupPage() {
   const router = useRouter();
@@ -14,6 +20,7 @@ export default function TrubbleSignupPage() {
   const [confirmBirthDate, setConfirmBirthDate] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isConfirmationSent, setIsConfirmationSent] = useState(false);
 
   const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>, setter: (val: string) => void) => {
     let value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
@@ -61,10 +68,27 @@ export default function TrubbleSignupPage() {
     }
 
     try {
-      // 1. Create the account and log in immediately
-      await trubbleLogin(email, password);
-      router.push('/menu');
-      
+      // 1. Call Supabase directly to handle the email confirmation
+      // We specifically set the redirect_to to the TRUBBLE login page
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/login`
+        }
+      });
+
+      if (signUpError) throw new Error(signUpError.message);
+
+      // 2. If the user is already confirmed, log them in directly
+      if (data?.user?.email_confirmed_at) {
+        await trubbleLogin(email, password);
+        router.push('/menu');
+      } else {
+        // 3. Show the "Check your email" confirmation screen
+        setIsConfirmationSent(true);
+      }
+
     } catch (err: any) {
       setError(err.message || 'Failed to create account');
     } finally {
@@ -72,7 +96,9 @@ export default function TrubbleSignupPage() {
     }
   };
 
-  // Step 1 View (Email)
+  // --- VIEWS ---
+
+  // Step 1: Email
   if (step === 1) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
@@ -116,7 +142,7 @@ export default function TrubbleSignupPage() {
     );
   }
 
-  // Step 2 View (Enter Birth Date)
+  // Step 2: Enter Birth Date
   if (step === 2) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
@@ -154,40 +180,64 @@ export default function TrubbleSignupPage() {
     );
   }
 
-  // Step 3 View (Confirm Birth Date)
+  // Step 3: Confirm Birth Date
+  if (step === 3 && !isConfirmationSent) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
+          <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ WELCOME ☠️</h1>
+          <p className="text-zinc-400 text-center mb-6 text-sm">Confirm your birth date</p>
+
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1">Re-enter Birth Date (MM/DD/YY)</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                required
+                maxLength={8}
+                value={confirmBirthDate}
+                onChange={(e) => handleBirthDateChange(e, setConfirmBirthDate)}
+                placeholder="MM/DD/YY"
+                className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
+              />
+            </div>
+            <div className="flex gap-3">
+              <button type="button" onClick={() => { setStep(2); setError(''); setConfirmBirthDate(''); }} className="flex-1 py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all">Back</button>
+              <button type="submit" disabled={loading || trubbleLoading} className={`flex-1 py-3 rounded-xl font-bold text-lg transition-all ${loading || trubbleLoading ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500 text-white shadow-lg'}`}>
+                {loading || trubbleLoading ? 'Creating account...' : 'Sign Up'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 4: Confirmation Email Sent Screen
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ WELCOME ☠️</h1>
-        <p className="text-zinc-400 text-center mb-6 text-sm">Confirm your birth date</p>
-
-        {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Re-enter Birth Date (MM/DD/YY)</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              required
-              maxLength={8}
-              value={confirmBirthDate}
-              onChange={(e) => handleBirthDateChange(e, setConfirmBirthDate)}
-              placeholder="MM/DD/YY"
-              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
-            />
-          </div>
-          <div className="flex gap-3">
-            <button type="button" onClick={() => { setStep(2); setError(''); setConfirmBirthDate(''); }} className="flex-1 py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all">Back</button>
-            <button type="submit" disabled={loading || trubbleLoading} className={`flex-1 py-3 rounded-xl font-bold text-lg transition-all ${loading || trubbleLoading ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500 text-white shadow-lg'}`}>
-              {loading || trubbleLoading ? 'Creating account...' : 'Sign Up'}
-            </button>
-          </div>
-        </form>
+      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl text-center">
+        <div className="text-6xl mb-4">📧</div>
+        <h1 className="text-3xl font-bold text-red-600 mb-4">Check your email</h1>
+        <p className="text-zinc-400 mb-6">
+          We sent a confirmation link to <span className="text-white font-bold">{email}</span>.<br />
+          Please click the link in that email to verify your account and finish signing up.
+        </p>
+        <p className="text-sm text-zinc-500 mb-6">
+          Didn&apos;t receive it? Check your spam folder, or try signing up again.
+        </p>
+        <Link href="/login">
+          <button className="w-full py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all">
+            Back to Login
+          </button>
+        </Link>
       </div>
     </div>
   );
