@@ -28,10 +28,10 @@ export default function TrubbleNavigation() {
     ? trubbleCartItems.reduce((sum: number, item: CartItem) => sum + (Number(item.quantity) || 1), 0) 
     : 0;
 
-  // ✅ EXACT FUNCTION YOU ASKED FOR: Log out, then go to Canva
+  // Kills the session, then instantly sends the browser to Canva
   const handleExit = async () => {
-    await trubbleLogout();       // 1. Clear the session
-    window.location.href = 'https://canva.link/0yirht7zq90xjdi'; // 2. Go to Canva
+    await trubbleLogout();
+    window.location.replace('https://canva.link/0yirht7zq90xjdi');
   };
 
   return (
@@ -52,7 +52,6 @@ export default function TrubbleNavigation() {
             <span className="text-3xl">🥃</span>
           </Link>
 
-          {/* ✅ EXIT BUTTON NOW LOGS OUT AND SENDS TO CANVA */}
           <button 
             onClick={handleExit}
             className="flex flex-col items-center transition text-zinc-400 hover:text-white"
@@ -72,7 +71,6 @@ export default function TrubbleNavigation() {
           <span className="text-5xl">🛒</span>
         </Link>
 
-        {/* ✅ EXIT BUTTON NOW LOGS OUT AND SENDS TO CANVA */}
         <button 
           onClick={handleExit}
           className="flex flex-col items-center transition text-zinc-400 hover:text-white"

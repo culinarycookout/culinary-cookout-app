@@ -47,9 +47,9 @@ export function TrubbleAuthProvider({ children }: { children: ReactNode }) {
     return data;
   };
 
+  // LOGOUT DOES NOT REDIRECT. IT ONLY KILLS THE SESSION.
   const trubbleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/trubble/login');
   };
 
   return (
