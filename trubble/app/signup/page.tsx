@@ -53,7 +53,7 @@ export default function TrubbleSignupPage() {
 
       if (signUpError) {
         // Check if the error is just "Email not confirmed"
-        if (signUpError.message.includes('Unconfirmed email')) {
+        if (signUpError.message.includes('Email confirmation sent...')) {
           // It's not a failure; they just haven't clicked the link yet!
           setIsConfirmationSent(true);
           setLoading(false);
