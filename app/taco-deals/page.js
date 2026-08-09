@@ -43,7 +43,7 @@ const tacoDealItems = [
 export default function TacoDealsMenu() {
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white p-4 md:p-8">
-      <div className="mb-6 flex items-center justify-between">npm run dev
+      <div className="mb-6 flex items-center justify-between">
         
         <div>
           <h1 className="text-2xl md:text-3xl font-black tracking-tight">🌮 Taco Packages</h1>
