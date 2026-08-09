@@ -71,9 +71,9 @@ export default function TrubbleMenuPage() {
         {TRUBBLE_MENU_ITEMS.map((item) => (
           <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-lg flex flex-col justify-between hover:border-red-600 transition-colors relative">
             
-            {/* 📸 THIS IS THE ADDED PICTURE FOR EVERY DRINK */}
+            {/* 📸 THIS IS THE ADDED PICTURE FOR EVERY DRINK (UPDATED TO bottles.png) */}
             <div className="w-full flex justify-center mb-4">
-              <img src="/bottle.png" alt={item.name} className="h-32 w-auto object-contain" />
+              <img src="/bottles.png" alt={item.name} className="h-32 w-auto object-contain" />
             </div>
 
             <div>
