@@ -12,9 +12,22 @@ export default function TrubbleLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  // Ensure only numbers are entered, and limit to 10 digits
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    setPassword(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    // Client-side validation for exactly 10 digits
+    if (password.length !== 10) {
+      setError('PIN must be exactly 10 digits');
+      return;
+    }
+
     try {
       await trubbleLogin(email, password);
       router.push('/menu');
@@ -48,14 +61,17 @@ export default function TrubbleLoginPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Password</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit PIN</label>
             <input
-              type="password"
+              type="text" // Using text so we don't get mobile password hiding
+              inputMode="numeric"
+              pattern="[0-9]*"
               required
+              maxLength={10}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
+              onChange={handlePasswordChange}
+              placeholder="0000000000"
+              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
             />
           </div>
           <button

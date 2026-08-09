@@ -18,10 +18,23 @@ export default function TrubbleSignupPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Ensure only numbers are entered, and limit to 10 digits
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    setPassword(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    // Client-side validation for exactly 10 digits
+    if (password.length !== 10) {
+      setError('PIN must be exactly 10 digits');
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data, error: signUpError } = await supabase.auth.signUp({
@@ -47,8 +60,8 @@ export default function TrubbleSignupPage() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">Join at your own risk...</h1>
-        <p className="text-zinc-400 text-center mb-6 text-sm">Create your hidden menu credentials</p>
+        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ JOIN THE POISON ☠️</h1>
+        <p className="text-zinc-400 text-center mb-6 text-sm">Get your 10-digit PIN</p>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
@@ -69,14 +82,17 @@ export default function TrubbleSignupPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Password</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit PIN</label>
             <input
-              type="password"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               required
+              maxLength={10}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
+              onChange={handlePasswordChange}
+              placeholder="0000000000"
+              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
             />
           </div>
           <button
@@ -93,7 +109,7 @@ export default function TrubbleSignupPage() {
         </form>
 
         <div className="mt-6 text-center text-xs text-zinc-500">
-          <p>Already have access?</p>
+          <p>Already have a PIN?</p>
           <p className="mt-1">
             <Link href="/login" className="text-red-400 hover:text-red-300 font-bold">
               Log In
