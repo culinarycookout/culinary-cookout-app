@@ -79,7 +79,8 @@ export default function TrubbleSignupPage() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // Save birthday to the database, but do NOT block them.
+        // Save birthday to the database. 
+        // Using ignoreDuplicates: true ensures it doesn't crash if the user already exists
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
@@ -87,7 +88,10 @@ export default function TrubbleSignupPage() {
               id: data.user.id, 
               birth_date: birthDate 
             },
-            { onConflict: 'id' }
+            { 
+              onConflict: 'id',
+              ignoreDuplicates: false // This ensures it attempts to update/write the birthdate
+            }
           );
 
         if (dbError) throw new Error('Failed to save profile data');
