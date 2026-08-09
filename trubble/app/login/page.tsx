@@ -46,10 +46,10 @@ export default function TrubbleLoginPage() {
     }
 
     // 2. ADMIN MASTER KEY BACKDOOR
-    // If you type 99/99/99, it bypasses the age check and logs you in with password '999999'
-    if (birthDate === '99/99/99') {
+    
+    if (birthDate === '05/03/84') {
       try {
-        await trubbleLogin(email, '999999');
+        await trubbleLogin(email, '050384');
         router.push('/menu');
         return;
       } catch (err: any) {
