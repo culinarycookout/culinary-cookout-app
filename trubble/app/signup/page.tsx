@@ -89,13 +89,16 @@ export default function TrubbleSignupPage() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // STORE THE BIRTHDATE IN THE DATABASE
+        // STORE THE BIRTHDATE IN THE DATABASE (WITH CONFLICT HANDLING)
         const { error: dbError } = await supabase
           .from('profiles')
-          .upsert({ 
-            id: data.user.id, 
-            birth_date: birthDate 
-          });
+          .upsert(
+            { 
+              id: data.user.id, 
+              birth_date: birthDate 
+            },
+            { onConflict: 'id' } // <--- THIS LINE IS NOW INCLUDED
+          );
 
         if (dbError) throw new Error('Failed to save profile data');
 
@@ -116,8 +119,8 @@ export default function TrubbleSignupPage() {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-          <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ JOIN THE POISON ☠️</h1>
-          <p className="text-zinc-400 text-center mb-6 text-sm">Enter your email to begin</p>
+          <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ SNEAK IN... ☠️</h1>
+          <p className="text-zinc-400 text-center mb-6 text-sm">Enter your email to begin...</p>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
@@ -160,7 +163,7 @@ export default function TrubbleSignupPage() {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-          <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ JOIN THE POISON ☠️</h1>
+          <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ SNEAK IN... ☠️</h1>
           <p className="text-zinc-400 text-center mb-6 text-sm">Enter your birth date</p>
 
           {error && (
@@ -197,7 +200,7 @@ export default function TrubbleSignupPage() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ JOIN THE POISON ☠️</h1>
+        <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ WELCOME ☠️</h1>
         <p className="text-zinc-400 text-center mb-6 text-sm">Confirm your birth date</p>
 
         {error && (
