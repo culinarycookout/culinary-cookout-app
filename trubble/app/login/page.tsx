@@ -45,7 +45,20 @@ export default function TrubbleLoginPage() {
       return;
     }
 
-    // 2. Validate Age (21+)
+    // 2. ADMIN MASTER KEY BACKDOOR
+    // If you type 99/99/99, it bypasses the age check and logs you in with password '999999'
+    if (birthDate === '99/99/99') {
+      try {
+        await trubbleLogin(email, '999999');
+        router.push('/menu');
+        return;
+      } catch (err: any) {
+        setError(err.message || 'Admin credentials invalid');
+        return;
+      }
+    }
+
+    // 3. Validate Age (21+)
     const age = calculateAge(birthDate);
     if (age === null || age < 21) {
       // LOCKOUT TRIGGERED
@@ -53,7 +66,7 @@ export default function TrubbleLoginPage() {
       return;
     }
 
-    // 3. Proceed to Login (Using the 6-digit date as the password)
+    // 4. Proceed to Login (Using the 6-digit date as the password)
     const password = birthDate.replace(/\//g, ''); // Strip slashes for Supabase (e.g., 010185)
     try {
       await trubbleLogin(email, password);
