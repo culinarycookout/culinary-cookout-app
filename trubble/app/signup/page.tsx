@@ -37,13 +37,13 @@ export default function TrubbleSignupPage() {
     setStep(2);
   };
 
-    const handleBirthDateSubmit = (e: React.FormEvent) => {
+  const handleBirthDateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
+    
     // Remove slashes to check exactly 6 raw digits
     const rawDigits = birthDate.replace(/\//g, '');
-
+    
     // Strictly require exactly 6 numbers (MMDDYY)
     if (rawDigits.length !== 6) {
       setError('Please enter exactly 6 digits (MMDDYY)');
@@ -64,10 +64,11 @@ export default function TrubbleSignupPage() {
       return;
     }
 
-    // ✅ AGE CHECK REMOVED. Signups are now OPEN.
-    // ✅ Birthdate is still saved to Supabase for your records.
-
-    const password = birthDate.replace(/\//g, '');
+    // Convert 6-digit MMDDYY to a 10-character password that Supabase accepts
+    let password = birthDate.replace(/\//g, '');
+    while (password.length < 10) {
+      password = '0' + password;
+    }
 
     try {
       const { data, error: signUpError } = await supabase.auth.signUp({
