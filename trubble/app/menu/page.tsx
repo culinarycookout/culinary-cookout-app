@@ -63,13 +63,19 @@ export default function TrubbleMenuPage() {
   return (
     <div className="max-w-4xl mx-auto p-6 pb-32">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-red-600 tracking-wider uppercase">⚠️ Trubble ⚠️</h1>
+        <h1 className="text-4xl font-bold text-red-600 tracking-wider uppercase">⚠️ TRUBBLE ⚠️</h1>
         <p className="text-zinc-400 mt-2 text-sm">Welcome back, {trubbleUser.email || 'Guest'}.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {TRUBBLE_MENU_ITEMS.map((item) => (
-          <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-lg flex flex-col justify-between hover:border-red-600 transition-colors">
+          <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-lg flex flex-col justify-between hover:border-red-600 transition-colors relative">
+            
+            {/* 📸 THIS IS THE ADDED PICTURE FOR EVERY DRINK */}
+            <div className="w-full flex justify-center mb-4">
+              <img src="/bottle.png" alt={item.name} className="h-32 w-auto object-contain" />
+            </div>
+
             <div>
               <div className="flex justify-between items-start">
                 <h3 className="text-xl font-bold text-white">{item.name}</h3>

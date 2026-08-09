@@ -9,25 +9,52 @@ export default function TrubbleLoginPage() {
   const router = useRouter();
   const { trubbleLogin, trubbleLoading } = useTrubbleAuth();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [error, setError] = useState('');
 
-  // Ensure only numbers are entered, and limit to 10 digits
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
-    setPassword(value);
+  // Auto-format: 6 digits -> MM/DD/YY
+  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
+    setBirthDate(value);
+  };
+
+  // Calculate exact age based on MMDDYY
+  const calculateAge = (dob: string): number | null => {
+    if (dob.length !== 8) return null; // MM/DD/YY is 8 chars with slashes
+    const month = parseInt(dob.slice(0, 2));
+    const day = parseInt(dob.slice(3, 5));
+    const year = 2000 + parseInt(dob.slice(6, 8)); // assume 2000s for YY
+
+    const today = new Date();
+    const birth = new Date(year, month - 1, day);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Client-side validation for exactly 10 digits
-    if (password.length !== 10) {
-      setError('PIN must be exactly 10 digits');
+    // 1. Validate Format: Must be MM/DD/YY
+    if (birthDate.length !== 8 || !birthDate.includes('/')) {
+      setError('Please enter a valid birth date (MM/DD/YY)');
       return;
     }
 
+    // 2. Validate Age (21+)
+    const age = calculateAge(birthDate);
+    if (age === null || age < 21) {
+      // LOCKOUT TRIGGERED
+      setError('Access Denied: You must be 21 or older to enter.');
+      return;
+    }
+
+    // 3. Proceed to Login (Using the 6-digit date as the password)
+    const password = birthDate.replace(/\//g, ''); // Strip slashes for Supabase (e.g., 010185)
     try {
       await trubbleLogin(email, password);
       router.push('/menu');
@@ -61,16 +88,15 @@ export default function TrubbleLoginPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit Phone PIN</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Birth Date (MM/DD/YY)</label>
             <input
-              type="text" // Using text so we don't get mobile password hiding
+              type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               required
-              maxLength={10}
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder="0000000000"
+              maxLength={8}
+              value={birthDate}
+              onChange={handleBirthDateChange}
+              placeholder="MM/DD/YY"
               className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
             />
           </div>
@@ -83,7 +109,7 @@ export default function TrubbleLoginPage() {
                 : 'bg-red-600 hover:bg-red-500 text-white shadow-lg'
             }`}
           >
-            {trubbleLoading ? 'Logging in...' : 'Login'}
+            {trubbleLoading ? 'Verifying...' : 'Login'}
           </button>
         </form>
 

@@ -14,14 +14,29 @@ export default function TrubbleSignupPage() {
   const router = useRouter();
   const { trubbleLogin, trubbleLoading } = useTrubbleAuth();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Ensure only numbers are entered, and limit to 10 digits
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
-    setPassword(value);
+  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
+    setBirthDate(value);
+  };
+
+  const calculateAge = (dob: string): number | null => {
+    if (dob.length !== 8) return null;
+    const month = parseInt(dob.slice(0, 2));
+    const day = parseInt(dob.slice(3, 5));
+    const year = 2000 + parseInt(dob.slice(6, 8));
+
+    const today = new Date();
+    const birth = new Date(year, month - 1, day);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,12 +44,20 @@ export default function TrubbleSignupPage() {
     setError('');
     setLoading(true);
 
-    // Client-side validation for exactly 10 digits
-    if (password.length !== 10) {
-      setError('PIN must be exactly 10 digits');
+    if (birthDate.length !== 8 || !birthDate.includes('/')) {
+      setError('Please enter a valid birth date (MM/DD/YY)');
       setLoading(false);
       return;
     }
+
+    const age = calculateAge(birthDate);
+    if (age === null || age < 21) {
+      setError('Signup Denied: You must be 21 or older to join Trubble.');
+      setLoading(false);
+      return;
+    }
+
+    const password = birthDate.replace(/\//g, ''); // 6-digit pass
 
     try {
       const { data, error: signUpError } = await supabase.auth.signUp({
@@ -61,7 +84,7 @@ export default function TrubbleSignupPage() {
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
         <h1 className="text-3xl font-bold text-red-600 text-center mb-2 tracking-wider">☠️ JOIN THE POISON ☠️</h1>
-        <p className="text-zinc-400 text-center mb-6 text-sm">Get your 10-digit PIN</p>
+        <p className="text-zinc-400 text-center mb-6 text-sm">Verify your age with your Birth Date</p>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
@@ -82,16 +105,15 @@ export default function TrubbleSignupPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit PIN</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Birth Date (MM/DD/YY)</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               required
-              maxLength={10}
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder="0000000000"
+              maxLength={8}
+              value={birthDate}
+              onChange={handleBirthDateChange}
+              placeholder="MM/DD/YY"
               className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest"
             />
           </div>
@@ -109,7 +131,7 @@ export default function TrubbleSignupPage() {
         </form>
 
         <div className="mt-6 text-center text-xs text-zinc-500">
-          <p>Already have a PIN?</p>
+          <p>Already have access?</p>
           <p className="mt-1">
             <Link href="/login" className="text-red-400 hover:text-red-300 font-bold">
               Log In
