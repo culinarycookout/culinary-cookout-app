@@ -61,7 +61,7 @@ export default function TrubbleLoginPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit PIN</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit PhonePIN</label>
             <input
               type="text" // Using text so we don't get mobile password hiding
               inputMode="numeric"
