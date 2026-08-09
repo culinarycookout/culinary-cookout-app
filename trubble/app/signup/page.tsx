@@ -27,19 +27,6 @@ export default function TrubbleSignupPage() {
     setter(value);
   };
 
-  const calculateAge = (dob: string): number | null => {
-    if (dob.length !== 8) return null;
-    const month = parseInt(dob.slice(0, 2));
-    const day = parseInt(dob.slice(3, 5));
-    const year = 2000 + parseInt(dob.slice(6, 8));
-    const today = new Date();
-    const birth = new Date(year, month - 1, day);
-    let age = today.getFullYear() - birth.getFullYear();
-    const m = today.getMonth() - birth.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-    return age;
-  };
-
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -71,12 +58,8 @@ export default function TrubbleSignupPage() {
       return;
     }
 
-    const age = calculateAge(birthDate);
-    if (age === null || age < 21) {
-      setError('Come back when you are 21.');
-      setLoading(false);
-      return;
-    }
+    // ✅ AGE CHECK REMOVED. Signups are now OPEN.
+    // ✅ Birthdate is still saved to Supabase for your records.
 
     const password = birthDate.replace(/\//g, '');
 
@@ -89,7 +72,7 @@ export default function TrubbleSignupPage() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // STORE THE BIRTHDATE IN THE DATABASE (WITH CONFLICT HANDLING)
+        // Save birthday to the database, but do NOT block them.
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
@@ -97,7 +80,7 @@ export default function TrubbleSignupPage() {
               id: data.user.id, 
               birth_date: birthDate 
             },
-            { onConflict: 'id' } // <--- THIS LINE IS NOW INCLUDED
+            { onConflict: 'id' }
           );
 
         if (dbError) throw new Error('Failed to save profile data');
