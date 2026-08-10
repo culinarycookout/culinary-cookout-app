@@ -364,12 +364,14 @@ function CartContent() {
                       </button>
                     )}
 
+                    {/* ✅ THE FIX: +Add Another now forces a unique ID and resets quantity to 1! */}
                     <button
                       onClick={() => {
                         const duplicate = {
                           ...item,
-                          cartInstanceId: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
-                          quantity: item.quantity || 1,
+                          // Forces a completely unique ID string so your context treats it as a new line
+                          cartInstanceId: `clone-${item.id}-${Date.now()}`,
+                          quantity: 1,
                         };
                         addToCart(duplicate);
                       }}
