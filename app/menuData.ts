@@ -12,7 +12,7 @@ export interface MenuItem {
 
 export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== BREAKFAST ====================
-  { id: 1, name: "KIDOGO", description: "The quickest meal of the day...", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
+  { id: 1, name: "EGG: BOILED", description: "The quickest meal of the day...", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 2, name: "EGGS: FRIED", description: "How far will you let the yolk run?", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 3, name: "EGGS: SCRAMBLED", description: "No need to scramble, unless it's eggs...", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 4, name: "EGGS: OMELETTE", description: "Start with eggs, end with eggstasy.", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
