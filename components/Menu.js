@@ -2,20 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { FOOD_MENU_ITEMS } from '@/app/menuData'; // Importing the hardcoded data directly
 
-const CACHE_KEY = 'culinary_menu_cache';
-const CACHE_VERSION = '5';
-const CACHE_TTL = 5 * 60 * 1000;
-
-const HIDDEN_ITEMS = [
-  'TACO',
-  'TACO TRIO',
-  'TACO PACK',
-  'TACO PARTY',
-  'TACO PARTY: FIESTA GRANDE',
-];
-
-// ✅ ORDER
+// ✅ ORDER - Updated with TREATS and BRAISED
 const CATEGORY_ORDER = [
   'BREAKFAST',
   'SANDWICH',
@@ -29,14 +18,16 @@ const CATEGORY_ORDER = [
   'ASIAN',
   'BEVERAGE',
   'SIDE',
-  'STEAMED',
   'SOUPS & STEWS',
   'VEGGIES',
+  'TREATS',
   'FLAMED',
+  'BRAISED',
   'ROTISSERIE',
   'SMOKED',
 ];
 
+// ✅ UPDATED COLORS - Added TREATS and BRAISED, removed STEAMED
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
@@ -51,83 +42,33 @@ const categoryColors = {
   'SANDWICH': 'bg-pink-600 text-white',
   'SEAFOOD': 'bg-cyan-300 text-black',
   'SIDE': 'bg-[#0047AB] text-white',
-  'SMOKED (24-Hour Notice)': 'bg-[#D1D5DB] text-black',
+  'SMOKED': 'bg-[#D1D5DB] text-black',
   'SOUPS & STEWS': 'bg-[#5E1A18] text-white',
   'BEVERAGE': 'bg-sky-600 text-white',
   'VEGGIES': 'bg-[#2D6A4F] text-white',
-  'STEAMED': 'bg-gray-500 text-white',
+  'TREATS': 'bg-pink-300 text-black',      // Added
+  'BRAISED': 'bg-amber-700 text-white',    // Added
 };
 
 export default function Menu() {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [isTacoTuesday, setIsTacoTuesday] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
 
-  const applyNotionSort = (array) => {
-    return array.sort((a, b) => {
-      const catNumA = a['CATEGORY NUMBER'] || '';
-      const catNumB = b['CATEGORY NUMBER'] || '';
-      if (catNumA !== catNumB) return catNumA.localeCompare(catNumB);
-      const sortA = a['SORT'] || '';
-      const sortB = b['SORT'] || '';
-      return sortA.localeCompare(sortB);
-    });
-  };
-
   useEffect(() => {
-    const fetchMenu = async () => {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        try {
-          const { data, timestamp, version } = JSON.parse(cached);
-          if (version === CACHE_VERSION && Date.now() - timestamp < CACHE_TTL) {
-            const filtered = data.filter(item => {
-              const name = (item['Item Name'] || '').trim().toUpperCase();
-              return !HIDDEN_ITEMS.includes(name);
-            });
-            applyNotionSort(filtered);
-            setItems(filtered);
-            setFilteredItems(filtered);
-            setLoading(false);
-            const now = new Date();
-            const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
-            const day = pacificTime.getDay();
-            const hours = pacificTime.getHours();
-            setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
-            return;
-          }
-        } catch (e) {}
-      }
+    // Load the hardcoded data immediately
+    setItems(FOOD_MENU_ITEMS);
+    setFilteredItems(FOOD_MENU_ITEMS);
+    setLoading(false);
 
-      try {
-        const res = await fetch('/api/menu');
-        if (!res.ok) throw new Error('Failed to fetch menu');
-        const data = await res.json();
-        const filtered = data.filter(item => {
-          const name = (item['Item Name'] || '').trim().toUpperCase();
-          return !HIDDEN_ITEMS.includes(name);
-        });
-        applyNotionSort(filtered);
-        setItems(filtered);
-        setFilteredItems(filtered);
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now(), version: CACHE_VERSION }));
-
-        const now = new Date();
-        const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
-        const day = pacificTime.getDay();
-        const hours = pacificTime.getHours();
-        setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMenu();
+    const now = new Date();
+    const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+    const day = pacificTime.getDay();
+    const hours = pacificTime.getHours();
+    setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
   }, []);
 
   useEffect(() => {
@@ -137,20 +78,19 @@ export default function Menu() {
       const term = searchTerm.toLowerCase();
       result = result.filter(
         (item) =>
-          (item['Item Name'] || '').toLowerCase().includes(term) ||
-          (item['DESCRIPTION'] || '').toLowerCase().includes(term)
+          (item.name || '').toLowerCase().includes(term) ||
+          (item.description || '').toLowerCase().includes(term)
       );
     }
 
     if (filterCategory) {
-      result = result.filter((item) => item['CATEGORY'] === filterCategory);
+      result = result.filter((item) => item.category === filterCategory);
     }
 
-    applyNotionSort(result);
     setFilteredItems(result);
   }, [searchTerm, filterCategory, items]);
 
-  const categories = [...new Set(items.map((item) => item['CATEGORY']).filter(Boolean))].sort((a, b) => {
+  const categories = [...new Set(items.map((item) => item.category).filter(Boolean))].sort((a, b) => {
     const indexA = CATEGORY_ORDER.indexOf(a);
     const indexB = CATEGORY_ORDER.indexOf(b);
     
@@ -167,8 +107,6 @@ export default function Menu() {
       </div>
     );
   }
-
-  if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
 
   return (
     <div className="w-full">
@@ -228,17 +166,15 @@ export default function Menu() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 pb-40 md:pb-0">
           {filteredItems.map((item) => {
-            const colorClass = categoryColors[item['CATEGORY']] || 'bg-gray-600 text-white';
-            const isTaco = item['CATEGORY'] === 'LATIN AMERICA' && item['Item Type'] === 'Taco';
-            const hasDiscount = isTacoTuesday && isTaco && item.isDiscounted;
+            const colorClass = categoryColors[item.category] || 'bg-gray-600 text-white';
+            const isTaco = item.category === 'LATIN AMERICA' && item.name.includes('TACO');
+            const hasDiscount = isTacoTuesday && isTaco;
 
-            const imageUrl = item['Image URL'] || item['imageUrl'] || item['image'] || '';
-            const itemName = (item['Item Name'] || '').trim().toUpperCase();
-
+            // If you have a dedicated taco builder page, keep this logic
             let destinationHref;
-            if (itemName === 'TACO PACKAGES') {
+            if (item.name === 'TACO PACKAGES') {
               destinationHref = '/taco-deals';
-            } else if (itemName === 'SOUP & STEW') {
+            } else if (item.name === 'SOUP & STEW') {
               destinationHref = '/soup-stew';
             } else {
               destinationHref = `/menu/${item.id}`;
@@ -250,10 +186,10 @@ export default function Menu() {
                 href={destinationHref}
                 className={`bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col h-full ${hasDiscount ? 'border-2 border-red-500' : ''}`}
               >
-                {imageUrl ? (
+                {item.image && item.image !== 'PLACEHOLDER_IMAGE_URL' ? (
                   <img
-                    src={imageUrl}
-                    alt={item['Item Name']}
+                    src={item.image}
+                    alt={item.name}
                     className="w-full h-36 md:h-48 object-cover"
                     onError={(e) => { e.target.src = '/placeholder.png'; }}
                   />
@@ -264,17 +200,17 @@ export default function Menu() {
                 )}
                 <div className="p-3 md:p-4 flex flex-col flex-1">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-sm md:text-lg leading-tight break-words flex-1">{item['Item Name']}</h3>
+                    <h3 className="font-bold text-sm md:text-lg leading-tight break-words flex-1">{item.name}</h3>
                     {hasDiscount && <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap mt-0.5">🌮🪅50% OFF‼️🎉</span>}
                   </div>
-                  {item['CATEGORY'] && (
+                  {item.category && (
                     <span className={`inline-block ${colorClass} text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
-                      {item['CATEGORY']}
+                      {item.category}
                     </span>
                   )}
-                  {item['DESCRIPTION'] && (
+                  {item.description && (
                     <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
-                      {item['DESCRIPTION']}
+                      {item.description}
                     </p>
                   )}
                 </div>
