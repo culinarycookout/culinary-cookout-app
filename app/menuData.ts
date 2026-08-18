@@ -27,7 +27,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: 13, name: "SAUSAGES", description: "Pick your type & flavor...", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 14, name: "BREADS", description: "Toast! Muffins! The universal breakfast staple.", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
 
-  // ==================== SANDWICH ====================
+  // ==================== SANDWICHES ====================
   { id: 15, name: "CLUB", description: "Build your own club sandwich.", price: 0, category: "SANDWICH", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 16, name: "GRILLED CHEESE", description: "Build your own grilled cheese sandwich.", price: 0, category: "SANDWICH", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 17, name: "HOAGIE", description: "Build your own hoagie.", price: 0, category: "SANDWICH", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
@@ -64,7 +64,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: 42, name: "BOILED KING CRAB LEGS", description: "A boil fit for a king!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 43, name: "STEAMED KING CRAB LEGS", description: "All hail the King!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
 
-  // ==================== FRIED SIDE ====================
+  // ==================== FRIED SIDES ====================
   { id: 44, name: "POTATO: FRIES", description: "Fried potatoes, not some science experiment.", price: 0, category: "FRIED SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 45, name: "POTATO: CURLIES", description: "You can almost never order enough curly fries... But you can try!", price: 0, category: "FRIED SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 46, name: "POTATO: WEDGES", description: "A seasoned potato, fried, fluffy, & flavorful.", price: 0, category: "FRIED SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
@@ -101,8 +101,8 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: 71, name: "SHORT RIBS", description: "", price: 0, category: "BEEF", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 72, name: "OXTAILS", description: "", price: 0, category: "BEEF", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
 
-  // ==================== SIDE ====================
-  { id: 73, name: "MAC & CHEESE", description: "Cooked low & slow...", price: 0, category: "SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
+  // ==================== SIDES ====================
+  { id: 73, name: "MAC 'N' CHEESE", description: "Cooked low & slow...", price: 0, category: "SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 74, name: "ALFREDO", description: "Alfredo is life with the dull bits cut out. - Hitchcock", price: 0, category: "SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 75, name: "RICE", description: "20,000 years of deliciousness!", price: 0, category: "SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
   { id: 76, name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", price: 0, category: "SIDE", image: "PLACEHOLDER_IMAGE_URL", addOns: [] },
