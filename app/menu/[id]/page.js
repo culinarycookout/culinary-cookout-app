@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useCart } from '../../../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { FOOD_MENU_ITEMS } from '../../menuData'; // ✅ We are now reading from your hardcoded data
 
 const CACHE_KEY = 'culinary_menu_cache';
 
@@ -22,31 +23,42 @@ export default function ItemDetailPage({ params }) {
   useEffect(() => {
     async function fetchItem() {
       try {
-        let data = null;
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-          try {
-            const parsed = JSON.parse(cached);
-            data = parsed.data;
-          } catch (e) {}
+        // ✅ We now check your hardcoded menuData.ts FIRST, before looking at API/Cache
+        let data = FOOD_MENU_ITEMS; 
+        let found = data.find(item => item.id === Number(itemId));
+
+        // If it's not in the hardcoded list yet (for legacy support), fallback to the API
+        if (!found) {
+          let cached = localStorage.getItem(CACHE_KEY);
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              data = parsed.data;
+              found = data.find(item => item.id === itemId);
+            } catch (e) {}
+          }
+          if (!found) {
+            const res = await fetch('/api/menu');
+            data = await res.json();
+            found = data.find(item => item.id === itemId);
+          }
         }
-        if (!data) {
-          const res = await fetch('/api/menu');
-          data = await res.json();
-        }
-        const found = data.find(item => item.id === itemId);
+
         if (found) {
           setItem(found);
-          if (found.Sizes && found.Sizes.length > 0) {
-            setSelectedSize(found.Sizes[0]);
+          // Check for size options (compatible with both 'Sizes' and 'sizes' fields)
+          const sizeOptions = found.Sizes || found.sizes || [];
+          if (sizeOptions.length > 0) {
+            setSelectedSize(sizeOptions[0]);
           } else {
             setSelectedSize({
               id: 'default',
               size: 'Standard',
-              price: found.Price || 0,
+              price: found.Price || found.price || 0,
               amount: '',
               serves: '',
               description: '',
+              image: found.image // Fallback to main image
             });
           }
         } else {
@@ -92,6 +104,11 @@ export default function ItemDetailPage({ params }) {
   if (loading) return <div className="min-h-screen bg-zinc-950 text-white p-8 flex justify-center pt-24 text-xl font-medium">Thank goodness for goodness... 🤤</div>;
   if (error || !item) return <div className="min-h-screen bg-black text-white p-8 text-red-500">{error || 'Item not found'}</div>;
 
+  // ✅ DYNAMIC IMAGE LOGIC: 
+  // If the selected size has its own image, use it. 
+  // Otherwise, fall back to the main item image.
+  const currentImage = (selectedSize && selectedSize.image) ? selectedSize.image : (item['Image URL'] || item.image || '');
+
   const currentPrice = selectedSize?.price || 0;
   const finalPrice = currentPrice * quantity;
 
@@ -105,8 +122,9 @@ export default function ItemDetailPage({ params }) {
           
           {/* LEFT COLUMN: IMAGE + SIZE-SPECIFIC DETAILS */}
           <div className="flex flex-col gap-3">
-            {item['Image URL'] ? (
-              <img src={item['Image URL']} alt={item['Item Name']} className="w-full rounded-lg object-cover aspect-square" />
+            {/* 🔥 IMAGE NOW SWAPS BASED ON THE SELECTED SIZE */}
+            {currentImage ? (
+              <img src={currentImage} alt={item['Item Name']} className="w-full rounded-lg object-cover aspect-square transition-opacity duration-300" />
             ) : (
               <div className="w-full aspect-square bg-zinc-800 rounded-lg flex items-center justify-center">
                 <span className="text-zinc-500">No image</span>
@@ -132,11 +150,12 @@ export default function ItemDetailPage({ params }) {
               <p className="text-2xl font-bold text-red-500">${currentPrice.toFixed(2)}</p>
             </div>
 
-            {item.Sizes && item.Sizes.length > 0 && (
+            {/* Size Options Loop */}
+            {(item.Sizes || item.sizes) && (item.Sizes || item.sizes).length > 0 && (
               <div className="mt-4">
                 <label className="block text-sm font-bold text-zinc-300 mb-2">Size Options:</label>
                 <div className="flex flex-wrap gap-3">
-                  {item.Sizes.map((size) => {
+                  {(item.Sizes || item.sizes).map((size) => {
                     const isSelected = selectedSize?.id === size.id;
                     const baseClass = "px-4 py-2 rounded-lg font-bold text-sm transition-colors border";
                     const selectedClass = "bg-red-600 text-white border-red-700 hover:bg-red-500";
@@ -177,7 +196,7 @@ export default function ItemDetailPage({ params }) {
           </div>
         </div>
 
-        {/* ✅ DESKTOP TOTAL BOX (Unchanged) */}
+        {/* ✅ DESKTOP TOTAL BOX */}
         <div className="hidden md:block mt-6 p-4 bg-zinc-900 rounded-lg border border-zinc-800 md:w-1/2 ml-auto">
           <div className="flex justify-between items-center">
             <span className="text-lg font-bold">Total</span>
