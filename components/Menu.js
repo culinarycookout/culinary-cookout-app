@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FOOD_MENU_ITEMS } from '@/app/menuData'; // Importing the hardcoded data directly
+import { FOOD_MENU_ITEMS } from '@/app/menuData';
 
-// ✅ ORDER - Updated with TREATS and BRAISED
 const CATEGORY_ORDER = [
   'BREAKFAST',
   'SANDWICHES',
@@ -27,7 +26,6 @@ const CATEGORY_ORDER = [
   'SMOKED',
 ];
 
-// ✅ UPDATED COLORS - Added TREATS and BRAISED, removed STEAMED
 const categoryColors = {
   'ASIAN': 'bg-red-600 text-white',
   'BEEF': 'bg-amber-800 text-white',
@@ -46,8 +44,8 @@ const categoryColors = {
   'SOUPS & STEWS': 'bg-[#5E1A18] text-white',
   'BEVERAGES': 'bg-sky-600 text-white',
   'VEGGIES': 'bg-[#2D6A4F] text-white',
-  'TREATS': 'bg-pink-300 text-black',      // Added
-  'BRAISED': 'bg-amber-700 text-white',    // Added
+  'TREATS': 'bg-pink-300 text-black',
+  'BRAISED': 'bg-amber-700 text-white',
 };
 
 export default function Menu() {
@@ -59,7 +57,6 @@ export default function Menu() {
   const [filterCategory, setFilterCategory] = useState('');
 
   useEffect(() => {
-    // Load the hardcoded data immediately
     setItems(FOOD_MENU_ITEMS);
     setFilteredItems(FOOD_MENU_ITEMS);
     setLoading(false);
@@ -170,12 +167,9 @@ export default function Menu() {
             const isTaco = item.category === 'LATIN AMERICA' && item.name.includes('TACO');
             const hasDiscount = isTacoTuesday && isTaco;
 
-            // If you have a dedicated taco builder page, keep this logic
             let destinationHref;
-            if (item.name === 'TACO PACKAGES') {
+            if (item.name === 'TACOS') {
               destinationHref = '/taco-deals';
-            } else if (item.name === 'SOUP & STEW') {
-              destinationHref = '/soup-stew';
             } else {
               destinationHref = `/menu/${item.id}`;
             }
