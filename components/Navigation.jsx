@@ -28,9 +28,9 @@ export default function Navigation() {
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 py-4 px-4 z-50 shadow-2xl md:hidden">
         <div className="flex items-center justify-around max-w-md mx-auto">
           
-          {/* ✅ Your actual Logo now */}
+          {/* ✅ MENU BUTTON AT THE TOP LEFT */}
           <Link href="/" className="flex flex-col items-center transition text-zinc-400 hover:text-white">
-            <img src="/logo.png" alt="Menu" className="w-12 h-12 object-contain" />
+            <img src="/menu.png" alt="Menu" className="w-12 h-12 object-contain" />
           </Link>
 
           {/* 📬 Contact */}
@@ -48,7 +48,7 @@ export default function Navigation() {
             )}
           </Link>
 
-          {/* 🚪 EXIT Button - Now bridges to Canva */}
+          {/* 🚪 EXIT Button */}
           <button 
             onClick={() => {
               logout();
@@ -65,9 +65,9 @@ export default function Navigation() {
       {/* DESKTOP NAV (Left Side) */}
       <nav className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-zinc-950 border-r border-zinc-800 flex-col items-center py-8 gap-8 z-50 shadow-2xl">
         
-        {/* ✅ Your actual Logo now */}
+        {/* ✅ MENU BUTTON AT THE TOP LEFT */}
         <Link href="/" className="flex items-center justify-center transition opacity-60 hover:opacity-100">
-          <img src="/logo.png" alt="Menu" className="w-20 h-20 object-contain" />
+          <img src="/menu.png" alt="Menu" className="w-20 h-20 object-contain" />
         </Link>
 
         {/* 📬 Contact */}
@@ -80,7 +80,7 @@ export default function Navigation() {
           <span className="text-5xl">🛒</span>
         </Link>
 
-        {/* 🚪 EXIT Button - Now bridges to Canva */}
+        {/* 🚪 EXIT Button */}
         <button 
           onClick={() => {
             logout();
