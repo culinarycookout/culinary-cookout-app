@@ -165,7 +165,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-  // ==================== SEAFOOD ====================
+ // ==================== SEAFOOD ====================
   {
     id: "seafood-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -188,6 +188,9 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "steamed", name: "STEAMED", description: "Seafood royalty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
+  { id: "sautéed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "sautéed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "broiled-lobster-tail", name: "BROILED LOBSTER TAIL", description: "will add later", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "seafood-crab-legs", name: "CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -202,9 +205,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "steamed", name: "STEAMED", description: "All shell the King!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "sautéed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "sautéed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "fried-prawns", name: "FRIED PRAWNS", description: "Prawns big enough to be a pet!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "battered-prawns", name: "BATTERED PRAWNS", description: "Prawns big enough to be a pet!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "citrus-shrimp", name: "CITRUS SHRIMP", description: "Sautéed, seasoned, & satisfying.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== FRIED SIDES ====================
@@ -240,7 +241,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "taco-trio", name: "TACO TRIO", description: "Customize these 3 amigos.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
       { id: "taco-pack", name: "TACO PACK", description: "Add 3 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
       { id: "taco-party", name: "TACO PARTY", description: "Add 4 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "taco-party:-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
 
