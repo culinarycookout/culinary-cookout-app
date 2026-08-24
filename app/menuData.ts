@@ -166,24 +166,48 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   },
 
   // ==================== SEAFOOD ====================
-  { id: "fried-snapper", name: "FRIED SNAPPER", description: "Battered but unbeatable!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "sautéed-snapper", name: "SAUTÉED SNAPPER", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "steamed-snapper", name: "STEAMED SNAPPER", description: "Swimming in seasoning.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  {
+    id: "seafood-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    subMenu: [
+      { id: "battered", name: "BATTERED", description: "Battered but unbeatable!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "sauteed", name: "SAUTÉED", description: "Fresh fillet, fired for full flavor!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Swimming in seasoning.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+    ], addOns: [],
+  },
+  {
+    id: "seafood-salmon", name: "SALMON", description: "From sea to seasoned.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    subMenu: [
+      { id: "sauteed", name: "SAUTÉED", description: "From sea to seasoned.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Hot steam, upstream!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+    ], addOns: [],
+  },
+  {
+    id: "seafood-king-salmon", name: "KING SALMON", description: "Seafood royalty.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    subMenu: [
+      { id: "sauteed", name: "SAUTÉED", description: "Seafood royalty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Seafood royalty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+    ], addOns: [],
+  },
+  {
+    id: "seafood-crab-legs", name: "CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    subMenu: [
+      { id: "boiled", name: "BOILED", description: "A boil in a bag!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Cleaned & steamed… So get crackin'!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+    ], addOns: [],
+  },
+  {
+    id: "seafood-king-crab-legs", name: "KING CRAB LEGS", description: "All shell the King!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    subMenu: [
+      { id: "boiled", name: "BOILED", description: "A boil fit for a king!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "All shell the King!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+    ], addOns: [],
+  },
   { id: "sautéed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "sautéed-salmon", name: "SAUTÉED SALMON", description: "From sea to seasoned.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "steamed-salmon", name: "STEAMED SALMON", description: "Hot steam, upstream!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "sautéed-king-salmon", name: "SAUTÉED KING SALMON", description: "Seafood royalty.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "sautéed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "fried-prawns", name: "FRIED PRAWNS", description: "Prawns big enough to be a pet!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "citrus-shrimp", name: "CITRUS SHRIMP", description: "Sautéed, seasoned, & satisfying.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "steamed-crab-legs", name: "STEAMED CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "boiled-crab-legs", name: "BOILED CRAB LEGS", description: "A boil in a bag!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "steamed-king-crab-legs", name: "STEAMED KING CRAB LEGS", description: "All shell the King!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "boiled-king-crab-legs", name: "BOILED KING CRAB LEGS", description: "A boil fit for a king!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== FRIED SIDES ====================
-  { id: "onion-rings", name: "ONION RINGS", description: "They will have you crying for more!", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "poppers", name: "POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "fried-sides-fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -202,6 +226,8 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "flower-bites", name: "FLOWER BITES", description: "Popcorn cauliflower bites.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
+  { id: "onion-rings", name: "ONION RINGS", description: "They will have you crying for more!", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "poppers", name: "POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== LATIN AMERICA ====================
   { id: "burrito", name: "BURRITO", description: "Not a lil donkey!", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
@@ -214,7 +240,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "taco-trio", name: "TACO TRIO", description: "Customize these 3 amigos.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
       { id: "taco-pack", name: "TACO PACK", description: "Add 3 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
       { id: "taco-party", name: "TACO PARTY", description: "Add 4 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "taco-party:-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
 
