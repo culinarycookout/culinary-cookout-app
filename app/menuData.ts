@@ -1,4 +1,5 @@
 // app/menuData.ts
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -9,6 +10,7 @@ export interface MenuItem {
   subMenu: SubMenuItem[];
   addOns: any[];
 }
+
 export interface SubMenuItem {
   id: string;
   name: string;
@@ -55,6 +57,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   },
 
   // ==================== SANDWICHES ====================
+  { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "sandwich-club", name: "CLUB", description: "Build your own club sandwich.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -91,7 +94,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "sliders", name: "SLIDERS", description: "Smaller burgers built on rolls.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== BIRDS ====================
   {
@@ -164,27 +166,24 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   },
 
   // ==================== SEAFOOD ====================
-  {
-    id: "seafood", name: "SEAFOOD", description: "Fresh from the ocean, seasoned to perfection.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
-    subMenu: [
-      { id: "fried-snapper", name: "FRIED SNAPPER", description: "Battered but unbeatable!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sautéed-snapper", name: "SAUTÉED SNAPPER", description: "Fresh fillet, fired for full flavor!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed-snapper", name: "STEAMED SNAPPER", description: "Swimming in seasoning.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sautéed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sautéed-salmon", name: "SAUTÉED SALMON", description: "From sea to seasoned.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed-salmon", name: "STEAMED SALMON", description: "Hot steam, upstream!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sautéed-king-salmon", name: "SAUTÉED KING SALMON", description: "Seafood royalty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sautéed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "fried-prawns", name: "FRIED PRAWNS", description: "Prawns big enough to be a pet!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "citrus-shrimp", name: "CITRUS SHRIMP", description: "Sautéed, seasoned, & satisfying.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed-crab-legs", name: "STEAMED CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "boiled-crab-legs", name: "BOILED CRAB LEGS", description: "A boil in a bag!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed-king-crab-legs", name: "STEAMED KING CRAB LEGS", description: "All shell the King!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "boiled-king-crab-legs", name: "BOILED KING CRAB LEGS", description: "A boil fit for a king!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-    ], addOns: [],
-  },
+  { id: "fried-snapper", name: "FRIED SNAPPER", description: "Battered but unbeatable!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "sautéed-snapper", name: "SAUTÉED SNAPPER", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "steamed-snapper", name: "STEAMED SNAPPER", description: "Swimming in seasoning.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "sautéed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "sautéed-salmon", name: "SAUTÉED SALMON", description: "From sea to seasoned.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "steamed-salmon", name: "STEAMED SALMON", description: "Hot steam, upstream!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "sautéed-king-salmon", name: "SAUTÉED KING SALMON", description: "Seafood royalty.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "sautéed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "fried-prawns", name: "FRIED PRAWNS", description: "Prawns big enough to be a pet!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "citrus-shrimp", name: "CITRUS SHRIMP", description: "Sautéed, seasoned, & satisfying.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "steamed-crab-legs", name: "STEAMED CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "boiled-crab-legs", name: "BOILED CRAB LEGS", description: "A boil in a bag!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "steamed-king-crab-legs", name: "STEAMED KING CRAB LEGS", description: "All shell the King!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "boiled-king-crab-legs", name: "BOILED KING CRAB LEGS", description: "A boil fit for a king!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== FRIED SIDES ====================
+  { id: "onion-rings", name: "ONION RINGS", description: "They will have you crying for more!", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "poppers", name: "POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "fried-sides-fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -203,10 +202,11 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "flower-bites", name: "FLOWER BITES", description: "Popcorn cauliflower bites.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "onion-rings", name: "ONION RINGS", description: "They will have you crying for more!", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "poppers", name: "POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== LATIN AMERICA ====================
+  { id: "burrito", name: "BURRITO", description: "Not a lil donkey!", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "quesadilla", name: "QUESADILLA", description: "A grilled cheese tortilla sandwich.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "enchiladas", name: "ENCHILADAS", description: "Add 5 groups to customize.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "latin-america-tacos", name: "TACOS", description: "Just a corn tortilla, put stuff in it.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -217,9 +217,12 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "burrito", name: "BURRITO", description: "Not a lil donkey!", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "quesadilla", name: "QUESADILLA", description: "A grilled cheese tortilla sandwich.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "enchiladas", name: "ENCHILADAS", description: "Add 5 groups to customize.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+
+  // ==================== ASIAN ====================
+  { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "stir-fry-veggies", name: "STIR-FRY VEGGIES", description: "Build your bowl, a full side serving of veggies.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "citrus-chicken", name: "CITRUS CHICKEN", description: "Chicken worthy of a glazing.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "wonton-roll", name: "WONTON ROLL", description: "Thin, crispy, goodness!", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== BEEF ====================
   { id: "country-fried-steak", name: "COUNTRY FRIED STEAK", description: "Beaten down, battered up… but now it's all gravy…", price: 0, category: "BEEF", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
@@ -234,6 +237,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", price: 0, category: "SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== VEGGIES ====================
+  { id: "salad", name: "SALAD", description: "Create like Cardini.", price: 0, category: "VEGGIES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "veggies", name: "VEGGIES", description: "They enjoy a hot sauna too!", price: 0, category: "VEGGIES", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -241,7 +245,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "steamed", name: "STEAMED VEGGIES", description: "They enjoy a hot sauna too!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "salad", name: "SALAD", description: "Create like Cardini.", price: 0, category: "VEGGIES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== SOUPS & STEWS ====================
   { id: "chili", name: "CHILI", description: "Fresh or fast, make it last…", price: 0, category: "SOUPS & STEWS", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
@@ -262,13 +265,12 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== TREATS ====================
   { id: "treats-stuffed-waffle", name: "STUFFED WAFFLE", description: "A sweet treat of your creation…", price: 0, category: "TREATS", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
-  // ==================== ASIAN ====================
-  { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "stir-fry-veggies", name: "STIR-FRY VEGGIES", description: "Build your bowl, a full side serving of veggies.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "citrus-chicken", name: "CITRUS CHICKEN", description: "Chicken worthy of a glazing.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "wonton-roll", name: "WONTON ROLL", description: "Thin, crispy, goodness!", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-
   // ==================== FLAMED ====================
+  { id: "flamed-lamb", name: "LAMB", description: "Perfect for grilling… Mary, look away!", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "flamed-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "flamed-burgers", name: "BURGERS", description: "Less grease, more goodness.", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "flamed-eggplant", name: "EGGPLANT", description: "Craft your own loaded eggplant.", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "flamed-baked-cabbage", name: "BAKED CABBAGE", description: "Baked, not boring.", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "flamed-big-beef", name: "BIG BEEF", description: "The cow jumped over the moon… & landed right on the grill!", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -330,11 +332,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "jalapeño", name: "JALAPEÑO", description: "A spicy, loaded jalapeño.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "flamed-lamb", name: "LAMB", description: "Perfect for grilling… Mary, look away!", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "flamed-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "flamed-burgers", name: "BURGERS", description: "Less grease, more goodness.", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "flamed-eggplant", name: "EGGPLANT", description: "Craft your own loaded eggplant.", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "flamed-baked-cabbage", name: "BAKED CABBAGE", description: "Baked, not boring.", price: 0, category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== BRAISED ====================
   { id: "braised-short-ribs", name: "SHORT RIBS", description: "These ribs never fall short.", price: 0, category: "BRAISED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
@@ -354,6 +351,13 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "rotisserie-kebab", name: "KEBAB", description: "The original global street food.", price: 0, category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== SMOKED ====================
+  { id: "smoked-beef-roast", name: "BEEF ROAST", description: "Big, bold, & beefy.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "smoked-tomahawk", name: "TOMAHAWK STEAK", description: "Metal axe > Wood > Smoke > Meat Axe > Hunger", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "smoked-steaks", name: "STEAKS", description: "No problems w/ this beef.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "smoked-oxtails", name: "OXTAILS", description: "This time, fumes are going into the tail.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "smoked-salmon-fillet", name: "SALMON FILLET", description: "Hooked & croaked… Cooked & smoked.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "smoked-snapper", name: "SNAPPER", description: "From on the hook, to off the hook!", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "smoked-shrimp", name: "SHRIMP", description: "A pound of large shrimp.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "smoked-ribs", name: "RIBS", description: "No stripped-down flavor on these strips!", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -389,13 +393,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
     ], addOns: [],
   },
-  { id: "smoked-beef-roast", name: "BEEF ROAST", description: "Big, bold, & beefy.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "smoked-tomahawk", name: "TOMAHAWK STEAK", description: "Metal axe > Wood > Smoke > Meat Axe > Hunger", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "smoked-steaks", name: "STEAKS", description: "No problems w/ this beef.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "smoked-oxtails", name: "OXTAILS", description: "This time, fumes are going into the tail.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "smoked-salmon-fillet", name: "SALMON FILLET", description: "Hooked & croaked… Cooked & smoked.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "smoked-snapper", name: "SNAPPER", description: "From on the hook, to off the hook!", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "smoked-shrimp", name: "SHRIMP", description: "A pound of large shrimp.", price: 0, category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== BEVERAGES ====================
   { id: "spring-water", name: "SPRING WATER", description: "Cool & refreshing.", price: 0, category: "BEVERAGES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
