@@ -56,13 +56,13 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-  // ==================== SANDWICHES (NEXT) ====================
-  { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  // ==================== SANDWICHES (COMPLETED) ====================
+  { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-savory-stuffed-waffle.png", subMenu: [], addOns: [] },
   {
-    id: "sandwich-club", name: "CLUB", description: "Build your own club sandwich.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "sandwich-club", name: "CLUB", description: "Build your own club sandwich.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club.png",
     subMenu: [
-      { id: "club-sandwich", name: "CLUB SANDWICH", description: "Build your own club sandwich.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "double-decker", name: "DOUBLE-DECKER", description: "Twice the flavor, stacked to the sky.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "club-sandwich", name: "CLUB SANDWICH", description: "Build your own club sandwich.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/Sandwiches-club-club-sandwich.png", price: 0 },
+      { id: "double-decker", name: "DOUBLE-DECKER", description: "Twice the flavor, stacked to the sky.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club-double-decker.png", price: 0 },
     ], addOns: [],
   },
   {
@@ -73,25 +73,25 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   {
-    id: "sandwich-pressed", name: "PRESSED", description: "All warm & toasty.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "sandwich-pressed", name: "PRESSED", description: "All warm & toasty.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club-pressed.png",
     subMenu: [
       { id: "grilled-cheese", name: "GRILLED CHEESE", description: "Build your own grilled cheese sandwich.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "panini", name: "PANINI", description: "All warm & toasty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "panini", name: "PANINI", description: "All warm & toasty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club-panini.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "sandwich-sausage", name: "SAUSAGE", description: "Pig out, without the pig!", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "sandwich-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausage.png",
     subMenu: [
-      { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "link", name: "LINK", description: "Classic link sausage.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "submarine-sandwich", name: "SUBMARINE", description: "Go long… Go deep!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hot-dog.png", price: 0 },
+      { id: "link", name: "LINK", description: "Classic link sausage.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages-link.png", price: 0 },
+      { id: "submarine-sandwich", name: "SUBMARINE", description: "Go long… Go deep!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages-link.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "sandwich-burger", name: "BURGER", description: "Build your burger from the bun up.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "sandwich-burgers", name: "BURGERS", description: "Build your burger from the bun up.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers.jpg",
     subMenu: [
-      { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sliders", name: "SLIDERS", description: "Smaller burgers built on rolls.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-burger.png", price: 0 },
+      { id: "sliders", name: "SLIDERS", description: "Smaller burgers built on rolls.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-sliders.png", price: 0 },
     ], addOns: [],
   },
 
@@ -245,7 +245,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-  // ==================== ASIAN ====================
+  // ==================== ASIAN (UPDATED) ====================
   { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "stir-fry-veggies", name: "STIR-FRY VEGGIES", description: "Build your bowl, a full side serving of veggies.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
