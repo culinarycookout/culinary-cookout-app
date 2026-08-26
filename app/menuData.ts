@@ -20,43 +20,43 @@ export interface SubMenuItem {
 }
 
 export const FOOD_MENU_ITEMS: MenuItem[] = [
-  // ==================== BREAKFAST ====================
-  { id: "egg-boiled", name: "EGG: BOILED", description: "The quickest meal of the day…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "egg-fried", name: "EGG: FRIED", description: "How far will you let the yolk run?", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "eggs-scrambled", name: "EGGS: SCRAMBLED", description: "No need to scramble, unless it's eggs…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "eggs-omelette", name: "EGGS: OMELETTE", description: "Start with eggs, end with eggstasy.", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "eggs-omelette-pockets", name: "EGGS: OMELETTE POCKETS", description: "Omelettes on the go!", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "breakfast-stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "breakfast-burrito", name: "BREAKFAST BURRITO", description: "Breakfast in a burrito.", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "muffin-sandwich", name: "MUFFIN SANDWICH", description: "Muffins make miracles…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "breakfast-bread", name: "BREAD", description: "Toast? Muffins? The universal breakfast staple…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "greek-yogurt", name: "GREEK YOGURT", description: "Your yogurt, your way…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  // ==================== BREAKFAST (COMPLETED) ====================
+  { id: "egg-boiled", name: "EGG: BOILED", description: "The quickest meal of the day…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-boiled-egg.png", subMenu: [], addOns: [] },
+  { id: "egg-fried", name: "EGG: FRIED", description: "How far will you let the yolk run?", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-egg%20.png", subMenu: [], addOns: [] },
+  { id: "eggs-scrambled", name: "EGGS: SCRAMBLED", description: "No need to scramble, unless it's eggs…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-scrambled-eggs.png", subMenu: [], addOns: [] },
+  { id: "eggs-omelette", name: "EGGS: OMELETTE", description: "Start with eggs, end with eggstasy.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-omelette.png", subMenu: [], addOns: [] },
+  { id: "eggs-omelette-pockets", name: "EGGS: OMELETTE POCKETS", description: "Omelettes on the go!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs-omelette-pockets.png", subMenu: [], addOns: [] },
+  { id: "breakfast-stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-stuffed-waffle.png", subMenu: [], addOns: [] },
+  { id: "breakfast-burrito", name: "BREAKFAST BURRITO", description: "Breakfast in a burrito.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breakfast-burrito%20(1).png", subMenu: [], addOns: [] },
+  { id: "muffin-sandwich", name: "MUFFIN SANDWICH", description: "Muffins make miracles…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-muffin-sandwich.png", subMenu: [], addOns: [] },
+  { id: "fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak.png", subMenu: [], addOns: [] },
+  { id: "breakfast-breads", name: "BREADS", description: "Toast? Muffins? The universal breakfast staple…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads.png", subMenu: [], addOns: [] },
+  { id: "breakfast-yogurt", name: "YOGURT", description: "Your yogurt, your way…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-yogurt.png", subMenu: [], addOns: [] },
   {
-    id: "breakfast-griddle", name: "GRIDDLE", description: "The griddle's greatest ever!", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL",
+    id: "breakfast-griddle", name: "GRIDDLE", description: "The griddle's greatest ever!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-griddle.png",
     subMenu: [
-      { id: "french-toast", name: "FRENCH TOAST", description: "How many slices are too many?", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "pancakes", name: "PANCAKES", description: "Take these hotcakes on a hot date.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "waffles", name: "WAFFLES", description: "The gridiron's greatest ever!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "french-toast", name: "FRENCH TOAST", description: "How many slices are too many?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-french-toast.png", price: 0 },
+      { id: "pancakes", name: "PANCAKES", description: "Take these hotcakes on a hot date.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-pancakes.png", price: 0 },
+      { id: "waffles", name: "WAFFLES", description: "The gridiron's greatest ever!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-waffles.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "breakfast-meat", name: "MEAT", description: "Pick your type & flavor…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL",
+    id: "breakfast-meat", name: "MEAT", description: "Pick your type & flavor…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meat.png",
     subMenu: [
-      { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "breakfast-sausages", name: "SAUSAGES", description: "Pick your type & flavor…", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-bacon.png", price: 0 },
+      { id: "breakfast-sausages", name: "SAUSAGES", description: "Pick your type & flavor…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sausage.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "breakfast-potato", name: "POTATO", description: "Pick your type & flavor…", price: 0, category: "BREAKFAST", image: "PLACEHOLDER_IMAGE_URL",
+    id: "breakfast-potatoes", name: "POTATOES", description: "Pick your type & flavor…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-potatoes.png",
     subMenu: [
-      { id: "chunks", name: "CHUNKS", description: "Hearty, crispy breakfast potatoes.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "diced", name: "DICED", description: "Small, golden fried potato bites.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "hash-brown", name: "HASH BROWN PATTY", description: "The crispy, classic breakfast side.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "chunks", name: "CHUNKS", description: "Hearty, crispy breakfast potatoes.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-potato-chunks.png", price: 0 },
+      { id: "diced", name: "DICED", description: "Small, golden fried potato bites.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-potatoes-diced.png", price: 0 },
+      { id: "hash-brown", name: "HASH BROWN PATTY", description: "The crispy, classic breakfast side.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-hash-brown-patty.png", price: 0 },
     ], addOns: [],
   },
 
-  // ==================== SANDWICHES ====================
+  // ==================== SANDWICHES (NEXT) ====================
   { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   {
     id: "sandwich-club", name: "CLUB", description: "Build your own club sandwich.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
@@ -95,7 +95,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-  // ==================== BIRDS ====================
+  // ==================== BIRDS (NEXT) ====================
   {
     id: "birds-air-fried-chicken", name: "AIR-FRIED CHICKEN", description: "Go half, or go whole.", price: 0, category: "BIRDS", image: "PLACEHOLDER_IMAGE_URL",
     subMenu: [
@@ -206,7 +206,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   { id: "battered-prawns", name: "BATTERED PRAWNS", description: "Prawns big enough to be a pet!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "citrus-shrimp", name: "CITRUS SHRIMP", description: "Sautéed, seasoned, & satisfying.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "citrus-glazed-shrimp", name: "CITRUS GLAZED SHRIMP", description: "Sautéed, seasoned, & satisfying.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== FRIED SIDES ====================
   {
@@ -248,7 +248,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== ASIAN ====================
   { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "stir-fry-veggies", name: "STIR-FRY VEGGIES", description: "Build your bowl, a full side serving of veggies.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "citrus-chicken", name: "CITRUS CHICKEN", description: "Chicken worthy of a glazing.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "wonton-roll", name: "WONTON ROLL", description: "Thin, crispy, goodness!", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 
   // ==================== BEEF ====================
@@ -424,5 +424,5 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== BEVERAGES ====================
   { id: "spring-water", name: "SPRING WATER", description: "Cool & refreshing.", price: 0, category: "BEVERAGES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
   { id: "lemonade", name: "LEMONADE", description: "Lemon & honey infused spring water.", price: 0, category: "BEVERAGES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "dirty-limeade", name: "DIRTY LIMEADE", description: "Honey & cinnamon infused limeade w/ peach juice..", price: 0, category: "BEVERAGES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  { id: "dirty-limeade", name: "DIRTY LIMEADE", description: "Honey & cinnamon infused lime & peach juice..", price: 0, category: "BEVERAGES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
 ];
