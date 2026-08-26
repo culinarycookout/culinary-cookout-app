@@ -56,7 +56,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-  // ==================== SANDWICHES (COMPLETED) ====================
+    // ==================== SANDWICHES ====================
   { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-savory-stuffed-waffle.png", subMenu: [], addOns: [] },
   {
     id: "sandwich-club", name: "CLUB", description: "Build your own club sandwich.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club.png",
@@ -66,10 +66,10 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   {
-    id: "sandwich-hoagie", name: "HOAGIE", description: "Build your own hoagie.", price: 0, category: "SANDWICHES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "sandwich-hoagie", name: "HOAGIE", description: "Build your own hoagie.", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie.png",
     subMenu: [
-      { id: "half-hoagie", name: "HALF", description: "Half the size, all the flavor.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "submarine", name: "SUBMARINE", description: "The full-sized classic.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "half-hoagie", name: "HALF", description: "Half the size, all the flavor.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-half.png", price: 0 },
+      { id: "submarine", name: "SUBMARINE", description: "The full-sized classic.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-submarine.png", price: 0 },
     ], addOns: [],
   },
   {
