@@ -129,7 +129,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   {
-    id: "birds-fried-turkey", name: "FRIED TURKEY", description: "He got fried because he couldn't fly.", price: 0, category: "BIRDS", image: "PLACEHOLDER_IMAGE_URL",
+    id: "birds-fried-turkey", name: "FRIED TURKEY", description: "He got fried because he couldn't fly.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey.png",
     subMenu: [
       { id: "whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-whole.png", price: 0 },
       { id: "half", name: "HALF", description: "Half the bird.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
