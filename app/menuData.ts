@@ -80,7 +80,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   {
-    id: "sandwich-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausage.png",
+    id: "sandwich-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", price: 0, category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages.png",
     subMenu: [
       { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hot-dog.png", price: 0 },
       { id: "link", name: "LINK", description: "Classic link sausage.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages-link.png", price: 0 },
