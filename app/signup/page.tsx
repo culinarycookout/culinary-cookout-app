@@ -130,6 +130,7 @@ function SignupForm() {
             <input
               type="password"
               required
+              maxLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••"
@@ -142,6 +143,7 @@ function SignupForm() {
             <input
               type="password"
               required
+              maxLength={6}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••"
