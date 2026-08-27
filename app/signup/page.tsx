@@ -22,10 +22,8 @@ function SignupForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Check if they came from the "Fun" button
   const redirectTo = searchParams.get('redirect') === 'fun' ? '/fun' : '/login';
 
-  // Only allow numbers, max 10 digits
   const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const cleaned = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
     setMobile(cleaned);
@@ -35,13 +33,11 @@ function SignupForm() {
     e.preventDefault();
     setError('');
     
-    // 1. Validate password is at least 6 characters
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError('Password must be 6 characters');
       return;
     }
 
-    // 2. Validate password confirmation
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -50,7 +46,6 @@ function SignupForm() {
     setLoading(true);
 
     try {
-      // Step 1: Create the user with the new secure password
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -59,7 +54,6 @@ function SignupForm() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // Step 2: Save the mobile number to the profiles table
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
@@ -72,7 +66,6 @@ function SignupForm() {
 
         if (dbError) throw new Error('Failed to save mobile number');
 
-        // Step 3: Log them in immediately
         await signup(email, password);
         router.push(redirectTo);
       } else {
@@ -105,7 +98,6 @@ function SignupForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4 md:mt-6">
-          {/* 1. Email */}
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Email</label>
             <input
@@ -118,7 +110,6 @@ function SignupForm() {
             />
           </div>
 
-          {/* 2. Mobile */}
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Mobile</label>
             <input
@@ -134,9 +125,8 @@ function SignupForm() {
             />
           </div>
 
-          {/* 3. Password */}
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Password (6+ characters)</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Password (6 characters)</label>
             <input
               type="password"
               required
@@ -147,7 +137,6 @@ function SignupForm() {
             />
           </div>
 
-          {/* 4. Confirm Password */}
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Confirm Password</label>
             <input

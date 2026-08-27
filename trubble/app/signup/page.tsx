@@ -20,9 +20,7 @@ export default function TrubbleSignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isConfirmationSent, setIsConfirmationSent] = useState(false);
 
-  // Only allow numbers, max 10 digits
   const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const cleaned = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
     setMobile(cleaned);
@@ -32,13 +30,11 @@ export default function TrubbleSignupPage() {
     e.preventDefault();
     setError('');
     
-    // 1. Validate password is at least 6 characters
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError('Password must be 6 characters');
       return;
     }
 
-    // 2. Validate password confirmation
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -47,7 +43,6 @@ export default function TrubbleSignupPage() {
     setLoading(true);
 
     try {
-      // 1. Attempt to sign up
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -56,21 +51,9 @@ export default function TrubbleSignupPage() {
         }
       });
 
-      if (signUpError) {
-        // Check if the error is just "Email not confirmed"
-        if (signUpError.message.includes('Email confirmation sent...')) {
-          // It's not a failure; they just haven't clicked the link yet!
-          setIsConfirmationSent(true);
-          setLoading(false);
-          return;
-        }
-        // If it's a real error, throw it
-        throw new Error(signUpError.message);
-      }
+      if (signUpError) throw new Error(signUpError.message);
 
-      // 2. If the user is already confirmed, log them in directly
-      if (data?.user?.email_confirmed_at) {
-        // Save the mobile number to the profiles table
+      if (data.user) {
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
@@ -86,10 +69,8 @@ export default function TrubbleSignupPage() {
         await trubbleLogin(email, password);
         router.push('/trubble/menu');
       } else {
-        // 3. Show the "Check your email" confirmation screen
-        setIsConfirmationSent(true);
+        setError('Signup successful, please check your email to verify.');
       }
-
     } catch (err: any) {
       setError(err.message || 'Failed to create account');
     } finally {
@@ -97,30 +78,6 @@ export default function TrubbleSignupPage() {
     }
   };
 
-  // If confirmation sent, show the email confirmation screen
-  if (isConfirmationSent) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl text-center">
-          <div className="text-6xl mb-4">📧</div>
-          <h1 className="text-3xl font-bold text-red-600 mb-4">Check your email</h1>
-          <p className="text-zinc-400 mb-6">
-            Please confirm your email address. <span className="text-white font-bold">{email}</span>.<br />
-          </p>
-          <p className="text-sm text-zinc-500 mb-6">
-            Didn&apos;t receive it? Check your spam folder.
-          </p>
-          <Link href="/trubble/login">
-            <button className="w-full py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all">
-              Back to Login
-            </button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // Standard 4-field signup form
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
@@ -162,7 +119,7 @@ export default function TrubbleSignupPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Password (6+ characters)</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Password (6 characters)</label>
             <input
               type="password"
               required
