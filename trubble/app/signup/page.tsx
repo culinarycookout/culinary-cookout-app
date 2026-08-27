@@ -43,7 +43,6 @@ export default function TrubbleSignupPage() {
     setLoading(true);
 
     try {
-      // Step 1: CREATE user only once
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -55,7 +54,6 @@ export default function TrubbleSignupPage() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // Step 2: Save mobile number
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
@@ -68,7 +66,6 @@ export default function TrubbleSignupPage() {
 
         if (dbError) throw new Error('Failed to save mobile number');
 
-        // Step 3: LOG IN manually (no duplicate signup)
         await trubbleLogin(email, password);
         router.push('/trubble/menu');
       } else {

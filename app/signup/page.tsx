@@ -46,7 +46,6 @@ function SignupForm() {
     setLoading(true);
 
     try {
-      // Step 1: CREATE user only once
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -55,7 +54,6 @@ function SignupForm() {
       if (signUpError) throw new Error(signUpError.message);
 
       if (data.user) {
-        // Step 2: Save mobile number
         const { error: dbError } = await supabase
           .from('profiles')
           .upsert(
@@ -68,7 +66,6 @@ function SignupForm() {
 
         if (dbError) throw new Error('Failed to save mobile number');
 
-        // Step 3: LOG IN manually (no duplicate signup)
         await login(email, password);
         router.push(redirectTo);
       } else {
