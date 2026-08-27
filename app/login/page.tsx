@@ -1,60 +1,43 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 
 function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
 
-  const handleContinue = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      setError('Please enter your email');
-      return;
-    }
-    setError('');
-    setStep(2);
-  };
+  // Check if they came from the "Fun" button
+  const redirectTo = searchParams.get('redirect') === 'fun' ? '/fun' : '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-
-    if (phone.length !== 10) {
-      setError('Please enter exactly 10 digits');
-      setLoading(false);
+    
+    // Validate password is at least 6 characters
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
       return;
     }
 
+    setLoading(true);
+
     try {
-      await login(email, phone);
-      router.push('/'); // ✅ No more conditional redirect
+      await login(email, password);
+      router.push(redirectTo);
     } catch (err: any) {
       setError(err.message || 'Invalid login credentials');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBack = () => {
-    setStep(1);
-    setError('');
-    setPhone('');
-  };
-
-  const handlePhoneChange = (value: string) => {
-    const cleaned = value.replace(/[^0-9]/g, '').slice(0, 10);
-    setPhone(cleaned);
   };
 
   return (
@@ -63,10 +46,10 @@ function LoginForm() {
         <div className="flex flex-col items-center pt-0 md:pt-0">
           <img src="/logo.png" alt="Culinary Cookout" className="h-60 w-auto object-contain md:h-80" />
           <h1 className="text-2xl font-bold text-red-600 mt-1 md:mt-2">
-            {step === 1 ? 'WE OUTSIDE COOKIN\'' : 'ENTER PHONE NUMBER'}
+            WE OUTSIDE COOKIN'
           </h1>
           <p className="text-zinc-400 text-sm mt-1">
-            {step === 1 ? 'Enter the kitchen...' : 'Enter your phone number'}
+            Log in to your account
           </p>
         </div>
 
@@ -76,31 +59,46 @@ function LoginForm() {
           </div>
         )}
 
-        {step === 1 ? (
-          <form onSubmit={handleContinue} className="space-y-4 mt-4 md:mt-6">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Email Address</label>
-              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none" />
-            </div>
-            <button type="submit" className="w-full py-3 rounded-xl font-bold text-lg bg-red-600 hover:bg-red-500 text-white shadow-lg transition-all">Continue</button>
-          </form>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 mt-4 md:mt-6">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">10-Digit Phone PIN</label>
-              <input type="text" inputMode="numeric" pattern="[0-9]*" required maxLength={10} value={phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="0000000000" className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none text-center text-2xl tracking-widest" />
-            </div>
-            <div className="flex gap-3">
-              <button type="button" onClick={handleBack} className="flex-1 py-3 rounded-xl font-bold text-lg bg-zinc-700 hover:bg-zinc-600 text-white transition-all">Back</button>
-              <button type="submit" disabled={loading} className={`flex-1 py-3 rounded-xl font-bold text-lg transition-all ${loading ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500 text-white shadow-lg'}`}>
-                {loading ? 'Logging in...' : 'Log In'}
-              </button>
-            </div>
-          </form>
-        )}
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4 md:mt-6">
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Email</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Password</label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••"
+              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:border-red-500 focus:outline-none"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 rounded-xl font-bold text-lg transition-all ${
+              loading
+                ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
+                : 'bg-red-600 hover:bg-red-500 text-white shadow-lg'
+            }`}
+          >
+            {loading ? 'Logging in...' : 'Log In'}
+          </button>
+        </form>
 
         <div className="mt-6 text-center text-xs text-zinc-500">
-          <p>Don&apos;t have an account?</p>
+          <p>Don't have an account?</p>
           <p className="mt-1">
             <Link href="/signup" className="text-red-400 hover:text-red-300 font-bold">
               Sign Up
