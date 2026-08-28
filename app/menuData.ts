@@ -100,7 +100,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-    // ==================== BIRDS ====================
+  // ==================== BIRDS ====================
   {
     id: "birds-air-fried-chicken", name: "AIR-FRIED CHICKEN", description: "Go half, or go whole.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken.png",
     subMenu: [
@@ -111,7 +111,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   { id: "birds-air-fried-chicken-wings", name: "AIR-FRIED CHICKEN WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-wings.png", subMenu: [], addOns: [] },
-  { id: "birds-fried-chicken-wings", name: "FRIED CHICKEN WINGS", description: "Want some hot wings?… No, literally!", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-wings.png", subMenu: [], addOns: [] },
   {
     id: "birds-fried-chicken", name: "FRIED CHICKEN", description: "Go half, or go whole.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken.png",
     subMenu: [
@@ -122,7 +121,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "breast", name: "BREAST", description: "Don't take your eyes off these!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-breast.png", price: 0 },
     ], addOns: [],
   },
-  { id: "birds-air-fried-turkey-wings", name: "AIR-FRIED TURKEY WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-wings.png", subMenu: [], addOns: [] },
+  { id: "birds-fried-chicken-wings", name: "FRIED CHICKEN WINGS", description: "Want some hot wings?… No, literally!", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-wings.png", subMenu: [], addOns: [] },
   {
     id: "birds-air-fried-turkey", name: "AIR-FRIED TURKEY", description: "He got fried because he couldn't fly.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey.png",
     subMenu: [
@@ -133,7 +132,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-breast.png", price: 0 },
     ], addOns: [],
   },
-  { id: "birds-fried-turkey-wings", name: "FRIED TURKEY WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png", subMenu: [], addOns: [] },
+  { id: "birds-air-fried-turkey-wings", name: "AIR-FRIED TURKEY WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-wings.png", subMenu: [], addOns: [] },
   {
     id: "birds-fried-turkey", name: "FRIED TURKEY", description: "He got fried because he couldn't fly.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey.png",
     subMenu: [
@@ -143,6 +142,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-breast.png", price: 0 },
     ], addOns: [],
   },
+  { id: "birds-fried-turkey-wings", name: "FRIED TURKEY WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png", subMenu: [], addOns: [] },
 
  // ==================== SEAFOOD ====================
   {
