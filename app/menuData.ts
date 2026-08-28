@@ -144,48 +144,56 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   },
   { id: "birds-fried-turkey-wings", name: "FRIED TURKEY WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png", subMenu: [], addOns: [] },
 
- // ==================== SEAFOOD ====================
+   // ==================== SEAFOOD ====================
   {
-    id: "seafood-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    id: "seafood-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper.png",
     subMenu: [
-      { id: "battered", name: "BATTERED", description: "Battered but unbeatable!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "sauteed", name: "SAUTÉED", description: "Fresh fillet, fired for full flavor!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed", name: "STEAMED", description: "Swimming in seasoning.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "battered", name: "BATTERED", description: "Battered but unbeatable!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper-battered.png", price: 0 },
+      { id: "sauteed", name: "SAUTÉED", description: "Fresh fillet, fired for full flavor!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper-sauteed.png", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Swimming in seasoning.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper-steamed.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "seafood-salmon", name: "SALMON", description: "From sea to seasoned.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    id: "seafood-salmon", name: "SALMON", description: "From sea to seasoned.", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon.png",
     subMenu: [
-      { id: "sauteed", name: "SAUTÉED", description: "From sea to seasoned.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed", name: "STEAMED", description: "Hot steam, upstream!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "sauteed", name: "SAUTÉED", description: "From sea to seasoned.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-sauteed.png", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Hot steam, upstream!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-steamed.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "seafood-king-salmon", name: "KING SALMON", description: "Seafood royalty.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    id: "seafood-king-salmon", name: "KING SALMON", description: "Seafood royalty.", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-king-salmon.png",
     subMenu: [
-      { id: "sauteed", name: "SAUTÉED", description: "Seafood royalty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed", name: "STEAMED", description: "Seafood royalty.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-    ], addOns: [],
-  },
-  { id: "sautéed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "sautéed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "broiled-lobster-tail", name: "BROILED LOBSTER TAIL", description: "will add later", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  {
-    id: "seafood-crab-legs", name: "CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
-    subMenu: [
-      { id: "boiled", name: "BOILED", description: "A boil in a bag!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed", name: "STEAMED", description: "Cleaned & steamed… So get crackin'!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "sauteed", name: "SAUTÉED", description: "Seafood royalty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-king-salmon-sauteed.png", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Seafood royalty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-king-salmon-steamed.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "seafood-king-crab-legs", name: "KING CRAB LEGS", description: "All shell the King!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL",
+    id: "seafood-crab-legs", name: "CRAB LEGS", description: "Cleaned & steamed… So get crackin'!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-2.png",
     subMenu: [
-      { id: "boiled", name: "BOILED", description: "A boil fit for a king!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "steamed", name: "STEAMED", description: "All shell the King!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "dungeness", name: "DUNGENESS", description: "A boil in a bag!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-boiled.png", price: 0 },
+      { id: "snow", name: "SNOW", description: "Cleaned & steamed… So get crackin'!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-snow.png", price: 0 },
+      { id: "king", name: "KING", description: "All shell the King!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-king.png", price: 0 },
     ], addOns: [],
   },
-  { id: "battered-prawns", name: "BATTERED PRAWNS", description: "Prawns big enough to be a pet!", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "citrus-glazed-shrimp", name: "CITRUS GLAZED SHRIMP", description: "Sautéed, seasoned, & satisfying.", price: 0, category: "SEAFOOD", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  {
+    id: "seafood-lobster-tails", name: "LOBSTER TAILS", description: "Broiled to perfection.", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails.png",
+    subMenu: [
+      { id: "broiled", name: "BROILED", description: "Broiled to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-broiled.png", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Steamed to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-steamed.png", price: 0 },
+      { id: "deluxe", name: "DELUXE", description: "The ultimate lobster experience.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-deluxe.png", price: 0 },
+    ], addOns: [],
+  },
+  {
+    id: "seafood-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp.png",
+    subMenu: [
+      { id: "citrus", name: "CITRUS", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-citrus.png", price: 0 },
+      { id: "battered", name: "BATTERED", description: "Prawns big enough to be a pet!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-battered.png", price: 0 },
+      { id: "sauteed", name: "SAUTÉED", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-sauteed.png", price: 0 },
+      { id: "steamed", name: "STEAMED", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-steamed.png", price: 0 },
+    ], addOns: [],
+  },
+  { id: "sauteed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-sablefish.png", subMenu: [], addOns: [] },
+  { id: "sauteed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-chilean-sea-bass.png", subMenu: [], addOns: [] },
 
   // ==================== FRIED SIDES ====================
   {
