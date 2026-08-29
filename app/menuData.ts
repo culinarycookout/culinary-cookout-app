@@ -72,7 +72,12 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "breakfast-sandwich-muffin", name: "MUFFIN-STYLE", description: "A breakfast classic, stacked between a muffin.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-muffin-2.png", price: 0 },
     ], addOns: [],
   },
-  { id: "breakfast-fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak.png", subMenu: [], addOns: [] },
+  { id: "breakfast-fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak.png",
+    subMenu: [
+      { id: "fried-steak-beef", name: "BEEF", description: "A hearty, classic breakfast steak.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak-beef.png", price: 0 },
+      { id: "fried-steak-chicken", name: "CHICKEN", description: "A lighter, crispy breakfast steak.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak-chicken.png", price: 0 },
+    ], addOns: [],
+  },
   { id: "breakfast-yogurt", name: "YOGURT", description: "Your yogurt, your way…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-yogurt.png", subMenu: [], addOns: [] },
   {
     id: "breakfast-whole-fruit", name: "WHOLE FRUIT", description: "The freshest start to your day.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit.png",
