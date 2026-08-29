@@ -43,7 +43,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   {
     id: "breakfast-meats", name: "MEATS", description: "Pick your type & flavor…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats.png",
     subMenu: [
-      { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-bacon.png", price: 0 },
       { id: "breakfast-sausage", name: "SAUSAGE", description: "Pick your type & flavor…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-sausage.png", price: 0 },
       { id: "breakfast-sausage-patty", name: "SAUSAGE PATTY", description: "Classic, hearty, and savory.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-sausage-patty.png", price: 0 },
     ], addOns: [],
@@ -59,9 +59,9 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   {
     id: "breakfast-breads", name: "BREADS", description: "Toast? Muffins? The universal breakfast staple…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads.png",
     subMenu: [
-      { id: "toast", name: "TOAST", description: "Crisp, golden, and ready for butter.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "toast", name: "TOAST", description: "Crisp, golden, and ready for butter.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-toast.png", price: 0 },
       { id: "english-muffin", name: "ENGLISH MUFFIN", description: "The classic nooks & crannies.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-english-muffin.png", price: 0 },
-      { id: "biscuit", name: "BISCUIT", description: "Fluffy, buttery, and irresistible.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "biscuit", name: "BISCUIT", description: "Fluffy, buttery, and irresistible.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-biscuit.png", price: 0 },
       { id: "muffin", name: "MUFFIN", description: "A baked breakfast staple.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-muffin.png", price: 0 },
     ], addOns: [],
   },
