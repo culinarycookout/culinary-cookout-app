@@ -20,7 +20,7 @@ export interface SubMenuItem {
 }
 
 export const FOOD_MENU_ITEMS: MenuItem[] = [
-      // ==================== BREAKFAST ====================
+  // ==================== BREAKFAST ====================
   {
     id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs.png",
     subMenu: [
@@ -34,17 +34,18 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   {
     id: "breakfast-griddle", name: "GRIDDLE", description: "The griddle's greatest ever!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-griddle.png",
     subMenu: [
-      { id: "stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-stuffed-waffle.png", price: 0 },
       { id: "french-toast", name: "FRENCH TOAST", description: "How many slices are too many?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-french-toast.png", price: 0 },
       { id: "pancakes", name: "PANCAKES", description: "Take these hotcakes on a hot date.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-pancakes.png", price: 0 },
       { id: "waffles", name: "WAFFLES", description: "The gridiron's greatest ever!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-waffles.png", price: 0 },
+      { id: "stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-stuffed-waffle.png", price: 0 },
     ], addOns: [],
   },
   {
     id: "breakfast-meats", name: "MEATS", description: "Pick your type & flavor…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats.png",
     subMenu: [
-      { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-bacon.png", price: 0 },
-      { id: "breakfast-sausages", name: "SAUSAGES", description: "Pick your type & flavor…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sausage.png", price: 0 },
+      { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "breakfast-sausage", name: "SAUSAGE", description: "Pick your type & flavor…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-sausage.png", price: 0 },
+      { id: "breakfast-sausage-patty", name: "SAUSAGE PATTY", description: "Classic, hearty, and savory.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-sausage-patty.png", price: 0 },
     ], addOns: [],
   },
   {
@@ -55,19 +56,33 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "hash-brown", name: "HASH BROWN PATTY", description: "The crispy, classic breakfast side.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-hash-brown-patty.png", price: 0 },
     ], addOns: [],
   },
-  { id: "breakfast-burrito", name: "BREAKFAST BURRITO", description: "Breakfast in a burrito.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breakfast-burrito%20(1).png", subMenu: [], addOns: [] },
-  { id: "breakfast-muffin-sandwich", name: "MUFFIN SANDWICH", description: "Muffins make miracles…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-muffin-sandwich.png", subMenu: [], addOns: [] },
+  {
+    id: "breakfast-breads", name: "BREADS", description: "Toast? Muffins? The universal breakfast staple…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads.png",
+    subMenu: [
+      { id: "toast", name: "TOAST", description: "Crisp, golden, and ready for butter.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "english-muffin", name: "ENGLISH MUFFIN", description: "The classic nooks & crannies.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-english-muffin.png", price: 0 },
+      { id: "biscuit", name: "BISCUIT", description: "Fluffy, buttery, and irresistible.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "muffin", name: "MUFFIN", description: "A baked breakfast staple.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-muffin.png", price: 0 },
+    ], addOns: [],
+  },
+  {
+    id: "breakfast-sandwiches", name: "BREAKFAST SANDWICHES", description: "The ultimate breakfast on the go.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-2.png",
+    subMenu: [
+      { id: "breakfast-sandwich-club", name: "CLUB-STYLE", description: "Stacked high with all the fixings.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-club.png", price: 0 },
+      { id: "breakfast-sandwich-muffin", name: "MUFFIN-STYLE", description: "A breakfast classic, stacked between a muffin.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-muffin-2.png", price: 0 },
+    ], addOns: [],
+  },
   { id: "breakfast-fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak.png", subMenu: [], addOns: [] },
-  { id: "breakfast-breads", name: "BREADS", description: "Toast? Muffins? The universal breakfast staple…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads.png", subMenu: [], addOns: [] },
   { id: "breakfast-yogurt", name: "YOGURT", description: "Your yogurt, your way…", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-yogurt.png", subMenu: [], addOns: [] },
   {
     id: "breakfast-whole-fruit", name: "WHOLE FRUIT", description: "The freshest start to your day.", price: 0, category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit.png",
     subMenu: [
       { id: "apple", name: "APPLE", description: "Crisp & refreshing.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-apples.png", price: 0 },
       { id: "banana", name: "BANANA", description: "Sweet & filling.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-banana.png", price: 0 },
+      { id: "blueberries", name: "BLUEBERRIES", description: "Packed with antioxidants.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-blueberries.png", price: 0 },
+      { id: "boysenberries", name: "BOYSENBERRIES", description: "Sweet & tangy.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-boysenberries.png", price: 0 },
       { id: "orange", name: "ORANGE", description: "Bright & juicy.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-orange.png", price: 0 },
       { id: "strawberries", name: "STRAWBERRIES", description: "Sweet & ripe.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-strawberries.png", price: 0 },
-      { id: "blueberries", name: "BLUEBERRIES", description: "Packed with antioxidants.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-blueberries.png", price: 0 },
     ], addOns: [],
   },
 
