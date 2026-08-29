@@ -168,7 +168,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     id: "birds-fried-turkey", name: "FRIED TURKEY", description: "He got fried because he couldn't fly.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey.png",
     subMenu: [
       { id: "whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-whole.png", price: 0 },
-      { id: "drum", name: "DRUM", description: "Fried & fit for a feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-drum.png", price: 0 },
+      { id: "drum", name: "DRUM", description: "Fried & fit for a feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-drum2.png", price: 0 },
       { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-thigh.png", price: 0 },
       { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-breast.png", price: 0 },
     ], addOns: [],
