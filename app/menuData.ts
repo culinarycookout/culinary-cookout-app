@@ -254,18 +254,18 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   },
   { id: "fried-sides-jalapeno-poppers", name: "JALAPENO POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-jalapeno-poppers.png", subMenu: [], addOns: [] },
 
-  // ==================== LATIN AMERICA ====================
-  { id: "burrito", name: "BURRITO", description: "Not a lil donkey!", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "quesadilla", name: "QUESADILLA", description: "A grilled cheese tortilla sandwich.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "enchiladas", name: "ENCHILADAS", description: "Add 5 groups to customize.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+    // ==================== LATIN AMERICA ====================
+  { id: "latin-america-burrito", name: "BURRITO", description: "Not a lil donkey!", price: 0, category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-burrito.png", subMenu: [], addOns: [] },
+  { id: "latin-america-quesadilla", name: "QUESADILLA", description: "A grilled cheese tortilla sandwich.", price: 0, category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-quesadilla.png", subMenu: [], addOns: [] },
+  { id: "latin-america-enchiladas", name: "ENCHILADAS", description: "Add 5 groups to customize.", price: 0, category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-enchiladas.png", subMenu: [], addOns: [] },
   {
-    id: "latin-america-tacos", name: "TACOS", description: "Just a corn tortilla, put stuff in it.", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL",
+    id: "latin-america-tacos", name: "TACOS", description: "Just a corn tortilla, put stuff in it.", price: 0, category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos.png",
     subMenu: [
-      { id: "taco", name: "TACO", description: "Just a corn tortilla, put stuff in it.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "taco-trio", name: "TACO TRIO", description: "Customize these 3 amigos.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "taco-pack", name: "TACO PACK", description: "Add 3 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "taco-party", name: "TACO PARTY", description: "Add 4 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "latin-taco", name: "TACO", description: "Just a corn tortilla, put stuff in it.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-taco.png", price: 0 },
+      { id: "latin-taco-trio", name: "TACO TRIO", description: "Customize these 3 amigos.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-trio-2.png", price: 0 },
+      { id: "latin-taco-pack", name: "TACO PACK", description: "Add 3 groups to customize.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-pack.png", price: 0 },
+      { id: "latin-taco-party", name: "TACO PARTY", description: "Add 4 groups to customize.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-party-2.png", price: 0 },
+      { id: "latin-taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Add 5 groups to customize.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-fiesta-grande.png", price: 0 },
     ], addOns: [],
   },
 
