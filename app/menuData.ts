@@ -226,27 +226,33 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "sauteed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-sablefish.png", subMenu: [], addOns: [] },
   { id: "sauteed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-chilean-sea-bass.png", subMenu: [], addOns: [] },
 
-  // ==================== FRIED SIDES ====================
+    // ==================== FRIED SIDES ====================
   {
-    id: "fried-sides-fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "fried-sides-fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", price: 0, category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries.png",
     subMenu: [
-      { id: "fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "curlies", name: "CURLIES", description: "You can almost never order enough curly fries… But you can try!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "wedges", name: "WEDGES", description: "A seasoned potato, fried, fluffy, & flavorful.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "zu-fries", name: "ZU: FRIES", description: "Zucchini has entered the chat.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "zu-curlies", name: "ZU: CURLIES", description: "Zucchini with a twist! Literally…", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "fries-potato", name: "FRIES", description: "Fried potatoes, not some science experiment.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-potato.png", price: 0 },
+      { id: "fries-curlies", name: "CURLIES", description: "You can almost never order enough curly fries… But you can try!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-curlies.png", price: 0 },
+      { id: "fries-wedges", name: "WEDGES", description: "A seasoned potato, fried, fluffy, & flavorful.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-wedges.png", price: 0 },
+      { id: "fries-zu-fries", name: "ZU: FRIES", description: "Zucchini has entered the chat.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-zu-fries.png", price: 0 },
+      { id: "fries-zu-curlies", name: "ZU: CURLIES", description: "Zucchini with a twist! Literally…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-zu-curlies.png", price: 0 },
     ], addOns: [],
   },
   {
-    id: "fried-sides-popcorn", name: "POPCORN BITES", description: "Bite-sized bite, big-time flavor!", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL",
+    id: "fried-sides-popcorn-bites", name: "POPCORN BITES", description: "Bite-sized bite, big-time flavor!", price: 0, category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites.png",
     subMenu: [
-      { id: "popcorn-chicken", name: "POPCORN CHICKEN", description: "Eat treat. Repeat!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "popcorn-shrimp", name: "POPCORN SHRIMP", description: "Bite-sized bite, big-time flavor!", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
-      { id: "flower-bites", name: "FLOWER BITES", description: "Popcorn cauliflower bites.", image: "PLACEHOLDER_IMAGE_URL", price: 0 },
+      { id: "popcorn-chicken", name: "POPCORN CHICKEN", description: "Eat treat. Repeat!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites-chicken.png", price: 0 },
+      { id: "popcorn-shrimp", name: "POPCORN SHRIMP", description: "Bite-sized bite, big-time flavor!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites-shrimp.png", price: 0 },
+      { id: "popcorn-flower", name: "FLOWER BITES", description: "Popcorn cauliflower bites.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites-flower.png", price: 0 },
     ], addOns: [],
   },
-  { id: "onion-rings", name: "ONION RINGS", description: "They will have you crying for more!", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "poppers", name: "POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  {
+    id: "fried-sides-onions", name: "ONIONS", description: "They will have you crying for more!", price: 0, category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-onions.png",
+    subMenu: [
+      { id: "onions-blossom", name: "BLOSSOM", description: "The ultimate onion experience.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-onions-blossom.png", price: 0 },
+      { id: "onions-rings", name: "RINGS", description: "Battered & seasoned onion slices.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-onions-rings.png", price: 0 },
+    ], addOns: [],
+  },
+  { id: "fried-sides-jalapeno-poppers", name: "JALAPENO POPPERS", description: "Breaded jalapeños full of gooey goodness.", price: 0, category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-jalapeno-poppers.png", subMenu: [], addOns: [] },
 
   // ==================== LATIN AMERICA ====================
   { id: "burrito", name: "BURRITO", description: "Not a lil donkey!", price: 0, category: "LATIN AMERICA", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
