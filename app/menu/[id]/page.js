@@ -95,7 +95,7 @@ export default function ItemDetailPage({ params }) {
                     );
                   })
                 ) : (
-                  <p className="text-zinc-500">No options available.</p>
+                  <p className="text-zinc-500">Only option.</p>
                 )}
               </div>
             </div>
