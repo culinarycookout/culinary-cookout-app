@@ -174,8 +174,14 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
   { id: "birds-fried-turkey-wings", name: "FRIED TURKEY WINGS", description: "Don't let these wings fly far.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png", subMenu: [], addOns: [] },
+  { id: "birds-stuffed-breasts", name: "STUFFED BREASTS", description: "Perfectly stuffed and roasted.", price: 0, category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-stuffed-breasts.png",
+    subMenu: [
+      { id: "stuffed-breasts-chicken", name: "CHICKEN", description: "Stuffed chicken breast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-stuffed-breasts-chicken.png", price: 0 },
+      { id: "stuffed-breasts-turkey", name: "TURKEY", description: "Stuffed turkey breast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-stuffed-breasts-turkey.png", price: 0 },
+    ], addOns: [],
+  },
 
-   // ==================== SEAFOOD ====================
+  // ==================== SEAFOOD ====================
   {
     id: "seafood-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper.png",
     subMenu: [
@@ -223,10 +229,8 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
       { id: "steamed", name: "STEAMED", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-steamed.png", price: 0 },
     ], addOns: [],
   },
-  { id: "sauteed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-sablefish.png", subMenu: [], addOns: [] },
-  { id: "sauteed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", price: 0, category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-chilean-sea-bass.png", subMenu: [], addOns: [] },
-
-    // ==================== FRIED SIDES ====================
+  
+  // ==================== FRIED SIDES ====================
   {
     id: "fried-sides-fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", price: 0, category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries.png",
     subMenu: [
@@ -269,23 +273,33 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     ], addOns: [],
   },
 
-  // ==================== ASIAN (UPDATED) ====================
-  { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "stir-fry-veggies", name: "STIR-FRY VEGGIES", description: "Build your bowl, a full side serving of veggies.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "wonton-roll", name: "WONTON ROLL", description: "Thin, crispy, goodness!", price: 0, category: "ASIAN", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  // ==================== ASIAN ====================
+  { id: "asian-chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", price: 0, category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-chow-mein.png", subMenu: [], addOns: [] },
+  { id: "asian-stir-fry-veggies", name: "STIR-FRY VEGGIES", description: "Build your bowl, a full side serving of veggies.", price: 0, category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-stir-fry-veggies.png", subMenu: [], addOns: [] },
+  { id: "asian-citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", price: 0, category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-citrus-chicken.png", subMenu: [], addOns: [] },
+  { id: "asian-wonton-roll", name: "WONTON ROLL", description: "Thin, crispy, goodness!", price: 0, category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-wonton-roll.png", subMenu: [], addOns: [] },
 
   // ==================== BEEF ====================
-  { id: "country-fried-steak", name: "COUNTRY FRIED STEAK", description: "Beaten down, battered up… but now it's all gravy…", price: 0, category: "BEEF", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "ribeye-steak", name: "RIBEYE STEAK", description: "A good cut, for a full gut.", price: 0, category: "BEEF", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "beef-flanken-ribs", name: "FLANKEN RIBS", description: "Get 1st dibs on these ribs!", price: 0, category: "BEEF", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  {
+    id: "beef-steaks", name: "STEAKS", description: "Premium cuts, cooked to perfection.", price: 0, category: "BEEF", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks.png",
+    subMenu: [
+      { id: "beef-steaks-battered", name: "BATTERED", description: "A crispy, golden battered steak.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-battered.png", price: 0 },
+      { id: "beef-steaks-ribeye", name: "RIBEYE", description: "A good cut, for a full gut.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-ribeye.png", price: 0 },
+      { id: "beef-steaks-chunks", name: "CHUNKS", description: "Tender, juicy chunks of beef.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-chunks.png", price: 0 },
+    ], addOns: [],
+  },
 
   // ==================== SIDES ====================
-  { id: "rice", name: "RICE", description: "20,000 years of deliciousness!", price: 0, category: "SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "mac-cheese", name: "MAC & CHEESE", description: "Whether you choose dairy or not, your stomach will thank you!", price: 0, category: "SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "alfredo", name: "ALFREDO", description: "\"Alfredo is life with the dull bits cut out.\" - Hitchcock", price: 0, category: "SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "garlic-noodles", name: "GARLIC NOODLES", description: "Vampires beware!", price: 0, category: "SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
-  { id: "fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", price: 0, category: "SIDES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
+  {
+    id: "sides-noodles", name: "NOODLES", description: "Your favorite noodles, ready to customize.", price: 0, category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles.png",
+    subMenu: [
+      { id: "sides-noodles-mac-cheese", name: "MAC & CHEESE", description: "Whether you choose dairy or not, your stomach will thank you!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-mac-&-cheese.png", price: 0 },
+      { id: "sides-noodles-alfredo", name: "ALFREDO", description: "\"Alfredo is life with the dull bits cut out.\" - Hitchcock", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-alfredo.png", price: 0 },
+      { id: "sides-noodles-garlic", name: "GARLIC NOODLES", description: "Vampires beware!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-garlic.png", price: 0 },
+    ], addOns: [],
+  },
+  { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", price: 0, category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-rice.png", subMenu: [], addOns: [] },
+  { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", price: 0, category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-fresh-fruit-cup-2.png", subMenu: [], addOns: [] },
 
   // ==================== VEGGIES ====================
   { id: "salad", name: "SALAD", description: "Create like Cardini.", price: 0, category: "VEGGIES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [], addOns: [] },
