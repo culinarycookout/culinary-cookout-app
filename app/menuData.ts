@@ -129,8 +129,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "battered", name: "BATTERED", description: "Prawns big enough to be a pet!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-battered.png" },
     { id: "sauteed", name: "SAUTÉED", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-sauteed.png" },
     { id: "steamed", name: "STEAMED", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-steamed.png" }, ]},
-  { id: "sauteed-sablefish", name: "SAUTÉED SABLEFISH", description: "Fresh fillet, fired for full flavor!", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-sablefish.png", subMenu: [] },
-  { id: "sauteed-chilean-sea-bass", name: "SAUTÉED CHILEAN SEA BASS", description: "The Ferrari of fish!", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-sauteed-chilean-sea-bass.png", subMenu: [] },
 
   // ==================== FRIED SIDES ====================
   { id: "fried-sides-fries", name: "FRIES", description: "Fried potatoes, not some science experiment.", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries.png", subMenu: [
