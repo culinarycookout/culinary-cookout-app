@@ -200,19 +200,19 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
 
     // ==================== TREATS ====================
   { id: "treats-candied-fruit-cup", name: "CANDIED FRUIT CUP", description: "Your favorites, but sweeter!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-candied-fruit-cup.png", subMenu: [] },
-  { id: "treats-pancake-taco", name: "PANCAKE TACO", description: "A sweet, foldable breakfast treat!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-pancake-taco.png", subMenu: [] },
+  { id: "treats-pancake-taco", name: "PANCAKE TACO", description: "Ordering just 1, is a mistake!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-pancake-taco.png", subMenu: [] },
   { id: "treats-stuffed-waffle", name: "STUFFED WAFFLE", description: "A sweet treat of your creation…", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-stuffed-waffle.png", subMenu: [] },
 
     // ==================== AIR-FRIED ====================
-  { id: "birds-air-fried-chicken", name: "AIR-FRIED CHICKEN", description: "Go half, or go whole.", category: "AIR-FRIED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken.png", subMenu: [
+  { id: "birds-air-fried-chicken", name: "AIR-FRIED CHICKEN", description: "The most air this bird will ever get!", category: "AIR-FRIED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken.png", subMenu: [
     { id: "whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-whole.png" },
-    { id: "half", name: "HALF", description: "Half the bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-half.png" },
+    { id: "half", name: "HALF", description: "Go half, or go home!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-half.png" },
     { id: "thigh", name: "THIGH", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-thigh.png" },
     { id: "breast", name: "BREAST", description: "Don't take your eyes off these!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-breast.png" },
     { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-wings.png" }, ]},
   { id: "birds-air-fried-turkey", name: "AIR-FRIED TURKEY", description: "He got fried because he couldn't fly.", category: "AIR-FRIED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey.png", subMenu: [
-    { id: "whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-whole2.png" },
-    { id: "half", name: "HALF", description: "Half the bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-half.png" },
+    { id: "whole", name: "WHOLE", description: "The real big bird!.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-whole2.png" },
+    { id: "half", name: "HALF", description: "Half a holiday feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-half.png" },
     { id: "drum", name: "DRUM", description: "Fried & fit for a feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-drum.png" },
     { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-thigh.png" },
     { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-breast.png" },
