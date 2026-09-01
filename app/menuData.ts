@@ -177,15 +177,26 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-rice.png", subMenu: [] },
   { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-fresh-fruit-cup-2.png", subMenu: [] },
 
-  // ==================== VEGGIES ====================
-  { id: "salad", name: "SALAD", description: "Create like Cardini.", category: "VEGGIES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "veggies", name: "VEGGIES", description: "They enjoy a hot sauna too!", category: "VEGGIES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "sautéed", name: "SAUTÉED VEGGIES", description: "Tossed & turned because it was too hot.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "steamed", name: "STEAMED VEGGIES", description: "They enjoy a hot sauna too!", image: "PLACEHOLDER_IMAGE_URL" }, ]},
+    // ==================== VEGGIES ====================
+  { id: "veggies-salad", name: "SALAD", description: "Create like Cardini.", category: "VEGGIES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad.png", subMenu: [
+    { id: "veggies-salad-garden", name: "GARDEN", description: "A fresh, crisp classic.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad-garden.png" },
+    { id: "veggies-salad-chefs", name: "CHEF'S", description: "The chef's signature salad.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad-chefs.png" }, ]},
+  { id: "veggies", name: "VEGGIES", description: "They enjoy a hot sauna too!", category: "VEGGIES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies.png", subMenu: [
+    { id: "veggies-sauteed", name: "SAUTÉED", description: "Tossed & turned because it was too hot.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-sauteed.png" },
+    { id: "veggies-steamed", name: "STEAMED", description: "They enjoy a hot sauna too!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-steamed.png" }, ]},
 
-  // ==================== SOUPS & STEWS ====================
-  { id: "chili", name: "CHILI", description: "Fresh or fast, make it last…", category: "SOUPS & STEWS", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "soup-stew", name: "SOUP & STEW", description: "Create a beautiful bowl!", category: "SOUPS & STEWS", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
+    // ==================== SOUPS & STEWS ====================
+  { id: "soups", name: "SOUP", description: "Create a beautiful bowl!", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-1.png", subMenu: [
+    { id: "soups-hot-pot", name: "HOT POT SOUP", description: "A rich and comforting bowl.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-hot-pot-soup.png" },
+    { id: "soups-noodle", name: "NOODLE SOUP", description: "A hearty noodle classic.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-noodle-soup.png" },
+    { id: "soups-ramen", name: "RAMEN SOUP", description: "A flavorful, rich ramen bowl.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-ramen.png" }, ]},
+  { id: "soups-chili", name: "CHILI", description: "Fresh or fast, make it last…", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-chili.png", subMenu: [
+    { id: "soups-chili-quick", name: "QUICK", description: "Fresh or fast, make it last…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-chili-quick.png" },
+    { id: "soups-chili-slow", name: "SLOW", description: "Slow-cooked & off the hook!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-chili-slow.png" }, ]},
+  { id: "soups-stew", name: "STEW", description: "Create a beautiful bowl!", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew.png", subMenu: [
+    { id: "soups-stew-gumbo", name: "GUMBO", description: "A bold, flavorful stew.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-gumbo.png" },
+    { id: "soups-stew-stew", name: "STEW", description: "Slow-simmered and hearty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-stew.png" }, ]},
+  { id: "soups-jambalaya", name: "JAMBALAYA", description: "A spicy, satisfying classic.", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-jambalaya.png", subMenu: [] },
 
   // ==================== JR. DISHES ====================
   { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
