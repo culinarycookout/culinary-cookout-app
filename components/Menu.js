@@ -107,6 +107,24 @@ export default function Menu() {
 
   return (
     <div className="w-full">
+      {isTacoTuesday && (
+        <div className="bg-gradient-to-r from-[#CE1126] via-[#FFFFFF] to-[#006847] rounded-xl p-4 mb-6 text-center shadow-lg border-2 border-red-500">
+          <div className="block md:hidden flex flex-col items-center justify-center w-full">
+            <span className="text-2xl font-black text-red-600 block whitespace-nowrap">
+              🌮🪅50% OFF ALL TACOS‼️🎉🌮
+            </span>
+            <p className="text-xs text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
+          </div>
+          <div className="hidden md:flex items-center justify-center gap-2 flex-wrap">
+            <span className="text-3xl">🌮🪅</span>
+            <span className="text-2xl md:text-3xl font-black text-red-700">TACO TUESDAY‼️🎉🌮</span>
+            <span className="text-2xl md:text-3xl font-black text-black">🌮50% OFF ALL TACOS‼️🌮</span>
+            <span className="text-3xl"></span>
+          </div>
+          <p className="hidden md:block text-sm text-black/70 mt-1">Every Tuesday from midnight to Wednesday 1 AM</p>
+        </div>
+      )}
+
       <div className="bg-zinc-900 rounded-xl p-4 mb-6 border border-zinc-800">
         <input
           type="text"
@@ -175,15 +193,15 @@ export default function Menu() {
                   </div>
                 )}
                 <div className="p-3 md:p-4 flex flex-col flex-1">
-                  <h3 className="font-bold text-sm md:text-lg leading-tight break-words mb-2">{item.name}</h3>
-                  <div className="flex flex-col items-start gap-2">
-                    {hasDiscount && <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">🌮🪅50% OFF‼️🎉</span>}
-                    {item.category && (
-                      <span className={`inline-block ${colorClass} text-xs font-bold px-2 py-1 rounded-full`}>
-                        {item.category}
-                      </span>
-                    )}
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-bold text-sm md:text-lg leading-tight break-words flex-1">{item.name}</h3>
+                    {hasDiscount && <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap mt-0.5">🌮🪅50% OFF‼️🎉</span>}
                   </div>
+                  {item.category && (
+                    <span className={`inline-block ${colorClass} text-xs font-bold px-2 py-1 rounded-full mt-1 mb-2`}>
+                      {item.category}
+                    </span>
+                  )}
                   {item.description && (
                     <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
                       {item.description}
