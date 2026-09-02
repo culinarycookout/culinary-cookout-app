@@ -256,12 +256,15 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "flamed-bell", name: "BELL", description: "A loaded bell pepper.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-pepper.png" },
     { id: "flamed-jalapeno", name: "JALAPEÑO", description: "A spicy, loaded jalapeño.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-peppers-jalapeno.png" }, ]},
 
-    // ==================== BRAISED ====================
+      // ==================== BRAISED ====================
   { id: "braised-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-beef.png", subMenu: [
     { id: "braised-pot-roast", name: "POT ROAST", description: "Cooked low & slow...", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-pot-roast.png" },
     { id: "braised-short-ribs", name: "SHORT RIBS", description: "These ribs never fall short.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-short-ribs.png" },
     { id: "braised-oxtails", name: "OXTAILS", description: "These tails tell no tales, no bull!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-oxtails.png" }, ]},
   { id: "braised-goat-chunks", name: "GOAT CHUNKS", description: "The goat of goats!", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-goat-chunks.png", subMenu: [] },
+  { id: "braised-lamb", name: "LAMB", description: "The other red meat, braised to perfection.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-lamb.png", subMenu: [
+    { id: "braised-lamb-shank", name: "SHANK", description: "Rich, tender, and fall-off-the-bone.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-lamb-shank.png" },
+    { id: "braised-lamb-loin-chops", name: "LOIN CHOPS", description: "Tender, juicy, and full of flavor.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-lamb-loin-chops.png" }, ]},
   { id: "braised-chicken", name: "CHICKEN", description: "Raised from eggs to be braised.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-chicken.png", subMenu: [] },
   { id: "braised-apples", name: "APPLES", description: "A sweet, braised treat.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-apples.png", subMenu: [] },
 
@@ -272,7 +275,6 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "rotisserie-turkey", name: "TURKEY", description: "Holiday flavor, any day!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
   { id: "rotisserie-fish", name: "FISH", description: "Swimming in the ring of fire!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
   { id: "rotisserie-cabbage", name: "CABBAGE", description: "You gotta try this!!!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-cauliflower", name: "CAULIFLOWER", description: "A super fire flower… Just ask Mario!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
   { id: "rotisserie-pineapple", name: "PINEAPPLE", description: "Topped w/ cinnamon. What a treat!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
   { id: "rotisserie-kebab", name: "KEBAB", description: "The original global street food.", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
 
