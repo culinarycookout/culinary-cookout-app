@@ -218,41 +218,43 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-breast.png" },
     { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-wings.png" }, ]},
 
-  // ==================== FLAMED ====================
-  { id: "flamed-lamb", name: "LAMB", description: "Perfect for grilling… Mary, look away!", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "flamed-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "flamed-burgers", name: "BURGERS", description: "Less grease, more goodness.", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "flamed-eggplant", name: "EGGPLANT", description: "Craft your own loaded eggplant.", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "flamed-baked-cabbage", name: "BAKED CABBAGE", description: "Baked, not boring.", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "flamed-big-beef", name: "BIG BEEF", description: "The cow jumped over the moon… & landed on the grill!", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "tri-tip-roast", name: "TRI-TIP ROAST", description: "Juicy, smoky, carved to perfection.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "tomahawk-steak", name: "TOMAHAWK STEAK", description: "Your appetite is axing for it!", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-ribs", name: "RIBS", description: "Order some replacement ribs, just in case…", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "short-ribs", name: "SHORT RIBS", description: "Thick, meaty, flame-kissed.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "flanken-strips", name: "FLANKEN RIBS", description: "Thin-cut, flame-seared perfection.", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-chicken", name: "CHICKEN", description: "Check out these hot…", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "spatchcock", name: "SPATCHCOCK", description: "Butterflied & flame-cooked.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "half", name: "HALF", description: "Half a bird, flame-grilled.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "drums", name: "DRUMS", description: "Hatched from real eggs.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "breasts", name: "BREASTS", description: "Check out these hot…", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "whole-snapper", name: "WHOLE", description: "Whole fish, flame-kissed.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "fillet", name: "FILLET", description: "Fresh fillet, fired for full flavor!", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-sausage", name: "SAUSAGE", description: "Hot…Dogs.", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "link", name: "LINK", description: "Classic link sausage.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "submarine", name: "SUBMARINE", description: "Go long… Go deep!", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-veggies", name: "VEGGIES", description: "Build your own veggie meal, fresh off the grill.", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "course-cut", name: "COURSE", description: "Nearly whole vegetables like long carrots, asparagus, & onion slices.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "cut", name: "CUT", description: "Small cuts of asparagus, chopped onions, & diced peppers.", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-baked-potato", name: "BAKED POTATO", description: "This is no side dish!", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "standard", name: "STANDARD", description: "Flame-baked perfection.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "hasselback", name: "HASSELBACK", description: "The fancy, flame-baked cut.", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-stuffed-pepper", name: "STUFFED PEPPER", description: "This pepper is waiting to be loaded!", category: "FLAMED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [
-    { id: "bell", name: "BELL", description: "A loaded bell pepper.", image: "PLACEHOLDER_IMAGE_URL" },
-    { id: "jalapeño", name: "JALAPEÑO", description: "A spicy, loaded jalapeño.", image: "PLACEHOLDER_IMAGE_URL" }, ]},
+    // ==================== FLAMED ====================
+  { id: "flamed-lamb", name: "LAMB", description: "Perfect for grilling… Mary, look away!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-lamb.png", subMenu: [] },
+  { id: "flamed-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-shrimp.png", subMenu: [] },
+  { id: "flamed-burgers", name: "BURGERS", description: "Less grease, more goodness.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-burger.png", subMenu: [] },
+  { id: "flamed-eggplant", name: "EGGPLANT", description: "Craft your own loaded eggplant.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-eggplant.png", subMenu: [] },
+  { id: "flamed-baked-cabbage", name: "BAKED CABBAGE", description: "Baked, not boring.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-cabbage.png", subMenu: [] },
+  { id: "flamed-big-beef", name: "BIG BEEF", description: "The cow jumped over the moon… & landed on the grill!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-big-beef.png", subMenu: [
+    { id: "flamed-tri-tip", name: "TRI-TIP", description: "Juicy, smoky, carved to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-tri-tip.png" },
+    { id: "flamed-tomahawk", name: "TOMAHAWK STEAK", description: "Your appetite is axing for it!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-big-beef-tomahawk-steak.png" }, ]},
+  { id: "flamed-ribs", name: "RIBS", description: "Order some replacement ribs, just in case…", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs.png", subMenu: [
+    { id: "flamed-short", name: "SHORT", description: "Thick, meaty, flame-kissed.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs-short.png" },
+    { id: "flamed-flanken", name: "FLANKEN", description: "Thin-cut, flame-seared perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs-flanken.png" },
+    { id: "flamed-lamb-rack", name: "LAMB RACK", description: "A premium, flame-grilled rack.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs-lamb-rack.png" }, ]},
+  { id: "flamed-chicken", name: "CHICKEN", description: "Check out these hot…", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken.png", subMenu: [
+    { id: "flamed-spatchcock", name: "SPATCHCOCK", description: "Butterflied & flame-cooked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-spatchcock-2.png" },
+    { id: "flamed-half", name: "HALF", description: "Half a bird, flame-grilled.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-half.png" },
+    { id: "flamed-drums", name: "DRUMS", description: "Hatched from real eggs.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-drum.png" },
+    { id: "flamed-thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-thigh.png" },
+    { id: "flamed-breasts", name: "BREASTS", description: "Check out these hot…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-breast.png" },
+    { id: "flamed-wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-wings.png" }, ]},
+  { id: "flamed-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-snapper-2.png", subMenu: [
+    { id: "flamed-whole", name: "WHOLE", description: "Whole fish, flame-kissed.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-snapper-whole.png" },
+    { id: "flamed-fillet", name: "FILLET", description: "Fresh fillet, fired for full flavor!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-snapper-fillet.png" }, ]},
+  { id: "flamed-sausages", name: "SAUSAGES", description: "Hot…Dogs.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-sausages.png", subMenu: [
+    { id: "flamed-hot-dogs", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-sausages-hot-dogs.png" },
+    { id: "flamed-link", name: "LINK", description: "Classic link sausage.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-sausages-link.png" },
+    { id: "flamed-submarine", name: "SUBMARINE", description: "Go long… Go deep!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-sausages-submarine.png" }, ]},
+  { id: "flamed-veggies", name: "VEGGIES", description: "Build your own veggie meal, fresh off the grill.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggies.png", subMenu: [
+    { id: "flamed-course", name: "COURSE", description: "Nearly whole vegetables like long carrots, asparagus, & onion slices.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggies-course.png" },
+    { id: "flamed-cut", name: "CUT", description: "Small cuts of asparagus, chopped onions, & diced peppers.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggies-cut.png" },
+    { id: "flamed-combo", name: "COMBO", description: "Meat… Veggies… What more could you want?!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggie-combo.png" }, ]},
+  { id: "flamed-baked-potatoes", name: "BAKED POTATOES", description: "This is no side dish!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes.png", subMenu: [
+    { id: "flamed-standard", name: "STANDARD", description: "Flame-baked perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes-standard.png" },
+    { id: "flamed-hasselback", name: "HASSELBACK", description: "The fancy, flame-baked cut.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes-hasselback-2.png" }, ]},
+  { id: "flamed-stuffed-peppers", name: "STUFFED PEPPERS", description: "This pepper is waiting to be loaded!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-peppers.png", subMenu: [
+    { id: "flamed-bell", name: "BELL", description: "A loaded bell pepper.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-pepper.png" },
+    { id: "flamed-jalapeno", name: "JALAPEÑO", description: "A spicy, loaded jalapeño.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-peppers-jalapeno.png" }, ]},
 
   // ==================== BRAISED ====================
   { id: "braised-short-ribs", name: "SHORT RIBS", description: "These ribs never fall short.", category: "BRAISED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
