@@ -268,15 +268,27 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "braised-chicken", name: "CHICKEN", description: "Raised from eggs to be braised.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-chicken.png", subMenu: [] },
   { id: "braised-apples", name: "APPLES", description: "A sweet, braised treat.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-apples.png", subMenu: [] },
 
-  // ==================== ROTISSERIE ====================
-  { id: "rotisserie-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-leg-lamb", name: "LEG OF LAMB", description: "The centerpiece of a feast!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-chicken", name: "CHICKEN", description: "Let's make this bird dizzy…", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-turkey", name: "TURKEY", description: "Holiday flavor, any day!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-fish", name: "FISH", description: "Swimming in the ring of fire!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-cabbage", name: "CABBAGE", description: "You gotta try this!!!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-pineapple", name: "PINEAPPLE", description: "Topped w/ cinnamon. What a treat!", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
-  { id: "rotisserie-kebab", name: "KEBAB", description: "The original global street food.", category: "ROTISSERIE", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
+    // ==================== ROTISSERIE ====================
+  { id: "rotisserie-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef.png", subMenu: [
+    { id: "rotisserie-prime-rib", name: "PRIME RIB ROAST", description: "A premium cut, cooked to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef-prime-rib-roast.png" },
+    { id: "rotisserie-beef-roast", name: "ROAST", description: "A classic beef roast, slow-cooked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef-roast.png" }, ]},
+  { id: "rotisserie-lamb", name: "LAMB", description: "The centerpiece of a feast!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb.png", subMenu: [
+    { id: "rotisserie-lamb-leg", name: "LEG", description: "A classic, juicy leg of lamb.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb-leg.png" },
+    { id: "rotisserie-lamb-boneless", name: "BONELESS LEG", description: "Easy to carve, full of flavor.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb-boneless-leg.png" },
+    { id: "rotisserie-lamb-shank", name: "SHANK", description: "Tender, rich, and fall-off-the-bone.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb-shank.png" }, ]},
+  { id: "rotisserie-chicken", name: "CHICKEN", description: "Let's make this bird dizzy…", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken.png", subMenu: [
+    { id: "rotisserie-chicken-whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken-whole.png" },
+    { id: "rotisserie-chicken-half", name: "HALF", description: "Half the bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken-half.png" },
+    { id: "rotisserie-chicken-hen", name: "HEN", description: "A smaller, tender bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken-hen.png" }, ]},
+  { id: "rotisserie-turkey", name: "TURKEY", description: "Holiday flavor, any day!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-turkey.png", subMenu: [
+    { id: "rotisserie-turkey-whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-turkey-whole.png" },
+    { id: "rotisserie-turkey-half", name: "HALF", description: "Half the bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-turkey-half.png" }, ]},
+  { id: "rotisserie-fish", name: "FISH", description: "Swimming in the ring of fire!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-fish.png", subMenu: [
+    { id: "rotisserie-fish-whole", name: "WHOLE", description: "Whole fish, perfectly cooked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-fish-whole.png" },
+    { id: "rotisserie-fish-fillet", name: "FILLET", description: "A perfectly cooked fillet.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-fish-fillet.png" }, ]},
+  { id: "rotisserie-cabbage", name: "CABBAGE", description: "You gotta try this!!!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-cabbage.png", subMenu: [] },
+  { id: "rotisserie-pineapple", name: "PINEAPPLE", description: "Topped w/ cinnamon. What a treat!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-pineapple.png", subMenu: [] },
+  { id: "rotisserie-kebabs", name: "KEBABS", description: "The original global street food.", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-kebabs.png", subMenu: [] },
 
   // ==================== SMOKED ====================
   { id: "smoked-beef-roast", name: "BEEF ROAST", description: "Big, bold, & beefy.", category: "SMOKED", image: "PLACEHOLDER_IMAGE_URL", subMenu: [] },
