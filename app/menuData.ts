@@ -305,8 +305,10 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "smoked-salmon-fillet", name: "SALMON FILLET", description: "Hooked & croaked… Cooked & smoked.", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-salmon-fillet.png", subMenu: [] },
   { id: "smoked-lobster-tail", name: "LOBSTER TAIL", description: "Smoked to perfection.", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-lobster-tail.png", subMenu: [] },
 
-  // ==================== BEVERAGES ====================
-  { id: "beverages-spring-water", name: "SPRING WATER", description: "Cool & refreshing.", category: "BEVERAGES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-spring-water.png", subMenu: [] },
+    // ==================== BEVERAGES ====================
+  { id: "beverages-water", name: "WATER", description: "Hydration, elevated.", category: "BEVERAGES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-water.png", subMenu: [
+    { id: "beverages-water-spring", name: "SPRING", description: "Cool & refreshing.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-water-spring.png" },
+    { id: "beverages-water-infused", name: "INFUSED", description: "Fruit-infused & refreshing.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-water-infused.png" }, ]},
   { id: "beverages-citrus-drinks", name: "CITRUS DRINKS", description: "Lemon & honey infused spring water.", category: "BEVERAGES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-citrus-drinks.png", subMenu: [
     { id: "beverages-lemonade", name: "LEMONADE", description: "Lemon & honey infused spring water.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-citrus-drinks-lemonade.png" },
     { id: "beverages-dirty-limeade", name: "DIRTY LIMEADE", description: "Honey & cinnamon infused lime & peach juice..", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-citrus-drinks-dirty-limeade.png" }, ]},
