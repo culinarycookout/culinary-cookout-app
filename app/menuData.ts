@@ -202,6 +202,11 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "sides-garlic", name: "GARLIC NOODLES", description: "Vampires beware!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-garlic.png" }, ]},
   { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-rice.png", subMenu: [] },
   { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-fresh-fruit-cup-2.png", subMenu: [] },
+  { id: "sides-breads", name: "BREADS", description: "The perfect base for any meal.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads.png", subMenu: [
+    { id: "sides-breads-white", name: "WHITE", description: "Soft, classic white bread.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-white.png" },
+    { id: "sides-breads-pita", name: "PITA", description: "Soft, fluffy pita bread.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-pita.png" },
+    { id: "sides-breads-flour-tortilla", name: "FLOUR TORTILLA", description: "Soft flour tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-flour-tortilla.png" },
+    { id: "sides-breads-corn-tortilla", name: "CORN TORTILLA", description: "Classic corn tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-corn-tortilla.png" }, ]},
 
     // ==================== JR. DISHES ====================
   { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-hot-dog.png", subMenu: [] },
