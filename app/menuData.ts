@@ -58,7 +58,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "orange", name: "ORANGE", description: "Bright & juicy.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-orange.png" },
     { id: "strawberries", name: "STRAWBERRIES", description: "Sweet & ripe.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-strawberries.png" }, ]},
 
-  // ==================== SANDWICHES ====================
+    // ==================== SANDWICHES ====================
   { id: "savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-savory-stuffed-waffle.png", subMenu: [] },
   { id: "sandwich-club", name: "CLUB", description: "Build your own club sandwich.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club.png", subMenu: [
     { id: "club-sandwich", name: "CLUB SANDWICH", description: "Build your own club sandwich.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/Sandwiches-club-club-sandwich.png" },
@@ -76,6 +76,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "sandwich-burgers", name: "BURGERS", description: "Build your burger from the bun up.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers.jpg", subMenu: [
     { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-burger.png" },
     { id: "sliders", name: "SLIDERS", description: "Smaller burgers built on rolls.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-sliders.png" }, ]},
+  { id: "sandwich-gyros", name: "GYROS", description: "A Mediterranean classic wrapped in pita.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-gyros.png", subMenu: [] },
 
     // ==================== BIRDS ====================
     { id: "birds-fried-chicken", name: "FRIED CHICKEN", description: "Go half, or go whole.", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken.png", subMenu: [
@@ -166,11 +167,12 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-citrus-chicken.png", subMenu: [] },
   { id: "wonton-roll", name: "WONTON ROLL", description: "Thin, crispy, goodness!", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-wonton-roll.png", subMenu: [] },
 
-  // ==================== BEEF ====================
+    // ==================== BEEF ====================
   { id: "beef-steaks", name: "STEAKS", description: "A good cut, for a full gut.", category: "BEEF", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks.png", subMenu: [
     { id: "beef-battered", name: "BATTERED", description: "Battered to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-battered.png" },
     { id: "beef-ribeye", name: "RIBEYE", description: "A good cut, for a full gut.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-ribeye.png" },
     { id: "beef-chunks", name: "CHUNKS", description: "Hearty chunks of beef.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-chunks.png" }, ]},
+  { id: "beef-ground-beef", name: "GROUND BEEF", description: "Fresh, ground to order.", category: "BEEF", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-ground-beef.png", subMenu: [] },
 
       // ==================== VEGGIES ====================
   { id: "veggies-salad", name: "SALAD", description: "Create like Cardini.", category: "VEGGIES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad.png", subMenu: [
@@ -200,7 +202,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "sides-garlic", name: "GARLIC NOODLES", description: "Vampires beware!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-garlic.png" }, ]},
   { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-rice.png", subMenu: [] },
   { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-fresh-fruit-cup-2.png", subMenu: [] },
-  
+
     // ==================== JR. DISHES ====================
   { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-hot-dog.png", subMenu: [] },
   { id: "jr-burger", name: "JR. BURGER", description: "A quarter-pound of fun in a bun.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-burger.png", subMenu: [] },
