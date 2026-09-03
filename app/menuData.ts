@@ -174,9 +174,9 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
 
     // ==================== SOUPS & STEWS ====================
   { id: "soups", name: "SOUP", description: "Create a beautiful bowl!", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-1.png", subMenu: [
-    { id: "soups-hot-pot", name: "HOT POT SOUP", description: "A rich and comforting bowl.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-hot-pot-soup.png" },
-    { id: "soups-noodle", name: "NOODLE SOUP", description: "A hearty noodle classic.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-noodle-soup.png" },
-    { id: "soups-ramen", name: "RAMEN SOUP", description: "A flavorful, rich ramen bowl.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-ramen.png" }, ]},
+    { id: "soups-hot-pot", name: "HOT POT", description: "A rich and comforting bowl.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-hot-pot-soup.png" },
+    { id: "soups-noodle", name: "NOODLE", description: "A hearty noodle classic.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-noodle-soup.png" },
+    { id: "soups-ramen", name: "RAMEN", description: "A flavorful, rich ramen bowl.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-ramen.png" }, ]},
   { id: "soups-stew", name: "STEW", description: "Create a beautiful bowl!", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew.png", subMenu: [
     { id: "soups-stew-gumbo", name: "GUMBO", description: "A bold, flavorful stew.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-gumbo.png" },
     { id: "soups-stew-stew", name: "STEW", description: "Slow-simmered and hearty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-stew.png" }, ]},
