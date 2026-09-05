@@ -46,6 +46,7 @@ const categoryColors = {
   'VEGGIES': 'bg-[#2D6A4F] text-white',
   'TREATS': 'bg-pink-300 text-black',
   'BRAISED': 'bg-amber-700 text-white',
+  'AIR-FRIED': 'bg-[#B22222] text-white',
 };
 
 export default function Menu() {
@@ -152,8 +153,10 @@ export default function Menu() {
             let destinationHref;
             if (item.name === 'TACOS') {
               destinationHref = '/taco-deals';
+            } else if (item.subMenu && item.subMenu.length > 0) {
+              destinationHref = `/${item.id}`; // ✅ NEW: Sends Parent Folders to the new page
             } else {
-              destinationHref = `/menu/${item.id}`;
+              destinationHref = `/menu/${item.id}`; // ✅ Standalone items go to normal page
             }
 
             return (
