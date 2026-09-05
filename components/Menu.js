@@ -7,16 +7,15 @@ import { FOOD_MENU_ITEMS } from '@/app/menuData';
 const CATEGORY_ORDER = [
   'BREAKFAST',
   'SANDWICHES',
-  'JR. DISHES',
-  'BUNS',
   'BIRDS',
   'SEAFOOD',
   'FRIED SIDES',
   'BEEF',
   'LATIN AMERICA',
   'ASIAN',
-  'BEVERAGES',
+  'AIR-FRIED',
   'SIDES',
+  'JR. DISHES',
   'SOUPS & STEWS',
   'VEGGIES',
   'TREATS',
@@ -24,6 +23,7 @@ const CATEGORY_ORDER = [
   'BRAISED',
   'ROTISSERIE',
   'SMOKED',
+  'BEVERAGES',
 ];
 
 const categoryColors = {
