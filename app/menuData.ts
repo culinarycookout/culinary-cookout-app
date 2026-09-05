@@ -59,9 +59,9 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "strawberries", name: "STRAWBERRIES", description: "Sweet & ripe.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-strawberries.png" }, ]},
 
     // ==================== SANDWICHES ====================
-  { id: "sandwiches-stacked", name: "STACKED", description: "The sandwich you know & love!", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club.png", subMenu: [
-    { id: "loaf-sandwich", name: "STANDARD", description: "Fresh fuel.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/Sandwiches-club-club-sandwich.png" },
-    { id: "club-sandwich", name: "CLUB", description: "How many layers do you need?.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-club-double-decker.png" }, ]},
+  { id: "sandwiches-stacked", name: "STACKED", description: "The sandwich you know & love!", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked.png", subMenu: [
+    { id: "standard-sandwich", name: "STANDARD", description: "Fresh fuel.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked-standard.png" },
+    { id: "club-sandwich", name: "CLUB", description: "How many layers do you need?.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked-club.png" }, ]},
   { id: "sandwiches-hoagie", name: "HOAGIE", description: "The heart of the deli.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie.png", subMenu: [
     { id: "half-hoagie", name: "HALF", description: "The sub on the go.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-half.png" },
     { id: "submarine", name: "SUBMARINE", description: "All aboard!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-submarine.png" }, ]},
