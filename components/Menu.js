@@ -154,9 +154,9 @@ export default function Menu() {
             if (item.name === 'TACOS') {
               destinationHref = '/taco-deals';
             } else if (item.subMenu && item.subMenu.length > 0) {
-              destinationHref = `/${item.id}`; // ✅ NEW: Sends Parent Folders to the new page
+              destinationHref = `/category/${item.id}`;
             } else {
-              destinationHref = `/menu/${item.id}`; // ✅ Standalone items go to normal page
+              destinationHref = `/menu/${item.id}`;
             }
 
             return (

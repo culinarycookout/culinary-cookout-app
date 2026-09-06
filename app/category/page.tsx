@@ -42,7 +42,7 @@ export default function CategoryPage() {
                 src={subItem.image}
                 alt={subItem.name}
                 className="w-full h-36 md:h-48 object-cover"
-                onError={(e) => { e.currentTarget.src = '/placeholder.png'; }}
+                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.png'; }}
               />
               <div className="p-3 md:p-4 flex flex-col flex-1">
                 <h3 className="font-bold text-sm md:text-lg leading-tight break-words mb-2">{subItem.name}</h3>
