@@ -18,59 +18,59 @@ export interface SubMenuItem {
 
 export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== BREAKFAST ====================
-  { id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs.png", subMenu: [
-    { id: "eggs-boiled", name: "BOILED", description: "The quickest meal of the day…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs-boiled-egg.png" },
-    { id: "eggs-fried", name: "FRIED", description: "How far will you let the yolk run?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs-fried-egg%20.png" },
-    { id: "eggs-scrambled", name: "SCRAMBLED", description: "No need to scramble, unless it's eggs…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs-scrambled-eggs.png" },
-    { id: "eggs-omelette", name: "OMELETTE", description: "Start with eggs, end with eggstasy.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs-omelette.png" },
-    { id: "eggs-omelette-pockets", name: "OMELETTE POCKETS", description: "Omelettes on the go!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-eggs-omelette-pockets.png" }, ]},
-  { id: "breakfast-griddle", name: "GRIDDLE", description: "The griddle's greatest ever!", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-griddle.png", subMenu: [
-    { id: "french-toast", name: "FRENCH TOAST", description: "How many slices are too many?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-french-toast.png" },
-    { id: "pancakes", name: "PANCAKES", description: "A hot date with hotcakes.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-pancakes.png" },
-    { id: "waffles", name: "WAFFLES", description: "The gridiron's MVP!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-waffles.png" },
-    { id: "stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-stuffed-waffle.png" }, ]},
-  { id: "breakfast-meats", name: "MEATS", description: "The first protein of the day.", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats.png", subMenu: [
-    { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-bacon.png" },
-    { id: "breakfast-sausage", name: "SAUSAGE", description: "The biggest little compliment.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-sausage.png" },
-    { id: "breakfast-sausage-patty", name: "SAUSAGE PATTY", description: "To meat, or not to meat...", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-meats-sausage-patty.png" }, ]},
-  { id: "breakfast-potatoes", name: "POTATOES", description: "No potato is a poor choice... Literally!", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-potatoes.png", subMenu: [
-    { id: "chunks", name: "CHUNKS", description: "The hearty fill, of any meal!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-potato-chunks.png" },
-    { id: "diced", name: "DICED", description: "Nice, diced, potato bites.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-potatoes-diced.png" },
-    { id: "hash-brown", name: "HASH BROWN PATTY", description: "Crispiness at its finest.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-hash-brown-patty.png" }, ]},
-  { id: "breakfast-breads", name: "BREADS", description: "Toast? Muffins? The universal breakfast staple…", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads.png", subMenu: [
-    { id: "toast", name: "TOAST", description: "It's good, no matter what!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-toast.png" },
-    { id: "english-muffin", name: "ENGLISH MUFFIN", description: "Toasted? Warm? Honey?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-english-muffin.png" },
-    { id: "biscuit", name: "BISCUIT", description: "The anytime bread!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-biscuit.png" },
-    { id: "muffin", name: "MUFFIN", description: "The complete bread meal!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breads-muffin.png" }, ]},
-  { id: "breakfast-sandwiches", name: "BREAKFAST SANDWICHES", description: "The ultimate breakfast on the go.", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-2.png", subMenu: [
-    { id: "breakfast-sandwich-club", name: "CLUB-STYLE", description: "The perfect brunch!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-club.png" },
-    { id: "breakfast-sandwich-muffin", name: "MUFFIN-STYLE", description: "Breakfast's best seller!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-sandwiches-muffin-2.png" }, ]},
-  { id: "breakfast-fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak.png", subMenu: [
-    { id: "fried-steak-beef", name: "BEEF", description: "Something tender to remember.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak-beef.png" },
-    { id: "fried-steak-chicken", name: "CHICKEN", description: "A crispy steak, for your breakfast plate.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-fried-steak-chicken.png" }, ]},
-  { id: "breakfast-burrito", name: "BREAKFAST BURRITO", description: "Breakfast in a burrito.", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-breakfast-burrito.png", subMenu: [] },
-  { id: "breakfast-yogurt", name: "YOGURT", description: "Your yogurt, your way…", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-yogurt.png", subMenu: [] },
-  { id: "breakfast-whole-fruit", name: "WHOLE FRUIT", description: "The freshest start to your day.", category: "BREAKFAST", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit.png", subMenu: [
-    { id: "apple", name: "APPLE", description: "The doctor is right, you know.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-apples.png" },
-    { id: "banana", name: "BANANA", description: "Bliss comes in bunches.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-banana.png" },
-    { id: "lime", name: "LIME", description: "The perfect squirt!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-lime.png" },
-    { id: "orange", name: "ORANGE", description: "Vitamin C, before vitamin D.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/breakfast/breakfast-whole-fruit-orange.png" }, ]},
+  { id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", category: "BREAKFAST", image: "https://iili.io/n35L0qg.png", subMenu: [
+    { id: "eggs-boiled", name: "BOILED", description: "The quickest meal of the day…", image: "https://iili.io/nKUpV3P.png" },
+    { id: "eggs-fried", name: "FRIED", description: "How far will you let the yolk run?", image: "https://iili.io/nKUpG6B.png" },
+    { id: "eggs-scrambled", name: "SCRAMBLED", description: "No need to scramble, unless it's eggs…", image: "https://iili.io/nKUpwua.png" },
+    { id: "eggs-omelette", name: "OMELETTE", description: "Start with eggs, end with eggstasy.", image: "https://iili.io/nKUpX8F.png" },
+    { id: "eggs-omelette-pockets", name: "OMELETTE POCKETS", description: "Omelettes on the go!", image: "https://iili.io/nKUr5xe.png" }, ]},
+  { id: "breakfast-griddle", name: "GRIDDLE", description: "The griddle's greatest ever!", category: "BREAKFAST", image: "https://iili.io/nKUp69n.png", subMenu: [
+    { id: "french-toast", name: "FRENCH TOAST", description: "How many slices are too many?", image: "https://iili.io/nKUpknR.png" },
+    { id: "pancakes", name: "PANCAKES", description: "A hot date with hotcakes.", image: "https://iili.io/n35QrFa.png" },
+    { id: "waffles", name: "WAFFLES", description: "The gridiron's MVP!", image: "https://iili.io/nKUyzNa.png" },
+    { id: "stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", image: "https://iili.io/n35ZNls.png" }, ]},
+  { id: "breakfast-meats", name: "MEATS", description: "The first protein of the day.", category: "BREAKFAST", image: "https://iili.io/nKUpmc7.png", subMenu: [
+    { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "https://iili.io/nKUpstf.png" },
+    { id: "breakfast-sausage", name: "SAUSAGE", description: "The biggest little compliment.", image: "https://iili.io/nKUptP2.png" },
+    { id: "breakfast-sausage-patty", name: "SAUSAGE PATTY", description: "To meat, or not to meat...", image: "https://iili.io/nKUpQn4.png" }, ]},
+  { id: "breakfast-potatoes", name: "POTATOES", description: "No potato is a poor choice... Literally!", category: "BREAKFAST", image: "https://iili.io/nKUyFMQ.png", subMenu: [
+    { id: "chunks", name: "CHUNKS", description: "The hearty fill, of any meal!", image: "https://iili.io/nKUyJwb.png" },
+    { id: "diced", name: "DICED", description: "Nice, diced, potato bites.", image: "https://iili.io/nKUyKPV.png" },
+    { id: "hash-brown", name: "HASH BROWN PATTY", description: "Crispiness at its finest.", image: "https://iili.io/nKUpPus.png" }, ]},
+  { id: "breakfast-breads", name: "BREADS", description: "Toast? Muffins? The universal breakfast staple…", category: "BREAKFAST", image: "https://iili.io/nKUtO11.png", subMenu: [
+    { id: "toast", name: "TOAST", description: "It's good, no matter what!", image: "https://iili.io/nKUtVmx.png" },
+    { id: "english-muffin", name: "ENGLISH MUFFIN", description: "Toasted? Warm? Honey?", image: "https://iili.io/nKUtXzQ.png" },
+    { id: "biscuit", name: "BISCUIT", description: "The anytime bread!", image: "https://iili.io/nKUtjLB.png" },
+    { id: "muffin", name: "MUFFIN", description: "The complete bread meal!", image: "https://iili.io/nKUthXV.png" }, ]},
+  { id: "breakfast-sandwiches", name: "BREAKFAST SANDWICHES", description: "The ultimate breakfast on the go.", category: "BREAKFAST", image: "https://iili.io/nKUyoHF.png", subMenu: [
+    { id: "breakfast-sandwich-club", name: "CLUB-STYLE", description: "The perfect brunch!", image: "https://iili.io/nKUyCS1.png" },
+    { id: "breakfast-sandwich-muffin", name: "MUFFIN-STYLE", description: "Breakfast's best seller!", image: "https://iili.io/nKUyBcP.png" }, ]},
+  { id: "breakfast-fried-steak", name: "FRIED STEAK", description: "If it ain't fried, it ain't right!", category: "BREAKFAST", image: "https://iili.io/nKUpvGp.png", subMenu: [
+    { id: "fried-steak-beef", name: "BEEF", description: "Something tender to remember.", image: "https://iili.io/nKUpr8X.png" },
+    { id: "fried-steak-chicken", name: "CHICKEN", description: "A crispy steak, for your breakfast plate.", image: "https://iili.io/nKUpgat.png" }, ]},
+  { id: "breakfast-burrito", name: "BREAKFAST BURRITO", description: "Breakfast in a burrito.", category: "BREAKFAST", image: "https://iili.io/nKUpEGV.png", subMenu: [] },
+  { id: "breakfast-yogurt", name: "YOGURT", description: "Your yogurt, your way…", category: "BREAKFAST", image: "https://iili.io/n35taXS.png", subMenu: [] },
+  { id: "breakfast-whole-fruit", name: "WHOLE FRUIT", description: "The freshest start to your day.", category: "BREAKFAST", image: "https://iili.io/n35tIgs.png", subMenu: [
+    { id: "apple", name: "APPLE", description: "The doctor is right, you know.", image: "https://iili.io/n35Zwfn.png" },
+    { id: "banana", name: "BANANA", description: "Bliss comes in bunches.", image: "https://iili.io/n35Z4s9.png" },
+    { id: "lime", name: "LIME", description: "The perfect squirt!", image: "https://iili.io/nKUyuov.png" },
+    { id: "orange", name: "ORANGE", description: "Vitamin C, before vitamin D.", image: "https://iili.io/nKUyRPp.png" }, ]},
 
   // ==================== SANDWICHES ====================
-  { id: "sandwiches-stacked", name: "STACKED", description: "The sandwich you know & love!", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked.png", subMenu: [
-    { id: "standard-sandwich", name: "STANDARD", description: "Fresh fuel.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked-standard.png" },
+  { id: "sandwiches-stacked", name: "STACKED", description: "The sandwich you know & love!", category: "SANDWICHES", image: "https://iili.io/nK6NGxs.png", subMenu: [
+    { id: "classic-sandwich", name: "CLASSIC", description: "Fresh fuel.", image: "https://iili.io/nfXUAXf.png" },
     { id: "club-sandwich", name: "CLUB", description: "How many layers do you need?.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked-club-2.png" }, ]},
-  { id: "sandwiches-hoagie", name: "HOAGIE", description: "The heart of the deli.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie.png", subMenu: [
-    { id: "half-hoagie", name: "HALF", description: "The sub on the go.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-half.png" },
+  { id: "sandwiches-hoagie", name: "HOAGIE", description: "The heart of the deli.", category: "SANDWICHES", image: "https://iili.io/nKiXtl2.png", subMenu: [
+    { id: "half-hoagie", name: "HALF", description: "The sub on the go.", image: "https://iili.io/nKPVEQ4.png" },
     { id: "submarine", name: "SUBMARINE", description: "All aboard!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-submarine.png" }, ]},
   { id: "sandwiches-pressed", name: "PRESSED", description: "Heated, but never mistreated.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-pressed.png", subMenu: [
     { id: "grilled-cheese", name: "GRILLED CHEESE", description: "Gooey goodness.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-pressed-grilled-cheese.png" },
-    { id: "panini", name: "PANINI", description: "Pressed & dressed for success.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-pressed-panini.png" }, ]},
-  { id: "sandwiches-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages.png", subMenu: [
+    { id: "panini", name: "PANINI", description: "Pressed & dressed for success.", image: "https://iili.io/nK6NMWG.png" }, ]},
+  { id: "sandwiches-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", category: "SANDWICHES", image: "https://iili.io/n37twoN.png", subMenu: [
     { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hot-dog.png" },
     { id: "link", name: "LINK", description: "Hungrier than a hot dog?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages-link.png" },
-    { id: "submarine-sausage", name: "SUBMARINE SAUSAGE", description: "Go long… Go deep!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages-submarine-sausage.png" }, ]},
-  { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers.jpg", subMenu: [
+    { id: "submarine-sausage", name: "SUBMARINE SAUSAGE", description: "Go long… Go deep!", image: "https://iili.io/n37thtp.png" }, ]},
+  { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://iili.io/n37taoB.jpg", subMenu: [
     { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-burger.png" },
     { id: "sliders", name: "SLIDERS", description: "Three chances at greatness!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-sliders.png" }, ]},
   { id: "sandwiches-gyros", name: "GYROS", description: "Find out what the big dill is...", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-gyros.png", subMenu: [] },
@@ -196,14 +196,14 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "soups-jambalaya", name: "JAMBALAYA", description: "The depth of satisfaction.", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-jambalaya.png", subMenu: [] },
 
   // ==================== SIDES ====================
-  { id: "sides-noodles", name: "NOODLES", description: "The perfect comfort food.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles.png", subMenu: [
+  { id: "sides-pasta", name: "PASTA", description: "A fork in the road? No, just a fork for your pasta.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles.png", subMenu: [
     { id: "sides-mac", name: "MAC & CHEESE", description: "Whether you choose dairy or not, your stomach will thank you!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-mac-&-cheese.png" },
     { id: "sides-alfredo", name: "ALFREDO", description: "Alfredo is life with the dull bits cut out.” - Hitchcock", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-alfredo.png" },
     { id: "sides-garlic", name: "GARLIC NOODLES", description: "Vampires beware!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-garlic.png" }, ]},
   { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-rice.png", subMenu: [] },
   { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-fresh-fruit-cup-2.png", subMenu: [] },
-  { id: "sides-breads", name: "BREADS", description: "The perfect base for any meal.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads.png", subMenu: [
-    { id: "sides-breads-white", name: "WHITE", description: "Soft, classic white bread.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-white.png" },
+  { id: "sides-breads", name: "BREADS", description: "The perfect support for any meal.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads.png", subMenu: [
+    { id: "sides-breads-slice", name: "SLICE", description: "One slice can change a meal.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-white.png" },
     { id: "sides-breads-pita", name: "PITA", description: "Soft, fluffy pita bread.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-pita.png" },
     { id: "sides-breads-flour-tortilla", name: "FLOUR TORTILLA", description: "Soft flour tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-flour-tortilla.png" },
     { id: "sides-breads-corn-tortilla", name: "CORN TORTILLA", description: "Classic corn tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-corn-tortilla.png" }, ]},
@@ -242,7 +242,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "flamed-thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-thigh.png" },
     { id: "flamed-breasts", name: "BREASTS", description: "Check out these hot…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-breast.png" },
     { id: "flamed-wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-wings.png" }, ]},
-  { id: "flamed-stuffed-breasts", name: "STUFFED BREASTS", description: "No, we're not trying to make them look bigger!", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts.png", subMenu: [
+  { id: "flamed-stuffed-breasts", name: "STUFFED BREASTS", description: "No, we're not trying to make them look bigger!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts.png", subMenu: [
     { id: "stuffed-chicken", name: "CHICKEN", description: "When you're really hungry", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts-chicken.png" },
     { id: "stuffed-turkey", name: "TURKEY", description: "Stuff it with stuffing if you wish.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts-turkey.png" }, ]},
   { id: "flamed-fish", name: "FISH", description: "Hot fish… Hot dish!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-fish.png", subMenu: [
