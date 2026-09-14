@@ -95,17 +95,17 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "steamed-breast-turkey", name: "TURKEY", description: "Order if you fear dry turkey.", image: "https://iili.io/n3RsbTP.png" }, ]},
 
     // ==================== SEAFOOD ====================
-  { id: "seafood-snapper", name: "SNAPPER", description: "The one Fish, paired with green eggs & ham, since 1960.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper.png", subMenu: [
+  { id: "seafood-snapper", name: "SNAPPER", description: "The one Fish, paired with green eggs & ham, since 1960.", category: "SEAFOOD", image: "https://iili.io/nBUdjAF.png", subMenu: [
     { id: "battered", name: "BATTERED", description: "Battered but unbeatable!", image: "https://iili.io/n37b667.png" },
     { id: "sauteed", name: "SAUTÉED", description: "Fresh fillet, fried for full flavor!", image: "https://iili.io/nB8O9Ox.png" },
     { id: "steamed", name: "STEAMED", description: "Swimming in seasoning.", image: "https://iili.io/n37bevs.png" }, ]},
-  { id: "seafood-salmon", name: "SALMON", description: "From sea to seasoned.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-2.png", subMenu: [
-    { id: "sauteed", name: "SAUTÉED", description: "Sensationally, seared.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-sauteed.png" },
-    { id: "steamed", name: "STEAMED", description: "Hot steam, upstream!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-steamed.png" }, ]},
-  { id: "seafood-crab-legs", name: "CRAB LEGS", description: "Crazed for crackin' cleaned clusters?", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-2.png", subMenu: [
-    { id: "dungeness", name: "DUNGENESS", description: "A boil in a bag!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-boiled.png" },
-    { id: "snow", name: "SNOW", description: "A cold crab, fresh out the sauna.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-snow.png" },
-    { id: "king", name: "KING", description: "All shell the King!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-crab-legs-king.png" }, ]},
+  { id: "seafood-salmon", name: "SALMON", description: "From sea to seasoned.", category: "SEAFOOD", image: "https://iili.io/n37DZLN.png", subMenu: [
+    { id: "sauteed", name: "SAUTÉED", description: "Sensationally, seared.", image: "https://iili.io/n37Dy2n.png" },
+    { id: "steamed", name: "STEAMED", description: "Hot steam, upstream!", image: "https://iili.io/n37bJpf.png" }, ]},
+  { id: "seafood-crab-legs", name: "CRAB LEGS", description: "Crazed for crackin' cleaned clusters?", category: "SEAFOOD", image: "https://iili.io/nB6FZUG.png", subMenu: [
+    { id: "dungeness", name: "DUNGENESS", description: "A boil in a bag!", image: "https://iili.io/nB4583Q.png" },
+    { id: "snow", name: "SNOW", description: "A cold crab, fresh out the sauna.", image: "https://iili.io/nB4NwEQ.png" },
+    { id: "king", name: "KING", description: "All shell the King!", image: "https://iili.io/nBPAHns.png" }, ]},
   { id: "seafood-lobster-tails", name: "LOBSTER TAILS", description: "Luxury lives in lobster.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails.png", subMenu: [
     { id: "seared-lobster-tail", name: "SEARED", description: "Sear-iously good.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-broiled.png" },
     { id: "steamed-lobster-tail", name: "STEAMED", description: "A timeless gift from Native America.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-steamed.png" },
