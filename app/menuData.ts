@@ -18,7 +18,7 @@ export interface SubMenuItem {
 
 export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== BREAKFAST ====================
-  { id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", category: "BREAKFAST", image: "https://iili.io/n3RsxdQ.png", subMenu: [
+  { id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", category: "BREAKFAST", image: "https://iili.io/nKUpOZv.png", subMenu: [
     { id: "eggs-boiled", name: "BOILED", description: "The quickest meal of the day…", image: "https://iili.io/nKUpV3P.png" },
     { id: "eggs-fried", name: "FRIED", description: "How far will you let the yolk run?", image: "https://iili.io/nKUpG6B.png" },
     { id: "eggs-scrambled", name: "SCRAMBLED", description: "No need to scramble, unless it's eggs…", image: "https://iili.io/nKUpwua.png" },
