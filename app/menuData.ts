@@ -18,7 +18,7 @@ export interface SubMenuItem {
 
 export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== BREAKFAST ====================
-  { id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", category: "BREAKFAST", image: "https://iili.io/n35L0qg.png", subMenu: [
+  { id: "breakfast-eggs", name: "EGGS", description: "The incredible, edible egg...", category: "BREAKFAST", image: "https://iili.io/n3RsxdQ.png", subMenu: [
     { id: "eggs-boiled", name: "BOILED", description: "The quickest meal of the day…", image: "https://iili.io/nKUpV3P.png" },
     { id: "eggs-fried", name: "FRIED", description: "How far will you let the yolk run?", image: "https://iili.io/nKUpG6B.png" },
     { id: "eggs-scrambled", name: "SCRAMBLED", description: "No need to scramble, unless it's eggs…", image: "https://iili.io/nKUpwua.png" },
@@ -88,7 +88,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "whole", name: "WHOLE", description: "Fried & fit for a feast.", image: "https://iili.io/n3RsWhX.png" },
     { id: "drum", name: "DRUM", description: "The banquet benchmark!", image: "https://iili.io/n3RsjBs.png" },
     { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://iili.io/n3RiMib.png" },
-    { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-breast.png" },
+    { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://iili.io/n3RsxdQ.png" },
     { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png" }, ]},
    { id: "birds-steamed-breasts", name: "STEAMED BREASTS", description: "The cleanest meat on land.", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-steamed-breasts.png", subMenu: [
     { id: "steamed-breast-chicken", name: "CHICKEN", description: "Practically a seabird now!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-steamed-breasts-chicken.png" },
