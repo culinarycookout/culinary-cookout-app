@@ -59,35 +59,35 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== SANDWICHES ====================
   { id: "sandwiches-stacked", name: "STACKED", description: "The sandwich you know & love!", category: "SANDWICHES", image: "https://iili.io/nK6NGxs.png", subMenu: [
     { id: "classic-sandwich", name: "CLASSIC", description: "Fresh fuel.", image: "https://iili.io/nfXUAXf.png" },
-    { id: "club-sandwich", name: "CLUB", description: "How many layers do you need?.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-stacked-club-2.png" }, ]},
+    { id: "club-sandwich", name: "CLUB", description: "How many layers do you need?.", image: "https://iili.io/nq1xFKF.jpg" }, ]},
   { id: "sandwiches-hoagie", name: "HOAGIE", description: "The heart of the deli.", category: "SANDWICHES", image: "https://iili.io/nKiXtl2.png", subMenu: [
     { id: "half-hoagie", name: "HALF", description: "The sub on the go.", image: "https://iili.io/nKPVEQ4.png" },
-    { id: "submarine", name: "SUBMARINE", description: "All aboard!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hoagie-submarine.png" }, ]},
-  { id: "sandwiches-pressed", name: "PRESSED", description: "Heated, but never mistreated.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-pressed.png", subMenu: [
-    { id: "grilled-cheese", name: "GRILLED CHEESE", description: "Gooey goodness.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-pressed-grilled-cheese.png" },
+    { id: "submarine", name: "SUBMARINE", description: "All aboard!", image: "https://iili.io/nqef0bt.png" }, ]},
+  { id: "sandwiches-pressed", name: "PRESSED", description: "Heated, but never mistreated.", category: "SANDWICHES", image: "https://iili.io/nq4zzns.png", subMenu: [
+    { id: "grilled-cheese", name: "GRILLED CHEESE", description: "Gooey goodness.", image: "https://iili.io/n37tcMP.png" },
     { id: "panini", name: "PANINI", description: "Pressed & dressed for success.", image: "https://iili.io/nK6NMWG.png" }, ]},
   { id: "sandwiches-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", category: "SANDWICHES", image: "https://iili.io/n37twoN.png", subMenu: [
-    { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-hot-dog.png" },
-    { id: "link", name: "LINK", description: "Hungrier than a hot dog?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-sausages-link.png" },
+    { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://iili.io/nq4Gien.png" },
+    { id: "link", name: "LINK", description: "Hungrier than a hot dog?", image: "https://iili.io/nq6zhkN.png" },
     { id: "submarine-sausage", name: "SUBMARINE SAUSAGE", description: "Go long… Go deep!", image: "https://iili.io/n37thtp.png" }, ]},
   { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://iili.io/n37taoB.jpg", subMenu: [
-    { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-burger.png" },
-    { id: "sliders", name: "SLIDERS", description: "Three chances at greatness!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-burgers-sliders.png" }, ]},
-  { id: "sandwiches-gyros", name: "GYROS", description: "Find out what the big dill is...", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-gyros.png", subMenu: [] },
-  { id: "sandwiches-savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", category: "SANDWICHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sandwiches/sandwiches-savory-stuffed-waffle.png", subMenu: [] },
+    { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://iili.io/nqoIZKX.png" },
+    { id: "sliders", name: "SLIDERS", description: "Three chances at greatness!", image: "https://iili.io/nqnp6Zl.png" }, ]},
+  { id: "sandwiches-gyro", name: "GYRO", description: "Find out what the big dill is...", category: "SANDWICHES", image: "https://iili.io/nqcxSQ1.png", subMenu: [] },
+  { id: "sandwiches-savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", category: "SANDWICHES", image: "https://iili.io/n37tNVI.png", subMenu: [] },
 
     // ==================== BIRDS ====================
-  { id: "birds-fried-chicken", name: "FRIED CHICKEN", description: "Go half, or go whole.", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken.png", subMenu: [
-    { id: "whole", name: "WHOLE", description: "This bird was actually clucking at some point.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-whole.png" },
-    { id: "half", name: "HALF", description: "It's so more than half the bird it used to be.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-half.png" },
-    { id: "drum", name: "DRUM", description: "Play this drum with your teeth.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-drum.png" },
-    { id: "thigh", name: "THIGH", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-thigh.png" },
-    { id: "breast", name: "BREAST", description: "Don't take your eyes off these!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-breast.png" },
-    { id: "wings", name: "WINGS", description: "Neither buffaloes nor chickens fly, how did we get here?", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-chicken-wings.png" }, ]},
-  { id: "birds-fried-turkey", name: "FRIED TURKEY", description: "He got fried because he couldn't fly.", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey.png", subMenu: [
-    { id: "whole", name: "WHOLE", description: "Fried & fit for a feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-whole.png" },
-    { id: "drum", name: "DRUM", description: "The banquet benchmark!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-drum.png" },
-    { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-thigh.png" },
+  { id: "birds-fried-chicken", name: "FRIED CHICKEN", description: "Go half, or go whole.", category: "BIRDS", image: "https://iili.io/n3RsBqb.png", subMenu: [
+    { id: "whole", name: "WHOLE", description: "This bird was actually clucking at some point.", image: "https://iili.io/n3RsdeS.png" },
+    { id: "half", name: "HALF", description: "It's so more than half the bird it used to be.", image: "https://iili.io/n3Rir0v.png" },
+    { id: "drum", name: "DRUM", description: "Play this drum with your teeth.", image: "https://iili.io/n3RiPJp.png" },
+    { id: "thigh", name: "THIGH", description: "These thighs can run, but they can't fly!", image: "https://iili.io/n3RimqG.png" },
+    { id: "breast", name: "BREAST", description: "Don't take your eyes off these!", image: "https://iili.io/n3RsxdQ.png" },
+    { id: "wings", name: "WINGS", description: "Neither buffaloes nor chickens fly, how did we get here?", image: "https://iili.io/n3RsaEJ.png" }, ]},
+  { id: "birds-fried-turkey", name: "FRIED TURKEY", description: "He got fried because he couldn't fly.", category: "BIRDS", image: "https://iili.io/n3Rsmj1.png", subMenu: [
+    { id: "whole", name: "WHOLE", description: "Fried & fit for a feast.", image: "https://iili.io/n3RsWhX.png" },
+    { id: "drum", name: "DRUM", description: "The banquet benchmark!", image: "https://iili.io/n3RsjBs.png" },
+    { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://iili.io/n3RiMib.png" },
     { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-breast.png" },
     { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png" }, ]},
    { id: "birds-steamed-breasts", name: "STEAMED BREASTS", description: "The cleanest meat on land.", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-steamed-breasts.png", subMenu: [
@@ -212,7 +212,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-hot-dog.png", subMenu: [] },
   { id: "jr-burger", name: "JR. BURGER", description: "A quarter-pound of fun in a bun.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-burger.png", subMenu: [] },
   { id: "jr-grilled-cheese", name: "GRILLED CHEESE SANDWICH", description: "Classic grilled sandwich on white bread.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-grilled-cheese-sandwich.png", subMenu: [] },
-  { id: "jr-chicken-fingers", name: "CHICKEN FINGERS", description: "A few fingers for a few fingers.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-chicken-fingers.png", subMenu: [] },
+  { id: "jr-chicken-fingers", name: "CHICKEN FINGERS", description: "A few fingers for a few fingers.", category: "JR. DISHES", image: "https://iili.io/n3RiseI.png", subMenu: [] },
   { id: "jr-fries", name: "JR. FRIES", description: "A must-order!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-fries.png", subMenu: [] },
   { id: "jr-curlies", name: "JR. CURLIES", description: "A curl cut above the rest!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-curlies.png", subMenu: [] },
   { id: "jr-quesadilla", name: "JR. QUESADILLA", description: "Try these triangles at different angles!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-quesadillas.png", subMenu: [] },
