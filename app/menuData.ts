@@ -106,15 +106,14 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "dungeness", name: "DUNGENESS", description: "A boil in a bag!", image: "https://iili.io/nB4583Q.png" },
     { id: "snow", name: "SNOW", description: "A cold crab, fresh out the sauna.", image: "https://iili.io/nB4NwEQ.png" },
     { id: "king", name: "KING", description: "All shell the King!", image: "https://iili.io/nBPAHns.png" }, ]},
-  { id: "seafood-lobster-tails", name: "LOBSTER TAILS", description: "Luxury lives in lobster.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails.png", subMenu: [
-    { id: "seared-lobster-tail", name: "SEARED", description: "Sear-iously good.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-broiled.png" },
-    { id: "steamed-lobster-tail", name: "STEAMED", description: "A timeless gift from Native America.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-steamed.png" },
-    { id: "large-lobster-tail", name: "DELUXE", description: "Quite a big tail to chase!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-lobster-tails-deluxe.png" }, ]},
-  { id: "seafood-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp.png", subMenu: [
-    { id: "glazed-shrimp", name: "GLAZED", description: "Glazed for greatness", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-citrus.png" },
-    { id: "battered-shrimp", name: "BATTERED", description: "Prawns big enough to be a pet!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-battered.png" },
-    { id: "sauteed-shrimp", name: "SAUTÉED", description: "Sautéed, seasoned, & satisfying.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-sauteed.png" },
-    { id: "steamed-shrimp", name: "STEAMED", description: "A cleaner way to see food.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-shrimp-steamed.png" }, ]},
+  { id: "seafood-lobster-tails", name: "LOBSTER TAILS", description: "Luxury lives in lobster.", category: "SEAFOOD", image: "https://iili.io/n37DQXp.png", subMenu: [
+    { id: "seared-lobster-tail", name: "SEARED", description: "Sear-iously good.", image: "https://iili.io/nBsCikF.png" },
+    { id: "steamed-lobster-tail", name: "STEAMED", description: "A timeless gift from Native America.", image: "https://iili.io/n37D67a.png" },
+    { id: "large-lobster-tail", name: "DELUXE", description: "Quite a big tail to chase!", image: "https://iili.io/n37D4dg.png" }, ]},
+  { id: "seafood-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", category: "SEAFOOD", image: "https://iili.io/nBsGsKN.png", subMenu: [
+    { id: "battered-shrimp", name: "BATTERED", description: "Prawns big enough to be a pet!", image: "https://iili.io/n37bxkb.png" },
+    { id: "sauteed-shrimp", name: "SAUTÉED", description: "Sautéed, seasoned, & satisfying.", image: "https://iili.io/n37brn2.png" },
+    { id: "steamed-shrimp", name: "STEAMED", description: "A cleaner way to see food.", image: "https://iili.io/nBsrQAG.png" }, ]},
 
   // ==================== FRIED SIDES ====================
   { id: "fried-sides-fries", name: "FRIES", description: "Order twice, just in case one disappears!", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries.png", subMenu: [
