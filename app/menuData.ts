@@ -89,10 +89,10 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "drum", name: "DRUM", description: "The banquet benchmark!", image: "https://iili.io/n3RsjBs.png" },
     { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://iili.io/n3RiMib.png" },
     { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://iili.io/n3RsxdQ.png" },
-    { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-fried-turkey-wings2.png" }, ]},
-   { id: "birds-steamed-breasts", name: "STEAMED BREASTS", description: "The cleanest meat on land.", category: "BIRDS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-steamed-breasts.png", subMenu: [
-    { id: "steamed-breast-chicken", name: "CHICKEN", description: "Practically a seabird now!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-steamed-breasts-chicken.png" },
-    { id: "steamed-breast-turkey", name: "TURKEY", description: "Order if you fear dry turkey.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-steamed-breasts-turkey.png" }, ]},
+    { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://iili.io/n3RsL3x.png" }, ]},
+   { id: "birds-steamed-breasts", name: "STEAMED BREASTS", description: "The cleanest meat on land.", category: "BIRDS", image: "https://iili.io/n3RLBjt.png", subMenu: [
+    { id: "steamed-breast-chicken", name: "CHICKEN", description: "Practically a seabird now!", image: "https://iili.io/n3RLHGa.png" },
+    { id: "steamed-breast-turkey", name: "TURKEY", description: "Order if you fear dry turkey.", image: "https://iili.io/n3RsbTP.png" }, ]},
 
     // ==================== SEAFOOD ====================
   { id: "seafood-snapper", name: "SNAPPER", description: "The one Fish, paired with green eggs & ham, since 1960.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper.png", subMenu: [
