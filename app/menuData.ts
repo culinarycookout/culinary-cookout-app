@@ -96,9 +96,9 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
 
     // ==================== SEAFOOD ====================
   { id: "seafood-snapper", name: "SNAPPER", description: "The one Fish, paired with green eggs & ham, since 1960.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper.png", subMenu: [
-    { id: "battered", name: "BATTERED", description: "Battered but unbeatable!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper-battered.png" },
-    { id: "sauteed", name: "SAUTÉED", description: "Fresh fillet, fried for full flavor!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper-sauteed.png" },
-    { id: "steamed", name: "STEAMED", description: "Swimming in seasoning.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-snapper-steamed.png" }, ]},
+    { id: "battered", name: "BATTERED", description: "Battered but unbeatable!", image: "https://iili.io/n37b667.png" },
+    { id: "sauteed", name: "SAUTÉED", description: "Fresh fillet, fried for full flavor!", image: "https://iili.io/nB8O9Ox.png" },
+    { id: "steamed", name: "STEAMED", description: "Swimming in seasoning.", image: "https://iili.io/n37bevs.png" }, ]},
   { id: "seafood-salmon", name: "SALMON", description: "From sea to seasoned.", category: "SEAFOOD", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-2.png", subMenu: [
     { id: "sauteed", name: "SAUTÉED", description: "Sensationally, seared.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-sauteed.png" },
     { id: "steamed", name: "STEAMED", description: "Hot steam, upstream!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/seafood/seafood-salmon-steamed.png" }, ]},
