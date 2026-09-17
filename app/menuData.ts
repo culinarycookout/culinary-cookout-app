@@ -116,48 +116,46 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "steamed-shrimp", name: "STEAMED", description: "A cleaner way to see food.", image: "https://iili.io/nBsrQAG.png" }, ]},
 
   // ==================== FRIED SIDES ====================
-  { id: "fried-sides-fries", name: "FRIES", description: "Order twice, just in case one disappears!", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries.png", subMenu: [
-    { id: "fries-potato", name: "FRIES", description: "Fried potatoes, not some science experiment.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-potato.png" },
-    { id: "fries-curlies", name: "CURLIES", description: "You can almost never order enough curly fries… But you can try!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-curlies.png" },
-    { id: "fries-wedges", name: "WEDGES", description: "What wonderful wedges!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-wedges.png" },
-    { id: "fries-zu-fries", name: "ZU-FRIES", description: "Zucchini has entered the chat.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-zu-fries.png" },
-    { id: "fries-zu-curlies", name: "ZU-CURLIES", description: "Zucchini with a twist! Literally…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-fries-zu-curlies.png" }, ]},
-  { id: "fried-sides-popcorn-bites", name: "POPCORN BITES", description: "Bite-sized bite, big-time flavor!", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites.png", subMenu: [
-    { id: "popcorn-chicken", name: "POPCORN CHICKEN", description: "Eat treat. Repeat!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites-chicken.png" },
-    { id: "popcorn-shrimp", name: "POPCORN SHRIMP", description: "Almost too good!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites-shrimp.png" },
-    { id: "popcorn-flower", name: "FLOWER BITES", description: "Cauliflower bites.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-popcorn-bites-flower.png" }, ]},
-  { id: "fried-sides-onions", name: "ONIONS", description: "They will have you crying for more!", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-onions.png", subMenu: [
-    { id: "onions-blossom", name: "BLOSSOM", description: "The ultimate onion experience.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-onions-blossom.png" },
-    { id: "onions-rings", name: "RINGS", description: "Battered & seasoned onion slices.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-onions-rings.png" }, ]},
-  { id: "fried-sides-jalapeno-poppers", name: "JALAPENO POPPERS", description: "Breaded jalapeños full of gooey goodness.", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-jalapeno-poppers.png", subMenu: [] },
-  { id: "fried-sides-mini-pockets", name: "MINI POCKETS", description: "A savory snack to push hunger back!", category: "FRIED SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/fried-sides/fried-sides-mini-pockets.png", subMenu: [] },
+  { id: "fried-sides-fries", name: "FRIES", description: "Order twice, just in case one disappears!", category: "FRIED SIDES", image: "https://iili.io/nBtBOl4.png", subMenu: [
+    { id: "fries-potato", name: "POTATO", description: "Fried potatoes, not some science experiment.", image: "https://iili.io/nCHGtF1.png" },
+    { id: "fries-curlies", name: "CURLIES", description: "You can almost never order enough curly fries… But you can try!", image: "https://iili.io/nCJDahg.png" },
+    { id: "fries-wedges", name: "WEDGES", description: "What wonderful wedges!", image: "https://iili.io/nCJbpff.png" },
+    { id: "fries-zu-fries", name: "ZU-FRIES", description: "Zucchini has entered the chat.", image: "https://iili.io/nCdKNZQ.png" },
+    { id: "fries-zu-curlies", name: "ZU-CURLIES", description: "Zucchini with a twist! Literally…", image: "https://iili.io/n37Ffp9.png" }, ]},
+  { id: "fried-sides-popcorn-bites", name: "POPCORN BITES", description: "Bite-sized bite, big-time flavor!", category: "FRIED SIDES", image: "https://iili.io/nCJpjTP.png", subMenu: [
+    { id: "popcorn-chicken", name: "POPCORN CHICKEN", description: "Eat treat. Repeat!", image: "https://iili.io/nCd2JEX.png" },
+    { id: "popcorn-shrimp", name: "POPCORN SHRIMP", description: "Almost too good!", image: "https://iili.io/n37FcQa.png" },
+    { id: "popcorn-flower", name: "FLOWER BITES", description: "Cauliflower bites.", image: "https://iili.io/nCdM1V4.png" }, ]},
+  { id: "fried-sides-onions", name: "ONIONS", description: "They will have you crying for more!", category: "FRIED SIDES", image: "https://iili.io/n37Fahg.png", subMenu: [
+    { id: "onions-blossom", name: "BLOSSOM", description: "The ultimate onion experience.", image: "https://iili.io/n37FKk7.png" },
+    { id: "onions-rings", name: "RINGS", description: "Battered & seasoned onion slices.", image: "https://iili.io/n37F5p1.png" }, ]},
+  { id: "fried-sides-jalapeno-poppers", name: "JALAPENO POPPERS", description: "Breaded jalapeños full of gooey goodness.", category: "FRIED SIDES", image: "https://iili.io/nCdyJX1.png", subMenu: [] },
+  { id: "fried-sides-mini-pockets", name: "MINI POCKETS", description: "A savory snack to push hunger back!", category: "FRIED SIDES", image: "https://iili.io/nC22VJs.png", subMenu: [] },
 
   // ==================== AIR-FRIED ====================
-  { id: "birds-air-fried-chicken", name: "AIR-FRIED CHICKEN", description: "The most air this bird will ever get!", category: "AIR-FRIED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken.png", subMenu: [
-    { id: "whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-whole.png" },
-    { id: "half", name: "HALF", description: "Go half, or go home!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-half.png" },
-    { id: "thigh", name: "THIGH", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-thigh.png" },
-    { id: "breast", name: "BREAST", description: "Don't take your eyes off these!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-breast.png" },
-    { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-chicken-wings.png" }, ]},
-  { id: "birds-air-fried-turkey", name: "AIR-FRIED TURKEY", description: "He got fried because he couldn't fly.", category: "AIR-FRIED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey.png", subMenu: [
-    { id: "whole", name: "WHOLE", description: "The real big bird!.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-whole2.png" },
-    { id: "half", name: "HALF", description: "Half a holiday feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-half.png" },
-    { id: "drum", name: "DRUM", description: "Fried & fit for a feast.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-drum.png" },
-    { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-thigh.png" },
-    { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-breast.png" },
-    { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/birds/birds-air-fried-turkey-wings.png" }, ]},
+  { id: "birds-air-fried-chicken", name: "AIR-FRIED CHICKEN", description: "The most air this bird will ever get!", category: "AIR-FRIED", image: "https://iili.io/nFhlmx4.png", subMenu: [
+    { id: "whole", name: "WHOLE", description: "The full bird.", image: "https://iili.io/nC2zrxe.png" },
+    { id: "half", name: "HALF", description: "Go half, or go home!", image: "https://iili.io/nFSk6Nt.png" },
+    { id: "breast", name: "BREAST", description: "Don't take your eyes off these!", image: "https://iili.io/nCFLthF.png" },
+    { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://iili.io/nFjhHkN.png" }, ]},
+  { id: "birds-air-fried-turkey", name: "AIR-FRIED TURKEY", description: "He got fried because he couldn't fly.", category: "AIR-FRIED", image: "https://iili.io/nC3pofn.png", subMenu: [
+    { id: "whole", name: "WHOLE", description: "The real big bird!.", image: "https://iili.io/nCFM22V.png" },
+    { id: "drum", name: "DRUM", description: "Fried & fit for a feast.", image: "https://iili.io/nFh0HfS.png" },
+    { id: "thigh", name: "THIGH", description: "Bigger thighs… Save even more lives!", image: "https://iili.io/nCFvXQ2.png" },
+    { id: "breast", name: "BREAST", description: "No botched breast job here!", image: "https://iili.io/nFhlpWl.png" },
+    { id: "wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://iili.io/nFjXmrv.png" }, ]},
 
   // ==================== LATIN AMERICA ====================
-  { id: "latin-america-burrito", name: "BURRITO", description: "Not a lil donkey!", category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-burrito.png", subMenu: [] },
-  { id: "latin-america-quesadilla", name: "QUESADILLA", description: "A grilled cheese sandwich in a tortilla.", category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-quesadilla.png", subMenu: [] },
-  { id: "latin-america-enchiladas", name: "ENCHILADAS", description: "Straight from Mexico's first cookbook ever!", category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-enchiladas.png", subMenu: [] },
-  { id: "latin-america-tacos", name: "TACOS", description: "Take time for taco time!", category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos.png", subMenu: [
-    { id: "latin-taco", name: "TACO", description: "The king of the street!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-taco.png" },
-    { id: "latin-taco-trio", name: "TACO TRIO", description: "Customize these three amigos.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-trio-2.png" },
-    { id: "latin-taco-pack", name: "TACO PACK", description: "Three sets of twins.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-pack.png" },
-    { id: "latin-taco-party", name: "TACO PARTY", description: "A taco for every hour of the day!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-party-2.png" },
-    { id: "latin-taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Fiesta... Party of fifty!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-tacos-fiesta-grande.png" }, ]},
-  { id: "latin-america-nachos", name: "NACHOS", description: "Make these nachos, all yours!", category: "LATIN AMERICA", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/latin-america/latin-america-nachos-2.png", subMenu: [] },
+  { id: "latin-america-burrito", name: "BURRITO", description: "Not a lil donkey!", category: "LATIN AMERICA", image: "https://iili.io/nouaLts.png", subMenu: [] },
+  { id: "latin-america-quesadilla", name: "QUESADILLA", description: "A grilled cheese sandwich in a tortilla.", category: "LATIN AMERICA", image: "https://iili.io/nox9dzB.png", subMenu: [] },
+  { id: "latin-america-enchiladas", name: "ENCHILADAS", description: "Straight from Mexico's first cookbook ever!", category: "LATIN AMERICA", image: "https://iili.io/noxxM0v.png", subMenu: [] },
+  { id: "latin-america-tacos", name: "TACOS", description: "Take time for taco time!", category: "LATIN AMERICA", image: "https://iili.io/noqgsup.png", subMenu: [
+    { id: "latin-taco", name: "TACO", description: "The king of the street!", image: "https://iili.io/noCjrIn.png" },
+    { id: "latin-taco-trio", name: "TACO TRIO", description: "Customize these three amigos.", image: "https://iili.io/nofPJ7j.png" },
+    { id: "latin-taco-pack", name: "TACO PACK", description: "Three sets of twins.", image: "https://iili.io/noqAeXs.png" },
+    { id: "latin-taco-party", name: "TACO PARTY", description: "A taco for every hour of the day!", image: "https://iili.io/n37BjS4.png" },
+    { id: "latin-taco-party-fiesta-grande", name: "TACO PARTY: FIESTA GRANDE", description: "Fiesta... Party of fifty!", image: "https://iili.io/nofQLVp.png" }, ]},
+  { id: "latin-america-nachos", name: "NACHOS", description: "Make these nachos, all yours!", category: "LATIN AMERICA", image: "https://iili.io/noYIgF2.png", subMenu: [] },
 
   // ==================== ASIAN ====================
   { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-chow-mein.png", subMenu: [] },
