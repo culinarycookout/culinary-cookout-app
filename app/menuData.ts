@@ -158,39 +158,39 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "latin-america-nachos", name: "NACHOS", description: "Make these nachos, all yours!", category: "LATIN AMERICA", image: "https://iili.io/noYIgF2.png", subMenu: [] },
 
   // ==================== ASIAN ====================
-  { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-chow-mein.png", subMenu: [] },
-  { id: "stir-fry", name: "STIR-FRY", description: "Woks of fun!", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-stir-fry-veggies.png", subMenu: [] },
-  { id: "citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-citrus-chicken.png", subMenu: [] },
-  { id: "wonton-roll", name: "WONTON ROLL", description: "Fresh, fried, fillings!", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-wonton-roll.png", subMenu: [] },
-  { id: "spring-roll", name: "SPRING ROLL", description: "Delicious without disguise!", category: "ASIAN", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/asian/asian-spring-roll.png", subMenu: [] },
+  { id: "chow-mein", name: "CHOW MEIN", description: "Turn noodles into something notable.", category: "ASIAN", image: "https://iili.io/n3oNEts.png", subMenu: [] },
+  { id: "stir-fry", name: "STIR-FRY", description: "Woks of fun!", category: "ASIAN", image: "https://iili.io/n3xq1kJ.png", subMenu: [] },
+  { id: "citrus-glazed-chicken", name: "CITRUS GLAZED CHICKEN", description: "Chicken worthy of glazing.", category: "ASIAN", image: "https://iili.io/n3ovjLu.png", subMenu: [] },
+  { id: "wonton-roll", name: "WONTON ROLL", description: "Fresh, fried, fillings!", category: "ASIAN", image: "https://iili.io/n3xqMIR.png", subMenu: [] },
+  { id: "spring-roll", name: "SPRING ROLL", description: "Delicious without disguise!", category: "ASIAN", image: "https://iili.io/n3osfvs.png", subMenu: [] },
 
   // ==================== BEEF ====================
-  { id: "beef-steaks", name: "STEAKS", description: "Your plate can get no beefier.", category: "BEEF", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks.png", subMenu: [
-    { id: "beef-battered", name: "BATTERED", description: "A breaded bovine.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-battered.png" },
-    { id: "beef-ribeye", name: "RIBEYE", description: "A good cut, for a full gut.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-ribeye.png" },
-    { id: "beef-chunks", name: "CHUNKS", description: "Steak on easy difficulty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-steaks-chunks.png" }, ]},
-  { id: "beef-ground-beef", name: "GROUND BEEF", description: "The most versatile meat in the world.", category: "BEEF", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beef/beef-ground-beef.png", subMenu: [] },
+  { id: "beef-steaks", name: "STEAKS", description: "Your plate can get no beefier.", category: "BEEF", image: "https://iili.io/n3xo9G2.png", subMenu: [
+    { id: "beef-battered", name: "BATTERED", description: "A breaded bovine.", image: "https://iili.io/n3xnbjf.png" },
+    { id: "beef-ribeye", name: "RIBEYE", description: "A good cut, for a full gut.", image: "https://iili.io/n3xnQvn.png" },
+    { id: "beef-chunks", name: "CHUNKS", description: "Steak on easy difficulty.", image: "https://iili.io/n3xnDTG.png" }, ]},
+  { id: "beef-ground-beef", name: "GROUND BEEF", description: "The most versatile meat in the world.", category: "BEEF", image: "https://iili.io/n3xnZps.png", subMenu: [] },
 
   // ==================== VEGGIES ====================
-  { id: "veggies-salad", name: "SALAD", description: "Create like Cardini.", category: "VEGGIES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad.png", subMenu: [
-    { id: "veggies-salad-garden", name: "GARDEN", description: "Garden freshness for your digestion.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad-garden.png" },
-    { id: "veggies-salad-chefs", name: "CHEF'S", description: "A deluxe salad sampler.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-salad-chefs.png" }, ]},
-  { id: "veggies", name: "VEGGIES", description: "Volumes of vital vitamins!", category: "VEGGIES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies.png", subMenu: [
-    { id: "veggies-sauteed", name: "SAUTÉED", description: "Tossed & turned because it was too hot.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-sauteed.png" },
-    { id: "veggies-steamed", name: "STEAMED", description: "They enjoy a hot sauna too!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/veggies/veggies-steamed.png" }, ]},
+  { id: "veggies-salad", name: "SALAD", description: "Create like Cardini.", category: "VEGGIES", image: "https://iili.io/n3Yqg5l.png", subMenu: [
+    { id: "veggies-salad-garden", name: "GARDEN", description: "Garden freshness for your digestion.", image: "https://iili.io/n3Yq8gf.png" },
+    { id: "veggies-salad-chefs", name: "CHEF'S", description: "A deluxe salad sampler.", image: "https://iili.io/n3YqUJ4.png" }, ]},
+  { id: "veggies", name: "VEGGIES", description: "Volumes of vital vitamins!", category: "VEGGIES", image: "https://iili.io/n3YqZ0b.png", subMenu: [
+    { id: "veggies-sauteed", name: "SAUTÉED", description: "Tossed & turned because it was too hot.", image: "https://iili.io/n3Yqkfs.png" },
+    { id: "veggies-steamed", name: "STEAMED", description: "They enjoy a hot sauna too!", image: "https://iili.io/n3YqPz7.png" }, ]},
 
-    // ==================== SOUPS & STEWS ====================
-  { id: "soups", name: "SOUP", description: "The first dish in history!", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-1.png", subMenu: [
-    { id: "soups-hot-pot", name: "HOT POT", description: "Nutrients, not noodles.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-hot-pot-soup.png" },
-    { id: "soups-noodle", name: "NOODLE", description: "The secret weapon for sickness!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-noodle-soup.png" },
-    { id: "soups-ramen", name: "RAMEN", description: "Not just a cup of noodles!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-soup-ramen.png" }, ]},
-  { id: "soups-stew", name: "STEW", description: "The original recipes of the world!", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew.png", subMenu: [
-    { id: "soups-stew-gumbo", name: "GUMBO", description: "World history in a bowl...", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-gumbo.png" },
-    { id: "soups-stew-stew", name: "STEW", description: "The definition of hearty.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-stew.png" }, ]},
-  { id: "soups-chili", name: "CHILI", description: "Fresh or fast, make it last…", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-chili.png", subMenu: [
-    { id: "soups-chili-quick", name: "QUICK", description: "When you have to have it!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-chili-quick.png" },
-    { id: "soups-chili-slow", name: "SLOW", description: "Slow-cooked & off the hook!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-stew-chili-slow.png" }, ]},
-  { id: "soups-jambalaya", name: "JAMBALAYA", description: "The depth of satisfaction.", category: "SOUPS & STEWS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/soups-&-stews/soups-&-stews-jambalaya.png", subMenu: [] },
+  // ==================== SOUPS & STEWS ====================
+  { id: "soups", name: "SOUP", description: "The first dish in history!", category: "SOUPS & STEWS", image: "https://iili.io/n3Y3Z9S.png", subMenu: [
+    { id: "soups-hot-pot", name: "HOT POT", description: "Nutrients, not noodles.", image: "https://iili.io/n3Y34MG.png" },
+    { id: "soups-noodle", name: "NOODLE", description: "The secret weapon for sickness!", image: "https://iili.io/nohPZcg.png" },
+    { id: "soups-ramen", name: "RAMEN", description: "Not just a cup of noodles!", image: "https://iili.io/n3Y3scl.png" }, ]},
+  { id: "soups-stew", name: "STEW", description: "The original recipes of the world!", category: "SOUPS & STEWS", image: "https://iili.io/n3YFRRI.png", subMenu: [
+    { id: "soups-stew-gumbo", name: "GUMBO", description: "World history in a bowl...", image: "https://iili.io/n3YFRRI.png" },
+    { id: "soups-stew-stew", name: "STEW", description: "The definition of hearty.", image: "https://iili.io/n3YF7DX.png" }, ]},
+  { id: "soups-chili", name: "CHILI", description: "Fresh or fast, make it last…", category: "SOUPS & STEWS", image: "https://iili.io/n3YF2SV.png", subMenu: [
+    { id: "soups-chili-quick", name: "QUICK", description: "When you have to have it!", image: "https://iili.io/noXq8fn.png" },
+    { id: "soups-chili-slow", name: "SLOW", description: "Slow-cooked & off the hook!", image: "https://iili.io/noXz6Ob.png" }, ]},
+  { id: "soups-jambalaya", name: "JAMBALAYA", description: "The depth of satisfaction.", category: "SOUPS & STEWS", image: "https://iili.io/nohTXXj.png", subMenu: [] },
 
   // ==================== SIDES ====================
   { id: "sides-pasta", name: "PASTA", description: "A fork in the road? No, just a fork for your pasta.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles.png", subMenu: [
@@ -205,7 +205,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "sides-breads-flour-tortilla", name: "FLOUR TORTILLA", description: "Soft flour tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-flour-tortilla.png" },
     { id: "sides-breads-corn-tortilla", name: "CORN TORTILLA", description: "Classic corn tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-corn-tortilla.png" }, ]},
 
-    // ==================== JR. DISHES ====================
+  // ==================== JR. DISHES ====================
   { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-hot-dog.png", subMenu: [] },
   { id: "jr-burger", name: "JR. BURGER", description: "A quarter-pound of fun in a bun.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-burger.png", subMenu: [] },
   { id: "jr-grilled-cheese", name: "GRILLED CHEESE SANDWICH", description: "Classic grilled sandwich on white bread.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-grilled-cheese-sandwich.png", subMenu: [] },
