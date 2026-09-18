@@ -193,30 +193,31 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "soups-jambalaya", name: "JAMBALAYA", description: "The depth of satisfaction.", category: "SOUPS & STEWS", image: "https://iili.io/nohTXXj.png", subMenu: [] },
 
   // ==================== SIDES ====================
-  { id: "sides-pasta", name: "PASTA", description: "A fork in the road? No, just a fork for your pasta.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles.png", subMenu: [
-    { id: "sides-mac", name: "MAC & CHEESE", description: "Whether you choose dairy or not, your stomach will thank you!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-mac-&-cheese.png" },
-    { id: "sides-alfredo", name: "ALFREDO", description: "Alfredo is life with the dull bits cut out.” - Hitchcock", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-alfredo.png" },
-    { id: "sides-garlic", name: "GARLIC NOODLES", description: "Vampires beware!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-noodles-garlic.png" }, ]},
-  { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-rice.png", subMenu: [] },
-  { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-fresh-fruit-cup-2.png", subMenu: [] },
-  { id: "sides-breads", name: "BREADS", description: "The perfect support for any meal.", category: "SIDES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads.png", subMenu: [
-    { id: "sides-breads-slice", name: "SLICE", description: "One slice can change a meal.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-white.png" },
-    { id: "sides-breads-pita", name: "PITA", description: "Soft, fluffy pita bread.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-pita.png" },
-    { id: "sides-breads-flour-tortilla", name: "FLOUR TORTILLA", description: "Soft flour tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-flour-tortilla.png" },
-    { id: "sides-breads-corn-tortilla", name: "CORN TORTILLA", description: "Classic corn tortilla.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/sides/sides-breads-corn-tortilla.png" }, ]},
+  { id: "sides-pasta", name: "PASTA", description: "A fork in the road? No, just a fork for your pasta.", category: "SIDES", image: "https://iili.io/n3YJzyF.png", subMenu: [
+    { id: "sides-mac", name: "MAC & CHEESE", description: "Whether you choose dairy or not, your stomach will thank you!", image: "https://iili.io/nowip7n.png" },
+    { id: "sides-alfredo", name: "ALFREDO", description: "Alfredo is life with the dull bits cut out.” - Hitchcock", image: "https://iili.io/n3YJqEQ.png" },
+    { id: "sides-garlic", name: "GARLIC NOODLES", description: "Vampires beware!", image: "https://iili.io/n3YJn3B.png" }, ]},
+  { id: "sides-rice", name: "RICE", description: "20,000 years of deliciousness!", category: "SIDES", image: "https://iili.io/nxny0fR.png", subMenu: [] },
+  { id: "sides-fresh-fruit-cup", name: "FRESH FRUIT CUP", description: "No forbidden fruits here!", category: "SIDES", image: "https://iili.io/n3YJfCx.png", subMenu: [] },
+  { id: "sides-breads", name: "BREADS", description: "The perfect support for any meal.", category: "SIDES", image: "https://iili.io/nxyh7nt.png", subMenu: [
+    { id: "sides-breads-roll", name: "ROLL", description: "", image: "https://iili.io/nzTt9YF.png" },
+    { id: "sides-breads-pita", name: "FLATBREAD", description: "The bread before there were borders.", image: "https://iili.io/n3YJFQj.png" },
+    { id: "sides-breads-slice", name: "SLICE", description: "One slice can change a meal.", image: "https://iili.io/n3YHZQf.png" },
+    { id: "sides-breads-bun", name: "BUN", description: "The bread before there were borders.", image: "https://iili.io/n3YJJpe.png" }, ]},
+    
 
   // ==================== JR. DISHES ====================
-  { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-hot-dog.png", subMenu: [] },
-  { id: "jr-burger", name: "JR. BURGER", description: "A quarter-pound of fun in a bun.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-burger.png", subMenu: [] },
+  { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://iili.io/n37KeN1.png", subMenu: [] },
+  { id: "jr-burger", name: "JR. BURGER", description: "A quarter-pound of fun in a bun.", category: "JR. DISHES", image: "https://iili.io/n37KNHB.png", subMenu: [] },
   { id: "jr-grilled-cheese", name: "GRILLED CHEESE SANDWICH", description: "Classic grilled sandwich on white bread.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-grilled-cheese-sandwich.png", subMenu: [] },
-  { id: "jr-chicken-fingers", name: "CHICKEN FINGERS", description: "A few fingers for a few fingers.", category: "JR. DISHES", image: "https://iili.io/n3RiseI.png", subMenu: [] },
-  { id: "jr-fries", name: "JR. FRIES", description: "A must-order!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-fries.png", subMenu: [] },
-  { id: "jr-curlies", name: "JR. CURLIES", description: "A curl cut above the rest!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-curlies.png", subMenu: [] },
+  { id: "jr-chicken-fingers", name: "CHICKEN FINGERS", description: "A few fingers for a few fingers.", category: "JR. DISHES", image: "https://iili.io/n37K8og.png", subMenu: [] },
+  { id: "jr-fries", name: "JR. FRIES", description: "A must-order!", category: "JR. DISHES", image: "https://iili.io/n37KSVa.png", subMenu: [] },
+  { id: "jr-curlies", name: "JR. CURLIES", description: "A curl cut above the rest!", category: "JR. DISHES", image: "https://iili.io/nzYBLSS.png", subMenu: [] },
   { id: "jr-quesadilla", name: "JR. QUESADILLA", description: "Try these triangles at different angles!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-quesadillas.png", subMenu: [] },
-  { id: "jr-soft-taco", name: "SOFT TACO", description: "A taco dressed like a burrito, so you won't be dressed like a taco!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-soft-taco.png", subMenu: [] },
-  { id: "jr-mac-cheese", name: "JR. MAC & CHEESE", description: "A lil mac'n never hurt nobody.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-mac-n-cheese.png", subMenu: [] },
-  { id: "jr-fruit-cup", name: "JR. FRUIT CUP", description: "Nature's candy.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-fruit-cup.png", subMenu: [] },
-  { id: "jr-sticks-dip", name: "STICKS & DIP", description: "Crispy sticks with your favorite dip.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-sticks-&-dip.png", subMenu: [] },
+  { id: "jr-soft-taco", name: "SOFT TACO", description: "A taco dressed like a burrito, so you won't be dressed like a taco!", category: "JR. DISHES", image: "https://iili.io/n37KLNt.png", subMenu: [] },
+  { id: "jr-mac-cheese", name: "JR. MAC & CHEESE", description: "A lil mac'n never hurt nobody.", category: "JR. DISHES", image: "https://iili.io/n37KUiJ.png", subMenu: [] },
+  { id: "jr-fruit-cup", name: "JR. FRUIT CUP", description: "Nature's candy.", category: "JR. DISHES", image: "https://iili.io/nz78RuR.png", subMenu: [] },
+  { id: "jr-sticks-dip", name: "STICKS & DIP", description: "Crispy sticks with your favorite dip.", category: "JR. DISHES", image: "https://iili.io/n37K6Sp.png", subMenu: [] },
 
     // ==================== TREATS ====================
   { id: "treats-candied-fruit-cup", name: "CANDIED FRUIT CUP", description: "Your favorites, but sweeter!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-candied-fruit-cup.png", subMenu: [] },
