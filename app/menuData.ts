@@ -220,8 +220,8 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "jr-sticks-dip", name: "STICKS & DIP", description: "Crispy sticks with your favorite dip.", category: "JR. DISHES", image: "https://iili.io/n37K6Sp.png", subMenu: [] },
 
     // ==================== TREATS ====================
-  { id: "treats-candied-fruit-cup", name: "CANDIED FRUIT CUP", description: "Your favorites, but sweeter!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-candied-fruit-cup.png", subMenu: [] },
-  { id: "treats-pancake-taco", name: "PANCAKE TACO", description: "Ordering just 1, is a mistake!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-pancake-taco.png", subMenu: [] },
+  { id: "treats-candied-fruit-cup", name: "CANDIED FRUIT CUP", description: "Your favorites, but sweeter!", category: "TREATS", image: "https://iili.io/n3Yf2TP.png", subMenu: [] },
+  { id: "treats-pancake-taco", name: "PANCAKE TACO", description: "Ordering just 1, is a mistake!", category: "TREATS", image: "https://iili.io/n3YfJyB.png", subMenu: [] },
   { id: "treats-stuffed-waffle", name: "STUFFED WAFFLE", description: "A sweet treat of your creation…", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-stuffed-waffle.png", subMenu: [] },
   { id: "treats-sweet-pockets", name: "SWEET POCKETS", description: "The perfect treat after the perfect eat!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-sweet-pockets.png", subMenu: [] },
 
