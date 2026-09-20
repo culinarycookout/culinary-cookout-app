@@ -28,7 +28,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "french-toast", name: "FRENCH TOAST", description: "How many slices are too many?", image: "https://iili.io/nKUpknR.png" },
     { id: "pancakes", name: "PANCAKES", description: "A hot date with hotcakes.", image: "https://iili.io/n35QrFa.png" },
     { id: "waffles", name: "WAFFLES", description: "The gridiron's MVP!", image: "https://iili.io/nKUyzNa.png" },
-    { id: "stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", image: "https://iili.io/n35ZNls.png" }, ]},
+    { id: "stuffed-waffle", name: "STUFFED WAFFLE", description: "The complete breakfast, in a waffle.", image: "https://iili.io/nIs8JNp.png" }, ]},
   { id: "breakfast-meats", name: "MEATS", description: "The first protein of the day.", category: "BREAKFAST", image: "https://iili.io/nKUpmc7.png", subMenu: [
     { id: "bacon", name: "BACON", description: "Meat… NOT fat…", image: "https://iili.io/nKUpstf.png" },
     { id: "breakfast-sausage", name: "SAUSAGE", description: "The biggest little compliment.", image: "https://iili.io/nKUptP2.png" },
@@ -209,7 +209,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   // ==================== JR. DISHES ====================
   { id: "jr-hot-dog", name: "HOT DOG", description: "Your favorite dog!", category: "JR. DISHES", image: "https://iili.io/n37KeN1.png", subMenu: [] },
   { id: "jr-burger", name: "JR. BURGER", description: "A quarter-pound of fun in a bun.", category: "JR. DISHES", image: "https://iili.io/n37KNHB.png", subMenu: [] },
-  { id: "jr-grilled-cheese", name: "GRILLED CHEESE SANDWICH", description: "Classic grilled sandwich on white bread.", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-grilled-cheese-sandwich.png", subMenu: [] },
+  { id: "jr-grilled-cheese", name: "GRILLED CHEESE SANDWICH", description: "Classic grilled sandwich on white bread.", category: "JR. DISHES", image: "https://iili.io/nIbtQRf.png", subMenu: [] },
   { id: "jr-chicken-fingers", name: "CHICKEN FINGERS", description: "A few fingers for a few fingers.", category: "JR. DISHES", image: "https://iili.io/n37K8og.png", subMenu: [] },
   { id: "jr-fries", name: "JR. FRIES", description: "A must-order!", category: "JR. DISHES", image: "https://iili.io/n37KSVa.png", subMenu: [] },
   { id: "jr-curlies", name: "JR. CURLIES", description: "A curl cut above the rest!", category: "JR. DISHES", image: "https://iili.io/nzYBLSS.png", subMenu: [] },
