@@ -213,7 +213,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "jr-chicken-fingers", name: "CHICKEN FINGERS", description: "A few fingers for a few fingers.", category: "JR. DISHES", image: "https://iili.io/n37K8og.png", subMenu: [] },
   { id: "jr-fries", name: "JR. FRIES", description: "A must-order!", category: "JR. DISHES", image: "https://iili.io/n37KSVa.png", subMenu: [] },
   { id: "jr-curlies", name: "JR. CURLIES", description: "A curl cut above the rest!", category: "JR. DISHES", image: "https://iili.io/nzYBLSS.png", subMenu: [] },
-  { id: "jr-quesadilla", name: "JR. QUESADILLA", description: "Try these triangles at different angles!", category: "JR. DISHES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/jr.-dishes/jr.-dishes-jr-quesadillas.png", subMenu: [] },
+  { id: "jr-quesadilla", name: "JR. QUESADILLA", description: "Try these triangles at different angles!", category: "JR. DISHES", image: "https://iili.io/nTu64iQ.png", subMenu: [] },
   { id: "jr-soft-taco", name: "SOFT TACO", description: "A taco dressed like a burrito, so you won't be dressed like a taco!", category: "JR. DISHES", image: "https://iili.io/n37KLNt.png", subMenu: [] },
   { id: "jr-mac-cheese", name: "JR. MAC & CHEESE", description: "A lil mac'n never hurt nobody.", category: "JR. DISHES", image: "https://iili.io/n37KUiJ.png", subMenu: [] },
   { id: "jr-fruit-cup", name: "JR. FRUIT CUP", description: "Nature's candy.", category: "JR. DISHES", image: "https://iili.io/nz78RuR.png", subMenu: [] },
@@ -222,36 +222,36 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     // ==================== TREATS ====================
   { id: "treats-candied-fruit-cup", name: "CANDIED FRUIT CUP", description: "Your favorites, but sweeter!", category: "TREATS", image: "https://iili.io/n3Yf2TP.png", subMenu: [] },
   { id: "treats-pancake-taco", name: "PANCAKE TACO", description: "Ordering just 1, is a mistake!", category: "TREATS", image: "https://iili.io/n3YfJyB.png", subMenu: [] },
-  { id: "treats-stuffed-waffle", name: "STUFFED WAFFLE", description: "A sweet treat of your creation…", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-stuffed-waffle.png", subMenu: [] },
-  { id: "treats-sweet-pockets", name: "SWEET POCKETS", description: "The perfect treat after the perfect eat!", category: "TREATS", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/treats/treats-sweet-pockets.png", subMenu: [] },
+  { id: "treats-stuffed-waffle", name: "STUFFED WAFFLE", description: "A sweet treat of your creation…", category: "TREATS", image: "https://iili.io/nTwlfPj.png", subMenu: [] },
+  { id: "treats-dessert-dumplings", name: "DESSERT DUMPLINGS", description: "The perfect treat after the perfect eat!", category: "TREATS", image: "https://iili.io/n3Yf2TP.png", subMenu: [] },
 
     // ==================== FLAMED ====================
-  { id: "flamed-big-beef", name: "BIG BEEF", description: "The cow jumped over the moon… & landed on the grill!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-big-beef.png", subMenu: [
-    { id: "flamed-tri-tip", name: "TRI-TIP", description: "Juicy, smoky, carved to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-tri-tip.png" },
-    { id: "flamed-tomahawk", name: "TOMAHAWK STEAK", description: "Your appetite is axing for it!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-big-beef-tomahawk-steak.png" }, ]},
-  { id: "flamed-ribs", name: "RIBS", description: "Order some replacement ribs, just in case…", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs.png", subMenu: [
-    { id: "flamed-short", name: "SHORT", description: "Thick, meaty, flame-kissed.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs-short.png" },
-    { id: "flamed-flanken", name: "FLANKEN", description: "Thin-cut, flame-seared perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-ribs-flanken.png" }, ]},
-  { id: "flamed-lamb", name: "LAMB", description: "Perfect for grilling… Mary, look away!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-lamb.png", subMenu: [] },
-  { id: "flamed-chicken", name: "CHICKEN", description: "Check out these hot…", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken.png", subMenu: [
-    { id: "flamed-spatchcock", name: "SPATCHCOCK", description: "Butterflied & flame-cooked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-spatchcock-2.png" },
-    { id: "flamed-half", name: "HALF", description: "Half a bird, flame-grilled.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-half.png" },
-    { id: "flamed-drums", name: "DRUMS", description: "Hatched from real eggs.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-drum.png" },
-    { id: "flamed-thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-thigh.png" },
-    { id: "flamed-breasts", name: "BREASTS", description: "Check out these hot…", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-breast.png" },
-    { id: "flamed-wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-chicken-wings.png" }, ]},
-  { id: "flamed-stuffed-breasts", name: "STUFFED BREASTS", description: "No, we're not trying to make them look bigger!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts.png", subMenu: [
-    { id: "stuffed-chicken", name: "CHICKEN", description: "When you're really hungry", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts-chicken.png" },
-    { id: "stuffed-turkey", name: "TURKEY", description: "Stuff it with stuffing if you wish.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-breasts-turkey.png" }, ]},
-  { id: "flamed-fish", name: "FISH", description: "Hot fish… Hot dish!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-fish.png", subMenu: [
-    { id: "flamed-halibut", name: "HALIBUT", description: "Fresh fillet, fired for full flavor!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-fish-halibut.png" },
-    { id: "flamed-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-fish-snapper.png" }, ]},
-  { id: "flamed-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-shrimp.png", subMenu: [] },
-  { id: "flamed-burgers", name: "BURGERS", description: "Less grease, more goodness.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-burger.png", subMenu: [] },
-  { id: "flamed-baked-cabbage", name: "BAKED CABBAGE", description: "Baked, not boring.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-cabbage.png", subMenu: [] },
-  { id: "flamed-veggies", name: "VEGGIES", description: "Build your own veggie meal, fresh off the grill.", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggies.png", subMenu: [
-    { id: "flamed-course", name: "COURSE", description: "Nearly whole vegetables like long carrots, asparagus, & onion slices.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggies-course.png" },
-    { id: "flamed-cut", name: "CUT", description: "Small cuts of asparagus, chopped onions, & diced peppers.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggies-cut.png" },
+  { id: "flamed-big-beef", name: "BIG BEEF", description: "The cow jumped over the moon… & landed on the grill!", category: "FLAMED", image: "https://iili.io/n37HHjj.png", subMenu: [
+    { id: "flamed-tri-tip", name: "TRI-TIP", description: "Juicy, smoky, carved to perfection.", image: "https://iili.io/nTUWDns.png" },
+    { id: "flamed-tomahawk", name: "TOMAHAWK STEAK", description: "Your appetite is axing for it!", image: "https://iili.io/n379Z4S.png" }, ]},
+  { id: "flamed-ribs", name: "RIBS", description: "Order some replacement ribs, just in case…", category: "FLAMED", image: "https://iili.io/n37HGn4.png", subMenu: [
+    { id: "flamed-short", name: "SHORT", description: "Thick, meaty, flame-kissed.", image: "https://iili.io/n37H1tf.png" },
+    { id: "flamed-flanken", name: "FLANKEN", description: "Thin-cut, flame-seared perfection.", image: "https://iili.io/n37H0wG.png" }, ]},
+  { id: "flamed-lamb", name: "LAMB", description: "Perfect for grilling… Mary, look away!", category: "FLAMED", image: "https://iili.io/n37H7at.png", subMenu: [] },
+  { id: "flamed-chicken", name: "CHICKEN", description: "Check out these hot…", category: "FLAMED", image: "https://iili.io/n37HB8F.png", subMenu: [
+    { id: "flamed-spatchcock", name: "SPATCHCOCK", description: "Butterflied & flame-cooked.", image: "https://iili.io/n37Hf3P.png" },
+    { id: "flamed-half", name: "HALF", description: "Half a bird, flame-grilled.", image: "https://iili.io/n37HF6B.png" },
+    { id: "flamed-drums", name: "DRUMS", description: "Hatched from real eggs.", image: "https://iili.io/n37H2CQ.png" },
+    { id: "flamed-thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "https://iili.io/n37HCyg.png" },
+    { id: "flamed-breasts", name: "BREASTS", description: "Check out these hot…", image: "https://iili.io/n37H3GV.png" },
+    { id: "flamed-wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "https://iili.io/n37Houa.png" }, ]},
+  { id: "flamed-stuffed-breasts", name: "STUFFED BREASTS", description: "No, we're not trying to make them look bigger!", category: "FLAMED", image: "https://iili.io/n37JJHX.png", subMenu: [
+    { id: "stuffed-chicken", name: "CHICKEN", description: "When you're really hungry", image: "https://iili.io/n37HDVR.png" },
+    { id: "stuffed-turkey", name: "TURKEY", description: "Stuff it with stuffing if you wish.", image: "https://iili.io/n37J9St.png" }, ]},
+  { id: "flamed-fish", name: "FISH", description: "Hot fish… Hot dish!", category: "FLAMED", image: "https://iili.io/n37HA6N.png", subMenu: [
+    { id: "flamed-halibut", name: "HALIBUT", description: "Fresh fillet, fired for full flavor!", image: "https://iili.io/n37HzZv.png" },
+    { id: "flamed-snapper", name: "SNAPPER", description: "Hot fish… Hot dish!", image: "https://iili.io/n37HuGp.png" }, ]},
+  { id: "flamed-shrimp", name: "SHRIMP", description: "Every tail tells a tale…", category: "FLAMED", image: "https://iili.io/n37HTnR.png", subMenu: [] },
+  { id: "flamed-burgers", name: "BURGERS", description: "Less grease, more goodness.", category: "FLAMED", image: "https://iili.io/n37HJZx.png", subMenu: [] },
+  { id: "flamed-baked-cabbage", name: "BAKED CABBAGE", description: "Baked, not boring.", category: "FLAMED", image: "https://iili.io/n379UYX.png", subMenu: [] },
+  { id: "flamed-veggies", name: "VEGGIES", description: "Build your own veggie meal, fresh off the grill.", category: "FLAMED", image: "https://iili.io/nuBNK2j.png", subMenu: [
+    { id: "flamed-course", name: "COURSE", description: "Nearly whole vegetables like long carrots, asparagus, & onion slices.", image: "https://iili.io/nuKPNdF.png" },
+    { id: "flamed-cut", name: "CUT", description: "Small cuts of asparagus, chopped onions, & diced peppers.", image: "https://iili.io/n37Jwfp.png" },
     { id: "flamed-combo", name: "COMBO", description: "Meat… Veggies… What more could you want?!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggie-combo.png" }, ]},
   { id: "flamed-baked-potatoes", name: "BAKED POTATOES", description: "This is no side dish!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes.png", subMenu: [
     { id: "flamed-standard", name: "STANDARD", description: "Flame-baked perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes-standard.png" },
