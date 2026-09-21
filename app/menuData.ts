@@ -252,25 +252,25 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "flamed-veggies", name: "VEGGIES", description: "Build your own veggie meal, fresh off the grill.", category: "FLAMED", image: "https://iili.io/nuBNK2j.png", subMenu: [
     { id: "flamed-course", name: "COURSE", description: "Nearly whole vegetables like long carrots, asparagus, & onion slices.", image: "https://iili.io/nuKPNdF.png" },
     { id: "flamed-cut", name: "CUT", description: "Small cuts of asparagus, chopped onions, & diced peppers.", image: "https://iili.io/n37Jwfp.png" },
-    { id: "flamed-combo", name: "COMBO", description: "Meat… Veggies… What more could you want?!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-veggie-combo.png" }, ]},
-  { id: "flamed-baked-potatoes", name: "BAKED POTATOES", description: "This is no side dish!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes.png", subMenu: [
-    { id: "flamed-standard", name: "STANDARD", description: "Flame-baked perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-baked-potatoes-standard.png" },
-    { id: "flamed-hasselback", name: "HASSELBACK", description: "The fancy, flame-baked cut.", image: "PLACEHOLDER_IMAGE_URL" }, ]},
-  { id: "flamed-stuffed-peppers", name: "STUFFED PEPPERS", description: "This pepper is waiting to be loaded!", category: "FLAMED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-peppers.png", subMenu: [
-    { id: "flamed-bell", name: "BELL", description: "A loaded bell pepper.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-pepper.png" },
-    { id: "flamed-jalapeno", name: "JALAPEÑO", description: "A spicy, loaded jalapeño.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/flamed/flamed-stuffed-peppers-jalapeno.png" }, ]},
+    { id: "flamed-combo", name: "COMBO", description: "Meat… Veggies… What more could you want?!", image: "https://iili.io/nuo5uqB.png" }, ]},
+  { id: "flamed-baked-potatoes", name: "BAKED POTATOES", description: "This is no side dish!", category: "FLAMED", image: "https://iili.io/n379QG2.png", subMenu: [
+    { id: "flamed-standard", name: "STANDARD", description: "Flame-baked perfection.", image: "https://iili.io/nuzvvnf.png" },
+    { id: "flamed-hasselback", name: "HASSELBACK", description: "The fancy, flame-baked cut.", image: "https://iili.io/n379rps.png" }, ]},
+  { id: "flamed-stuffed-peppers", name: "STUFFED PEPPERS", description: "This pepper is waiting to be loaded!", category: "FLAMED", image: "https://iili.io/nuIW7Rf.png", subMenu: [
+    { id: "flamed-bell", name: "BELL", description: "A loaded bell pepper.", image: "https://iili.io/nuIfWXt.png" },
+    { id: "flamed-jalapeno", name: "JALAPEÑO", description: "A spicy, loaded jalapeño.", image: "https://iili.io/nuI1HbI.png" }, ]},
   
   // ==================== BRAISED ====================
-  { id: "braised-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-beef.png", subMenu: [
-    { id: "braised-pot-roast", name: "POT ROAST", description: "Cooked low & slow...", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-pot-roast.png" },
-    { id: "braised-short-ribs", name: "SHORT RIBS", description: "These ribs never fall short.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-short-ribs.png" },
-    { id: "braised-oxtails", name: "OXTAILS", description: "These tails tell no tales, no bull!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-oxtails.png" }, ]},
-  { id: "braised-goat-chunks", name: "GOAT CHUNKS", description: "The goat of goats!", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-goat-chunks.png", subMenu: [] },
-  { id: "braised-lamb", name: "LAMB", description: "The other red meat, braised to perfection.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-lamb.png", subMenu: [
-    { id: "braised-lamb-shank", name: "SHANK", description: "Rich, tender, and fall-off-the-bone.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-lamb-shank.png" },
-    { id: "braised-lamb-loin-chops", name: "LOIN CHOPS", description: "Tender, juicy, and full of flavor.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-lamb-loin-chops.png" }, ]},
-  { id: "braised-chicken", name: "CHICKEN", description: "Raised from eggs to be braised.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-chicken.png", subMenu: [] },
-  { id: "braised-apples", name: "APPLES", description: "A sweet, braised treat.", category: "BRAISED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/braised/braised-apples.png", subMenu: [] },
+  { id: "braised-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "BRAISED", image: "https://iili.io/n35XMZP.png", subMenu: [
+    { id: "braised-pot-roast", name: "POT ROAST", description: "Cooked low & slow...", image: "https://iili.io/n35XpV9.png" },
+    { id: "braised-short-ribs", name: "SHORT RIBS", description: "These ribs never fall short.", image: "https://iili.io/n35XyPe.png" },
+    { id: "braised-oxtails", name: "OXTAILS", description: "These tails tell no tales, no bull!", image: "https://iili.io/n35XsSf.png" }, ]},
+  { id: "braised-goat-chunks", name: "GOAT CHUNKS", description: "The goat of goats!", category: "BRAISED", image: "https://iili.io/n35X0yQ.png", subMenu: [] },
+  { id: "braised-lamb", name: "LAMB", description: "The other red meat, braised to perfection.", category: "BRAISED", image: "https://iili.io/n35XPFs.png", subMenu: [
+    { id: "braised-lamb-shank", name: "SHANK", description: "Rich, tender, and fall-off-the-bone.", image: "https://iili.io/n35X4Pn.png" },
+    { id: "braised-lamb-loin-chops", name: "LOIN CHOPS", description: "Tender, juicy, and full of flavor.", image: "https://iili.io/n35XO8v.png" }, ]},
+  { id: "braised-chicken", name: "CHICKEN", description: "Raised from eggs to be braised.", category: "BRAISED", image: "https://iili.io/n35XNcJ.png", subMenu: [] },
+  { id: "braised-apples", name: "APPLES", description: "A sweet, braised treat.", category: "BRAISED", image: "https://iili.io/n35Xh6g.png", subMenu: [] },
 
     // ==================== ROTISSERIE ====================
   { id: "rotisserie-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef.png", subMenu: [
