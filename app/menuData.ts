@@ -269,19 +269,21 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "braised-lamb", name: "LAMB", description: "The other red meat, braised to perfection.", category: "BRAISED", image: "https://iili.io/n35XPFs.png", subMenu: [
     { id: "braised-lamb-shank", name: "SHANK", description: "Rich, tender, and fall-off-the-bone.", image: "https://iili.io/n35X4Pn.png" },
     { id: "braised-lamb-loin-chops", name: "LOIN CHOPS", description: "Tender, juicy, and full of flavor.", image: "https://iili.io/n35XO8v.png" }, ]},
-  { id: "braised-chicken", name: "CHICKEN", description: "Raised from eggs to be braised.", category: "BRAISED", image: "https://iili.io/n35XNcJ.png", subMenu: [] },
+  { id: "braised-chicken", name: "CHICKEN", description: "Raised from eggs to be braised.", category: "BRAISED", image: "https://iili.io/n35XNcJ.png", subMenu: [
+    { id: "braised-chicken", name: "CHICKEN", description: "Rich, tender, and fall-off-the-bone.", image: "https://iili.io/n35X4Pn.png" },
+    { id: "braised-hen", name: "HEN", description: "The banquet in a bag.", image: "https://iili.io/n35X4Pn.png" }, ]},
   { id: "braised-apples", name: "APPLES", description: "A sweet, braised treat.", category: "BRAISED", image: "https://iili.io/n35Xh6g.png", subMenu: [] },
 
     // ==================== ROTISSERIE ====================
-  { id: "rotisserie-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef.png", subMenu: [
-    { id: "rotisserie-prime-rib", name: "PRIME RIB ROAST", description: "A premium cut, cooked to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef-prime-rib-roast.png" },
-    { id: "rotisserie-beef-roast", name: "ROAST", description: "A classic beef roast, slow-cooked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-beef-roast.png" }, ]},
-  { id: "rotisserie-lamb", name: "LAMB", description: "The centerpiece of a feast!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb.png", subMenu: [
-    { id: "rotisserie-lamb-leg", name: "LEG", description: "A classic, juicy leg of lamb.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb-leg.png" },
-    { id: "rotisserie-lamb-boneless", name: "BONELESS LEG", description: "Easy to carve, full of flavor.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb-boneless-leg.png" },
-    { id: "rotisserie-lamb-shank", name: "SHANK", description: "Tender, rich, and fall-off-the-bone.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-lamb-shank.png" }, ]},
-  { id: "rotisserie-chicken", name: "CHICKEN", description: "Let's make this bird dizzy…", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken.png", subMenu: [
-    { id: "rotisserie-chicken-whole", name: "WHOLE", description: "The full bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken-whole.png" },
+  { id: "rotisserie-beef", name: "BEEF", description: "Big beef, cooked slow…", category: "ROTISSERIE", image: "https://iili.io/nuhv00u.png", subMenu: [
+    { id: "rotisserie-prime-rib", name: "PRIME RIB ROAST", description: "A premium cut, cooked to perfection.", image: "https://iili.io/n37sOYv.png" },
+    { id: "rotisserie-beef-roast", name: "ROAST", description: "A classic beef roast, slow-cooked.", image: "https://iili.io/nujgfHu.png" }, ]},
+  { id: "rotisserie-lamb", name: "LAMB", description: "The centerpiece of a feast!", category: "ROTISSERIE", image: "https://iili.io/nujyozB.png", subMenu: [
+    { id: "rotisserie-lamb-leg", name: "LEG", description: "A classic, juicy leg of lamb.", image: "https://iili.io/nuelp7S.png" },
+    { id: "rotisserie-lamb-boneless", name: "BONELESS LEG", description: "Easy to carve, full of flavor.", image: "https://iili.io/nueTsX2.png" },
+    { id: "rotisserie-lamb-shank", name: "SHANK", description: "Tender, rich, and fall-off-the-bone.", image: "https://iili.io/nueV3gf.png" }, ]},
+  { id: "rotisserie-chicken", name: "CHICKEN", description: "Let's make this bird dizzy…", category: "ROTISSERIE", image: "https://iili.io/nuk6jne.png", subMenu: [
+    { id: "rotisserie-chicken-whole", name: "WHOLE", description: "The full bird.", image: "https://iili.io/n37sUQt.png" },
     { id: "rotisserie-chicken-half", name: "HALF", description: "Half the bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken-half-2.png" },
     { id: "rotisserie-chicken-hen", name: "HEN", description: "A smaller, tender bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-chicken-hen.png" }, ]},
   { id: "rotisserie-turkey", name: "TURKEY", description: "Holiday flavor, any day!", category: "ROTISSERIE", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/rotisserie/rotisserie-turkey.png", subMenu: [
