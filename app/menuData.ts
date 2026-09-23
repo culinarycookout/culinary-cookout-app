@@ -296,31 +296,31 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "rotisserie-kebabs", name: "KEBABS", description: "The original global street food.", category: "ROTISSERIE", image: "https://iili.io/n37L3yQ.png", subMenu: [] },
 
   // ==================== SMOKED ====================
-  { id: "smoked-beef", name: "BEEF", description: "Big, bold, & beefy.", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-beef.png", subMenu: [
-    { id: "smoked-packer-brisket", name: "PACKER BRISKET", description: "Big, bold, & beefy.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-beef-packer-brisket.png" },
-    { id: "smoked-center-brisket", name: "CENTER BRISKET", description: "No problems w/ this beef.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-beef-center-brisket.png" },
-    { id: "smoked-sirloin-roast", name: "SIRLOIN ROAST", description: "Big, bold, & beefy.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-beef-sirloin-roast.png" },
-    { id: "smoked-tomahawk", name: "TOMAHAWK STEAK", description: "Metal axe > Wood > Smoke > Meat Axe > Hunger", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-beef-tomahawk-steak.png" },
-    { id: "smoked-oxtails", name: "OXTAILS", description: "This time, fumes are going into the tail.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-beef-oxtails.png" }, ]},
-  { id: "smoked-chicken", name: "CHICKEN", description: "From halves to hens.", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-chicken.png", subMenu: [
-    { id: "smoked-spatchcock", name: "SPATCHCOCK", description: "Butterflied & smoked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-chicken-spatchcock.png" },
-    { id: "smoked-half", name: "HALF", description: "Half a bird.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-chicken-half.png" },
-    { id: "smoked-tomahawk-leg", name: "TOMAHAWK LEG", description: "A giant, smoky leg.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-chicken-tomahawk-leg.png" },
-    { id: "smoked-wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-chicken-wings.png" }, ]},
-  { id: "smoked-turkey", name: "TURKEY", description: "Be thankful for this bird!", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-turkey.png", subMenu: [
-    { id: "smoked-turkey-spatchcock", name: "SPATCHCOCK", description: "Butterflied & smoked.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-turkey-spatchcock.png" },
-    { id: "smoked-turkey-drums", name: "DRUMS", description: "Smoked to perfection.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-turkey-legs.png" },
-    { id: "smoked-turkey-thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-turkey-thighs.png" },
-    { id: "smoked-turkey-wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-turkey-wings.png" }, ]},
-  { id: "smoked-salmon-fillet", name: "SALMON FILLET", description: "Hooked & croaked… Cooked & smoked.", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-salmon-fillet.png", subMenu: [] },
-  { id: "smoked-lobster-tail", name: "LOBSTER TAIL", description: "Smoked to perfection.", category: "SMOKED", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/smoked/smoked-lobster-tail.png", subMenu: [] },
+  { id: "smoked-beef", name: "BEEF", description: "Big, bold, & beefy.", category: "SMOKED", image: "https://iili.io/n3YJv99.png", subMenu: [
+    { id: "smoked-packer-brisket", name: "PACKER BRISKET", description: "Big, bold, & beefy.", image: "https://iili.io/n3YJrnj.png" },
+    { id: "smoked-center-brisket", name: "CENTER BRISKET", description: "No problems w/ this beef.", image: "https://iili.io/n3YJUZb.png" },
+    { id: "smoked-sirloin-roast", name: "SIRLOIN ROAST", description: "Big, bold, & beefy.", image: "https://iili.io/n3YJiFV.png" },
+    { id: "smoked-tomahawk", name: "TOMAHAWK STEAK", description: "Metal axe > Wood > Smoke > Meat Axe > Hunger", image: "https://iili.io/n3YJscB.png" },
+    { id: "smoked-oxtails", name: "OXTAILS", description: "This time, fumes are going into the tail.", image: "https://iili.io/n3YJ8ue.png" }, ]},
+  { id: "smoked-chicken", name: "CHICKEN", description: "From halves to hens.", category: "SMOKED", image: "https://iili.io/n3Yd2SI.png", subMenu: [
+    { id: "smoked-spatchcock", name: "SPATCHCOCK", description: "Butterflied & smoked.", image: "https://iili.io/n3YJyMv.png" },
+    { id: "smoked-half", name: "HALF", description: "Half a bird.", image: "https://iili.io/n3YJtAF.png" },
+    { id: "smoked-tomahawk-leg", name: "TOMAHAWK LEG", description: "A giant, smoky leg.", image: "https://iili.io/n3Yd9PR.png" },
+    { id: "smoked-wings", name: "WINGS", description: "Want some hot wings?… No, literally!", image: "https://iili.io/n3YdJFp.png" }, ]},
+  { id: "smoked-turkey", name: "TURKEY", description: "Be thankful for this bird!", category: "SMOKED", image: "https://iili.io/n3Ydaob.png", subMenu: [
+    { id: "smoked-turkey-spatchcock", name: "SPATCHCOCK", description: "Butterflied & smoked.", image: "https://iili.io/n3Yd5Ne.png" },
+    { id: "smoked-turkey-drums", name: "DRUMS", description: "Smoked to perfection.", image: "https://iili.io/n3YdzKl.png" },
+    { id: "smoked-turkey-thighs", name: "THIGHS", description: "These thighs can run, but they can't fly!", image: "https://iili.io/nAnd9iF.png" },
+    { id: "smoked-turkey-wings", name: "WINGS", description: "Don't let these wings fly far.", image: "https://iili.io/n3YdcVj.png" }, ]},
+  { id: "smoked-salmon-fillet", name: "SALMON FILLET", description: "Hooked & croaked… Cooked & smoked.", category: "SMOKED", image: "https://iili.io/n3YdCoG.png", subMenu: [] },
+  { id: "smoked-lobster-tail", name: "LOBSTER TAIL", description: "Smoked to perfection.", category: "SMOKED", image: "https://iili.io/n3YdKAX.png", subMenu: [] },
 
   // ==================== BEVERAGES ====================
-  { id: "beverages-water", name: "WATER", description: "Hydration, elevated.", category: "BEVERAGES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-water.png", subMenu: [
-    { id: "beverages-water-spring", name: "SPRING", description: "Cool & refreshing.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-water-spring.png" },
-    { id: "beverages-water-infused", name: "INFUSED", description: "Fruit-infused & refreshing.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-water-infused.png" }, ]},
-  { id: "beverages-citrus-drinks", name: "CITRUS DRINKS", description: "Lemon & honey infused spring water.", category: "BEVERAGES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-citrus-drinks.png", subMenu: [
-    { id: "beverages-lemonade", name: "LEMONADE", description: "Lemon & honey infused spring water.", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-citrus-drinks-lemonade.png" },
-    { id: "beverages-dirty-limeade", name: "DIRTY LIMEADE", description: "Honey & cinnamon infused lime & peach juice..", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-citrus-drinks-dirty-limeade.png" }, ]},
-  { id: "beverages-smoothie", name: "SMOOTHIE", description: "A refreshing blended treat.", category: "BEVERAGES", image: "https://sugyjadfumovhwawpvam.supabase.co/storage/v1/object/public/menu-images/menu-items/beverages/beverages-smoothie.png", subMenu: [] },
+  { id: "beverages-water", name: "WATER", description: "Hydration, elevated.", category: "BEVERAGES", image: "https://iili.io/n3R66CJ.png", subMenu: [
+    { id: "beverages-water-spring", name: "SPRING", description: "Cool & refreshing.", image: "https://iili.io/n3R6UTF.png" },
+    { id: "beverages-water-infused", name: "INFUSED", description: "Fruit-infused & refreshing.", image: "https://iili.io/n3R6kYB.png" }, ]},
+  { id: "beverages-citrus-drinks", name: "CITRUS DRINKS", description: "Lemon & honey infused spring water.", category: "BEVERAGES", image: "https://iili.io/nAn4wAJ.png", subMenu: [
+    { id: "beverages-lemonade", name: "LEMONADE", description: "Lemon & honey infused spring water.", image: "https://iili.io/n3R617S.png" },
+    { id: "beverages-dirty-limeade", name: "DIRTY LIMEADE", description: "Honey & cinnamon infused lime & peach juice..", image: "https://iili.io/n3R6VIe.png" }, ]},
+  { id: "beverages-smoothie", name: "SMOOTHIE", description: "A refreshing blended treat.", category: "BEVERAGES", image: "https://iili.io/n3R6Gp9.png", subMenu: [] },
 ];
