@@ -292,7 +292,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "rotisserie-fish-whole", name: "WHOLE", description: "Whole fish, perfectly cooked.", image: "https://iili.io/n37syGe.png" },
     { id: "rotisserie-fish-fillet", name: "FILLET", description: "A perfectly cooked fillet.", image: "https://iili.io/n37spn9.png" }, ]},
   { id: "rotisserie-cabbage", name: "CABBAGE", description: "You gotta try this!!!", category: "ROTISSERIE", image: "https://iili.io/n37s8TN.png", subMenu: [] },
-  { id: "rotisserie-pineapple", name: "PINEAPPLE", description: "An island visit without the airport", category: "ROTISSERIE", image: "https://iili.io/nAFk1Wv.png", subMenu: [] },
+  { id: "rotisserie-pineapple", name: "PINEAPPLE", description: "An island visit without the airport!", category: "ROTISSERIE", image: "https://iili.io/nAFk1Wv.png", subMenu: [] },
   { id: "rotisserie-kebabs", name: "KEBABS", description: "The original global street food.", category: "ROTISSERIE", image: "https://iili.io/n37L3yQ.png", subMenu: [] },
 
   // ==================== SMOKED ====================
