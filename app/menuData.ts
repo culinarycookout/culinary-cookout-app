@@ -66,13 +66,13 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "sandwiches-pressed", name: "PRESSED", description: "Heated, but never mistreated.", category: "SANDWICHES", image: "https://iili.io/nq4zzns.png", subMenu: [
     { id: "grilled-cheese", name: "GRILLED CHEESE", description: "Gooey goodness.", image: "https://iili.io/n37tcMP.png" },
     { id: "panini", name: "PANINI", description: "Pressed & dressed for success.", image: "https://iili.io/nK6NMWG.png" }, ]},
+  { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://iili.io/n37taoB.jpg", subMenu: [
+    { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://iili.io/nqoIZKX.png" },
+    { id: "sliders", name: "SLIDERS", description: "Three chances at greatness!", image: "https://iili.io/nqnp6Zl.png" }, ]},
   { id: "sandwiches-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", category: "SANDWICHES", image: "https://iili.io/n37twoN.png", subMenu: [
     { id: "hot-dog", name: "HOT DOG", description: "Get busy on this glizzy…", image: "https://iili.io/nq4Gien.png" },
     { id: "link", name: "LINK", description: "Hungrier than a hot dog?", image: "https://iili.io/nq6zhkN.png" },
     { id: "submarine-sausage", name: "SUBMARINE SAUSAGE", description: "Go long… Go deep!", image: "https://iili.io/n37thtp.png" }, ]},
-  { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://iili.io/n37taoB.jpg", subMenu: [
-    { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://iili.io/nqoIZKX.png" },
-    { id: "sliders", name: "SLIDERS", description: "Three chances at greatness!", image: "https://iili.io/nqnp6Zl.png" }, ]},
   { id: "sandwiches-gyro", name: "GYRO", description: "Find out what the big dill is...", category: "SANDWICHES", image: "https://iili.io/nqcxSQ1.png", subMenu: [] },
   { id: "sandwiches-savory-stuffed-waffle", name: "SAVORY STUFFED WAFFLE", description: "We definitely skipped breakfast.", category: "SANDWICHES", image: "https://iili.io/n37tNVI.png", subMenu: [] },
 
