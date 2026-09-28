@@ -110,6 +110,9 @@ export default function BurgerCustomize() {
   const [condiments, setCondiments] = useState([]);
   const [liteCondiments, setLiteCondiments] = useState([]);
 
+  // Lock everything below Patties until a primary patty is chosen
+  const isLocked = !primaryPatty;
+
   const updatePatty = (name, delta) => {
     setAdditionalPatties((prev) => {
       const newQty = Math.max(0, (prev[name] || 0) + delta);
@@ -267,6 +270,7 @@ export default function BurgerCustomize() {
           </Link>
         </div>
 
+        {/* Patties - Always Active */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Patties</h3>
 
@@ -309,82 +313,63 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Seasonings</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {SEASONINGS.map((s) => (
-              <button key={s.name} onClick={() => toggleItem(seasonings, setSeasonings, s.name)} className={`p-3 rounded-lg text-sm font-medium border ${seasonings.includes(s.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
-                {s.name} (${s.price.toFixed(2)})
-              </button>
-            ))}
+        {/* Lock message */}
+        {isLocked && (
+          <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 mb-6 text-center">
+            <p className="text-zinc-400 text-sm font-semibold">
+              🔒 Select a primary patty to unlock the rest of the customization
+            </p>
           </div>
-        </div>
+        )}
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Base</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {BASE_OPTIONS.map((b) => (
-              <button key={b.name} onClick={() => handleBaseSelect(b.name)} className={`p-3 rounded-lg text-sm font-medium border ${base === b.name ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
-                {b.name} (${b.price.toFixed(2)})
-              </button>
-            ))}
+        {/* Everything below greys out until primary patty is selected */}
+        <div className={isLocked ? 'opacity-40 pointer-events-none select-none' : ''}>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+            <h3 className="font-bold text-lg text-white mb-4">Seasonings</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {SEASONINGS.map((s) => (
+                <button key={s.name} onClick={() => toggleItem(seasonings, setSeasonings, s.name)} className={`p-3 rounded-lg text-sm font-medium border ${seasonings.includes(s.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
+                  {s.name} (${s.price.toFixed(2)})
+                </button>
+              ))}
+            </div>
           </div>
 
-          {base && base !== 'Lettuce Wrapped' && (
-            <div className="mt-4 pt-4 border-t border-zinc-800">
-              <label className="block text-xs font-semibold text-zinc-300 mb-2">
-                Bun Preparation
-              </label>
-              <div className="flex flex-wrap gap-3">
-                {BUN_PREP.map((prep) => (
-                  <button
-                    key={prep.name}
-                    onClick={() => handleBunPrepSelect(prep.name)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
-                      bunPrep === prep.name
-                        ? 'bg-red-600 border-red-500 text-white'
-                        : 'bg-zinc-800 border-zinc-700 text-white hover:border-zinc-500'
-                    }`}
-                  >
-                    {prep.name}
-                  </button>
-                ))}
-              </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+            <h3 className="font-bold text-lg text-white mb-4">Base</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {BASE_OPTIONS.map((b) => (
+                <button key={b.name} onClick={() => handleBaseSelect(b.name)} className={`p-3 rounded-lg text-sm font-medium border ${base === b.name ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
+                  {b.name} (${b.price.toFixed(2)})
+                </button>
+              ))}
+            </div>
 
-              {/* Grilled: Garlic Butter only */}
-              {bunPrep === 'Grilled' && GARLIC_PRICES[base] && (
-                <label className="flex items-center gap-3 mt-4 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
-                  <input
-                    type="checkbox"
-                    checked={garlicButter}
-                    onChange={handleGarlicToggle}
-                    className="accent-red-600 w-4 h-4"
-                  />
-                  <span className="font-medium">
-                    Garlic Butter (${GARLIC_PRICES[base].toFixed(2)})
-                  </span>
+            {base && base !== 'Lettuce Wrapped' && (
+              <div className="mt-4 pt-4 border-t border-zinc-800">
+                <label className="block text-xs font-semibold text-zinc-300 mb-2">
+                  Bun Preparation
                 </label>
-              )}
+                <div className="flex flex-wrap gap-3">
+                  {BUN_PREP.map((prep) => (
+                    <button
+                      key={prep.name}
+                      onClick={() => handleBunPrepSelect(prep.name)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+                        bunPrep === prep.name
+                          ? 'bg-red-600 border-red-500 text-white'
+                          : 'bg-zinc-800 border-zinc-700 text-white hover:border-zinc-500'
+                      }`}
+                    >
+                      {prep.name}
+                    </button>
+                  ))}
+                </div>
 
-              {/* Toasted: Butter OR Garlic Butter (radio behavior) */}
-              {bunPrep === 'Toasted' && GARLIC_PRICES[base] && BUTTER_PRICES[base] && (
-                <div className="mt-4 space-y-2">
-                  <label className="flex items-center gap-3 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
+                {bunPrep === 'Grilled' && GARLIC_PRICES[base] && (
+                  <label className="flex items-center gap-3 mt-4 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
                     <input
-                      type="radio"
-                      name="toast-finish"
-                      checked={butter}
-                      onChange={handleButterToggle}
-                      className="accent-red-600 w-4 h-4"
-                    />
-                    <span className="font-medium">
-                      Butter (${BUTTER_PRICES[base].toFixed(2)})
-                    </span>
-                  </label>
-                  <label className="flex items-center gap-3 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
-                    <input
-                      type="radio"
-                      name="toast-finish"
+                      type="checkbox"
                       checked={garlicButter}
                       onChange={handleGarlicToggle}
                       className="accent-red-600 w-4 h-4"
@@ -393,82 +378,111 @@ export default function BurgerCustomize() {
                       Garlic Butter (${GARLIC_PRICES[base].toFixed(2)})
                     </span>
                   </label>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+                )}
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Fresh Toppings</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {FRESH_TOPPINGS.map((t) => (
-              <button key={t.name} onClick={() => toggleItem(freshToppings, setFreshToppings, t.name)} className={`p-3 rounded-lg text-sm font-medium border ${freshToppings.includes(t.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
-                {t.name} (${t.price.toFixed(2)})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Cooked Toppings</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {COOKED_TOPPINGS.map((t) => (
-              <button key={t.name} onClick={() => toggleItem(cookedToppings, setCookedToppings, t.name)} className={`p-3 rounded-lg text-sm font-medium border ${cookedToppings.includes(t.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
-                {t.name} (${t.price.toFixed(2)})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Enhancements</h3>
-          <div className="space-y-3">
-            {ENHANCEMENTS.map((e) => (
-              <div key={e.name} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
-                <span className="text-sm font-medium">{e.name} (${e.price.toFixed(2)})</span>
-                <div className="flex items-center gap-3">
-                  <button onClick={() => updateEnhancement(e.name, -1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
-                  <span className="w-6 text-center">{enhancementQty[e.name] || 0}</span>
-                  <button onClick={() => updateEnhancement(e.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-12">
-          <h3 className="font-bold text-lg text-white mb-4">Condiments</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {CONDIMENTS.map((t) => (
-              <div
-                key={t.name}
-                className={`p-3 rounded-lg border flex flex-col justify-between transition-colors ${
-                  condiments.includes(t.name)
-                    ? 'bg-red-600 border-red-500'
-                    : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'
-                }`}
-              >
-                <button
-                  onClick={() => toggleItem(condiments, setCondiments, t.name)}
-                  className="w-full text-left text-sm font-medium"
-                >
-                  {t.name} (${t.price.toFixed(2)})
-                </button>
-
-                {condiments.includes(t.name) && (
-                  <label className="flex items-center gap-2 mt-2 text-xs cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={liteCondiments.includes(t.name)}
-                      onChange={() => toggleItem(liteCondiments, setLiteCondiments, t.name)}
-                      className="accent-white w-3 h-3"
-                    />
-                    Lite
-                  </label>
+                {bunPrep === 'Toasted' && GARLIC_PRICES[base] && BUTTER_PRICES[base] && (
+                  <div className="mt-4 space-y-2">
+                    <label className="flex items-center gap-3 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
+                      <input
+                        type="radio"
+                        name="toast-finish"
+                        checked={butter}
+                        onChange={handleButterToggle}
+                        className="accent-red-600 w-4 h-4"
+                      />
+                      <span className="font-medium">
+                        Butter (${BUTTER_PRICES[base].toFixed(2)})
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-3 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
+                      <input
+                        type="radio"
+                        name="toast-finish"
+                        checked={garlicButter}
+                        onChange={handleGarlicToggle}
+                        className="accent-red-600 w-4 h-4"
+                      />
+                      <span className="font-medium">
+                        Garlic Butter (${GARLIC_PRICES[base].toFixed(2)})
+                      </span>
+                    </label>
+                  </div>
                 )}
               </div>
-            ))}
+            )}
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+            <h3 className="font-bold text-lg text-white mb-4">Fresh Toppings</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {FRESH_TOPPINGS.map((t) => (
+                <button key={t.name} onClick={() => toggleItem(freshToppings, setFreshToppings, t.name)} className={`p-3 rounded-lg text-sm font-medium border ${freshToppings.includes(t.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
+                  {t.name} (${t.price.toFixed(2)})
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+            <h3 className="font-bold text-lg text-white mb-4">Cooked Toppings</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {COOKED_TOPPINGS.map((t) => (
+                <button key={t.name} onClick={() => toggleItem(cookedToppings, setCookedToppings, t.name)} className={`p-3 rounded-lg text-sm font-medium border ${cookedToppings.includes(t.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
+                  {t.name} (${t.price.toFixed(2)})
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+            <h3 className="font-bold text-lg text-white mb-4">Enhancements</h3>
+            <div className="space-y-3">
+              {ENHANCEMENTS.map((e) => (
+                <div key={e.name} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
+                  <span className="text-sm font-medium">{e.name} (${e.price.toFixed(2)})</span>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => updateEnhancement(e.name, -1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
+                    <span className="w-6 text-center">{enhancementQty[e.name] || 0}</span>
+                    <button onClick={() => updateEnhancement(e.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-12">
+            <h3 className="font-bold text-lg text-white mb-4">Condiments</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {CONDIMENTS.map((t) => (
+                <div
+                  key={t.name}
+                  className={`p-3 rounded-lg border flex flex-col justify-between transition-colors ${
+                    condiments.includes(t.name)
+                      ? 'bg-red-600 border-red-500'
+                      : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'
+                  }`}
+                >
+                  <button
+                    onClick={() => toggleItem(condiments, setCondiments, t.name)}
+                    className="w-full text-left text-sm font-medium"
+                  >
+                    {t.name} (${t.price.toFixed(2)})
+                  </button>
+
+                  {condiments.includes(t.name) && (
+                    <label className="flex items-center gap-2 mt-2 text-xs cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={liteCondiments.includes(t.name)}
+                        onChange={() => toggleItem(liteCondiments, setLiteCondiments, t.name)}
+                        className="accent-white w-3 h-3"
+                      />
+                      Lite
+                    </label>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -476,9 +490,23 @@ export default function BurgerCustomize() {
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <div>
               <p className="text-sm font-bold text-white">Total: ${calculateTotal().toFixed(2)}</p>
-              <p className="text-xs text-zinc-400">Ready to add to cart</p>
+              <p className="text-xs text-zinc-400">
+                {!primaryPatty
+                  ? 'Select a primary patty'
+                  : !base
+                  ? 'Select a base'
+                  : 'Ready to add to cart'}
+              </p>
             </div>
-            <button onClick={handleAddToCart} className="bg-red-600 hover:bg-red-500 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-lg">
+            <button
+              onClick={handleAddToCart}
+              disabled={!primaryPatty || !base}
+              className={`font-bold px-8 py-3 rounded-xl transition-all shadow-lg ${
+                !primaryPatty || !base
+                  ? 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
+                  : 'bg-red-600 hover:bg-red-500 text-white'
+              }`}
+            >
               Add to Cart 🛒
             </button>
           </div>
