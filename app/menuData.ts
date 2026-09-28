@@ -66,7 +66,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "sandwiches-pressed", name: "PRESSED", description: "Heated, but never mistreated.", category: "SANDWICHES", image: "https://iili.io/nq4zzns.png", subMenu: [
     { id: "grilled-cheese", name: "GRILLED CHEESE", description: "Gooey goodness.", image: "https://iili.io/n37tcMP.png" },
     { id: "panini", name: "PANINI", description: "Pressed & dressed for success.", image: "https://iili.io/nK6NMWG.png" }, ]},
-  { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://iili.io/n37taoB.jpg", subMenu: [
+  { id: "sandwiches-burgers", name: "BURGERS", description: "From pan to perfection!", category: "SANDWICHES", image: "https://iili.io/n71abK7.png", subMenu: [
     { id: "burger", name: "BURGER", description: "Build your burger from the bun up.", image: "https://iili.io/nqoIZKX.png" },
     { id: "sliders", name: "SLIDERS", description: "Three chances at greatness!", image: "https://iili.io/nqnp6Zl.png" }, ]},
   { id: "sandwiches-sausages", name: "SAUSAGES", description: "Pig out, without the pig!", category: "SANDWICHES", image: "https://iili.io/n37twoN.png", subMenu: [
