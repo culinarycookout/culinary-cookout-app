@@ -51,7 +51,7 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
   { id: "breakfast-burrito", name: "BREAKFAST BURRITO", description: "Breakfast in a burrito.", category: "BREAKFAST", image: "https://iili.io/nKUpEGV.png", subMenu: [] },
   { id: "breakfast-yogurt", name: "YOGURT", description: "Your yogurt, your way…", category: "BREAKFAST", image: "https://iili.io/n35taXS.png", subMenu: [] },
   { id: "breakfast-whole-fruit", name: "WHOLE FRUIT", description: "The freshest start to your day.", category: "BREAKFAST", image: "https://iili.io/n35tIgs.png", subMenu: [
-    { id: "apple", name: "APPLE", description: "The doctor is right, you know.", image: "https://iili.io/n35Zwfn.png" },
+    { id: "apple", name: "APPLE", description: "Keep the doctor away!", image: "https://iili.io/n35Zwfn.png" },
     { id: "banana", name: "BANANA", description: "Bliss comes in bunches.", image: "https://iili.io/n35Z4s9.png" },
     { id: "lime", name: "LIME", description: "The perfect squirt!", image: "https://iili.io/nKUyuov.png" },
     { id: "orange", name: "ORANGE", description: "Vitamin C, before vitamin D.", image: "https://iili.io/nKUyRPp.png" }, ]},
