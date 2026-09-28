@@ -110,7 +110,6 @@ export default function BurgerCustomize() {
   const [condiments, setCondiments] = useState([]);
   const [liteCondiments, setLiteCondiments] = useState([]);
 
-  // Lock everything below Patties until a primary patty is chosen
   const isLocked = !primaryPatty;
 
   const updatePatty = (name, delta) => {
@@ -270,7 +269,6 @@ export default function BurgerCustomize() {
           </Link>
         </div>
 
-        {/* Patties - Always Active */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Patties</h3>
 
@@ -299,11 +297,11 @@ export default function BurgerCustomize() {
           <label className="block text-xs font-semibold text-zinc-300 mb-2 mt-4">
             Additional Patties
           </label>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {PATTY_OPTIONS.map((m) => (
               <div key={m.name} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
                 <span className="text-sm font-medium">{m.name} (${m.price.toFixed(2)})</span>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 flex-shrink-0">
                   <button onClick={() => updatePatty(m.name, -1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
                   <span className="w-6 text-center">{additionalPatties[m.name] || 0}</span>
                   <button onClick={() => updatePatty(m.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
@@ -313,7 +311,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Lock message */}
         {isLocked && (
           <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 mb-6 text-center">
             <p className="text-zinc-400 text-sm font-semibold">
@@ -322,7 +319,6 @@ export default function BurgerCustomize() {
           </div>
         )}
 
-        {/* Everything below greys out until primary patty is selected */}
         <div className={isLocked ? 'opacity-40 pointer-events-none select-none' : ''}>
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
             <h3 className="font-bold text-lg text-white mb-4">Seasonings</h3>
