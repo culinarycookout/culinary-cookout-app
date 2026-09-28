@@ -87,19 +87,19 @@ export default function BurgerCustomize() {
   const router = useRouter();
   const { addToCart } = useCart();
 
-  const [primaryMeat, setPrimaryMeat] = useState('');
-  const [additionalMeats, setAdditionalMeats] = useState({});
+  const [primaryPatty, setPrimaryPatty] = useState('');
+  const [additionalPatties, setAdditionalPatties] = useState({});
   const [seasonings, setSeasonings] = useState([]);
   const [base, setBase] = useState('');
-  const [bunPrep, setBunPrep] = useState('Standard'); // New state for bun prep
+  const [bunPrep, setBunPrep] = useState('Standard');
   const [freshToppings, setFreshToppings] = useState([]);
   const [cookedToppings, setCookedToppings] = useState([]);
   const [enhancementQty, setEnhancementQty] = useState({});
   const [condiments, setCondiments] = useState([]);
-  const [liteCondiments, setLiteCondiments] = useState([]); // New state for lite options
+  const [liteCondiments, setLiteCondiments] = useState([]);
 
-  const updateMeat = (name, delta) => {
-    setAdditionalMeats((prev) => {
+  const updatePatty = (name, delta) => {
+    setAdditionalPatties((prev) => {
       const newQty = Math.max(0, (prev[name] || 0) + delta);
       return { ...prev, [name]: newQty };
     });
@@ -122,7 +122,6 @@ export default function BurgerCustomize() {
 
   const handleBaseSelect = (baseName) => {
     setBase(baseName);
-    // Reset bun prep if Lettuce Wrapped is selected
     if (baseName === 'Lettuce Wrapped') {
       setBunPrep('');
     } else {
@@ -133,13 +132,13 @@ export default function BurgerCustomize() {
   const calculateTotal = () => {
     let total = 0;
 
-    if (primaryMeat) {
-      const primary = PATTY_OPTIONS.find((m) => m.name === primaryMeat);
+    if (primaryPatty) {
+      const primary = PATTY_OPTIONS.find((m) => m.name === primaryPatty);
       if (primary) total += primary.price;
     }
 
     PATTY_OPTIONS.forEach((m) => {
-      total += (additionalMeats[m.name] || 0) * m.price;
+      total += (additionalPatties[m.name] || 0) * m.price;
     });
 
     seasonings.forEach((s) => {
@@ -171,8 +170,8 @@ export default function BurgerCustomize() {
   };
 
   const handleAddToCart = () => {
-    if (!primaryMeat) {
-      alert('Please select a primary meat.');
+    if (!primaryPatty) {
+      alert('Please select a primary patty.');
       return;
     }
     if (!base) {
@@ -186,8 +185,8 @@ export default function BurgerCustomize() {
       'Price': calculateTotal(),
       quantity: 1,
       customizations: {
-        primaryMeat,
-        additionalMeats,
+        primaryPatty,
+        additionalPatties,
         seasonings,
         base,
         bunPrep: base === 'Lettuce Wrapped' ? 'N/A' : bunPrep,
@@ -195,7 +194,7 @@ export default function BurgerCustomize() {
         cookedToppings,
         enhancementQty,
         condiments,
-        liteCondiments, // Include lite condiments in the cart data
+        liteCondiments,
       },
     };
 
@@ -216,19 +215,19 @@ export default function BurgerCustomize() {
           </Link>
         </div>
 
-        {/* Meats */}
+        {/* Patties */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Meats</h3>
+          <h3 className="font-bold text-lg text-white mb-4">Patties</h3>
 
           <label className="block text-xs font-semibold text-zinc-300 mb-2">
-            Primary Meat *
+            Primary Patty *
           </label>
           <select
-            value={primaryMeat}
-            onChange={(e) => setPrimaryMeat(e.target.value)}
+            value={primaryPatty}
+            onChange={(e) => setPrimaryPatty(e.target.value)}
             className="w-full p-2.5 mb-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 text-sm focus:border-red-500 focus:outline-none"
           >
-            <option value="">Select Primary Meat...</option>
+            <option value="">Select Primary Patty...</option>
             {PATTY_OPTIONS.map((m) => (
               <option key={m.name} value={m.name}>
                 {m.name} (${m.price.toFixed(2)})
@@ -236,23 +235,23 @@ export default function BurgerCustomize() {
             ))}
           </select>
 
-          {primaryMeat && (
+          {primaryPatty && (
             <p className="text-xs text-red-400 font-semibold mb-4">
-              Selected: {primaryMeat} — ${PATTY_OPTIONS.find((m) => m.name === primaryMeat).price.toFixed(2)}
+              Selected: {primaryPatty} — ${PATTY_OPTIONS.find((m) => m.name === primaryPatty).price.toFixed(2)}
             </p>
           )}
 
           <label className="block text-xs font-semibold text-zinc-300 mb-2 mt-4">
-            Additional Meats
+            Additional Patties
           </label>
           <div className="space-y-3">
             {PATTY_OPTIONS.map((m) => (
               <div key={m.name} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
                 <span className="text-sm font-medium">{m.name} (${m.price.toFixed(2)})</span>
                 <div className="flex items-center gap-3">
-                  <button onClick={() => updateMeat(m.name, -1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
-                  <span className="w-6 text-center">{additionalMeats[m.name] || 0}</span>
-                  <button onClick={() => updateMeat(m.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
+                  <button onClick={() => updatePatty(m.name, -1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
+                  <span className="w-6 text-center">{additionalPatties[m.name] || 0}</span>
+                  <button onClick={() => updatePatty(m.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
                 </div>
               </div>
             ))}
@@ -368,7 +367,6 @@ export default function BurgerCustomize() {
                   {t.name} (${t.price.toFixed(2)})
                 </button>
 
-                {/* Show Lite checkbox only if the condiment is selected */}
                 {condiments.includes(t.name) && (
                   <label className="flex items-center gap-2 mt-2 text-xs cursor-pointer">
                     <input
