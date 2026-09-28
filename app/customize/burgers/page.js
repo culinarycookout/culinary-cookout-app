@@ -49,6 +49,11 @@ const GARLIC_PRICES = {
   'Ciabatta Bun': 0.50,
 };
 
+const BUTTER_PRICES = {
+  'Artisan Bun': 0.50,
+  'Ciabatta Bun': 0.75,
+};
+
 const FRESH_TOPPINGS = [
   { name: 'Avocado', price: 1.00 },
   { name: 'Living Lettuce', price: 0.50 },
@@ -98,6 +103,7 @@ export default function BurgerCustomize() {
   const [base, setBase] = useState('');
   const [bunPrep, setBunPrep] = useState('Standard');
   const [garlicButter, setGarlicButter] = useState(false);
+  const [butter, setButter] = useState(false);
   const [freshToppings, setFreshToppings] = useState([]);
   const [cookedToppings, setCookedToppings] = useState([]);
   const [enhancementQty, setEnhancementQty] = useState({});
@@ -131,16 +137,39 @@ export default function BurgerCustomize() {
     if (baseName === 'Lettuce Wrapped') {
       setBunPrep('');
       setGarlicButter(false);
+      setButter(false);
     } else {
       setBunPrep('Standard');
       setGarlicButter(false);
+      setButter(false);
     }
   };
 
   const handleBunPrepSelect = (prepName) => {
     setBunPrep(prepName);
-    if (prepName !== 'Grilled') {
+    if (prepName !== 'Grilled' && prepName !== 'Toasted') {
       setGarlicButter(false);
+    }
+    if (prepName !== 'Toasted') {
+      setButter(false);
+    }
+  };
+
+  const handleButterToggle = () => {
+    if (butter) {
+      setButter(false);
+    } else {
+      setButter(true);
+      setGarlicButter(false);
+    }
+  };
+
+  const handleGarlicToggle = () => {
+    if (garlicButter) {
+      setGarlicButter(false);
+    } else {
+      setGarlicButter(true);
+      setButter(false);
     }
   };
 
@@ -167,6 +196,9 @@ export default function BurgerCustomize() {
     }
     if (garlicButter && GARLIC_PRICES[base]) {
       total += GARLIC_PRICES[base];
+    }
+    if (butter && BUTTER_PRICES[base]) {
+      total += BUTTER_PRICES[base];
     }
 
     freshToppings.forEach((t) => {
@@ -208,7 +240,8 @@ export default function BurgerCustomize() {
         seasonings,
         base,
         bunPrep: base === 'Lettuce Wrapped' ? 'N/A' : bunPrep,
-        garlicButter: garlicButter && base !== 'Lettuce Wrapped' && bunPrep === 'Grilled' ? true : false,
+        garlicButter: garlicButter && base !== 'Lettuce Wrapped' ? true : false,
+        butter: butter && base !== 'Lettuce Wrapped' ? true : false,
         freshToppings,
         cookedToppings,
         enhancementQty,
@@ -318,18 +351,49 @@ export default function BurgerCustomize() {
                 ))}
               </div>
 
+              {/* Grilled: Garlic Butter only */}
               {bunPrep === 'Grilled' && GARLIC_PRICES[base] && (
                 <label className="flex items-center gap-3 mt-4 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
                   <input
                     type="checkbox"
                     checked={garlicButter}
-                    onChange={(e) => setGarlicButter(e.target.checked)}
+                    onChange={handleGarlicToggle}
                     className="accent-red-600 w-4 h-4"
                   />
                   <span className="font-medium">
                     Garlic Butter (${GARLIC_PRICES[base].toFixed(2)})
                   </span>
                 </label>
+              )}
+
+              {/* Toasted: Butter OR Garlic Butter (radio behavior) */}
+              {bunPrep === 'Toasted' && GARLIC_PRICES[base] && BUTTER_PRICES[base] && (
+                <div className="mt-4 space-y-2">
+                  <label className="flex items-center gap-3 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
+                    <input
+                      type="radio"
+                      name="toast-finish"
+                      checked={butter}
+                      onChange={handleButterToggle}
+                      className="accent-red-600 w-4 h-4"
+                    />
+                    <span className="font-medium">
+                      Butter (${BUTTER_PRICES[base].toFixed(2)})
+                    </span>
+                  </label>
+                  <label className="flex items-center gap-3 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
+                    <input
+                      type="radio"
+                      name="toast-finish"
+                      checked={garlicButter}
+                      onChange={handleGarlicToggle}
+                      className="accent-red-600 w-4 h-4"
+                    />
+                    <span className="font-medium">
+                      Garlic Butter (${GARLIC_PRICES[base].toFixed(2)})
+                    </span>
+                  </label>
+                </div>
               )}
             </div>
           )}
