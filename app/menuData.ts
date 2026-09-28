@@ -57,8 +57,8 @@ export const FOOD_MENU_ITEMS: MenuItem[] = [
     { id: "orange", name: "ORANGE", description: "Vitamin C, before vitamin D.", image: "https://iili.io/nKUyRPp.png" }, ]},
 
   // ==================== SANDWICHES ====================
-  { id: "sandwiches-stacked", name: "STACKED", description: "The sandwich you know & love!", category: "SANDWICHES", image: "https://iili.io/nK6NGxs.png", subMenu: [
-    { id: "classic-sandwich", name: "CLASSIC", description: "Fresh fuel.", image: "https://iili.io/nfXUAXf.png" },
+  { id: "sandwiches-stacked", name: "STACKED", description: "Fresh fuel.", category: "SANDWICHES", image: "https://iili.io/nK6NGxs.png", subMenu: [
+    { id: "classic-sandwich", name: "CLASSIC", description: "The best thing with sliced bread!", image: "https://iili.io/nfXUAXf.png" },
     { id: "club-sandwich", name: "CLUB", description: "How many layers do you need?.", image: "https://iili.io/nq1xFKF.jpg" }, ]},
   { id: "sandwiches-hoagie", name: "HOAGIE", description: "The heart of the deli.", category: "SANDWICHES", image: "https://iili.io/nKiXtl2.png", subMenu: [
     { id: "half-hoagie", name: "HALF", description: "The sub on the go.", image: "https://iili.io/nKPVEQ4.png" },
