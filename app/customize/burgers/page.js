@@ -38,6 +38,12 @@ const BASE_OPTIONS = [
   { name: 'Lettuce Wrapped', price: 2.00 },
 ];
 
+const BUN_PREP = [
+  { name: 'Standard', price: 0.00 },
+  { name: 'Grilled', price: 0.00 },
+  { name: 'Toasted', price: 0.00 },
+];
+
 const FRESH_TOPPINGS = [
   { name: 'Avocado', price: 1.00 },
   { name: 'Living Lettuce', price: 0.50 },
@@ -85,10 +91,12 @@ export default function BurgerCustomize() {
   const [additionalMeats, setAdditionalMeats] = useState({});
   const [seasonings, setSeasonings] = useState([]);
   const [base, setBase] = useState('');
+  const [bunPrep, setBunPrep] = useState('Standard'); // New state for bun prep
   const [freshToppings, setFreshToppings] = useState([]);
   const [cookedToppings, setCookedToppings] = useState([]);
   const [enhancementQty, setEnhancementQty] = useState({});
   const [condiments, setCondiments] = useState([]);
+  const [liteCondiments, setLiteCondiments] = useState([]); // New state for lite options
 
   const updateMeat = (name, delta) => {
     setAdditionalMeats((prev) => {
@@ -112,15 +120,25 @@ export default function BurgerCustomize() {
     }
   };
 
+  const handleBaseSelect = (baseName) => {
+    setBase(baseName);
+    // Reset bun prep if Lettuce Wrapped is selected
+    if (baseName === 'Lettuce Wrapped') {
+      setBunPrep('');
+    } else {
+      setBunPrep('Standard');
+    }
+  };
+
   const calculateTotal = () => {
     let total = 0;
 
     if (primaryMeat) {
-      const primary = MEAT_OPTIONS.find((m) => m.name === primaryMeat);
+      const primary = PATTY_OPTIONS.find((m) => m.name === primaryMeat);
       if (primary) total += primary.price;
     }
 
-    MEAT_OPTIONS.forEach((m) => {
+    PATTY_OPTIONS.forEach((m) => {
       total += (additionalMeats[m.name] || 0) * m.price;
     });
 
@@ -129,6 +147,10 @@ export default function BurgerCustomize() {
     });
 
     if (base) total += BASE_OPTIONS.find((b) => b.name === base).price;
+    if (bunPrep && base !== 'Lettuce Wrapped') {
+      const prep = BUN_PREP.find((p) => p.name === bunPrep);
+      if (prep) total += prep.price;
+    }
 
     freshToppings.forEach((t) => {
       total += FRESH_TOPPINGS.find((f) => f.name === t).price;
@@ -168,10 +190,12 @@ export default function BurgerCustomize() {
         additionalMeats,
         seasonings,
         base,
+        bunPrep: base === 'Lettuce Wrapped' ? 'N/A' : bunPrep,
         freshToppings,
         cookedToppings,
         enhancementQty,
         condiments,
+        liteCondiments, // Include lite condiments in the cart data
       },
     };
 
@@ -205,7 +229,7 @@ export default function BurgerCustomize() {
             className="w-full p-2.5 mb-2 rounded-lg bg-zinc-800 text-white border border-zinc-700 text-sm focus:border-red-500 focus:outline-none"
           >
             <option value="">Select Primary Meat...</option>
-            {MEAT_OPTIONS.map((m) => (
+            {PATTY_OPTIONS.map((m) => (
               <option key={m.name} value={m.name}>
                 {m.name} (${m.price.toFixed(2)})
               </option>
@@ -214,7 +238,7 @@ export default function BurgerCustomize() {
 
           {primaryMeat && (
             <p className="text-xs text-red-400 font-semibold mb-4">
-              Selected: {primaryMeat} — ${MEAT_OPTIONS.find((m) => m.name === primaryMeat).price.toFixed(2)}
+              Selected: {primaryMeat} — ${PATTY_OPTIONS.find((m) => m.name === primaryMeat).price.toFixed(2)}
             </p>
           )}
 
@@ -222,7 +246,7 @@ export default function BurgerCustomize() {
             Additional Meats
           </label>
           <div className="space-y-3">
-            {MEAT_OPTIONS.map((m) => (
+            {PATTY_OPTIONS.map((m) => (
               <div key={m.name} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
                 <span className="text-sm font-medium">{m.name} (${m.price.toFixed(2)})</span>
                 <div className="flex items-center gap-3">
@@ -252,11 +276,35 @@ export default function BurgerCustomize() {
           <h3 className="font-bold text-lg text-white mb-4">Base</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {BASE_OPTIONS.map((b) => (
-              <button key={b.name} onClick={() => setBase(b.name)} className={`p-3 rounded-lg text-sm font-medium border ${base === b.name ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
+              <button key={b.name} onClick={() => handleBaseSelect(b.name)} className={`p-3 rounded-lg text-sm font-medium border ${base === b.name ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
                 {b.name} (${b.price.toFixed(2)})
               </button>
             ))}
           </div>
+
+          {/* Bun Preparation Options */}
+          {base && base !== 'Lettuce Wrapped' && (
+            <div className="mt-4 pt-4 border-t border-zinc-800">
+              <label className="block text-xs font-semibold text-zinc-300 mb-2">
+                Bun Preparation
+              </label>
+              <div className="flex flex-wrap gap-3">
+                {BUN_PREP.map((prep) => (
+                  <button
+                    key={prep.name}
+                    onClick={() => setBunPrep(prep.name)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+                      bunPrep === prep.name
+                        ? 'bg-red-600 border-red-500 text-white'
+                        : 'bg-zinc-800 border-zinc-700 text-white hover:border-zinc-500'
+                    }`}
+                  >
+                    {prep.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Fresh Toppings */}
@@ -283,7 +331,7 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Enhancements - with quantity counters */}
+        {/* Enhancements */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Enhancements</h3>
           <div className="space-y-3">
@@ -300,14 +348,39 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Condiments */}
+        {/* Condiments - with Lite option */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-12">
           <h3 className="font-bold text-lg text-white mb-4">Condiments</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {CONDIMENTS.map((t) => (
-              <button key={t.name} onClick={() => toggleItem(condiments, setCondiments, t.name)} className={`p-3 rounded-lg text-sm font-medium border ${condiments.includes(t.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
-                {t.name} (${t.price.toFixed(2)})
-              </button>
+              <div
+                key={t.name}
+                className={`p-3 rounded-lg border flex flex-col justify-between transition-colors ${
+                  condiments.includes(t.name)
+                    ? 'bg-red-600 border-red-500'
+                    : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'
+                }`}
+              >
+                <button
+                  onClick={() => toggleItem(condiments, setCondiments, t.name)}
+                  className="w-full text-left text-sm font-medium"
+                >
+                  {t.name} (${t.price.toFixed(2)})
+                </button>
+
+                {/* Show Lite checkbox only if the condiment is selected */}
+                {condiments.includes(t.name) && (
+                  <label className="flex items-center gap-2 mt-2 text-xs cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={liteCondiments.includes(t.name)}
+                      onChange={() => toggleItem(liteCondiments, setLiteCondiments, t.name)}
+                      className="accent-white w-3 h-3"
+                    />
+                    Lite
+                  </label>
+                )}
+              </div>
             ))}
           </div>
         </div>
