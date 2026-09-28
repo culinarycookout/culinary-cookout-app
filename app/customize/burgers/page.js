@@ -215,7 +215,6 @@ export default function BurgerCustomize() {
           </Link>
         </div>
 
-        {/* Patties */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Patties</h3>
 
@@ -258,7 +257,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Seasonings */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Seasonings</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -270,7 +268,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Base */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Base</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -281,7 +278,6 @@ export default function BurgerCustomize() {
             ))}
           </div>
 
-          {/* Bun Preparation Options */}
           {base && base !== 'Lettuce Wrapped' && (
             <div className="mt-4 pt-4 border-t border-zinc-800">
               <label className="block text-xs font-semibold text-zinc-300 mb-2">
@@ -306,7 +302,6 @@ export default function BurgerCustomize() {
           )}
         </div>
 
-        {/* Fresh Toppings */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Fresh Toppings</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -318,7 +313,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Cooked Toppings */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Cooked Toppings</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -330,7 +324,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Enhancements */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Enhancements</h3>
           <div className="space-y-3">
@@ -347,7 +340,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Condiments - with Lite option */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-12">
           <h3 className="font-bold text-lg text-white mb-4">Condiments</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -383,7 +375,6 @@ export default function BurgerCustomize() {
           </div>
         </div>
 
-        {/* Add to Cart */}
         <div className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 p-4 z-50 shadow-2xl">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <div>
