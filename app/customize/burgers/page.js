@@ -6,25 +6,31 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../../context/CartContext';
 
+const MEAT_OPTIONS = [
+  { name: '1/3 lb Beef Patty', price: 4.50 },
+  { name: '1/3 lb Turkey Patty', price: 2.25 },
+  { name: 'Grilled Chicken Breast', price: 5.00 },
+  { name: 'Fried Chicken Breast', price: 5.50 },
+];
+
 const BASE_OPTIONS = [
   { name: 'Artisan Bun', price: 3.25 },
   { name: 'Ciabatta Bun', price: 3.00 },
-  { name: 'Potato Bun', price: 1.00 },
 ];
 
 const FRESH_TOPPINGS = [
-  { name: 'Avocado (4)', price: 1.00 },
-  { name: 'Butter lettuce', price: 0.75 },
-  { name: 'Pickles (4)', price: 0.50 },
+  { name: 'Avocado', price: 1.00 },
+  { name: 'Butter Lettuce', price: 0.75 },
+  { name: 'Pickles', price: 0.50 },
   { name: 'Red Onion', price: 0.25 },
   { name: 'Tomato', price: 0.75 },
 ];
 
 const COOKED_TOPPINGS = [
-  { name: 'Bacon (2)', price: 2.00 },
+  { name: 'Bacon', price: 2.00 },
   { name: 'Egg', price: 0.50 },
   { name: 'Jalapeño', price: 0.50 },
-  { name: 'Mushroom Cap', price: 4.00 },
+  { name: 'Mushroom Patty', price: 4.00 },
   { name: 'Onion', price: 1.00 },
 ];
 
@@ -61,12 +67,20 @@ export default function BurgerCustomize() {
   const router = useRouter();
   const { addToCart } = useCart();
 
-  const [pattyQty, setPattyQty] = useState(1);
+  const [primaryMeat, setPrimaryMeat] = useState('');
+  const [additionalMeats, setAdditionalMeats] = useState({});
   const [base, setBase] = useState('');
   const [freshToppings, setFreshToppings] = useState([]);
   const [cookedToppings, setCookedToppings] = useState([]);
   const [enhancements, setEnhancements] = useState([]);
   const [condiments, setCondiments] = useState([]);
+
+  const updateAdditionalMeat = (name, delta) => {
+    setAdditionalMeats((prev) => {
+      const newQty = Math.max(0, (prev[name] || 0) + delta);
+      return { ...prev, [name]: newQty };
+    });
+  };
 
   const toggleItem = (list, setList, item) => {
     if (list.includes(item)) {
@@ -78,9 +92,18 @@ export default function BurgerCustomize() {
 
   const calculateTotal = () => {
     let total = 0;
-    total += pattyQty * 4.50; // Base price for beef patty
+
+    if (primaryMeat) {
+      const primary = MEAT_OPTIONS.find((m) => m.name === primaryMeat);
+      if (primary) total += primary.price;
+    }
+
+    MEAT_OPTIONS.forEach((m) => {
+      total += (additionalMeats[m.name] || 0) * m.price;
+    });
+
     if (base) total += BASE_OPTIONS.find((b) => b.name === base).price;
-    
+
     freshToppings.forEach((t) => {
       total += FRESH_TOPPINGS.find((f) => f.name === t).price;
     });
@@ -98,6 +121,10 @@ export default function BurgerCustomize() {
   };
 
   const handleAddToCart = () => {
+    if (!primaryMeat) {
+      alert('Please select a primary meat.');
+      return;
+    }
     if (!base) {
       alert('Please select a base.');
       return;
@@ -109,7 +136,8 @@ export default function BurgerCustomize() {
       'Price': calculateTotal(),
       quantity: 1,
       customizations: {
-        pattyQty,
+        primaryMeat,
+        additionalMeats,
         base,
         freshToppings,
         cookedToppings,
@@ -135,16 +163,42 @@ export default function BurgerCustomize() {
           </Link>
         </div>
 
-        {/* Add-ons */}
+        {/* Meats */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
-          <h3 className="font-bold text-lg text-white mb-4">Add-ons</h3>
-          <div className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
-            <span className="text-sm font-medium">1/3 lb Beef Patty</span>
-            <div className="flex items-center gap-3">
-              <button onClick={() => setPattyQty(Math.max(1, pattyQty - 1))} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
-              <span className="w-6 text-center">{pattyQty}</span>
-              <button onClick={() => setPattyQty(pattyQty + 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
-            </div>
+          <h3 className="font-bold text-lg text-white mb-4">Meats</h3>
+
+          {/* Primary Meat Dropdown */}
+          <label className="block text-xs font-semibold text-zinc-300 mb-2">
+            Primary Meat *
+          </label>
+          <select
+            value={primaryMeat}
+            onChange={(e) => setPrimaryMeat(e.target.value)}
+            className="w-full p-2.5 mb-6 rounded-lg bg-zinc-800 text-white border border-zinc-700 text-sm focus:border-red-500 focus:outline-none"
+          >
+            <option value="">Select Primary Meat...</option>
+            {MEAT_OPTIONS.map((m) => (
+              <option key={m.name} value={m.name}>
+                {m.name} (${m.price.toFixed(2)})
+              </option>
+            ))}
+          </select>
+
+          {/* Additional Meats Counters */}
+          <label className="block text-xs font-semibold text-zinc-300 mb-2">
+            Additional Meats
+          </label>
+          <div className="space-y-3">
+            {MEAT_OPTIONS.map((m) => (
+              <div key={m.name} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg border border-zinc-700">
+                <span className="text-sm font-medium">{m.name} (${m.price.toFixed(2)})</span>
+                <div className="flex items-center gap-3">
+                  <button onClick={() => updateAdditionalMeat(m.name, -1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">-</button>
+                  <span className="w-6 text-center">{additionalMeats[m.name] || 0}</span>
+                  <button onClick={() => updateAdditionalMeat(m.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
