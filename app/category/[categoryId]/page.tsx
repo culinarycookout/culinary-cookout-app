@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { FOOD_MENU_ITEMS } from '../../menuData';
+import { CUSTOMIZE_ROUTES } from '../../customizeRoutes';
 
 export default function CategoryPage() {
   const params = useParams();
@@ -32,26 +33,29 @@ export default function CategoryPage() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {categoryItem.subMenu.map((subItem) => (
-            <Link
-              key={subItem.id}
-              href={`/menu/${subItem.id}`}
-              className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col h-full"
-            >
-              <img
-                src={subItem.image}
-                alt={subItem.name}
-                className="w-full h-36 md:h-48 object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.png'; }}
-              />
-              <div className="p-3 md:p-4 flex flex-col flex-1">
-                <h3 className="font-bold text-sm md:text-lg leading-tight break-words mb-2">{subItem.name}</h3>
-                <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
-                  {subItem.description}
-                </p>
-              </div>
-            </Link>
-          ))}
+          {categoryItem.subMenu.map((subItem) => {
+            const href = CUSTOMIZE_ROUTES[subItem.id] || `/menu/${subItem.id}`;
+            return (
+              <Link
+                key={subItem.id}
+                href={href}
+                className="bg-white text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col h-full"
+              >
+                <img
+                  src={subItem.image}
+                  alt={subItem.name}
+                  className="w-full h-36 md:h-48 object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.png'; }}
+                />
+                <div className="p-3 md:p-4 flex flex-col flex-1">
+                  <h3 className="font-bold text-sm md:text-lg leading-tight break-words mb-2">{subItem.name}</h3>
+                  <p className="text-xs md:text-sm text-gray-700 mt-1 md:mt-2 flex-1">
+                    {subItem.description}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
