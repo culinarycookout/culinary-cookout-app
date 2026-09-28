@@ -203,7 +203,7 @@ export default function BurgerCustomize() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white p-4 md:p-8 pb-40">
+    <div className="w-full min-h-screen bg-zinc-950 text-white p-4 md:p-8 pb-64">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <div>
