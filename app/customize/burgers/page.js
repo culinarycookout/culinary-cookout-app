@@ -6,73 +6,75 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../../context/CartContext';
 
-const MEAT_OPTIONS = [
-  { name: '1/3 lb Beef Patty', price: 4.50 },
-  { name: '1/3 lb Turkey Patty', price: 2.25 },
-  { name: 'Grilled Chicken Breast', price: 5.00 },
-  { name: 'Fried Chicken Breast', price: 5.50 },
+const PATTY_OPTIONS = [
+  { name: 'Fried Steak', price: 16.00 },
+  { name: 'Steak', price: 14.00 },
+  { name: '1/3 lb Beef Patty', price: 5.00 },
+  { name: '1/3 lb Turkey Patty', price: 3.75 },
+  { name: 'Grilled Chicken Breast', price: 7.00 },
+  { name: 'Grilled Chicken', price: 2.50 },
+  { name: 'Fried Chicken Breast', price: 8.50 },
+  { name: 'Fried Chicken', price: 4.00 },
+  { name: 'Egg', price: 1.50 },
+  { name: 'Mushroom', price: 4.00 },
 ];
 
 const SEASONINGS = [
-  { name: 'Salt', price: 0.25 },
-  { name: 'Black Pepper', price: 0.25 },
-  { name: 'Cayenne', price: 0.25 },
-  { name: 'Garlic Powder', price: 0.25 },
-  { name: 'Onion Powder', price: 0.25 },
+  { name: 'Sea Salt', price: 0.00 },
+  { name: 'Black Pepper', price: 0.00 },
+  { name: 'Garlic', price: 0.25 },
+  { name: 'Onion', price: 0.25 },
   { name: 'Paprika', price: 0.25 },
-  { name: 'Garlic & Onion Blend', price: 0.50 },
+  { name: 'Smoked Paprika', price: 0.50 },
   { name: 'Cajun Seasoning', price: 0.50 },
-  { name: 'Montreal Steak Seasoning', price: 0.50 },
-  { name: 'Chili Powder', price: 0.25 },
+  { name: 'Steak Seasoning', price: 0.50 },
+  { name: 'Cayenne', price: 0.25 },
+  { name: 'Red Pepper Flakes', price: 0.25 },
 ];
 
 const BASE_OPTIONS = [
   { name: 'Artisan Bun', price: 3.25 },
   { name: 'Ciabatta Bun', price: 3.00 },
+  { name: 'Lettuce Wrapped', price: 2.00 },
 ];
 
 const FRESH_TOPPINGS = [
   { name: 'Avocado', price: 1.00 },
-  { name: 'Butter Lettuce', price: 0.75 },
+  { name: 'Living Lettuce', price: 0.50 },
   { name: 'Pickles', price: 0.50 },
-  { name: 'Red Onion', price: 0.25 },
-  { name: 'Tomato', price: 0.75 },
+  { name: 'Red Onions', price: 0.25 },
+  { name: 'Beefsteak Tomato', price: 0.75 },
 ];
 
 const COOKED_TOPPINGS = [
   { name: 'Bacon', price: 2.00 },
-  { name: 'Egg', price: 0.50 },
-  { name: 'Jalapeño', price: 0.50 },
-  { name: 'Mushroom Patty', price: 4.00 },
-  { name: 'Onion', price: 1.00 },
-  { name: 'Fries', price: 1.00 },
+  { name: 'Jalapeños', price: 0.50 },
+  { name: 'Onions', price: 1.00 },
+  { name: 'Fries', price: 2.00 },
 ];
 
 const ENHANCEMENTS = [
-  { name: 'Medium Cheddar Cheese', price: 0.75 },
-  { name: 'Sharp Cheddar Cheese', price: 0.75 },
-  { name: 'Colby Jack Cheese', price: 0.75 },
-  { name: 'Pepper Jack Cheese', price: 0.75 },
+  { name: 'Medium Cheddar Cheese', price: 0.50 },
+  { name: 'Sharp Cheddar Cheese', price: 0.50 },
+  { name: 'Colby Jack Cheese', price: 0.50 },
+  { name: 'Pepper Jack Cheese', price: 0.50 },
+  { name: 'Provolone Cheese', price: 0.50 },
+  { name: 'Swiss Cheese', price: 0.50 },
   { name: 'Ghost Pepper Cheese', price: 1.00 },
-  { name: 'Provolone Cheese', price: 0.75 },
-  { name: 'Swiss Cheese', price: 0.75 },
   { name: 'Lactose-Free Cheddar Cheese', price: 1.50 },
-  { name: 'Non-Dairy Cheddar', price: 0.00 },
-  { name: 'Non-Dairy Swiss', price: 0.00 },
+  { name: '🌿 Cheddar', price: 0.00 },
+  { name: '🌿 Swiss', price: 0.00 },
 ];
 
 const CONDIMENTS = [
-  { name: 'Garlic Aïoli', price: 2.00 },
+  { name: 'Garlic Aïoli', price: 1.00 },
+  { name: '🌿 Truffle Aïoli', price: 0.75 },
+  { name: 'Ketchup', price: 0.25 },
+  { name: 'Mustard', price: 0.25 },
   { name: 'BBQ Sauce', price: 1.00 },
   { name: 'Hickory BBQ Sauce', price: 1.00 },
-  { name: 'Mesquite BBQ Sauce', price: 1.00 },
-  { name: 'Spicy BBQ Sauce', price: 1.00 },
   { name: 'Habanero Honey', price: 3.00 },
   { name: 'Hot Sauce', price: 0.50 },
-  { name: 'Garlic Hot Sauce', price: 0.75 },
-  { name: 'Ketchup', price: 0.25 },
-  { name: 'Mayo (Truffle)', price: 0.50 },
-  { name: 'Mustard', price: 0.25 },
 ];
 
 export default function BurgerCustomize() {
