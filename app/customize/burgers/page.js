@@ -44,6 +44,11 @@ const BUN_PREP = [
   { name: 'Toasted', price: 0.00 },
 ];
 
+const GARLIC_PRICES = {
+  'Artisan Bun': 0.25,
+  'Ciabatta Bun': 0.50,
+};
+
 const FRESH_TOPPINGS = [
   { name: 'Avocado', price: 1.00 },
   { name: 'Living Lettuce', price: 0.50 },
@@ -92,6 +97,7 @@ export default function BurgerCustomize() {
   const [seasonings, setSeasonings] = useState([]);
   const [base, setBase] = useState('');
   const [bunPrep, setBunPrep] = useState('Standard');
+  const [garlicButter, setGarlicButter] = useState(false);
   const [freshToppings, setFreshToppings] = useState([]);
   const [cookedToppings, setCookedToppings] = useState([]);
   const [enhancementQty, setEnhancementQty] = useState({});
@@ -124,8 +130,17 @@ export default function BurgerCustomize() {
     setBase(baseName);
     if (baseName === 'Lettuce Wrapped') {
       setBunPrep('');
+      setGarlicButter(false);
     } else {
       setBunPrep('Standard');
+      setGarlicButter(false);
+    }
+  };
+
+  const handleBunPrepSelect = (prepName) => {
+    setBunPrep(prepName);
+    if (prepName !== 'Grilled') {
+      setGarlicButter(false);
     }
   };
 
@@ -149,6 +164,9 @@ export default function BurgerCustomize() {
     if (bunPrep && base !== 'Lettuce Wrapped') {
       const prep = BUN_PREP.find((p) => p.name === bunPrep);
       if (prep) total += prep.price;
+    }
+    if (garlicButter && GARLIC_PRICES[base]) {
+      total += GARLIC_PRICES[base];
     }
 
     freshToppings.forEach((t) => {
@@ -190,6 +208,7 @@ export default function BurgerCustomize() {
         seasonings,
         base,
         bunPrep: base === 'Lettuce Wrapped' ? 'N/A' : bunPrep,
+        garlicButter: garlicButter && base !== 'Lettuce Wrapped' && bunPrep === 'Grilled' ? true : false,
         freshToppings,
         cookedToppings,
         enhancementQty,
@@ -287,7 +306,7 @@ export default function BurgerCustomize() {
                 {BUN_PREP.map((prep) => (
                   <button
                     key={prep.name}
-                    onClick={() => setBunPrep(prep.name)}
+                    onClick={() => handleBunPrepSelect(prep.name)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
                       bunPrep === prep.name
                         ? 'bg-red-600 border-red-500 text-white'
@@ -298,6 +317,20 @@ export default function BurgerCustomize() {
                   </button>
                 ))}
               </div>
+
+              {bunPrep === 'Grilled' && GARLIC_PRICES[base] && (
+                <label className="flex items-center gap-3 mt-4 text-sm cursor-pointer bg-zinc-800 p-3 rounded-lg border border-zinc-700 hover:border-zinc-500">
+                  <input
+                    type="checkbox"
+                    checked={garlicButter}
+                    onChange={(e) => setGarlicButter(e.target.checked)}
+                    className="accent-red-600 w-4 h-4"
+                  />
+                  <span className="font-medium">
+                    Garlic Butter (${GARLIC_PRICES[base].toFixed(2)})
+                  </span>
+                </label>
+              )}
             </div>
           )}
         </div>
