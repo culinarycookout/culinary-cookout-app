@@ -13,6 +13,19 @@ const MEAT_OPTIONS = [
   { name: 'Fried Chicken Breast', price: 5.50 },
 ];
 
+const SEASONINGS = [
+  { name: 'Salt', price: 0.25 },
+  { name: 'Black Pepper', price: 0.25 },
+  { name: 'Cayenne', price: 0.25 },
+  { name: 'Garlic Powder', price: 0.25 },
+  { name: 'Onion Powder', price: 0.25 },
+  { name: 'Paprika', price: 0.25 },
+  { name: 'Garlic & Onion Blend', price: 0.50 },
+  { name: 'Cajun Seasoning', price: 0.50 },
+  { name: 'Montreal Steak Seasoning', price: 0.50 },
+  { name: 'Chili Powder', price: 0.25 },
+];
+
 const BASE_OPTIONS = [
   { name: 'Artisan Bun', price: 3.25 },
   { name: 'Ciabatta Bun', price: 3.00 },
@@ -68,6 +81,7 @@ export default function BurgerCustomize() {
 
   const [primaryMeat, setPrimaryMeat] = useState('');
   const [additionalMeats, setAdditionalMeats] = useState({});
+  const [seasonings, setSeasonings] = useState([]);
   const [base, setBase] = useState('');
   const [freshToppings, setFreshToppings] = useState([]);
   const [cookedToppings, setCookedToppings] = useState([]);
@@ -108,6 +122,10 @@ export default function BurgerCustomize() {
       total += (additionalMeats[m.name] || 0) * m.price;
     });
 
+    seasonings.forEach((s) => {
+      total += SEASONINGS.find((x) => x.name === s).price;
+    });
+
     if (base) total += BASE_OPTIONS.find((b) => b.name === base).price;
 
     freshToppings.forEach((t) => {
@@ -146,6 +164,7 @@ export default function BurgerCustomize() {
       customizations: {
         primaryMeat,
         additionalMeats,
+        seasonings,
         base,
         freshToppings,
         cookedToppings,
@@ -159,7 +178,7 @@ export default function BurgerCustomize() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white p-4 md:p-8 pb-32">
+    <div className="w-full min-h-screen bg-zinc-950 text-white p-4 md:p-8 pb-40">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <div>
@@ -210,6 +229,18 @@ export default function BurgerCustomize() {
                   <button onClick={() => updateMeat(m.name, 1)} className="w-8 h-8 rounded bg-zinc-700 hover:bg-zinc-600 font-bold">+</button>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Seasonings */}
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+          <h3 className="font-bold text-lg text-white mb-4">Seasonings</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {SEASONINGS.map((s) => (
+              <button key={s.name} onClick={() => toggleItem(seasonings, setSeasonings, s.name)} className={`p-3 rounded-lg text-sm font-medium border ${seasonings.includes(s.name) ? 'bg-red-600 border-red-500' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-500'}`}>
+                {s.name} (${s.price.toFixed(2)})
+              </button>
             ))}
           </div>
         </div>
@@ -268,7 +299,7 @@ export default function BurgerCustomize() {
         </div>
 
         {/* Condiments */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-12">
           <h3 className="font-bold text-lg text-white mb-4">Condiments</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {CONDIMENTS.map((t) => (
