@@ -24,7 +24,7 @@ const SEASONINGS = [
   { name: 'Black Pepper', price: 0.00 },
   { name: 'Garlic', price: 0.25 },
   { name: 'Onion', price: 0.25 },
-  { name: 'Paprika', price: 0.25 },
+  { name: 'Mesquite', price: 0.50 },
   { name: 'Smoked Paprika', price: 0.50 },
   { name: 'Cajun Seasoning', price: 0.50 },
   { name: 'Steak Seasoning', price: 0.50 },
