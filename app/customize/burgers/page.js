@@ -45,13 +45,13 @@ const BUN_PREP = [
 ];
 
 const GARLIC_PRICES = {
-  'Artisan Bun': 0.25,
-  'Ciabatta Bun': 0.50,
+  'Artisan Bun': 0.75,
+  'Ciabatta Bun': 1.00,
 };
 
 const BUTTER_PRICES = {
-  'Artisan Bun': 0.50,
-  'Ciabatta Bun': 0.75,
+  'Artisan Bun': 0.25,
+  'Ciabatta Bun': 0.50,
 };
 
 const FRESH_TOPPINGS = [
