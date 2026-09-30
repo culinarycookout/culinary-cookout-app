@@ -79,7 +79,7 @@ const ENHANCEMENTS = [
   { name: 'Ghost Pepper Cheese', price: 1.00 },
   { name: 'Lactose-Free Cheddar Cheese', price: 1.50 },
   { name: '🌿 Cheddar', price: 0.00 },
-  { name: '🌿 Swiss', price: 0.00 },
+  { name: '🌿 Smoked Provolone', price: 1.25 },
 ];
 
 const CONDIMENTS = [
