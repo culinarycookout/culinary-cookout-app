@@ -15,7 +15,7 @@ const SEASONINGS = [
   { name: 'Cayenne', price: 0.25 },
   { name: 'Garlic & Onion', price: 0.25 },
   { name: 'Deviled (mayo, mustard, paprika)', price: 1.00 },
-];0. 
+];
 
 const FRESH_INGREDIENTS = [
   { name: 'Garlic', price: 0.25 },
@@ -39,7 +39,18 @@ export default function EggsBoiledCustomize() {
   const [freshIngredients, setFreshIngredients] = useState([]);
   const [cookedIngredients, setCookedIngredients] = useState([]);
 
-  const isLocked = !style;
+  // Locked when no style is chosen OR when Unpeeled is chosen (egg is still in the shell)
+  const isLocked = !style || style === 'Unpeeled';
+
+  const handleStyleSelect = (styleName) => {
+    setStyle(styleName);
+    // If they switch to Unpeeled, clear everything below
+    if (styleName === 'Unpeeled') {
+      setSeasonings([]);
+      setFreshIngredients([]);
+      setCookedIngredients([]);
+    }
+  };
 
   const toggleItem = (list, setList, item) => {
     if (list.includes(item)) {
@@ -57,15 +68,17 @@ export default function EggsBoiledCustomize() {
       if (selected) total += selected.price;
     }
 
-    seasonings.forEach((s) => {
-      total += SEASONINGS.find((x) => x.name === s).price;
-    });
-    freshIngredients.forEach((f) => {
-      total += FRESH_INGREDIENTS.find((x) => x.name === f).price;
-    });
-    cookedIngredients.forEach((c) => {
-      total += COOKED_INGREDIENTS.find((x) => x.name === c).price;
-    });
+    if (style === 'Peeled') {
+      seasonings.forEach((s) => {
+        total += SEASONINGS.find((x) => x.name === s).price;
+      });
+      freshIngredients.forEach((f) => {
+        total += FRESH_INGREDIENTS.find((x) => x.name === f).price;
+      });
+      cookedIngredients.forEach((c) => {
+        total += COOKED_INGREDIENTS.find((x) => x.name === c).price;
+      });
+    }
 
     return total;
   };
@@ -83,9 +96,9 @@ export default function EggsBoiledCustomize() {
       quantity: 1,
       customizations: {
         style,
-        seasonings,
-        freshIngredients,
-        cookedIngredients,
+        seasonings: style === 'Peeled' ? seasonings : [],
+        freshIngredients: style === 'Peeled' ? freshIngredients : [],
+        cookedIngredients: style === 'Peeled' ? cookedIngredients : [],
       },
     };
 
@@ -113,7 +126,7 @@ export default function EggsBoiledCustomize() {
             {STYLE_OPTIONS.map((s) => (
               <button
                 key={s.name}
-                onClick={() => setStyle(s.name)}
+                onClick={() => handleStyleSelect(s.name)}
                 className={`p-3 rounded-lg text-sm font-medium border transition-colors ${
                   style === s.name
                     ? 'bg-red-600 border-red-500 text-white'
@@ -129,7 +142,9 @@ export default function EggsBoiledCustomize() {
         {isLocked && (
           <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 mb-6 text-center">
             <p className="text-zinc-400 text-sm font-semibold">
-              🔒 Select a style to unlock the rest of the customization
+              {!style
+                ? '🔒 Select a style to unlock the rest of the customization'
+                : '🔒 Unpeeled eggs come in the shell — select Peeled to add seasonings and ingredients'}
             </p>
           </div>
         )}
