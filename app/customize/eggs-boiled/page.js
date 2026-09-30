@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '../../../context/CartContext';
 
 const STYLE_OPTIONS = [
-  { name: 'Shelled (in the shell)', price: 0.75 },
-  { name: 'Peeled (ready to eat)', price: 1.00 },
+  { name: 'Unpeeled', price: 0.75 },
+  { name: 'Peeled', price: 1.00 },
 ];
 
 const SEASONINGS = [
