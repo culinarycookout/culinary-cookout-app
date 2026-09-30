@@ -14,7 +14,7 @@ const STYLE_OPTIONS = [
 const SEASONINGS = [
   { name: 'Cayenne', price: 0.25 },
   { name: 'Garlic & Onion', price: 0.25 },
-  { name: 'Deviled (mayo, mustard, paprika)', price: 1.00 },
+  { name: 'Deviled (truffle aïoli, mustard, paprika)', price: 1.00 },
 ];
 
 const FRESH_INGREDIENTS = [
@@ -27,7 +27,7 @@ const FRESH_INGREDIENTS = [
 const COOKED_INGREDIENTS = [
   { name: 'Bacon', price: 0.50 },
   { name: 'Onions', price: 0.25 },
-  { name: 'Salad (mayo)', price: 1.50 },
+  { name: 'Salad (truffle aïoli)', price: 1.50 },
 ];
 
 export default function EggsBoiledCustomize() {
@@ -143,8 +143,8 @@ export default function EggsBoiledCustomize() {
           <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 mb-6 text-center">
             <p className="text-zinc-400 text-sm font-semibold">
               {!style
-                ? '🔒 Select a style to unlock the rest of the customization'
-                : '🔒 Unpeeled eggs come in the shell — select Peeled to add seasonings and ingredients'}
+                ? '🔒 Select a style to unlock customization options.'
+                : '🔒 Unpeeled eggs come in the shell — select Peeled to add seasonings & ingredients.'}
             </p>
           </div>
         )}
