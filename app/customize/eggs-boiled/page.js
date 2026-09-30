@@ -33,12 +33,7 @@ const COOKED_INGREDIENTS = [
 ];
 
 const CONDIMENTS = [
-  { name: 'Hot Sauce', price: 0.50 },
-  { name: 'Ketchup', price: 0.25 },
-  { name: 'Mustard', price: 0.25 },
-  { name: 'Mayo', price: 0.25 },
-  { name: 'Truffle Aïoli', price: 1.00 },
-  { name: 'Habanero Honey', price: 3.00 },
+  { name: 'Hot Sauce', price: 0.50 },  
 ];
 
 export default function EggsBoiledCustomize() {
