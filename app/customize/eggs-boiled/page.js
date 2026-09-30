@@ -15,7 +15,7 @@ const SEASONINGS = [
   { name: 'Cayenne', price: 0.25 },
   { name: 'Garlic & Onion', price: 0.25 },
   { name: 'Deviled (mayo, mustard, paprika)', price: 1.00 },
-];
+];0. 
 
 const FRESH_INGREDIENTS = [
   { name: 'Garlic', price: 0.25 },
