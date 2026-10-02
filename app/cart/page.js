@@ -5,7 +5,7 @@ import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// ✅ Customize Modal Component
+// ✅ Customize Modal Component (kept for legacy add-on flow)
 function CustomizeModal({ item, onClose, onConfirm }) {
   const [addons, setAddons] = useState([]);
   const [selectedAddons, setSelectedAddons] = useState([]);
@@ -27,8 +27,8 @@ function CustomizeModal({ item, onClose, onConfirm }) {
   }, []);
 
   const toggleAddon = (addon) => {
-    if (selectedAddons.find(a => a.id === addon.id)) {
-      setSelectedAddons(selectedAddons.filter(a => a.id !== addon.id));
+    if (selectedAddons.find((a) => a.id === addon.id)) {
+      setSelectedAddons(selectedAddons.filter((a) => a.id !== addon.id));
     } else {
       setSelectedAddons([...selectedAddons, addon]);
     }
@@ -40,13 +40,14 @@ function CustomizeModal({ item, onClose, onConfirm }) {
   return (
     <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
       <div className="w-full max-w-4xl bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden">
-        
         <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-900 flex-shrink-0">
           <div>
             <h2 className="text-xl font-bold text-white">Customize {item['Item Name']}</h2>
             <p className="text-sm text-zinc-400">Select add-ons to enhance your dish.</p>
           </div>
-          <button onClick={onClose} className="text-zinc-400 hover:text-white text-2xl">&times;</button>
+          <button onClick={onClose} className="text-zinc-400 hover:text-white text-2xl">
+            &times;
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4">
@@ -57,24 +58,36 @@ function CustomizeModal({ item, onClose, onConfirm }) {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {addons.map((addon) => {
-                const isSelected = selectedAddons.find(a => a.id === addon.id);
+                const isSelected = selectedAddons.find((a) => a.id === addon.id);
                 return (
                   <button
                     key={addon.id}
                     onClick={() => toggleAddon(addon)}
                     className={`bg-zinc-800 border-2 rounded-xl overflow-hidden transition-all duration-200 text-left hover:shadow-lg ${
-                      isSelected ? 'border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.3)]' : 'border-zinc-700 hover:border-zinc-500'
+                      isSelected
+                        ? 'border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.3)]'
+                        : 'border-zinc-700 hover:border-zinc-500'
                     }`}
                   >
                     {addon['Image URL'] ? (
-                      <img src={addon['Image URL']} alt={addon['Item Name']} className="w-full h-32 object-cover" />
+                      <img
+                        src={addon['Image URL']}
+                        alt={addon['Item Name']}
+                        className="w-full h-32 object-cover"
+                      />
                     ) : (
-                      <div className="w-full h-32 bg-zinc-700 flex items-center justify-center text-4xl">🧂</div>
+                      <div className="w-full h-32 bg-zinc-700 flex items-center justify-center text-4xl">
+                        🧂
+                      </div>
                     )}
                     <div className="p-3">
                       <h4 className="font-bold text-white text-sm">{addon['Item Name']}</h4>
-                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2">{addon['DESCRIPTION']}</p>
-                      <p className="text-red-400 font-bold mt-2 text-sm">+${(addon.Price || 0).toFixed(2)}</p>
+                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2">
+                        {addon['DESCRIPTION']}
+                      </p>
+                      <p className="text-red-400 font-bold mt-2 text-sm">
+                        +${(addon.Price || 0).toFixed(2)}
+                      </p>
                     </div>
                   </button>
                 );
@@ -100,12 +113,111 @@ function CustomizeModal({ item, onClose, onConfirm }) {
   );
 }
 
+// ✅ NEW: Renders the customizations object saved by the new customize pages
+// (Burger, Boiled Eggs, and any future page that saves an object under `customizations`)
+function CustomizationBreakdown({ customizations }) {
+  const c = customizations;
+  if (!c) return null;
+
+  const rows = [];
+
+  // --- Burger shape ---
+  if (c.primaryPatty) {
+    rows.push(['Primary Patty', c.primaryPatty]);
+
+    const additional = Object.entries(c.additionalPatties || {}).filter(
+      ([, qty]) => qty > 0
+    );
+    if (additional.length > 0) {
+      rows.push([
+        'Additional Patties',
+        additional.map(([name, qty]) => (qty > 1 ? `${name} x${qty}` : name)).join(', '),
+      ]);
+    }
+  }
+
+  // --- Eggs shape ---
+  if (c.style) {
+    rows.push(['Style', c.style]);
+  }
+
+  // --- Common fields ---
+  if (Array.isArray(c.seasonings) && c.seasonings.length > 0) {
+    rows.push(['Seasonings', c.seasonings.join(', ')]);
+  }
+
+  if (c.base) {
+    rows.push(['Base', c.base]);
+  }
+
+  if (c.bunPrep && c.bunPrep !== 'N/A') {
+    let prep = c.bunPrep;
+    if (prep === 'Grilled' && c.garlicButter) {
+      prep += ' + Garlic Butter';
+    }
+    if (prep === 'Toasted') {
+      if (c.butter) prep += ' + Butter';
+      if (c.garlicButter) prep += ' + Garlic Butter';
+    }
+    rows.push(['Bun Prep', prep]);
+  }
+
+  if (Array.isArray(c.freshToppings) && c.freshToppings.length > 0) {
+    rows.push(['Fresh Toppings', c.freshToppings.join(', ')]);
+  }
+
+  if (Array.isArray(c.freshIngredients) && c.freshIngredients.length > 0) {
+    rows.push(['Fresh Ingredients', c.freshIngredients.join(', ')]);
+  }
+
+  if (Array.isArray(c.cookedToppings) && c.cookedToppings.length > 0) {
+    rows.push(['Cooked Toppings', c.cookedToppings.join(', ')]);
+  }
+
+  if (Array.isArray(c.cookedIngredients) && c.cookedIngredients.length > 0) {
+    rows.push(['Cooked Ingredients', c.cookedIngredients.join(', ')]);
+  }
+
+  if (c.enhancementQty) {
+    const enhancements = Object.entries(c.enhancementQty).filter(([, qty]) => qty > 0);
+    if (enhancements.length > 0) {
+      rows.push([
+        'Enhancements',
+        enhancements.map(([name, qty]) => (qty > 1 ? `${name} x${qty}` : name)).join(', '),
+      ]);
+    }
+  }
+
+  if (Array.isArray(c.condiments) && c.condiments.length > 0) {
+    const condimentList = c.condiments.map((name) => {
+      if (Array.isArray(c.liteCondiments) && c.liteCondiments.includes(name)) {
+        return `${name} (Lite)`;
+      }
+      return name;
+    });
+    rows.push(['Condiments', condimentList.join(', ')]);
+  }
+
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="space-y-1.5">
+      {rows.map(([label, value], idx) => (
+        <div key={idx} className="flex flex-wrap gap-1">
+          <span className="text-zinc-300 font-medium">{label}:</span>
+          <span className="text-zinc-400">{value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CartContent() {
   const router = useRouter();
   const { cart, addToCart, updateQuantity, removeFromCart, clearCart, updateCartItem } = useCart();
   const [isMounted, setIsMounted] = useState(false);
   const [isTacoTuesday, setIsTacoTuesday] = useState(false);
-  
+
   const [itemToRemove, setItemToRemove] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -115,17 +227,19 @@ function CartContent() {
     setIsMounted(true);
 
     const now = new Date();
-    const pacificTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+    const pacificTime = new Date(
+      now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+    );
     const day = pacificTime.getDay();
     const hours = pacificTime.getHours();
     setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
   }, []);
 
   const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-  
+
   const subtotal = cart.reduce((sum, item) => {
     const price = Number(item['Price'] || item.price || 0);
-    return sum + (price * (Number(item.quantity) || 0));
+    return sum + price * (Number(item.quantity) || 0);
   }, 0);
 
   const handleRemoveClick = (cartInstanceId) => {
@@ -156,14 +270,21 @@ function CartContent() {
   };
 
   if (!isMounted) {
-    return <div className="min-h-screen bg-black text-white p-8 flex items-center justify-center">Loading cart...</div>;
+    return (
+      <div className="min-h-screen bg-black text-white p-8 flex items-center justify-center">
+        Loading cart...
+      </div>
+    );
   }
 
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-black text-white p-8 flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold mb-4">🛒Empty Cart🛒</h1>
-        <Link href="/menu" className="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+        <Link
+          href="/menu"
+          className="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-bold transition-colors"
+        >
           Browse Menu 🍽️
         </Link>
       </div>
@@ -172,12 +293,13 @@ function CartContent() {
 
   return (
     <div className="min-h-screen bg-black text-white p-4 pb-32 relative">
-      
       {showModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
           <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             <h3 className="text-xl font-bold text-white mb-2 text-center">Are you sure?</h3>
-            <p className="text-zinc-400 text-center mb-6">This item will be removed from your cart.</p>
+            <p className="text-zinc-400 text-center mb-6">
+              This item will be removed from your cart.
+            </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowModal(false)}
@@ -206,9 +328,13 @@ function CartContent() {
 
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <Link href="/menu" className="text-red-400 hover:text-red-300 text-sm">← Back to Menu</Link>
+          <Link href="/menu" className="text-red-400 hover:text-red-300 text-sm">
+            ← Back to Menu
+          </Link>
           <h1 className="text-xl font-bold text-red-600">🛒Your Cart🛒</h1>
-          <span className="text-xs text-zinc-400">({totalItems} {totalItems === 1 ? 'item' : 'items'})</span>
+          <span className="text-xs text-zinc-400">
+            ({totalItems} {totalItems === 1 ? 'item' : 'items'})
+          </span>
         </div>
 
         <div className="space-y-4 mb-6">
@@ -233,21 +359,35 @@ function CartContent() {
             }
 
             const isHardcoded = !!item.customizations && !!item.dealId;
+            const hasNewCustomizations = !!item.customizations && !item.dealId;
 
             return (
-              <div key={item.cartInstanceId || item.id} className="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
+              <div
+                key={item.cartInstanceId || item.id}
+                className="bg-zinc-900 p-4 rounded-xl border border-zinc-800"
+              >
                 <div className="flex justify-between items-start">
                   <div className="w-full">
                     <div className="flex justify-between items-start">
                       <div className="flex flex-col gap-1">
-                        {/* ✅ ITEM NAME IS NOW CLICKABLE AND HAS THE ↩️ ARROW */}
-                        <Link href={`/menu/${item.id}`} className="font-bold text-lg text-white hover:text-red-400 transition-colors flex items-center gap-2">
-                          ↩️ {item['Item Name']}
-                        </Link>
-                        
+                        {hasNewCustomizations ? (
+                          <h3 className="font-bold text-lg text-white">
+                            {item['Item Name']}
+                          </h3>
+                        ) : (
+                          <Link
+                            href={`/menu/${item.id}`}
+                            className="font-bold text-lg text-white hover:text-red-400 transition-colors flex items-center gap-2"
+                          >
+                            ↩️ {item['Item Name']}
+                          </Link>
+                        )}
+
                         {isTacoTuesday && isTaco && (
                           <div className="inline-flex items-center gap-1.5 bg-red-600/20 border border-red-500/30 rounded-full px-2.5 py-0.5 w-fit mb-0.5">
-                            <span className="text-[10px] text-red-400 font-bold tracking-wide">🎉🌮 TACO TUESDAY 🌮🎉</span>
+                            <span className="text-[10px] text-red-400 font-bold tracking-wide">
+                              🎉🌮 TACO TUESDAY 🌮🎉
+                            </span>
                           </div>
                         )}
                       </div>
@@ -255,51 +395,63 @@ function CartContent() {
                         {isDiscounted ? (
                           <div className="flex flex-col items-end">
                             <div className="flex items-center gap-2">
-                              <p className="text-xl font-bold text-green-400">${displayPrice.toFixed(2)}</p>
-                              <p className="text-sm text-gray-500 line-through">${originalPrice.toFixed(2)}</p>
+                              <p className="text-xl font-bold text-green-400">
+                                ${displayPrice.toFixed(2)}
+                              </p>
+                              <p className="text-sm text-gray-500 line-through">
+                                ${originalPrice.toFixed(2)}
+                              </p>
                             </div>
-                            <span className="text-[10px] text-red-400 font-bold mt-0.5">50% OFF</span>
+                            <span className="text-[10px] text-red-400 font-bold mt-0.5">
+                              50% OFF
+                            </span>
                           </div>
                         ) : (
-                          <p className="text-xl font-bold text-red-400">${displayPrice.toFixed(2)}</p>
+                          <p className="text-xl font-bold text-red-400">
+                            ${displayPrice.toFixed(2)}
+                          </p>
                         )}
                       </div>
                     </div>
-                    
-                    {/* ✅ FULLY EXPANDED, BULLETED, AIRTIGHT DETAILED BREAKDOWN */}
+
                     <div className="mt-3 text-xs text-zinc-400 space-y-1.5 bg-black/40 p-3 rounded-lg border border-zinc-800">
-                      
-                      {/* 1. Hardcoded Customizations Breakdown (Tacos, Soups, etc.) */}
+                      {/* ✅ NEW: Customizations from the new customize pages */}
+                      {hasNewCustomizations && (
+                        <CustomizationBreakdown customizations={item.customizations} />
+                      )}
+
+                      {/* Legacy taco deals breakdown */}
                       {item.breakdown && (
                         <div className="space-y-1">
                           {item.breakdown.split(' | ').map((groupString, idx) => (
-                            <div key={idx} className="border-b border-zinc-700/50 last:border-0 pb-1.5 last:pb-0">
+                            <div
+                              key={idx}
+                              className="border-b border-zinc-700/50 last:border-0 pb-1.5 last:pb-0"
+                            >
                               {groupString}
                             </div>
                           ))}
                         </div>
                       )}
 
-                      {/* 2. Tortilla & Meat Logic */}
                       {item.tortilla && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
-                          <span className="text-zinc-300 font-medium">Tortilla:</span> {item.tortilla}
+                          <span className="text-zinc-300 font-medium">Tortilla:</span>{' '}
+                          {item.tortilla}
                         </div>
                       )}
                       {item.meat && (
                         <div className="pt-1.5">
-                          <span className="text-zinc-300 font-medium">Meat:</span> {item.meat}
+                          <span className="text-zinc-300 font-medium">Meat:</span>{' '}
+                          {item.meat}
                         </div>
                       )}
-
-                      {/* ✅ FIXED: Now says "Type:" instead of "Size:" */}
                       {item.SIZE && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
                           <span className="text-zinc-300 font-medium">Type:</span> {item.SIZE}
                         </div>
                       )}
 
-                      {/* 4. Detailed, Bulleted Add-Ons List */}
                       {item.selectedAddons && item.selectedAddons.length > 0 && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
                           <span className="text-zinc-300 font-medium">Add-ons:</span>
@@ -313,12 +465,13 @@ function CartContent() {
                         </div>
                       )}
 
-                      {/* 5. Toppings & Extras */}
                       {item.toppings && item.toppings.length > 0 && (
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
                           <span className="text-zinc-300 font-medium">Toppings:</span>
                           <ul className="list-disc list-inside text-zinc-400 mt-0.5 space-y-0.5 pl-1">
-                            {item.toppings.map((t, idx) => <li key={idx}>{t}</li>)}
+                            {item.toppings.map((t, idx) => (
+                              <li key={idx}>{t}</li>
+                            ))}
                           </ul>
                         </div>
                       )}
@@ -326,27 +479,33 @@ function CartContent() {
                         <div className="pt-1.5 border-t border-zinc-700/50 mt-1">
                           <span className="text-zinc-300 font-medium">Extras:</span>
                           <ul className="list-disc list-inside text-zinc-400 mt-0.5 space-y-0.5 pl-1">
-                            {item.extras.map((e, idx) => <li key={idx}>{e}</li>)}
+                            {item.extras.map((e, idx) => (
+                              <li key={idx}>{e}</li>
+                            ))}
                           </ul>
                         </div>
                       )}
-
                     </div>
-
                   </div>
                 </div>
+
                 <div className="flex items-center justify-between mt-4 flex-wrap gap-2">
-                  
                   <div className="flex items-center flex-wrap gap-2">
-                    
                     <div className="flex items-center space-x-2 bg-zinc-800 rounded-lg px-2 py-1">
                       <button
-                        onClick={() => updateQuantity(item.cartInstanceId || item.id, Math.max(1, qty - 1))}
+                        onClick={() =>
+                          updateQuantity(
+                            item.cartInstanceId || item.id,
+                            Math.max(1, qty - 1)
+                          )
+                        }
                         className="w-8 h-8 rounded-full bg-zinc-700 hover:bg-zinc-600 text-white font-bold flex items-center justify-center text-lg transition-colors"
                       >
                         −
                       </button>
-                      <span className="text-lg font-bold text-white w-8 text-center">{qty}</span>
+                      <span className="text-lg font-bold text-white w-8 text-center">
+                        {qty}
+                      </span>
                       <button
                         onClick={() => updateQuantity(item.cartInstanceId || item.id, qty + 1)}
                         className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center text-lg transition-colors"
@@ -355,7 +514,8 @@ function CartContent() {
                       </button>
                     </div>
 
-                    {!isHardcoded && (
+                    {/* Customize modal button — only for legacy items, hidden for new customize items */}
+                    {!isHardcoded && !hasNewCustomizations && (
                       <button
                         onClick={() => handleCustomizeClick(item)}
                         className="px-4 py-2 bg-white hover:bg-zinc-200 border border-zinc-700 rounded-lg text-red-600 font-bold text-base md:text-lg transition-colors shadow-sm"
@@ -364,13 +524,11 @@ function CartContent() {
                       </button>
                     )}
 
-                    {/* ✅ THE FIX: +Add Another now forces a unique ID and resets quantity to 1! */}
                     <button
                       onClick={() => {
                         const duplicate = {
                           ...item,
-                          // Forces a completely unique ID string so your context treats it as a new line
-                          cartInstanceId: `clone-${item.id}-${Date.now()}`,
+                          forceNewLine: true,
                           quantity: 1,
                         };
                         addToCart(duplicate);
@@ -379,7 +537,6 @@ function CartContent() {
                     >
                       +Add Another 👨🏾‍🍳
                     </button>
-
                   </div>
 
                   <button
@@ -388,7 +545,6 @@ function CartContent() {
                   >
                     ❌Remove
                   </button>
-
                 </div>
               </div>
             );
@@ -408,7 +564,7 @@ function CartContent() {
               Clear Cart
             </button>
             <button
-              onClick={() => alert('Checkout coming soon!')}
+              onClick={() => router.push('/checkout')}
               className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition"
             >
               Confirm & Checkout →
@@ -422,7 +578,13 @@ function CartContent() {
 
 export default function CartPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading cart...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+          Loading cart...
+        </div>
+      }
+    >
       <CartContent />
     </Suspense>
   );

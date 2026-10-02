@@ -25,20 +25,31 @@ export function CartProvider({ children }) {
 
   const addToCart = (item) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (i) => i.id === item.id && JSON.stringify(i.customization) === JSON.stringify(item.customization)
-      );
-
-      if (existingItem) {
-        return prevCart.map((i) =>
-          i === existingItem ? { ...i, quantity: (i.quantity || 1) + (item.quantity || 1) } : i
+      // Only merge into an existing line if we're NOT forcing a new line
+      if (!item.forceNewLine) {
+        const existingItem = prevCart.find(
+          (i) =>
+            i.id === item.id &&
+            JSON.stringify(i.customizations) === JSON.stringify(item.customizations) &&
+            !i.forceNewLine
         );
+
+        if (existingItem) {
+          return prevCart.map((i) =>
+            i === existingItem
+              ? { ...i, quantity: (i.quantity || 1) + (item.quantity || 1) }
+              : i
+          );
+        }
       }
+
+      const cleanItem = { ...item };
+      delete cleanItem.forceNewLine;
 
       return [
         ...prevCart,
         {
-          ...item,
+          ...cleanItem,
           cartInstanceId: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
           quantity: item.quantity || 1,
         },
@@ -64,19 +75,18 @@ export function CartProvider({ children }) {
     setCart([]);
   };
 
-  // ✅ NEW: Safely merges add-ons into an existing item without altering other properties
   const updateCartItem = (cartInstanceId, updates) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.cartInstanceId === cartInstanceId
-          ? { ...item, ...updates }
-          : item
+        item.cartInstanceId === cartInstanceId ? { ...item, ...updates } : item
       )
     );
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, updateCartItem }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, updateCartItem }}
+    >
       {children}
     </CartContext.Provider>
   );
