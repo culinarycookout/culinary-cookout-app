@@ -5,7 +5,6 @@ import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// ✅ Customize Modal Component (kept for legacy add-on flow)
 function CustomizeModal({ item, onClose, onConfirm }) {
   const [addons, setAddons] = useState([]);
   const [selectedAddons, setSelectedAddons] = useState([]);
@@ -113,21 +112,15 @@ function CustomizeModal({ item, onClose, onConfirm }) {
   );
 }
 
-// ✅ NEW: Renders the customizations object saved by the new customize pages
-// (Burger, Boiled Eggs, and any future page that saves an object under `customizations`)
 function CustomizationBreakdown({ customizations }) {
   const c = customizations;
   if (!c) return null;
 
   const rows = [];
 
-  // --- Burger shape ---
   if (c.primaryPatty) {
     rows.push(['Primary Patty', c.primaryPatty]);
-
-    const additional = Object.entries(c.additionalPatties || {}).filter(
-      ([, qty]) => qty > 0
-    );
+    const additional = Object.entries(c.additionalPatties || {}).filter(([, qty]) => qty > 0);
     if (additional.length > 0) {
       rows.push([
         'Additional Patties',
@@ -136,12 +129,10 @@ function CustomizationBreakdown({ customizations }) {
     }
   }
 
-  // --- Eggs shape ---
   if (c.style) {
     rows.push(['Style', c.style]);
   }
 
-  // --- Common fields ---
   if (Array.isArray(c.seasonings) && c.seasonings.length > 0) {
     rows.push(['Seasonings', c.seasonings.join(', ')]);
   }
@@ -152,9 +143,7 @@ function CustomizationBreakdown({ customizations }) {
 
   if (c.bunPrep && c.bunPrep !== 'N/A') {
     let prep = c.bunPrep;
-    if (prep === 'Grilled' && c.garlicButter) {
-      prep += ' + Garlic Butter';
-    }
+    if (prep === 'Grilled' && c.garlicButter) prep += ' + Garlic Butter';
     if (prep === 'Toasted') {
       if (c.butter) prep += ' + Butter';
       if (c.garlicButter) prep += ' + Garlic Butter';
@@ -225,11 +214,8 @@ function CartContent() {
 
   useEffect(() => {
     setIsMounted(true);
-
     const now = new Date();
-    const pacificTime = new Date(
-      now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
-    );
+    const pacificTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
     const day = pacificTime.getDay();
     const hours = pacificTime.getHours();
     setIsTacoTuesday((day === 2 && hours >= 0) || (day === 3 && hours < 1));
@@ -361,6 +347,14 @@ function CartContent() {
             const isHardcoded = !!item.customizations && !!item.dealId;
             const hasNewCustomizations = !!item.customizations && !item.dealId;
 
+            // ✅ Determine where the ↩️ arrow should link to
+            let nameHref = null;
+            if (item.customizeUrl) {
+              nameHref = item.customizeUrl;
+            } else if (!hasNewCustomizations) {
+              nameHref = `/menu/${item.id}`;
+            }
+
             return (
               <div
                 key={item.cartInstanceId || item.id}
@@ -370,17 +364,17 @@ function CartContent() {
                   <div className="w-full">
                     <div className="flex justify-between items-start">
                       <div className="flex flex-col gap-1">
-                        {hasNewCustomizations ? (
-                          <h3 className="font-bold text-lg text-white">
-                            {item['Item Name']}
-                          </h3>
-                        ) : (
+                        {nameHref ? (
                           <Link
-                            href={`/menu/${item.id}`}
+                            href={nameHref}
                             className="font-bold text-lg text-white hover:text-red-400 transition-colors flex items-center gap-2"
                           >
                             ↩️ {item['Item Name']}
                           </Link>
+                        ) : (
+                          <h3 className="font-bold text-lg text-white">
+                            {item['Item Name']}
+                          </h3>
                         )}
 
                         {isTacoTuesday && isTaco && (
@@ -415,12 +409,10 @@ function CartContent() {
                     </div>
 
                     <div className="mt-3 text-xs text-zinc-400 space-y-1.5 bg-black/40 p-3 rounded-lg border border-zinc-800">
-                      {/* ✅ NEW: Customizations from the new customize pages */}
                       {hasNewCustomizations && (
                         <CustomizationBreakdown customizations={item.customizations} />
                       )}
 
-                      {/* Legacy taco deals breakdown */}
                       {item.breakdown && (
                         <div className="space-y-1">
                           {item.breakdown.split(' | ').map((groupString, idx) => (
@@ -514,7 +506,6 @@ function CartContent() {
                       </button>
                     </div>
 
-                    {/* Customize modal button — only for legacy items, hidden for new customize items */}
                     {!isHardcoded && !hasNewCustomizations && (
                       <button
                         onClick={() => handleCustomizeClick(item)}

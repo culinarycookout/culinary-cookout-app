@@ -46,19 +46,17 @@ export default function EggsBoiledCustomize() {
   const [cookedIngredients, setCookedIngredients] = useState([]);
   const [condiments, setCondiments] = useState([]);
 
-  // Unpeeled = locked entirely. Peeled = only seasonings + condiments. Deviled = everything.
   const isUnpeeled = style === 'Unpeeled';
   const isPeeled = style === 'Peeled';
   const isDeviled = style === 'Deviled';
   const noStyle = !style;
 
-  const freshLocked = noStyle || isUnpeeled || isPeeled; // fresh toppings only for deviled
-  const cookedLocked = noStyle || isUnpeeled || isPeeled; // cooked toppings only for deviled
+  const freshLocked = noStyle || isUnpeeled || isPeeled;
+  const cookedLocked = noStyle || isUnpeeled || isPeeled;
   const everythingBelowLocked = noStyle || isUnpeeled;
 
   const handleStyleSelect = (styleName) => {
     setStyle(styleName);
-    // If they downgrade to Unpeeled or Peeled, clear anything that no longer applies
     if (styleName === 'Unpeeled') {
       setSeasonings([]);
       setFreshIngredients([]);
@@ -115,7 +113,8 @@ export default function EggsBoiledCustomize() {
 
     const cartItem = {
       id: `eggs-boiled-${Date.now()}`,
-      'Item Name': `BOILED EGGS (${style})`,
+      customizeUrl: '/customize/eggs-boiled',
+      'Item Name': `BOILED EGG (${style})`,
       'Price': calculateTotal(),
       quantity: 1,
       customizations: {
@@ -136,7 +135,7 @@ export default function EggsBoiledCustomize() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-black tracking-tight">🥚 BOILED EGGS</h1>
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight">🥚 BOILED EGG</h1>
             <p className="text-zinc-400 text-sm mt-1">The quickest meal of the day…</p>
           </div>
           <Link href="/menu" className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-semibold px-4 py-2 rounded-lg border border-zinc-700 transition-colors">
@@ -144,7 +143,6 @@ export default function EggsBoiledCustomize() {
           </Link>
         </div>
 
-        {/* Style - Always Active */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
           <h3 className="font-bold text-lg text-white mb-4">Style (Includes)</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -190,7 +188,6 @@ export default function EggsBoiledCustomize() {
 
         <div className={everythingBelowLocked ? 'opacity-40 pointer-events-none select-none' : ''}>
 
-          {/* Seasonings */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6">
             <h3 className="font-bold text-lg text-white mb-4">Seasonings</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -210,7 +207,6 @@ export default function EggsBoiledCustomize() {
             </div>
           </div>
 
-          {/* Fresh Ingredients - Deviled Only */}
           <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6 ${freshLocked ? 'opacity-40 pointer-events-none select-none' : ''}`}>
             <h3 className="font-bold text-lg text-white mb-1">Fresh Ingredients</h3>
             <p className="text-xs text-zinc-500 mb-4">Deviled style only</p>
@@ -231,7 +227,6 @@ export default function EggsBoiledCustomize() {
             </div>
           </div>
 
-          {/* Cooked Ingredients - Deviled Only */}
           <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-6 ${cookedLocked ? 'opacity-40 pointer-events-none select-none' : ''}`}>
             <h3 className="font-bold text-lg text-white mb-1">Cooked Ingredients</h3>
             <p className="text-xs text-zinc-500 mb-4">Deviled style only</p>
@@ -252,7 +247,6 @@ export default function EggsBoiledCustomize() {
             </div>
           </div>
 
-          {/* Condiments */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 md:p-6 mb-12">
             <h3 className="font-bold text-lg text-white mb-4">Condiments</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
