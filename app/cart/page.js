@@ -555,7 +555,7 @@ function CartContent() {
               Clear Cart
             </button>
             <button
-              onClick={() => router.push('/checkout')}
+              onClick={() => router.push('/schedule')}
               className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition"
             >
               Confirm & Checkout →
