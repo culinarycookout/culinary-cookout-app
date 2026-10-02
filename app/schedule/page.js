@@ -16,7 +16,8 @@ const COOK_TIME_RULES = [
   { prefix: 'flamed-', hours: 2, label: 'Flamed' },
 ];
 
-// --- Shop + travel times by day and hour ---
+// --- Shop & Setup times by day and hour ---
+// Includes store traffic, checkout lines, and travel to client location
 const WEEKDAY_SHOP_TIMES = [
   { start: 0, end: 6.99, hours: 0.5, label: '12am–6:59am' },
   { start: 7, end: 10.99, hours: 1.5, label: '7am–10:59am' },
@@ -46,7 +47,7 @@ function getShopAndTravelTime(serveDate, serveTime) {
   if (!serveDate || !serveTime) return null;
 
   const date = new Date(`${serveDate}T${serveTime}`);
-  const dayOfWeek = date.getDay(); // 0 = Sunday, 6 = Saturday
+  const dayOfWeek = date.getDay();
   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
   const [hours, minutes] = serveTime.split(':').map(Number);
@@ -60,7 +61,6 @@ function getShopAndTravelTime(serveDate, serveTime) {
     }
   }
 
-  // Fallback (should never hit)
   return { hours: 0.5, label: 'default', isWeekend };
 }
 
@@ -72,7 +72,6 @@ function ScheduleContent() {
   const [serveTime, setServeTime] = useState('');
   const [error, setError] = useState('');
 
-  // Longest cook time required by anything in the cart
   const { longestCookHours, longestCookLabel } = (() => {
     let maxHours = BASE_COOK_HOURS;
     let label = 'Standard';
@@ -87,12 +86,10 @@ function ScheduleContent() {
     return { longestCookHours: maxHours, longestCookLabel: label };
   })();
 
-  // Dynamic shop/travel time based on the customer's chosen serve time
   const shopInfo = getShopAndTravelTime(serveDate, serveTime);
   const shopHours = shopInfo ? shopInfo.hours : 0;
   const totalLeadHours = shopHours + longestCookHours;
 
-  // Validate the selected date/time
   useEffect(() => {
     setError('');
     if (!serveDate || !serveTime || !shopInfo) return;
@@ -103,12 +100,11 @@ function ScheduleContent() {
 
     if (selected < earliestPossible) {
       setError(
-        `Your selected time is too soon. Based on your window, this order needs approximately ${totalLeadHours} hours of lead time. Earliest available: ${earliestPossible.toLocaleString()}`
+        `Your selected time is too soon. Based on your serving window, this order needs approximately ${totalLeadHours} hours of lead time. Earliest available: ${earliestPossible.toLocaleString()}`
       );
     }
   }, [serveDate, serveTime, totalLeadHours, shopInfo]);
 
-  // Cook start estimate
   const cookStartDisplay = (() => {
     if (!serveDate || !serveTime) return null;
     const selected = new Date(`${serveDate}T${serveTime}`);
@@ -205,7 +201,7 @@ function ScheduleContent() {
           </select>
         </div>
 
-        {/* Lead time summary — appears once date AND time are chosen */}
+        {/* Lead time summary */}
         {shopInfo && (
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Your Window</h2>
@@ -215,15 +211,18 @@ function ScheduleContent() {
                 {shopInfo.isWeekend ? 'Weekend' : 'Weekday'}
               </p>
               <p>
-                <span className="text-zinc-300 font-medium">Shopping & travel:</span>{' '}
+                <span className="text-zinc-300 font-medium">Shopping & Setup:</span>{' '}
                 up to {shopHours} hours ({shopInfo.label})
               </p>
+              <p className="text-xs text-zinc-500 pl-1">
+                Includes store traffic, checkout, travel, and setup at your location
+              </p>
               <p>
-                <span className="text-zinc-300 font-medium">Approximate cook time:</span> up to{' '}
+                <span className="text-zinc-300 font-medium">Cook Time:</span> up to{' '}
                 {longestCookHours} hours ({longestCookLabel})
               </p>
               <p className="pt-2 border-t border-zinc-800 mt-2">
-                <span className="text-red-400 font-bold">Total lead time:</span>{' '}
+                <span className="text-red-400 font-bold">Total Lead Time:</span>{' '}
                 <span className="text-white font-bold">up to {totalLeadHours} hours</span>
               </p>
               <p className="text-xs text-zinc-500 pt-1">
