@@ -6,9 +6,8 @@ import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// --- Cook time rules based on item ID prefix ---
-// All times are "up to" values — actual cook time depends on the specific cut and quantity
-const BASE_COOK_HOURS = 1.5; // Standard items (fries, sandwiches, sides, etc.)
+// --- Cook time rules (up to values, based on item ID prefix) ---
+const BASE_COOK_HOURS = 1.5;
 
 const COOK_TIME_RULES = [
   { prefix: 'smoked-', hours: 12, label: 'Smoked' },
@@ -17,7 +16,22 @@ const COOK_TIME_RULES = [
   { prefix: 'flamed-', hours: 2, label: 'Flamed' },
 ];
 
-const SHOP_AND_TRAVEL_HOURS = 2;
+// --- Shop + travel times by day and hour ---
+const WEEKDAY_SHOP_TIMES = [
+  { start: 0, end: 6.99, hours: 0.5, label: '12am–6:59am' },
+  { start: 7, end: 10.99, hours: 1.5, label: '7am–10:59am' },
+  { start: 11, end: 14.99, hours: 0.75, label: '11am–2:59pm' },
+  { start: 15, end: 19.99, hours: 1.5, label: '3pm–7:59pm' },
+  { start: 20, end: 23.99, hours: 0.5, label: '8pm–11:59pm' },
+];
+
+const WEEKEND_SHOP_TIMES = [
+  { start: 0, end: 6.99, hours: 0.5, label: '12am–6:59am' },
+  { start: 7, end: 10.99, hours: 0.75, label: '7am–10:59am' },
+  { start: 11, end: 14.99, hours: 0.5, label: '11am–2:59pm' },
+  { start: 15, end: 19.99, hours: 0.75, label: '3pm–7:59pm' },
+  { start: 20, end: 23.99, hours: 0.5, label: '8pm–11:59pm' },
+];
 
 function getCookTimeForItem(itemId) {
   for (const rule of COOK_TIME_RULES) {
@@ -28,6 +42,28 @@ function getCookTimeForItem(itemId) {
   return { hours: BASE_COOK_HOURS, label: 'Standard' };
 }
 
+function getShopAndTravelTime(serveDate, serveTime) {
+  if (!serveDate || !serveTime) return null;
+
+  const date = new Date(`${serveDate}T${serveTime}`);
+  const dayOfWeek = date.getDay(); // 0 = Sunday, 6 = Saturday
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+  const [hours, minutes] = serveTime.split(':').map(Number);
+  const decimalHour = hours + minutes / 60;
+
+  const table = isWeekend ? WEEKEND_SHOP_TIMES : WEEKDAY_SHOP_TIMES;
+
+  for (const slot of table) {
+    if (decimalHour >= slot.start && decimalHour <= slot.end) {
+      return { hours: slot.hours, label: slot.label, isWeekend };
+    }
+  }
+
+  // Fallback (should never hit)
+  return { hours: 0.5, label: 'default', isWeekend };
+}
+
 function ScheduleContent() {
   const router = useRouter();
   const { cart } = useCart();
@@ -36,7 +72,7 @@ function ScheduleContent() {
   const [serveTime, setServeTime] = useState('');
   const [error, setError] = useState('');
 
-  // Calculate the longest cook time required by anything in the cart
+  // Longest cook time required by anything in the cart
   const { longestCookHours, longestCookLabel } = (() => {
     let maxHours = BASE_COOK_HOURS;
     let label = 'Standard';
@@ -51,12 +87,15 @@ function ScheduleContent() {
     return { longestCookHours: maxHours, longestCookLabel: label };
   })();
 
-  const totalLeadHours = SHOP_AND_TRAVEL_HOURS + longestCookHours;
+  // Dynamic shop/travel time based on the customer's chosen serve time
+  const shopInfo = getShopAndTravelTime(serveDate, serveTime);
+  const shopHours = shopInfo ? shopInfo.hours : 0;
+  const totalLeadHours = shopHours + longestCookHours;
 
   // Validate the selected date/time
   useEffect(() => {
     setError('');
-    if (!serveDate || !serveTime) return;
+    if (!serveDate || !serveTime || !shopInfo) return;
 
     const selected = new Date(`${serveDate}T${serveTime}`);
     const now = new Date();
@@ -64,12 +103,12 @@ function ScheduleContent() {
 
     if (selected < earliestPossible) {
       setError(
-        `Your selected time is too soon. Orders requiring ${longestCookLabel} cooking need approximately ${totalLeadHours} hours of lead time (up to ${totalLeadHours} hours). Earliest available: ${earliestPossible.toLocaleString()}`
+        `Your selected time is too soon. Based on your window, this order needs approximately ${totalLeadHours} hours of lead time. Earliest available: ${earliestPossible.toLocaleString()}`
       );
     }
-  }, [serveDate, serveTime, totalLeadHours, longestCookLabel]);
+  }, [serveDate, serveTime, totalLeadHours, shopInfo]);
 
-  // Calculate the estimated chef cook start time
+  // Cook start estimate
   const cookStartDisplay = (() => {
     if (!serveDate || !serveTime) return null;
     const selected = new Date(`${serveDate}T${serveTime}`);
@@ -95,7 +134,10 @@ function ScheduleContent() {
       serveTime,
       cookStartDisplay,
       totalLeadHours,
+      shopHours,
+      shopLabel: shopInfo?.label,
       cookType: longestCookLabel,
+      cookHours: longestCookHours,
     };
     localStorage.setItem('culinary_schedule', JSON.stringify(schedule));
     router.push('/checkout');
@@ -124,28 +166,6 @@ function ScheduleContent() {
           </Link>
           <h1 className="text-xl font-bold text-red-600">🗓️ Cooking Window</h1>
           <span className="text-xs text-zinc-400">Step 1 of 2</span>
-        </div>
-
-        {/* Lead time summary */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-6">
-          <h2 className="text-lg font-bold text-white mb-3">Your Order</h2>
-          <div className="text-sm text-zinc-400 space-y-1">
-            <p>
-              <span className="text-zinc-300 font-medium">Shopping & travel:</span> up to{' '}
-              {SHOP_AND_TRAVEL_HOURS} hours
-            </p>
-            <p>
-              <span className="text-zinc-300 font-medium">Approximate cook time:</span> up to{' '}
-              {longestCookHours} hours ({longestCookLabel})
-            </p>
-            <p className="pt-2 border-t border-zinc-800 mt-2">
-              <span className="text-red-400 font-bold">Total lead time required:</span>{' '}
-              <span className="text-white font-bold">up to {totalLeadHours} hours</span>
-            </p>
-            <p className="text-xs text-zinc-500 pt-1">
-              Actual cook times vary based on cut, size, and quantity.
-            </p>
-          </div>
         </div>
 
         {/* Date picker */}
@@ -185,6 +205,34 @@ function ScheduleContent() {
           </select>
         </div>
 
+        {/* Lead time summary — appears once date AND time are chosen */}
+        {shopInfo && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Your Window</h2>
+            <div className="text-sm text-zinc-400 space-y-1">
+              <p>
+                <span className="text-zinc-300 font-medium">Day:</span>{' '}
+                {shopInfo.isWeekend ? 'Weekend' : 'Weekday'}
+              </p>
+              <p>
+                <span className="text-zinc-300 font-medium">Shopping & travel:</span>{' '}
+                up to {shopHours} hours ({shopInfo.label})
+              </p>
+              <p>
+                <span className="text-zinc-300 font-medium">Approximate cook time:</span> up to{' '}
+                {longestCookHours} hours ({longestCookLabel})
+              </p>
+              <p className="pt-2 border-t border-zinc-800 mt-2">
+                <span className="text-red-400 font-bold">Total lead time:</span>{' '}
+                <span className="text-white font-bold">up to {totalLeadHours} hours</span>
+              </p>
+              <p className="text-xs text-zinc-500 pt-1">
+                Actual cook times vary based on cut, size, and quantity.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Validation error */}
         {error && (
           <div className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-4">
@@ -199,12 +247,11 @@ function ScheduleContent() {
               <span className="font-bold">👨🏾‍🍳 Chef will begin cooking at approximately:</span>
             </p>
             <p className="text-white text-lg font-bold">{cookStartDisplay}</p>
-            {longestCookHours > BASE_COOK_HOURS && (
+            {longestCookHours > BASE_COOK_HOURS ? (
               <p className="text-xs text-green-400 mt-2">
                 This dish requires up to {longestCookHours} hours of {longestCookLabel.toLowerCase()} cooking. Time may vary based on cut and quantity.
               </p>
-            )}
-            {longestCookHours === BASE_COOK_HOURS && (
+            ) : (
               <p className="text-xs text-green-400 mt-2">
                 Standard cook time — approximately {BASE_COOK_HOURS} hours.
               </p>
