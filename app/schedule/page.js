@@ -5,19 +5,9 @@ import { useState, useEffect, Suspense } from 'react';
 import { useCart } from '../../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-// --- Cook time rules (up to values, based on item ID prefix) ---
-const BASE_COOK_HOURS = 1.5;
-
-const COOK_TIME_RULES = [
-  { prefix: 'smoked-', hours: 12, label: 'Smoked' },
-  { prefix: 'braised-', hours: 4, label: 'Braised' },
-  { prefix: 'rotisserie-', hours: 3, label: 'Rotisserie' },
-  { prefix: 'flamed-', hours: 2, label: 'Flamed' },
-];
+import { COOK_TIMES, DEFAULT_COOK_MINUTES } from '../cookTimes';
 
 // --- Shop & Setup times by day and hour ---
-// Includes store traffic, checkout lines, and travel to client location
 const WEEKDAY_SHOP_TIMES = [
   { start: 0, end: 6.99, hours: 0.5, label: '12am–6:59am' },
   { start: 7, end: 10.99, hours: 1.5, label: '7am–10:59am' },
@@ -34,33 +24,32 @@ const WEEKEND_SHOP_TIMES = [
   { start: 20, end: 23.99, hours: 0.5, label: '8pm–11:59pm' },
 ];
 
-function getCookTimeForItem(itemId) {
-  for (const rule of COOK_TIME_RULES) {
-    if (itemId.startsWith(rule.prefix)) {
-      return { hours: rule.hours, label: rule.label };
-    }
-  }
-  return { hours: BASE_COOK_HOURS, label: 'Standard' };
+function getCookMinutes(itemId) {
+  // Strip any timestamp suffix (e.g. "eggs-boiled-1730000000" -> "eggs-boiled")
+  const clean = (itemId || '').replace(/-\d{10,}$/, '');
+  return COOK_TIMES[clean] ?? DEFAULT_COOK_MINUTES;
+}
+
+function formatDuration(minutes) {
+  if (minutes < 60) return `${minutes} min`;
+  const hours = minutes / 60;
+  if (Number.isInteger(hours)) return `${hours} hr${hours !== 1 ? 's' : ''}`;
+  return `${hours.toFixed(1)} hrs`;
 }
 
 function getShopAndTravelTime(serveDate, serveTime) {
   if (!serveDate || !serveTime) return null;
-
   const date = new Date(`${serveDate}T${serveTime}`);
   const dayOfWeek = date.getDay();
   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
   const [hours, minutes] = serveTime.split(':').map(Number);
   const decimalHour = hours + minutes / 60;
-
   const table = isWeekend ? WEEKEND_SHOP_TIMES : WEEKDAY_SHOP_TIMES;
-
   for (const slot of table) {
     if (decimalHour >= slot.start && decimalHour <= slot.end) {
       return { hours: slot.hours, label: slot.label, isWeekend };
     }
   }
-
   return { hours: 0.5, label: 'default', isWeekend };
 }
 
@@ -72,23 +61,22 @@ function ScheduleContent() {
   const [serveTime, setServeTime] = useState('');
   const [error, setError] = useState('');
 
-  const { longestCookHours, longestCookLabel } = (() => {
-    let maxHours = BASE_COOK_HOURS;
-    let label = 'Standard';
+  // Find the longest cook time in the cart (in minutes)
+  const longestCookMinutes = (() => {
+    let max = 0;
     cart.forEach((item) => {
-      const baseId = (item.id || '').replace(/-\d+$/, '');
-      const { hours, label: itemLabel } = getCookTimeForItem(baseId);
-      if (hours > maxHours) {
-        maxHours = hours;
-        label = itemLabel;
-      }
+      const mins = getCookMinutes(item.id);
+      if (mins > max) max = mins;
     });
-    return { longestCookHours: maxHours, longestCookLabel: label };
+    return max;
   })();
+
+  const longestCookHours = longestCookMinutes / 60;
 
   const shopInfo = getShopAndTravelTime(serveDate, serveTime);
   const shopHours = shopInfo ? shopInfo.hours : 0;
-  const totalLeadHours = shopHours + longestCookHours;
+  const shopMinutes = shopHours * 60;
+  const totalLeadMinutes = shopMinutes + longestCookMinutes;
 
   useEffect(() => {
     setError('');
@@ -96,19 +84,19 @@ function ScheduleContent() {
 
     const selected = new Date(`${serveDate}T${serveTime}`);
     const now = new Date();
-    const earliestPossible = new Date(now.getTime() + totalLeadHours * 60 * 60 * 1000);
+    const earliestPossible = new Date(now.getTime() + totalLeadMinutes * 60 * 1000);
 
     if (selected < earliestPossible) {
       setError(
-        `Your selected time is too soon. Based on your serving window, this order needs approximately ${totalLeadHours} hours of lead time. Earliest available: ${earliestPossible.toLocaleString()}`
+        `Your selected time is too soon. This order needs approximately ${formatDuration(totalLeadMinutes)} of lead time. Earliest available: ${earliestPossible.toLocaleString()}`
       );
     }
-  }, [serveDate, serveTime, totalLeadHours, shopInfo]);
+  }, [serveDate, serveTime, totalLeadMinutes, shopInfo]);
 
   const cookStartDisplay = (() => {
     if (!serveDate || !serveTime) return null;
     const selected = new Date(`${serveDate}T${serveTime}`);
-    const cookStart = new Date(selected.getTime() - longestCookHours * 60 * 60 * 1000);
+    const cookStart = new Date(selected.getTime() - longestCookMinutes * 60 * 1000);
     return cookStart.toLocaleString('en-US', {
       weekday: 'short',
       month: 'short',
@@ -129,11 +117,10 @@ function ScheduleContent() {
       serveDate,
       serveTime,
       cookStartDisplay,
-      totalLeadHours,
-      shopHours,
+      totalLeadMinutes,
+      shopMinutes,
       shopLabel: shopInfo?.label,
-      cookType: longestCookLabel,
-      cookHours: longestCookHours,
+      cookMinutes: longestCookMinutes,
     };
     localStorage.setItem('culinary_schedule', JSON.stringify(schedule));
     router.push('/checkout');
@@ -164,7 +151,6 @@ function ScheduleContent() {
           <span className="text-xs text-zinc-400">Step 1 of 2</span>
         </div>
 
-        {/* Date picker */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-4">
           <label className="block text-sm font-semibold text-zinc-300 mb-2">
             When would you like your meal served?
@@ -201,7 +187,6 @@ function ScheduleContent() {
           </select>
         </div>
 
-        {/* Lead time summary */}
         {shopInfo && (
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Your Window</h2>
@@ -219,11 +204,13 @@ function ScheduleContent() {
               </p>
               <p>
                 <span className="text-zinc-300 font-medium">Cook Time:</span> up to{' '}
-                {longestCookHours} hours ({longestCookLabel})
+                {formatDuration(longestCookMinutes)}
               </p>
               <p className="pt-2 border-t border-zinc-800 mt-2">
                 <span className="text-red-400 font-bold">Total Lead Time:</span>{' '}
-                <span className="text-white font-bold">up to {totalLeadHours} hours</span>
+                <span className="text-white font-bold">
+                  up to {formatDuration(totalLeadMinutes)}
+                </span>
               </p>
               <p className="text-xs text-zinc-500 pt-1">
                 Actual cook times vary based on cut, size, and quantity.
@@ -232,33 +219,24 @@ function ScheduleContent() {
           </div>
         )}
 
-        {/* Validation error */}
         {error && (
           <div className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-4">
             <p className="text-red-300 text-sm">{error}</p>
           </div>
         )}
 
-        {/* Cook start estimate */}
         {cookStartDisplay && !error && (
           <div className="bg-green-900/20 border border-green-700 rounded-xl p-5 mb-6">
             <p className="text-green-300 text-sm mb-1">
               <span className="font-bold">👨🏾‍🍳 Chef will begin cooking at approximately:</span>
             </p>
             <p className="text-white text-lg font-bold">{cookStartDisplay}</p>
-            {longestCookHours > BASE_COOK_HOURS ? (
-              <p className="text-xs text-green-400 mt-2">
-                This dish requires up to {longestCookHours} hours of {longestCookLabel.toLowerCase()} cooking. Time may vary based on cut and quantity.
-              </p>
-            ) : (
-              <p className="text-xs text-green-400 mt-2">
-                Standard cook time — approximately {BASE_COOK_HOURS} hours.
-              </p>
-            )}
+            <p className="text-xs text-green-400 mt-2">
+              Based on an estimated cook time of up to {formatDuration(longestCookMinutes)}.
+            </p>
           </div>
         )}
 
-        {/* Continue button */}
         <div className="fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 p-4 z-50 shadow-2xl">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div>
