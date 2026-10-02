@@ -10,9 +10,9 @@ import { COOK_TIMES, DEFAULT_COOK_MINUTES } from '../cookTimes';
 // --- Shop & Setup times by day and hour ---
 const WEEKDAY_SHOP_TIMES = [
   { start: 0, end: 6.99, hours: 0.5, label: '12am–6:59am' },
-  { start: 7, end: 10.99, hours: 1.5, label: '7am–10:59am' },
+  { start: 7, end: 10.99, hours: 1.0, label: '7am–10:59am' },
   { start: 11, end: 14.99, hours: 0.75, label: '11am–2:59pm' },
-  { start: 15, end: 19.99, hours: 1.5, label: '3pm–7:59pm' },
+  { start: 15, end: 19.99, hours: 1.0, label: '3pm–7:59pm' },
   { start: 20, end: 23.99, hours: 0.5, label: '8pm–11:59pm' },
 ];
 
